@@ -1,11 +1,11 @@
 {
   "extends": "babel",
+  "plugins": [
+    "prettier"
+  ],
   "rules": {
-    "comma-dangle": ["error", "always-multiline"],
     "curly": ["error", "multi-line"],
-    "func-call-spacing": "error",
-    "key-spacing": "error",
-    "no-multi-spaces": "error"
+    "prettier/prettier": ["error", { "trailingComma": "es5" }]
   },
   "env": {
     "node": true,

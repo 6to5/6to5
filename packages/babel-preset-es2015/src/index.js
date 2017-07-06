@@ -23,7 +23,7 @@ import transformES2015ModulesAMD from "babel-plugin-transform-es2015-modules-amd
 import transformES2015ModulesUMD from "babel-plugin-transform-es2015-modules-umd";
 import transformRegenerator from "babel-plugin-transform-regenerator";
 
-export default function (context, opts = {}) {
+export default function(context, opts = {}) {
   const moduleTypes = ["commonjs", "amd", "umd", "systemjs"];
   let loose = false;
   let modules = "commonjs";
@@ -35,11 +35,17 @@ export default function (context, opts = {}) {
     if (opts.spec !== undefined) spec = opts.spec;
   }
 
-  if (typeof loose !== "boolean") throw new Error("Preset es2015 'loose' option must be a boolean.");
-  if (typeof spec !== "boolean") throw new Error("Preset es2015 'spec' option must be a boolean.");
+  if (typeof loose !== "boolean") {
+    throw new Error("Preset es2015 'loose' option must be a boolean.");
+  }
+  if (typeof spec !== "boolean") {
+    throw new Error("Preset es2015 'spec' option must be a boolean.");
+  }
   if (modules !== false && moduleTypes.indexOf(modules) === -1) {
-    throw new Error("Preset es2015 'modules' option must be 'false' to indicate no modules\n" +
-      "or a module type which be be one of: 'commonjs' (default), 'amd', 'umd', 'systemjs'");
+    throw new Error(
+      "Preset es2015 'modules' option must be 'false' to indicate no modules\n" +
+        "or a module type which be be one of: 'commonjs' (default), 'amd', 'umd', 'systemjs'",
+    );
   }
 
   // be DRY

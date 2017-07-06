@@ -10,4 +10,5 @@ class AnchorLink extends Component {
 
     return <Link>{children}</Link>;
   }
+
 }

@@ -14,6 +14,7 @@
     "babel-plugin"
   ],
   "devDependencies": {
-    "babel-helper-plugin-test-runner": "7.0.0-alpha.12"
+    "babel-helper-plugin-test-runner": "7.0.0-alpha.12",
+    "babel-plugin-syntax-object-rest-spread": "7.0.0-alpha.12"
   }
 }

@@ -4,13 +4,9 @@ export function assertNoOwnProperties(obj) {
   assert.equal(Object.getOwnPropertyNames(obj).length, 0);
 }
 
-export function assertHasOwnProperty() {
+export function assertHasOwnProperty() {}
 
-}
-
-export function assertLacksOwnProperty() {
-
-}
+export function assertLacksOwnProperty() {}
 
 export function multiline(arr) {
   return arr.join("\n");

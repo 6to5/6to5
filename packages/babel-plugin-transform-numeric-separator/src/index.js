@@ -1,7 +1,6 @@
 import syntaxNumericSeparator from "babel-plugin-syntax-numeric-separator";
 
-export default function ({ types: t }) {
-
+export default function({ types: t }) {
   function replacer(value) {
     return value.replace(/_/g, "");
   }

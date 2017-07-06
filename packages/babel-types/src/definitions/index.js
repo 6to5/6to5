@@ -34,7 +34,9 @@ export function assertOneOf(...vals): Function {
   function validate(node, key, val) {
     if (vals.indexOf(val) < 0) {
       throw new TypeError(
-        `Property ${key} expected value to be one of ${JSON.stringify(vals)} but got ${JSON.stringify(val)}`
+        `Property ${key} expected value to be one of ${JSON.stringify(
+          vals,
+        )} but got ${JSON.stringify(val)}`,
       );
     }
   }
@@ -57,8 +59,9 @@ export function assertNodeType(...types: Array<string>): Function {
 
     if (!valid) {
       throw new TypeError(
-        `Property ${key} of ${node.type} expected node to be of a type ${JSON.stringify(types)} ` +
-        `but instead got ${JSON.stringify(val && val.type)}`
+        `Property ${key} of ${node.type} expected node to be of a type ${JSON.stringify(
+          types,
+        )} ` + `but instead got ${JSON.stringify(val && val.type)}`,
       );
     }
   }
@@ -81,8 +84,9 @@ export function assertNodeOrValueType(...types: Array<string>): Function {
 
     if (!valid) {
       throw new TypeError(
-        `Property ${key} of ${node.type} expected node to be of a type ${JSON.stringify(types)} ` +
-        `but instead got ${JSON.stringify(val && val.type)}`
+        `Property ${key} of ${node.type} expected node to be of a type ${JSON.stringify(
+          types,
+        )} ` + `but instead got ${JSON.stringify(val && val.type)}`,
       );
     }
   }
@@ -97,7 +101,9 @@ export function assertValueType(type: string): Function {
     const valid = getType(val) === type;
 
     if (!valid) {
-      throw new TypeError(`Property ${key} expected type of ${type} but got ${getType(val)}`);
+      throw new TypeError(
+        `Property ${key} expected type of ${type} but got ${getType(val)}`,
+      );
     }
   }
 
@@ -119,12 +125,12 @@ export function chain(...fns: Array<Function>): Function {
 export default function defineType(
   type: string,
   opts: {
-    fields?: Object;
-    visitor?: Array<string>;
-    aliases?: Array<string>;
-    builder?: Array<string>;
-    inherits?: string;
-    deprecatedAlias?: string;
+    fields?: Object,
+    visitor?: Array<string>,
+    aliases?: Array<string>,
+    builder?: Array<string>,
+    inherits?: string,
+    deprecatedAlias?: string,
   } = {},
 ) {
   const inherits = (opts.inherits && store[opts.inherits]) || {};

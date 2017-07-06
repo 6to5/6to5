@@ -4,11 +4,11 @@ import { parse } from "babylon";
 import generate from "babel-generator";
 import * as t from "babel-types";
 
-function assertConversion(input, output, {
-  methodName = "method",
-  extend = false,
-  arrowOpts,
-} = {}) {
+function assertConversion(
+  input,
+  output,
+  { methodName = "method", extend = false, arrowOpts } = {},
+) {
   const inputAst = wrapMethod(input, methodName, extend);
   const outputAst = wrapMethod(output, methodName, extend);
 
@@ -16,7 +16,10 @@ function assertConversion(input, output, {
     hub: {
       file: {
         addHelper(helperName) {
-          return t.memberExpression(t.identifier("babelHelpers"), t.identifier(helperName));
+          return t.memberExpression(
+            t.identifier("babelHelpers"),
+            t.identifier(helperName),
+          );
         },
       },
     },
@@ -36,22 +39,27 @@ function assertConversion(input, output, {
 }
 
 function wrapMethod(body, methodName, extend) {
-  return parse(`
-    class Example ${extend ? ("extends class {}") : ""} {
+  return parse(
+    `
+    class Example ${extend ? "extends class {}" : ""} {
       ${methodName}() {${body} }
     }
-  `, { plugins: ["jsx"] });
+  `,
+    { plugins: ["jsx"] },
+  );
 }
 
 describe("arrow function conversion", () => {
   it("should convert super calls in constructors", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         super(345);
       };
       super();
       () => super();
-    `, `
+    `,
+      `
       var _supercall = (..._args) => super(..._args);
 
       (function () {
@@ -59,11 +67,14 @@ describe("arrow function conversion", () => {
       });
       _supercall();
       () => _supercall();
-    `, { methodName: "constructor" });
+    `,
+      { methodName: "constructor" },
+    );
   });
 
   it("should convert super calls and this references in constructors", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         super(345);
         this;
@@ -72,7 +83,8 @@ describe("arrow function conversion", () => {
       this;
       () => super();
       () => this;
-    `, `
+    `,
+      `
       var _supercall = (..._args) => _this = super(..._args),
           _this;
 
@@ -84,11 +96,14 @@ describe("arrow function conversion", () => {
       this;
       () => _supercall();
       () => this;
-    `, { methodName: "constructor", extend: true });
+    `,
+      { methodName: "constructor", extend: true },
+    );
   });
 
   it("should convert this references in constructors", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         this;
       };
@@ -96,7 +111,8 @@ describe("arrow function conversion", () => {
       this;
       () => super();
       () => this;
-    `, `
+    `,
+      `
       var _this;
 
       (function () {
@@ -106,11 +122,14 @@ describe("arrow function conversion", () => {
       this;
       () => _this = super();
       () => this;
-    `, { methodName: "constructor", extend: true });
+    `,
+      { methodName: "constructor", extend: true },
+    );
   });
 
   it("should convert this references in constructors with spec compliance", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         this;
       };
@@ -118,7 +137,8 @@ describe("arrow function conversion", () => {
       this;
       () => super();
       () => this;
-    `, `
+    `,
+      `
       var _this,
           _arrowCheckId = {};
 
@@ -131,17 +151,25 @@ describe("arrow function conversion", () => {
       this;
       () => _this = super();
       () => this;
-    `, { methodName: "constructor", extend: true, arrowOpts: { specCompliant: true } });
+    `,
+      {
+        methodName: "constructor",
+        extend: true,
+        arrowOpts: { specCompliant: true },
+      },
+    );
   });
 
   it("should convert this references in constructors without extension", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         this;
       };
       this;
       () => this;
-    `, `
+    `,
+      `
       var _this = this;
 
       (function () {
@@ -149,17 +177,21 @@ describe("arrow function conversion", () => {
       });
       this;
       () => this;
-    `, { methodName: "constructor" });
+    `,
+      { methodName: "constructor" },
+    );
   });
 
   it("should convert this references in constructors with spec compliance without extension", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         this;
       };
       this;
       () => this;
-    `, `
+    `,
+      `
       var _this = this;
 
       (function () {
@@ -169,17 +201,21 @@ describe("arrow function conversion", () => {
       }).bind(this);
       this;
       () => this;
-    `, { methodName: "constructor", arrowOpts: { specCompliant: true } });
+    `,
+      { methodName: "constructor", arrowOpts: { specCompliant: true } },
+    );
   });
 
   it("should convert this references in methods", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         this;
       };
       this;
       () => this;
-    `, `
+    `,
+      `
       var _this = this;
 
       (function () {
@@ -187,17 +223,20 @@ describe("arrow function conversion", () => {
       });
       this;
       () => this;
-    `);
+    `,
+    );
   });
 
   it("should convert this references in methods with spec compliance", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         this;
       };
       this;
       () => this;
-    `, `
+    `,
+      `
       var _this = this;
 
       (function () {
@@ -207,17 +246,21 @@ describe("arrow function conversion", () => {
       }).bind(this);
       this;
       () => this;
-    `, { arrowOpts: { specCompliant: true } });
+    `,
+      { arrowOpts: { specCompliant: true } },
+    );
   });
 
   it("should convert this references inside JSX in methods", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         <this.this this="" />;
       };
       <this.this this="" />;
       () => <this.this this="" />;
-    `, `
+    `,
+      `
       var _this = this;
 
       (function () {
@@ -225,17 +268,20 @@ describe("arrow function conversion", () => {
       });
       <this.this this="" />;
       () => <this.this this="" />;
-    `);
+    `,
+    );
   });
 
   it("should convert arguments references", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         arguments;
       };
       arguments;
       () => arguments;
-    `, `
+    `,
+      `
       var _arguments = arguments;
 
       (function () {
@@ -243,17 +289,20 @@ describe("arrow function conversion", () => {
       });
       arguments;
       () => arguments;
-    `);
+    `,
+    );
   });
 
   it("should convert new.target references", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         new.target;
       };
       new.target;
       () => new.target;
-    `, `
+    `,
+      `
       var _newtarget = new.target;
 
       (function () {
@@ -261,17 +310,20 @@ describe("arrow function conversion", () => {
       });
       new.target;
       () => new.target;
-    `);
+    `,
+    );
   });
 
   it("should convert super.prop references", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         var tmp = super.foo;
       };
       super.foo;
       () => super.foo;
-    `, `
+    `,
+      `
       var _superprop_getFoo = () => super.foo;
 
       (function () {
@@ -279,17 +331,20 @@ describe("arrow function conversion", () => {
       });
       super.foo;
       () => super.foo;
-    `);
+    `,
+    );
   });
 
   it("should convert super[prop] references", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         var tmp = super[foo];
       };
       super[foo];
       () => super[foo];
-    `, `
+    `,
+      `
       var _superprop_get = _prop => super[_prop];
 
       (function () {
@@ -297,17 +352,20 @@ describe("arrow function conversion", () => {
       });
       super[foo];
       () => super[foo];
-    `);
+    `,
+    );
   });
 
   it("should convert super.prop assignment", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         super.foo = 4;
       };
       super.foo = 4;
       () => super.foo = 4;
-    `, `
+    `,
+      `
       var _superprop_setFoo = _value => super.foo = _value;
 
       (function () {
@@ -315,17 +373,20 @@ describe("arrow function conversion", () => {
       });
       super.foo = 4;
       () => super.foo = 4;
-    `);
+    `,
+    );
   });
 
   it("should convert super[prop] assignment", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         super[foo] = 4;
       };
       super[foo] = 4;
       () => super[foo] = 4;
-    `, `
+    `,
+      `
       var _superprop_set = (_prop, _value) => super[_prop] = _value;
 
       (function () {
@@ -333,17 +394,20 @@ describe("arrow function conversion", () => {
       });
       super[foo] = 4;
       () => super[foo] = 4;
-    `);
+    `,
+    );
   });
 
   it("should convert super.prop operator assign", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         super.foo **= 4;
       };
       super.foo **= 4;
       () => super.foo **= 4;
-    `, `
+    `,
+      `
       var _superprop_setFoo = _value => super.foo = _value,
           _superprop_getFoo = () => super.foo;
 
@@ -352,17 +416,20 @@ describe("arrow function conversion", () => {
       });
       super.foo **= 4;
       () => super.foo **= 4;
-    `);
+    `,
+    );
   });
 
   it("should convert super[prop] operator assign", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         super[foo] **= 4;
       };
       super[foo] **= 4;
       () => super[foo] **= 4;
-    `, `
+    `,
+      `
       var _superprop_set = (_prop, _value) => super[_prop] = _value,
           _superprop_get = _prop2 => super[_prop2];
 
@@ -373,17 +440,20 @@ describe("arrow function conversion", () => {
       });
       super[foo] **= 4;
       () => super[foo] **= 4;
-    `);
+    `,
+    );
   });
 
   it("should convert super.prop prefix update", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         ++super.foo;
       };
       ++super.foo;
       () => ++super.foo;
-    `, `
+    `,
+      `
       var _superprop_getFoo = () => super.foo,
           _superprop_setFoo = _value => super.foo = _value;
 
@@ -394,17 +464,20 @@ describe("arrow function conversion", () => {
       });
       ++super.foo;
       () => ++super.foo;
-    `);
+    `,
+    );
   });
 
   it("should convert super[prop] prefix update", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         ++super[foo];
       };
       ++super[foo];
       () => ++super[foo];
-    `, `
+    `,
+      `
       var _superprop_get = _prop2 => super[_prop2],
           _superprop_set = (_prop3, _value) => super[_prop3] = _value;
 
@@ -415,17 +488,20 @@ describe("arrow function conversion", () => {
       });
       ++super[foo];
       () => ++super[foo];
-    `);
+    `,
+    );
   });
 
   it("should convert super.prop suffix update", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         super.foo++;
       };
       super.foo++;
       () => super.foo++;
-    `, `
+    `,
+      `
       var _superprop_getFoo = () => super.foo,
           _superprop_setFoo = _value => super.foo = _value;
 
@@ -436,17 +512,20 @@ describe("arrow function conversion", () => {
       });
       super.foo++;
       () => super.foo++;
-    `);
+    `,
+    );
   });
 
   it("should convert super[prop] suffix update", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         super[foo]++;
       };
       super[foo]++;
       () => super[foo]++;
-    `, `
+    `,
+      `
       var _superprop_get = _prop2 => super[_prop2],
           _superprop_set = (_prop3, _value) => super[_prop3] = _value;
 
@@ -457,17 +536,20 @@ describe("arrow function conversion", () => {
       });
       super[foo]++;
       () => super[foo]++;
-    `);
+    `,
+    );
   });
 
   it("should convert super.prop() calls", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         super.foo();
       };
       super.foo();
       () => super.foo();
-    `, `
+    `,
+      `
       var _superprop_callFoo = (..._args) => super.foo(..._args);
 
       (function () {
@@ -475,17 +557,20 @@ describe("arrow function conversion", () => {
       });
       super.foo();
       () => super.foo();
-    `);
+    `,
+    );
   });
 
   it("should convert super[prop]() calls", () => {
-    assertConversion(`
+    assertConversion(
+      `
       () => {
         super[foo]();
       };
       super[foo]();
       () => super[foo]();
-    `, `
+    `,
+      `
       var _superprop_call = (_prop, ..._args) => super[_prop](..._args);
 
       (function () {
@@ -493,6 +578,7 @@ describe("arrow function conversion", () => {
       });
       super[foo]();
       () => super[foo]();
-    `);
+    `,
+    );
   });
 });

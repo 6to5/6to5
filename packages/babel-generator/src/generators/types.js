@@ -10,9 +10,7 @@ export function RestElement(node: Object) {
   this.print(node.argument, node);
 }
 
-export {
-  RestElement as SpreadElement,
-};
+export { RestElement as SpreadElement };
 
 export function ObjectExpression(node: Object) {
   const props = node.properties;
@@ -45,8 +43,11 @@ export function ObjectProperty(node: Object) {
     this.token("]");
   } else {
     // print `({ foo: foo = 5 } = {})` as `({ foo = 5 } = {});`
-    if (t.isAssignmentPattern(node.value) && t.isIdentifier(node.key) &&
-      node.key.name === node.value.left.name) {
+    if (
+      t.isAssignmentPattern(node.value) &&
+      t.isIdentifier(node.key) &&
+      node.key.name === node.value.left.name
+    ) {
       this.print(node.value, node);
       return;
     }
@@ -54,10 +55,12 @@ export function ObjectProperty(node: Object) {
     this.print(node.key, node);
 
     // shorthand!
-    if (node.shorthand &&
+    if (
+      node.shorthand &&
       (t.isIdentifier(node.key) &&
-       t.isIdentifier(node.value) &&
-       node.key.name === node.value.name)) {
+        t.isIdentifier(node.value) &&
+        node.key.name === node.value.name)
+    ) {
       return;
     }
   }
@@ -111,7 +114,7 @@ export function NumericLiteral(node: Object) {
   const raw = this.getPossibleRaw(node);
   const value = node.value + "";
   if (raw == null) {
-    this.number(value);  // normalize
+    this.number(value); // normalize
   } else if (this.format.minified) {
     this.number(raw.length < value.length ? raw : value);
   } else {

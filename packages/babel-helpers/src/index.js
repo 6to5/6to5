@@ -8,7 +8,7 @@ export function get(name) {
 }
 
 export const list = Object.keys(helpers)
-  .map((name) => name.replace(/^_/, ""))
-  .filter((name) => name !== "__esModule");
+  .map(name => name.replace(/^_/, ""))
+  .filter(name => name !== "__esModule");
 
 export default get;

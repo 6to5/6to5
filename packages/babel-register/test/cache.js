@@ -18,7 +18,6 @@ function writeCache(data) {
 }
 
 function cleanCache() {
-
   try {
     fs.unlinkSync(testCacheFilename);
   } catch (e) {
@@ -32,7 +31,6 @@ function resetCache() {
 }
 
 describe("babel register", () => {
-
   describe("cache", () => {
     let load, get, save;
 

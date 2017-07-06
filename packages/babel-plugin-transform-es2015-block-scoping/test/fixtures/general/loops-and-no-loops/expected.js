@@ -1,7 +1,6 @@
 function foo() {
   var x = 5;
   console.log(x);
-
   {
     var _x = 7;
     setTimeout(function () {
@@ -37,6 +36,7 @@ function baz() {
         return x;
       }, 0);
     };
+
     qux(i);
   }
 }

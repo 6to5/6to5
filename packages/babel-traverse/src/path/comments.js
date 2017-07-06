@@ -20,7 +20,6 @@ export function shareCommentsWithSiblings() {
   const hasPrev = Boolean(prev.node);
   const hasNext = Boolean(next.node);
   if (hasPrev && hasNext) {
-
   } else if (hasPrev) {
     prev.addComments("trailing", trailing);
   } else if (hasNext) {
@@ -29,10 +28,12 @@ export function shareCommentsWithSiblings() {
 }
 
 export function addComment(type, content, line?) {
-  this.addComments(type, [{
-    type: line ? "CommentLine" : "CommentBlock",
-    value: content,
-  }]);
+  this.addComments(type, [
+    {
+      type: line ? "CommentLine" : "CommentBlock",
+      value: content,
+    },
+  ]);
 }
 
 /**

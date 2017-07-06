@@ -2,10 +2,13 @@
 
 import type NodePath from "babel-traverse";
 
-export default function () {
+export default function() {
   return {
     visitor: {
-      ArrowFunctionExpression(path: NodePath<BabelNodeArrowFunctionExpression>, state: Object) {
+      ArrowFunctionExpression(
+        path: NodePath<BabelNodeArrowFunctionExpression>,
+        state: Object,
+      ) {
         // In some conversion cases, it may have already been converted to a function while this callback
         // was queued up.
         if (!path.isArrowFunctionExpression()) return;

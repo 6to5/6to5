@@ -1,0 +1,13 @@
+{
+  "name": "babel-plugin-syntax-optional-chaining",
+  "version": "7.0.0-alpha.13",
+  "description": "Allow parsing of optional properties",
+  "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-optional-chaining",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "keywords": [
+    "babel-plugin"
+  ],
+  "dependencies": {},
+  "devDependencies": {}
+}

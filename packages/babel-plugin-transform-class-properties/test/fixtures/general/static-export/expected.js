@@ -1,7 +1,6 @@
 export var MyClass = function MyClass() {
   babelHelpers.classCallCheck(this, MyClass);
 };
-
 MyClass.property = value;
 
 var MyClass2 = function MyClass2() {

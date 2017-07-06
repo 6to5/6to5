@@ -1,9 +1,7 @@
-var code = [
-  'var foo = 1;',
-  'if (x) {',
-  '  const bar = 1;',
-  '}',
-].join('\n');
+var code = `var foo = 1;
+if (x) {
+  const bar = 1;
+}`;
 
 var innerScope = true;
 var res = transform(code, {
@@ -29,11 +27,10 @@ var res = transform(code, {
   ]),
 });
 
-var expected = [
-  'var foo = 1;',
-  'if (x) {',
-  '  var bar = 1;',
-  '}',
-].join('\n');
+var expected = `var foo = 1;
+
+if (x) {
+  var bar = 1;
+}`;
 
 assert.equal(res.code, expected);

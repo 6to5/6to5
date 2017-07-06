@@ -5,7 +5,6 @@ var Foo = function (_Bar) {
     var _temp, _this;
 
     babelHelpers.classCallCheck(this, Foo);
-
     foo((_temp = (_this = babelHelpers.possibleConstructorReturn(this, (Foo.__proto__ || Object.getPrototypeOf(Foo)).call(this)), _this), Object.defineProperty(_this, "bar", {
       enumerable: true,
       writable: true,

@@ -12,7 +12,7 @@ export template from "babel-template";
 
 import loadConfig from "./config";
 
-export function loadOptions(opts): Object|null {
+export function loadOptions(opts): Object | null {
   const config = loadConfig(opts);
 
   return config ? config.options : null;
@@ -41,4 +41,10 @@ export {
  * Recommended set of compilable extensions. Not used in babel-core directly, but meant as
  * as an easy source for tooling making use of babel-core.
  */
-export const DEFAULT_EXTENSIONS = Object.freeze([".js", ".jsx", ".es6", ".es", ".mjs"]);
+export const DEFAULT_EXTENSIONS = Object.freeze([
+  ".js",
+  ".jsx",
+  ".es6",
+  ".es",
+  ".mjs",
+]);

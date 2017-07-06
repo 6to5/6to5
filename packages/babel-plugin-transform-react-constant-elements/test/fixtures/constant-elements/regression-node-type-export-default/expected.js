@@ -2,6 +2,7 @@ class A {
   render() {
     return _ref;
   }
+
 }
 
 export default class B {}

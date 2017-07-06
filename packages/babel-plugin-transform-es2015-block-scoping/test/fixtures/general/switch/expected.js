@@ -1,6 +1,8 @@
 var a = true;
 var b = false;
+
 class e {}
+
 function f() {}
 
 switch (a) {
@@ -8,6 +10,7 @@ switch (a) {
     var c = 2;
     var foo = true;
     break;
+
   case false:
     var d = 3;
     foo = false;

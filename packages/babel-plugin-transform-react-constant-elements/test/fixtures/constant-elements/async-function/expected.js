@@ -3,11 +3,10 @@ function _asyncToGenerator(fn) { return function () { return new Promise((resolv
 export default {
   function(name) {
     return _asyncToGenerator(function* () {
-      const uppercasedName = name.upperCase();
-
-      // awaits depending on uppercasedName go here
+      const uppercasedName = name.upperCase(); // awaits depending on uppercasedName go here
 
       return <Foo name={uppercasedName} />;
     })();
   }
+
 };

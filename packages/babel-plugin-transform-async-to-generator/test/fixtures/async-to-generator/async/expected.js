@@ -4,4 +4,5 @@ class Foo {
       var wat = yield bar();
     })();
   }
+
 }

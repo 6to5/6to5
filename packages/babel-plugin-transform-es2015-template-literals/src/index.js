@@ -1,5 +1,4 @@
-export default function ({ types: t }) {
-
+export default function({ types: t }) {
   function buildConcatCallExressions(items) {
     let avail = true;
     return items.reduce(function(left, right) {
@@ -15,7 +14,7 @@ export default function ({ types: t }) {
       }
       return t.callExpression(
         t.memberExpression(left, t.identifier("concat")),
-        [right]
+        [right],
       );
     });
   }
@@ -23,7 +22,6 @@ export default function ({ types: t }) {
   return {
     visitor: {
       TaggedTemplateExpression(path, state) {
-
         const { node } = path;
         const { quasi } = node;
 
@@ -32,9 +30,10 @@ export default function ({ types: t }) {
 
         for (const elem of (quasi.quasis: Array)) {
           const { raw, cooked } = elem.value;
-          const value = cooked == null
-            ? path.scope.buildUndefinedNode()
-            : t.stringLiteral(cooked);
+          const value =
+            cooked == null
+              ? path.scope.buildUndefinedNode()
+              : t.stringLiteral(cooked);
 
           strings.push(value);
           raws.push(t.stringLiteral(raw));
@@ -46,7 +45,7 @@ export default function ({ types: t }) {
         const templateObject = state.file.addTemplateObject(
           templateName,
           t.arrayExpression(strings),
-          t.arrayExpression(raws)
+          t.arrayExpression(raws),
         );
 
         const args = [templateObject].concat(quasi.expressions);
@@ -75,7 +74,8 @@ export default function ({ types: t }) {
 
         // since `+` is left-to-right associative
         // ensure the first node is a string if first/second isn't
-        const considerSecondNode = state.opts.spec || !t.isStringLiteral(nodes[1]);
+        const considerSecondNode =
+          state.opts.spec || !t.isStringLiteral(nodes[1]);
         if (!t.isStringLiteral(nodes[0]) && considerSecondNode) {
           nodes.unshift(t.stringLiteral(""));
         }

@@ -13,20 +13,27 @@ function replacePropertySuper(path, node, scope, getObjectRef, file) {
   replaceSupers.replace();
 }
 
-export default function ({ types: t }) {
+export default function({ types: t }) {
   return {
     visitor: {
       ObjectExpression(path, state) {
         let objectRef;
-        const getObjectRef = () => objectRef = objectRef || path.scope.generateUidIdentifier("obj");
+        const getObjectRef = () =>
+          (objectRef = objectRef || path.scope.generateUidIdentifier("obj"));
 
-        path.get("properties").forEach((propertyPath) => {
+        path.get("properties").forEach(propertyPath => {
           if (!propertyPath.isMethod()) return;
 
           const propPaths: Array = path.get("properties");
           for (let propPath of propPaths) {
             if (propPath.isObjectProperty()) propPath = propPath.get("value");
-            replacePropertySuper(propPath, propPath.node, path.scope, getObjectRef, state);
+            replacePropertySuper(
+              propPath,
+              propPath.node,
+              path.scope,
+              getObjectRef,
+              state,
+            );
           }
         });
 

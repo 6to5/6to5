@@ -11,6 +11,7 @@ var _ref2 = <div className="child">
   </div>;
 
 let Child = () => _ref2;
+
 Child = HOC(Child);
 
 var _ref = <div className="parent">

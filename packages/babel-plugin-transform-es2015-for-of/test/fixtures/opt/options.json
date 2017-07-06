@@ -1,0 +1,3 @@
+{
+  "plugins": ["transform-es2015-for-of", "transform-flow-strip-types"]
+}

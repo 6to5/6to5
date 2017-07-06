@@ -21,6 +21,7 @@ var A = function (_B) {
     } else {
       var _this = _possibleConstructorReturn(this, (A.__proto__ || Object.getPrototypeOf(A)).call(this));
     }
+
     return _possibleConstructorReturn(_this);
   }
 

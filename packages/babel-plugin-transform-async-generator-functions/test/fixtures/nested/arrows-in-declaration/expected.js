@@ -3,9 +3,11 @@ let g = (() => {
     var _this = this;
 
     () => this;
+
     function f() {
       () => this;
     }
+
     babelHelpers.asyncToGenerator(function* () {
       _this;
       yield 1;

@@ -3,7 +3,11 @@ var _i = function i() {
 };
 
 var _j = function j() {
-  ({ j: _j } = 5);
-  ({ y: _j } = 5);
+  ({
+    j: _j
+  } = 5);
+  ({
+    y: _j
+  } = 5);
   ;
 };

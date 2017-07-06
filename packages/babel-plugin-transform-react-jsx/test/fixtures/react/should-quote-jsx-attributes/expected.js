@@ -1,5 +1,7 @@
 React.createElement(
   "button",
-  { "data-value": "a value" },
+  {
+    "data-value": "a value"
+  },
   "Button"
 );

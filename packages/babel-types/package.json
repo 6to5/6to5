@@ -14,6 +14,6 @@
   },
   "devDependencies": {
     "babel-generator": "7.0.0-alpha.12",
-    "babylon": "^7.0.0-beta.12"
+    "babylon": "^7.0.0-beta.15"
   }
 }

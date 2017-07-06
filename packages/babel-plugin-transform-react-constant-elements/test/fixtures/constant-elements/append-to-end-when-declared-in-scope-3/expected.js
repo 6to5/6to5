@@ -7,6 +7,7 @@ var _ref3 = <p>Parent</p>;
     render() {
       return _ref;
     }
+
   }
 
   const AppItem = () => {

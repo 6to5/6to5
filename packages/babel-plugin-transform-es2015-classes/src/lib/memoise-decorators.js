@@ -1,7 +1,10 @@
 import type { Scope } from "babel-traverse";
 import * as t from "babel-types";
 
-export default function (decorators: Array<Object>, scope: Scope): Array<Object> {
+export default function(
+  decorators: Array<Object>,
+  scope: Scope,
+): Array<Object> {
   for (const decorator of decorators) {
     const expression = decorator.expression;
     if (!t.isMemberExpression(expression)) continue;
@@ -18,13 +21,15 @@ export default function (decorators: Array<Object>, scope: Scope): Array<Object>
       ref = expression.object;
     }
 
-    nodes.push(t.callExpression(
-      t.memberExpression(
-        t.memberExpression(ref, expression.property, expression.computed),
-        t.identifier("bind")
+    nodes.push(
+      t.callExpression(
+        t.memberExpression(
+          t.memberExpression(ref, expression.property, expression.computed),
+          t.identifier("bind"),
+        ),
+        [ref],
       ),
-      [ref]
-    ));
+    );
 
     if (nodes.length === 1) {
       decorator.expression = nodes[0];

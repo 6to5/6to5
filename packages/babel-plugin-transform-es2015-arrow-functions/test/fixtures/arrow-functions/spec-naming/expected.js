@@ -10,7 +10,9 @@ const f = function f(x) {
   return x;
 }.bind(this);
 
-const o = { k: function k(x) {
+const o = {
+  k: function k(x) {
     babelHelpers.newArrowCheck(this, _this);
     return x;
-  }.bind(this) };
+  }.bind(this)
+};

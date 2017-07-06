@@ -1,4 +1,9 @@
-import defineType, { assertNodeType, assertValueType, chain, assertEach } from "./index";
+import defineType, {
+  assertNodeType,
+  assertValueType,
+  chain,
+  assertEach,
+} from "./index";
 
 defineType("JSXAttribute", {
   visitor: ["name", "value"],
@@ -9,7 +14,11 @@ defineType("JSXAttribute", {
     },
     value: {
       optional: true,
-      validate: assertNodeType("JSXElement", "StringLiteral", "JSXExpressionContainer"),
+      validate: assertNodeType(
+        "JSXElement",
+        "StringLiteral",
+        "JSXExpressionContainer",
+      ),
     },
   },
 });
@@ -39,7 +48,14 @@ defineType("JSXElement", {
     children: {
       validate: chain(
         assertValueType("array"),
-        assertEach(assertNodeType("JSXText", "JSXExpressionContainer", "JSXSpreadChild", "JSXElement"))
+        assertEach(
+          assertNodeType(
+            "JSXText",
+            "JSXExpressionContainer",
+            "JSXSpreadChild",
+            "JSXElement",
+          ),
+        ),
       ),
     },
   },
@@ -120,7 +136,7 @@ defineType("JSXOpeningElement", {
     attributes: {
       validate: chain(
         assertValueType("array"),
-        assertEach(assertNodeType("JSXAttribute", "JSXSpreadAttribute"))
+        assertEach(assertNodeType("JSXAttribute", "JSXSpreadAttribute")),
       ),
     },
   },

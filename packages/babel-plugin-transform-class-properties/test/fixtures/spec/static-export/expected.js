@@ -1,7 +1,6 @@
 export var MyClass = function MyClass() {
   babelHelpers.classCallCheck(this, MyClass);
 };
-
 Object.defineProperty(MyClass, "property", {
   enumerable: true,
   writable: true,

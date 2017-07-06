@@ -1,3 +1,9 @@
 {
-  "plugins": ["external-helpers", "transform-es2015-function-name", ["transform-es2015-classes", { "loose": true }], "transform-es2015-spread", "transform-es2015-block-scoping"]
+  "plugins": [
+    "external-helpers",
+    "transform-es2015-function-name",
+    ["transform-es2015-classes", { "loose": true }],
+    ["transform-es2015-spread", { "loose": true }],
+    "transform-es2015-block-scoping"
+  ]
 }

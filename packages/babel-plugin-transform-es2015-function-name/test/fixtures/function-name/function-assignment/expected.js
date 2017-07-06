@@ -1,10 +1,13 @@
 var foo;
+
 foo = function foo() {};
 
 var _baz;
+
 _baz = function baz() {
   _baz();
 };
+
 _baz = 12;
 
 bar = function (_bar) {

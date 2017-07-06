@@ -16,7 +16,6 @@ var _binarySerializer = require("./helpers/binary-serializer");
 var _binarySerializer2 = babelHelpers.interopRequireDefault(_binarySerializer);
 
 // import ...
-
 var Connection = function (_EventEmitter) {
   babelHelpers.inherits(Connection, _EventEmitter);
 
@@ -26,9 +25,8 @@ var Connection = function (_EventEmitter) {
     var _this = babelHelpers.possibleConstructorReturn(this, (Connection.__proto__ || Object.getPrototypeOf(Connection)).call(this));
 
     _this.isConnected = false;
-    _this.roomId = roomId;
+    _this.roomId = roomId; // ...
 
-    // ...
     return _this;
   }
 

@@ -14,7 +14,7 @@
 
 const TRACE_ID = "__self";
 
-export default function ({ types: t }) {
+export default function({ types: t }) {
   const visitor = {
     JSXOpeningElement({ node }) {
       const id = t.jSXIdentifier(TRACE_ID);

@@ -70,7 +70,6 @@ const awaitVisitor = {
       path.replaceWithMultiple(build.node);
     }
   },
-
 };
 
 function classOrObjectMethod(path: NodePath, callId: Object) {
@@ -79,12 +78,16 @@ function classOrObjectMethod(path: NodePath, callId: Object) {
 
   node.async = false;
 
-  const container = t.functionExpression(null, [], t.blockStatement(body.body), true);
+  const container = t.functionExpression(
+    null,
+    [],
+    t.blockStatement(body.body),
+    true,
+  );
   body.body = [
-    t.returnStatement(t.callExpression(
-      t.callExpression(callId, [container]),
-      []
-    )),
+    t.returnStatement(
+      t.callExpression(t.callExpression(callId, [container]), []),
+    ),
   ];
 
   // Regardless of whether or not the wrapped function is a an async method
@@ -92,7 +95,9 @@ function classOrObjectMethod(path: NodePath, callId: Object) {
   node.generator = false;
 
   // Unwrap the wrapper IIFE's environment so super and this and such still work.
-  path.get("body.body.0.argument.callee.arguments.0").unwrapFunctionEnvironment();
+  path
+    .get("body.body.0.argument.callee.arguments.0")
+    .unwrapFunctionEnvironment();
 }
 
 function plainFunction(path: NodePath, callId: Object) {
@@ -121,25 +126,29 @@ function plainFunction(path: NodePath, callId: Object) {
     NAME: asyncFnId || null,
     REF: path.scope.generateUidIdentifier("ref"),
     FUNCTION: built,
-    PARAMS: node.params.reduce((acc, param) => {
-      acc.done = acc.done || t.isAssignmentPattern(param) || t.isRestElement(param);
+    PARAMS: node.params.reduce(
+      (acc, param) => {
+        acc.done =
+          acc.done || t.isAssignmentPattern(param) || t.isRestElement(param);
 
-      if (!acc.done) {
-        acc.params.push(path.scope.generateUidIdentifier("x"));
-      }
+        if (!acc.done) {
+          acc.params.push(path.scope.generateUidIdentifier("x"));
+        }
 
-      return acc;
-    }, {
-      params: [],
-      done: false,
-    }).params,
+        return acc;
+      },
+      {
+        params: [],
+        done: false,
+      },
+    ).params,
   }).expression;
 
   if (isDeclaration) {
     const declar = t.variableDeclaration("let", [
       t.variableDeclarator(
         t.identifier(asyncFnId.name),
-        t.callExpression(container, [])
+        t.callExpression(container, []),
       ),
     ]);
     declar._blockHoist = true;
@@ -149,14 +158,12 @@ function plainFunction(path: NodePath, callId: Object) {
       // the identifier into an expressionStatement
       path.parentPath.insertBefore(declar);
       path.parentPath.replaceWith(
-        t.exportNamedDeclaration(null,
-          [
-            t.exportSpecifier(
-              t.identifier(asyncFnId.name),
-              t.identifier("default")
-            ),
-          ]
-        )
+        t.exportNamedDeclaration(null, [
+          t.exportSpecifier(
+            t.identifier(asyncFnId.name),
+            t.identifier("default"),
+          ),
+        ]),
       );
       return;
     }
@@ -182,7 +189,7 @@ function plainFunction(path: NodePath, callId: Object) {
   }
 }
 
-export default function (path: NodePath, file: Object, helpers: Object) {
+export default function(path: NodePath, file: Object, helpers: Object) {
   if (!helpers) {
     // bc for 6.15 and earlier
     helpers = { wrapAsync: file };

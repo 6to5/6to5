@@ -4,21 +4,25 @@ import { parse } from "babylon";
 import * as t from "babel-types";
 import { expect } from "chai";
 
-describe("path/replacement", function () {
-  describe("replaceWith", function () {
+describe("path/replacement", function() {
+  describe("replaceWith", function() {
     it("replaces declaration in ExportDefaultDeclaration node", function() {
-      const ast = parse("export default function() {};", { sourceType: "module" });
+      const ast = parse("export default function() {};", {
+        sourceType: "module",
+      });
       traverse(ast, {
         FunctionDeclaration(path) {
-          path.replaceWith(t.arrayExpression([
-            t.functionExpression(
-              path.node.id,
-              path.node.params,
-              path.node.body,
-              path.node.generator,
-              path.node.async
-            ),
-          ]));
+          path.replaceWith(
+            t.arrayExpression([
+              t.functionExpression(
+                path.node.id,
+                path.node.params,
+                path.node.body,
+                path.node.generator,
+                path.node.async,
+              ),
+            ]),
+          );
         },
       });
 
@@ -33,7 +37,9 @@ describe("path/replacement", function () {
             path.replaceWith(t.identifier("a"));
           },
         });
-      }).to.throw(/You can only replace a Program root node with another Program node/);
+      }).to.throw(
+        /You can only replace a Program root node with another Program node/,
+      );
     });
 
     it("throws error when used with an array of nodes", function() {
@@ -49,12 +55,14 @@ describe("path/replacement", function () {
           },
         });
       }).to.throw(
-        /Don't use `path\.replaceWith\(\)` with an array of nodes, use `path\.replaceWithMultiple\(\)`/
+        /Don't use `path\.replaceWith\(\)` with an array of nodes, use `path\.replaceWithMultiple\(\)`/,
       );
     });
 
     it("throws error when used with source string", function() {
-      const ast = parse("(function() { var x = 3; var y = 17; var c = x + y; })();");
+      const ast = parse(
+        "(function() { var x = 3; var y = 17; var c = x + y; })();",
+      );
       expect(function() {
         traverse(ast, {
           BinaryExpression(path) {
@@ -62,7 +70,7 @@ describe("path/replacement", function () {
           },
         });
       }).to.throw(
-        /Don't use `path\.replaceWith\(\)` with a source string, use `path\.replaceWithSourceString\(\)`/
+        /Don't use `path\.replaceWith\(\)` with a source string, use `path\.replaceWithSourceString\(\)`/,
       );
     });
 
@@ -75,9 +83,7 @@ describe("path/replacement", function () {
             path.replaceWith(t.identifier("p"));
           },
         });
-      }).to.throw(
-        /You can't replace this node, we've already removed it/,
-      );
+      }).to.throw(/You can't replace this node, we've already removed it/);
     });
 
     it("throws error when passed a falsy value", function() {
@@ -92,6 +98,5 @@ describe("path/replacement", function () {
         /You passed `path\.replaceWith\(\)` a falsy node, use `path\.remove\(\)` instead/,
       );
     });
-
   });
 });

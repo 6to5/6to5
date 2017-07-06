@@ -15,25 +15,25 @@ function humanize(val, noext) {
 }
 
 type TestFile = {
-  loc: string;
-  code: string;
-  filename: string;
+  loc: string,
+  code: string,
+  filename: string,
 };
 
 type Test = {
-  title: string;
-  disabled: boolean;
-  options: Object;
-  exec: TestFile;
-  actual: TestFile;
-  expected: TestFile;
+  title: string,
+  disabled: boolean,
+  options: Object,
+  exec: TestFile,
+  actual: TestFile,
+  expected: TestFile,
 };
 
 type Suite = {
-  options: Object;
-  tests: Array<Test>;
-  title: string;
-  filename: string;
+  options: Object,
+  tests: Array<Test>,
+  title: string,
+  filename: string,
 };
 
 function assertDirectory(loc) {
@@ -50,7 +50,9 @@ function shouldIgnore(name, blacklist?: Array<string>) {
   const ext = path.extname(name);
   const base = path.basename(name, ext);
 
-  return name[0] === "." || ext === ".md" || base === "LICENSE" || base === "options";
+  return (
+    name[0] === "." || ext === ".md" || base === "LICENSE" || base === "options"
+  );
 }
 
 export default function get(entryLoc): Array<Suite> {
@@ -133,7 +135,9 @@ export default function get(entryLoc): Array<Suite> {
         const minimumVersion = semver.clean(taskOpts.minNodeVersion);
 
         if (minimumVersion == null) {
-          throw new Error(`'minNodeVersion' has invalid semver format: ${taskOpts.minNodeVersion}`);
+          throw new Error(
+            `'minNodeVersion' has invalid semver format: ${taskOpts.minNodeVersion}`,
+          );
         }
 
         if (semver.lt(nodeVersion, minimumVersion)) {

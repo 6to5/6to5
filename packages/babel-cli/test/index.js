@@ -27,34 +27,39 @@ const pluginLocs = [
   path.join(__dirname, "/../../babel-plugin-transform-es2015-modules-commonjs"),
 ].join(",");
 
-const readDir = function (loc, filter) {
+const readDir = function(loc, filter) {
   const files = {};
   if (fs.existsSync(loc)) {
-    readdir(loc, filter).forEach(function (filename) {
+    readdir(loc, filter).forEach(function(filename) {
       files[filename] = helper.readFile(path.join(loc, filename));
     });
   }
   return files;
 };
 
-const saveInFiles = function (files) {
+const saveInFiles = function(files) {
   // Place an empty .babelrc in each test so tests won't unexpectedly get to repo-level config.
   outputFileSync(".babelrc", "{}");
 
-  Object.keys(files).forEach(function (filename) {
+  Object.keys(files).forEach(function(filename) {
     const content = files[filename];
     outputFileSync(filename, content);
   });
 };
 
-const assertTest = function (stdout, stderr, opts) {
+const assertTest = function(stdout, stderr, opts) {
   const expectStderr = opts.stderr.trim();
   stderr = stderr.trim();
 
   if (opts.stderr) {
     if (opts.stderrContains) {
-      assert.ok(includes(stderr, expectStderr), "stderr " + JSON.stringify(stderr) +
-        " didn't contain " + JSON.stringify(expectStderr));
+      assert.ok(
+        includes(stderr, expectStderr),
+        "stderr " +
+          JSON.stringify(stderr) +
+          " didn't contain " +
+          JSON.stringify(expectStderr),
+      );
     } else {
       chai.expect(stderr).to.equal(expectStderr, "stderr didn't match");
     }
@@ -68,8 +73,13 @@ const assertTest = function (stdout, stderr, opts) {
 
   if (opts.stdout) {
     if (opts.stdoutContains) {
-      assert.ok(includes(stdout, expectStdout), "stdout " + JSON.stringify(stdout) +
-        " didn't contain " + JSON.stringify(expectStdout));
+      assert.ok(
+        includes(stdout, expectStdout),
+        "stdout " +
+          JSON.stringify(stdout) +
+          " didn't contain " +
+          JSON.stringify(expectStdout),
+      );
     } else {
       chai.expect(stdout).to.equal(expectStdout, "stdout didn't match");
     }
@@ -80,30 +90,34 @@ const assertTest = function (stdout, stderr, opts) {
   if (opts.outFiles) {
     const actualFiles = readDir(path.join(tmpLoc));
 
-    Object.keys(actualFiles).forEach(function (filename) {
+    Object.keys(actualFiles).forEach(function(filename) {
       if (!opts.inFiles.hasOwnProperty(filename)) {
         const expect = opts.outFiles[filename];
         const actual = actualFiles[filename];
 
-        chai.expect(expect, "Output is missing: " + filename).to.not.be.undefined;
+        chai.expect(expect, "Output is missing: " + filename).to.not.be
+          .undefined;
 
         if (expect) {
-          chai.expect(actual).to.equal(expect, "Compiled output does not match: " + filename);
+          chai
+            .expect(actual)
+            .to.equal(expect, "Compiled output does not match: " + filename);
         }
       }
     });
 
     Object.keys(opts.outFiles).forEach(function(filename) {
-      chai.expect(actualFiles, "Extraneous file in output: " + filename)
+      chai
+        .expect(actualFiles, "Extraneous file in output: " + filename)
         .to.contain.key(filename);
     });
   }
 };
 
-const buildTest = function (binName, testName, opts) {
+const buildTest = function(binName, testName, opts) {
   const binLoc = path.join(__dirname, "../lib", binName);
 
-  return function (callback) {
+  return function(callback) {
     clear();
     saveInFiles(opts.inFiles);
 
@@ -124,15 +138,15 @@ const buildTest = function (binName, testName, opts) {
     let stderr = "";
     let stdout = "";
 
-    spawn.stderr.on("data", function (chunk) {
+    spawn.stderr.on("data", function(chunk) {
       stderr += chunk;
     });
 
-    spawn.stdout.on("data", function (chunk) {
+    spawn.stdout.on("data", function(chunk) {
       stdout += chunk;
     });
 
-    spawn.on("close", function () {
+    spawn.on("close", function() {
       let err;
 
       try {
@@ -142,7 +156,8 @@ const buildTest = function (binName, testName, opts) {
       }
 
       if (err) {
-        err.message = args.map((arg) => `"${ arg }"`).join(" ") + ": " + err.message;
+        err.message =
+          args.map(arg => `"${arg}"`).join(" ") + ": " + err.message;
       }
 
       callback(err);
@@ -155,19 +170,19 @@ const buildTest = function (binName, testName, opts) {
   };
 };
 
-const clear = function () {
+const clear = function() {
   process.chdir(__dirname);
   if (fs.existsSync(tmpLoc)) rimraf.sync(tmpLoc);
   fs.mkdirSync(tmpLoc);
   process.chdir(tmpLoc);
 };
 
-fs.readdirSync(fixtureLoc).forEach(function (binName) {
+fs.readdirSync(fixtureLoc).forEach(function(binName) {
   if (binName[0] === ".") return;
 
   const suiteLoc = path.join(fixtureLoc, binName);
-  describe("bin/" + binName, function () {
-    fs.readdirSync(suiteLoc).forEach(function (testName) {
+  describe("bin/" + binName, function() {
+    fs.readdirSync(suiteLoc).forEach(function(testName) {
       if (testName[0] === ".") return;
 
       const testLoc = path.join(suiteLoc, testName);
@@ -179,7 +194,7 @@ fs.readdirSync(fixtureLoc).forEach(function (binName) {
       const optionsLoc = path.join(testLoc, "options.json");
       if (fs.existsSync(optionsLoc)) merge(opts, require(optionsLoc));
 
-      ["stdout", "stdin", "stderr"].forEach(function (key) {
+      ["stdout", "stdin", "stderr"].forEach(function(key) {
         const loc = path.join(testLoc, key + ".txt");
         if (fs.existsSync(loc)) {
           opts[key] = helper.readFile(loc);

@@ -1,6 +1,5 @@
 var HelloMessage = React.createClass({
   displayName: "HelloMessage",
-
   render: function () {
     return React.createElement(
       "div",
@@ -10,9 +9,10 @@ var HelloMessage = React.createClass({
     );
   }
 });
-
-React.render(React.createElement(HelloMessage, { name: React.createElement(
+React.render(React.createElement(HelloMessage, {
+  name: React.createElement(
     "span",
     null,
     "Sebastian"
-  ) }), mountNode);
+  )
+}), mountNode);

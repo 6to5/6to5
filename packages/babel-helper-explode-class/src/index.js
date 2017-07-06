@@ -2,7 +2,7 @@ import bindifyDecorators from "babel-helper-bindify-decorators";
 import type { NodePath } from "babel-traverse";
 import * as t from "babel-types";
 
-export default function (classPath) {
+export default function(classPath) {
   classPath.assertClass();
 
   const memoisedExpressions = [];
@@ -44,6 +44,8 @@ export default function (classPath) {
   }
 
   if (memoisedExpressions) {
-    classPath.insertBefore(memoisedExpressions.map((expr) => t.expressionStatement(expr)));
+    classPath.insertBefore(
+      memoisedExpressions.map(expr => t.expressionStatement(expr)),
+    );
   }
 }

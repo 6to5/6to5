@@ -1,10 +1,12 @@
 import * as t from "babel-types";
 
-export default function () {
+export default function() {
   return {
     visitor: {
       Program(path, state) {
-        if (state.opts.strict === false || state.opts.strictMode === false) return;
+        if (state.opts.strict === false || state.opts.strictMode === false) {
+          return;
+        }
 
         const { node } = path;
 
@@ -12,7 +14,10 @@ export default function () {
           if (directive.value.value === "use strict") return;
         }
 
-        path.unshiftContainer("directives", t.directive(t.directiveLiteral("use strict")));
+        path.unshiftContainer(
+          "directives",
+          t.directive(t.directiveLiteral("use strict")),
+        );
       },
     },
   };

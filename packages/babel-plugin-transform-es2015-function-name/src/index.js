@@ -1,6 +1,6 @@
 import nameFunction from "babel-helper-function-name";
 
-export default function () {
+export default function() {
   return {
     visitor: {
       FunctionExpression: {

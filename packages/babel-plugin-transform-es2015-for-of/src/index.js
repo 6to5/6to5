@@ -1,4 +1,9 @@
-export default function ({ messages, template, types: t }) {
+export default function({ messages, template, types: t }) {
+  const isArrayFrom = t.buildMatchMemberExpression("Array.from");
+  const isObjectKeys = t.buildMatchMemberExpression("Object.keys");
+  const isObjectValues = t.buildMatchMemberExpression("Object.values");
+  const isObjectEntries = t.buildMatchMemberExpression("Object.entries");
+
   const buildForOfArray = template(`
     for (var KEY = 0; KEY < ARR.length; KEY++) BODY;
   `);
@@ -52,9 +57,9 @@ export default function ({ messages, template, types: t }) {
 
     if (!t.isIdentifier(right) || !scope.hasBinding(right.name)) {
       const uid = scope.generateUidIdentifier("arr");
-      nodes.push(t.variableDeclaration("var", [
-        t.variableDeclarator(uid, right),
-      ]));
+      nodes.push(
+        t.variableDeclaration("var", [t.variableDeclarator(uid, right)]),
+      );
       right = uid;
     }
 
@@ -76,8 +81,11 @@ export default function ({ messages, template, types: t }) {
       left.declarations[0].init = iterationValue;
       loop.body.body.unshift(left);
     } else {
-      loop.body.body.unshift(t.expressionStatement(
-        t.assignmentExpression("=", left, iterationValue)));
+      loop.body.body.unshift(
+        t.expressionStatement(
+          t.assignmentExpression("=", left, iterationValue),
+        ),
+      );
     }
 
     if (path.parentPath.isLabeledStatement()) {
@@ -89,16 +97,47 @@ export default function ({ messages, template, types: t }) {
     return nodes;
   }
 
+  function replaceWithArray(path) {
+    if (path.parentPath.isLabeledStatement()) {
+      path.parentPath.replaceWithMultiple(_ForOfStatementArray(path));
+      return true;
+    } else {
+      path.replaceWithMultiple(_ForOfStatementArray(path));
+      return true;
+    }
+    return false;
+  }
+
+  function optimize(path, right) {
+    if (right.isArrayExpression() || right.isGenericType("Array")) {
+      return replaceWithArray(path);
+    } else if (right.isIdentifier() && right.isPure()) {
+      const binding = path.scope.getBinding(right.node.name);
+      return optimize(path, binding.path.get("init"));
+    } else if (
+      right.isCallExpression() &&
+      (isArrayFrom(right.get("callee").node) ||
+        isObjectKeys(right.get("callee").node) ||
+        isObjectValues(right.get("callee").node) ||
+        isObjectEntries(right.get("callee").node))
+    ) {
+      const initPath =
+        right === path.get("right") ? path : right.find(p => p.isStatement());
+      const uid = path.scope.generateUidIdentifierBasedOnNode(right.node);
+      initPath.insertBefore(
+        t.variableDeclaration("const", [t.variableDeclarator(uid, right.node)]),
+      );
+      right.replaceWith(uid);
+      return replaceWithArray(path);
+    }
+    return false;
+  }
 
   return {
     visitor: {
       ForOfStatement(path, state) {
-        if (path.get("right").isArrayExpression()) {
-          if (path.parentPath.isLabeledStatement()) {
-            return path.parentPath.replaceWithMultiple(_ForOfStatementArray(path));
-          } else {
-            return path.replaceWithMultiple(_ForOfStatementArray(path));
-          }
+        if (optimize(path, path.get("right"))) {
+          return;
         }
 
         let callback = spec;
@@ -139,7 +178,11 @@ export default function ({ messages, template, types: t }) {
     const { left } = node;
     let declar, id;
 
-    if (t.isIdentifier(left) || t.isPattern(left) || t.isMemberExpression(left)) {
+    if (
+      t.isIdentifier(left) ||
+      t.isPattern(left) ||
+      t.isMemberExpression(left)
+    ) {
       // for (i of test), for ({ i } of test)
       id = left;
     } else if (t.isVariableDeclaration(left)) {
@@ -149,7 +192,10 @@ export default function ({ messages, template, types: t }) {
         t.variableDeclarator(left.declarations[0].id, id),
       ]);
     } else {
-      throw file.buildCodeFrameError(left, messages.get("unknownForHead", left.type));
+      throw file.buildCodeFrameError(
+        left,
+        messages.get("unknownForHead", left.type),
+      );
     }
 
     const iteratorKey = scope.generateUidIdentifier("iterator");
@@ -193,16 +239,25 @@ export default function ({ messages, template, types: t }) {
     const stepKey = scope.generateUidIdentifier("step");
     const stepValue = t.memberExpression(stepKey, t.identifier("value"));
 
-    if (t.isIdentifier(left) || t.isPattern(left) || t.isMemberExpression(left)) {
+    if (
+      t.isIdentifier(left) ||
+      t.isPattern(left) ||
+      t.isMemberExpression(left)
+    ) {
       // for (i of test), for ({ i } of test)
-      declar = t.expressionStatement(t.assignmentExpression("=", left, stepValue));
+      declar = t.expressionStatement(
+        t.assignmentExpression("=", left, stepValue),
+      );
     } else if (t.isVariableDeclaration(left)) {
       // for (let i of test)
       declar = t.variableDeclaration(left.kind, [
         t.variableDeclarator(left.declarations[0].id, stepValue),
       ]);
     } else {
-      throw file.buildCodeFrameError(left, messages.get("unknownForHead", left.type));
+      throw file.buildCodeFrameError(
+        left,
+        messages.get("unknownForHead", left.type),
+      );
     }
 
     //
@@ -211,7 +266,9 @@ export default function ({ messages, template, types: t }) {
 
     const template = buildForOf({
       ITERATOR_HAD_ERROR_KEY: scope.generateUidIdentifier("didIteratorError"),
-      ITERATOR_COMPLETION: scope.generateUidIdentifier("iteratorNormalCompletion"),
+      ITERATOR_COMPLETION: scope.generateUidIdentifier(
+        "iteratorNormalCompletion",
+      ),
       ITERATOR_ERROR_KEY: scope.generateUidIdentifier("iteratorError"),
       ITERATOR_KEY: iteratorKey,
       STEP_KEY: stepKey,

@@ -1,4 +1,4 @@
-export default function ({ types: t }) {
+export default function({ types: t }) {
   function hasRefOrSpread(attrs) {
     for (let i = 0; i < attrs.length; i++) {
       const attr = attrs[i];
@@ -9,7 +9,9 @@ export default function ({ types: t }) {
   }
 
   function isJSXAttributeOfName(attr, name) {
-    return t.isJSXAttribute(attr) && t.isJSXIdentifier(attr.name, { name: name });
+    return (
+      t.isJSXAttribute(attr) && t.isJSXIdentifier(attr.name, { name: name })
+    );
   }
 
   function getAttributeValue(attr) {
@@ -47,7 +49,9 @@ export default function ({ types: t }) {
             key = getAttributeValue(attr);
           } else {
             const name = attr.name.name;
-            const propertyKey = t.isValidIdentifier(name) ? t.identifier(name) : t.stringLiteral(name);
+            const propertyKey = t.isValidIdentifier(name)
+              ? t.identifier(name)
+              : t.stringLiteral(name);
             pushProp(props.properties, propertyKey, getAttributeValue(attr));
           }
         }
@@ -57,7 +61,7 @@ export default function ({ types: t }) {
           const children = t.react.buildChildren(node);
           args.push(
             key || t.unaryExpression("void", t.numericLiteral(0), true),
-            ...children
+            ...children,
           );
         }
 

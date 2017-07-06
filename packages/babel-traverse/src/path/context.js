@@ -28,7 +28,9 @@ export function _call(fns?: Array<Function>): boolean {
     if (!node) return true;
 
     const ret = fn.call(this.state, this, this.state);
-    if (ret) throw new Error(`Unexpected return value from visitor method ${fn}`);
+    if (ret) {
+      throw new Error(`Unexpected return value from visitor method ${fn}`);
+    }
 
     // node has been replaced, it will have been requeued
     if (this.node !== node) return true;
@@ -63,7 +65,14 @@ export function visit(): boolean {
   }
 
   this.debug(() => "Recursing into...");
-  traverse.node(this.node, this.opts, this.scope, this.state, this, this.skipKeys);
+  traverse.node(
+    this.node,
+    this.opts,
+    this.scope,
+    this.state,
+    this,
+    this.skipKeys,
+  );
 
   this.call("exit");
 
@@ -177,7 +186,11 @@ export function _resyncList() {
 }
 
 export function _resyncRemoved() {
-  if (this.key == null || !this.container || this.container[this.key] !== this.node) {
+  if (
+    this.key == null ||
+    !this.container ||
+    this.container[this.key] !== this.node
+  ) {
     this._markRemoved();
   }
 }

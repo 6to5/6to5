@@ -4,8 +4,10 @@ function one() {
   var inner = function () {
     return _arguments;
   };
+
   return [].slice.call(inner());
 }
+
 one(1, 2);
 
 function two() {
@@ -25,6 +27,7 @@ function two() {
 
   return [].slice.call(inner());
 }
+
 two(1, 2);
 
 function three() {
@@ -33,8 +36,10 @@ function three() {
   var fn = function () {
     return _arguments4[0] + "bar";
   };
+
   return fn();
 }
+
 three("foo");
 
 function four() {
@@ -43,25 +48,36 @@ function four() {
   var fn = function () {
     return _arguments5[0].foo + "bar";
   };
+
   return fn();
 }
-four({ foo: "foo" });
+
+four({
+  foo: "foo"
+});
 
 function five(obj) {
   var fn = function () {
     return obj.arguments[0].foo + "bar";
   };
+
   return fn();
 }
-five({ arguments: ["foo"] });
+
+five({
+  arguments: ["foo"]
+});
 
 function six(obj) {
   var fn = function () {
     var fn2 = function () {
       return arguments[0];
     };
+
     return fn2("foobar");
   };
+
   return fn();
 }
+
 six();

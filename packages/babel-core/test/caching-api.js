@@ -27,7 +27,6 @@ describe("caching API", () => {
       return { arg, count: count++ };
     });
 
-
     assert.deepEqual(fn("one"), { arg: "one", count: 0 });
     assert.equal(fn("one"), fn("one"));
 
@@ -210,48 +209,97 @@ describe("caching API", () => {
       return { arg, val, val2, count: count++ };
     });
 
-    assert.deepEqual(fn("one"), { arg: "one", val: "default", val2: "another", count: 0 });
+    assert.deepEqual(fn("one"), {
+      arg: "one",
+      val: "default",
+      val2: "another",
+      count: 0,
+    });
     assert.equal(fn("one"), fn("one"));
 
-    assert.deepEqual(fn("two"), { arg: "two", val: "default", val2: "another", count: 1 });
+    assert.deepEqual(fn("two"), {
+      arg: "two",
+      val: "default",
+      val2: "another",
+      count: 1,
+    });
     assert.equal(fn("two"), fn("two"));
 
     other = "new";
 
-    assert.deepEqual(fn("one"), { arg: "one", val: "new", val2: "another", count: 2 });
+    assert.deepEqual(fn("one"), {
+      arg: "one",
+      val: "new",
+      val2: "another",
+      count: 2,
+    });
     assert.equal(fn("one"), fn("one"));
 
-    assert.deepEqual(fn("two"), { arg: "two", val: "new", val2: "another", count: 3 });
+    assert.deepEqual(fn("two"), {
+      arg: "two",
+      val: "new",
+      val2: "another",
+      count: 3,
+    });
     assert.equal(fn("two"), fn("two"));
 
     other = "default";
 
-    assert.deepEqual(fn("one"), { arg: "one", val: "default", val2: "another", count: 4 });
+    assert.deepEqual(fn("one"), {
+      arg: "one",
+      val: "default",
+      val2: "another",
+      count: 4,
+    });
     assert.equal(fn("one"), fn("one"));
 
-    assert.deepEqual(fn("two"), { arg: "two", val: "default", val2: "another", count: 5 });
+    assert.deepEqual(fn("two"), {
+      arg: "two",
+      val: "default",
+      val2: "another",
+      count: 5,
+    });
     assert.equal(fn("two"), fn("two"));
 
     other = "new";
 
-    assert.deepEqual(fn("one"), { arg: "one", val: "new", val2: "another", count: 6 });
+    assert.deepEqual(fn("one"), {
+      arg: "one",
+      val: "new",
+      val2: "another",
+      count: 6,
+    });
     assert.equal(fn("one"), fn("one"));
 
-    assert.deepEqual(fn("two"), { arg: "two", val: "new", val2: "another", count: 7 });
+    assert.deepEqual(fn("two"), {
+      arg: "two",
+      val: "new",
+      val2: "another",
+      count: 7,
+    });
     assert.equal(fn("two"), fn("two"));
 
     another = "second";
 
-    assert.deepEqual(fn("one"), { arg: "one", val: "new", val2: "second", count: 8 });
+    assert.deepEqual(fn("one"), {
+      arg: "one",
+      val: "new",
+      val2: "second",
+      count: 8,
+    });
     assert.equal(fn("one"), fn("one"));
 
-    assert.deepEqual(fn("two"), { arg: "two", val: "new", val2: "second", count: 9 });
+    assert.deepEqual(fn("two"), {
+      arg: "two",
+      val: "new",
+      val2: "second",
+      count: 9,
+    });
     assert.equal(fn("two"), fn("two"));
-
   });
 
   it("should throw if caching is never configured and not defaulting", () => {
-    const fn = makeStrongCache(() => { }, false /* autoPermacache */);
+    const fn = makeStrongCache(() => {}, false /* autoPermacache */);
 
     assert.throws(() => fn(), /Error: Caching was left unconfigured./);
   });
@@ -259,7 +307,7 @@ describe("caching API", () => {
   it("should auto-permacache by default", () => {
     let count = 0;
 
-    const fn = makeStrongCache((arg) => ({ arg, count: count++ }));
+    const fn = makeStrongCache(arg => ({ arg, count: count++ }));
 
     assert.deepEqual(fn("one"), { arg: "one", count: 0 });
     assert.equal(fn("one"), fn("one"));
@@ -333,7 +381,10 @@ describe("caching API", () => {
   it("should throw if you configure .forever after exiting", () => {
     const fn = makeStrongCache((arg, cache) => cache);
 
-    assert.throws(() => fn().forever(), /Cannot change caching after evaluation/);
+    assert.throws(
+      () => fn().forever(),
+      /Cannot change caching after evaluation/,
+    );
   });
 
   it("should throw if you configure .never after exiting", () => {
@@ -345,12 +396,18 @@ describe("caching API", () => {
   it("should throw if you configure .using after exiting", () => {
     const fn = makeStrongCache((arg, cache) => cache);
 
-    assert.throws(() => fn().using(() => null), /Cannot change caching after evaluation/);
+    assert.throws(
+      () => fn().using(() => null),
+      /Cannot change caching after evaluation/,
+    );
   });
 
   it("should throw if you configure .invalidate after exiting", () => {
     const fn = makeStrongCache((arg, cache) => cache);
 
-    assert.throws(() => fn().invalidate(() => null), /Cannot change caching after evaluation/);
+    assert.throws(
+      () => fn().invalidate(() => null),
+      /Cannot change caching after evaluation/,
+    );
   });
 });

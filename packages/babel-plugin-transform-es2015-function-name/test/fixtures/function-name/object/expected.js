@@ -4,7 +4,6 @@ var obj = {
       console.log(f);
     })();
   },
-
   h: function (_h) {
     function h() {
       return _h.apply(this, arguments);
@@ -18,7 +17,6 @@ var obj = {
   }(function () {
     console.log(h);
   }),
-
   m: function m() {
     doSmth();
   }

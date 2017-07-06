@@ -1,1 +1,3 @@
-React.createElement(Foo, { ref: "bar" });
+React.createElement(Foo, {
+  ref: "bar"
+});

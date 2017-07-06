@@ -12,11 +12,13 @@ function somethingAdvanced(_ref, p2, p3) {
 function unpackObject(_ref2) {
   var title = _ref2.title,
       author = _ref2.author;
-
   return title + " " + author;
 }
 
-console.log(unpackObject({ title: "title", author: "author" }));
+console.log(unpackObject({
+  title: "title",
+  author: "author"
+}));
 
 var unpackArray = function (_ref3, _ref4) {
   var _ref6 = babelHelpers.slicedToArray(_ref3, 3),

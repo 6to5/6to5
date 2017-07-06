@@ -90,11 +90,11 @@ function getTokenType(match) {
  */
 
 function highlight(defs: Object, text: string) {
-  return text.replace(jsTokens, function (...args) {
+  return text.replace(jsTokens, function(...args) {
     const type = getTokenType(args);
     const colorize = defs[type];
     if (colorize) {
-      return args[0].split(NEWLINE).map((str) => colorize(str)).join("\n");
+      return args[0].split(NEWLINE).map(str => colorize(str)).join("\n");
     } else {
       return args[0];
     }
@@ -106,9 +106,15 @@ function highlight(defs: Object, text: string) {
  */
 
 function getMarkerLines(
-  loc: NodeLocation, source: Array<string>, opts: Object
+  loc: NodeLocation,
+  source: Array<string>,
+  opts: Object,
 ): { start: number, end: number, markerLines: Object } {
-  const startLoc: Location = Object.assign({}, { column: 0, line: -1 }, loc.start);
+  const startLoc: Location = Object.assign(
+    {},
+    { column: 0, line: -1 },
+    loc.start,
+  );
   const endLoc: Location = Object.assign({}, startLoc, loc.end);
   const linesAbove = opts.linesAbove || 2;
   const linesBelow = opts.linesBelow || 3;
@@ -165,12 +171,13 @@ function getMarkerLines(
   return { start, end, markerLines };
 }
 
-export function codeFrameColumns (
+export function codeFrameColumns(
   rawLines: string,
   loc: NodeLocation,
   opts: Object = {},
 ): string {
-  const highlighted = (opts.highlightCode && Chalk.supportsColor) || opts.forceColor;
+  const highlighted =
+    (opts.highlightCode && Chalk.supportsColor) || opts.forceColor;
   let chalk = Chalk;
   if (opts.forceColor) {
     chalk = new Chalk.constructor({ enabled: true });
@@ -186,34 +193,39 @@ export function codeFrameColumns (
 
   const numberMaxWidth = String(end).length;
 
-  const frame = lines.slice(start, end).map((line, index) => {
-    const number = start + 1 + index;
-    const paddedNumber = ` ${number}`.slice(-numberMaxWidth);
-    const gutter = ` ${paddedNumber} | `;
-    const hasMarker = markerLines[number];
-    if (hasMarker) {
-      let markerLine = "";
-      if (Array.isArray(hasMarker)) {
-        const markerSpacing = line.slice(0, Math.max(hasMarker[0] - 1, 0)).replace(/[^\t]/g, " ");
-        const numberOfMarkers = hasMarker[1] || 1;
+  const frame = lines
+    .slice(start, end)
+    .map((line, index) => {
+      const number = start + 1 + index;
+      const paddedNumber = ` ${number}`.slice(-numberMaxWidth);
+      const gutter = ` ${paddedNumber} | `;
+      const hasMarker = markerLines[number];
+      if (hasMarker) {
+        let markerLine = "";
+        if (Array.isArray(hasMarker)) {
+          const markerSpacing = line
+            .slice(0, Math.max(hasMarker[0] - 1, 0))
+            .replace(/[^\t]/g, " ");
+          const numberOfMarkers = hasMarker[1] || 1;
 
-        markerLine = [
-          "\n ",
-          maybeHighlight(defs.gutter, gutter.replace(/\d/g, " ")),
-          markerSpacing,
-          maybeHighlight(defs.marker, "^").repeat(numberOfMarkers),
+          markerLine = [
+            "\n ",
+            maybeHighlight(defs.gutter, gutter.replace(/\d/g, " ")),
+            markerSpacing,
+            maybeHighlight(defs.marker, "^").repeat(numberOfMarkers),
+          ].join("");
+        }
+        return [
+          maybeHighlight(defs.marker, ">"),
+          maybeHighlight(defs.gutter, gutter),
+          line,
+          markerLine,
         ].join("");
+      } else {
+        return ` ${maybeHighlight(defs.gutter, gutter)}${line}`;
       }
-      return [
-        maybeHighlight(defs.marker, ">"),
-        maybeHighlight(defs.gutter, gutter),
-        line,
-        markerLine,
-      ].join("");
-    } else {
-      return ` ${maybeHighlight(defs.gutter, gutter)}${line}`;
-    }
-  }).join("\n");
+    })
+    .join("\n");
 
   if (highlighted) {
     return chalk.reset(frame);
@@ -226,7 +238,7 @@ export function codeFrameColumns (
  * Create a code frame, adding line numbers, code highlighting, and pointing to a given position.
  */
 
-export default function (
+export default function(
   rawLines: string,
   lineNumber: number,
   colNumber: ?number,
@@ -236,7 +248,7 @@ export default function (
     deprecationWarningShown = true;
 
     const deprecationError = new Error(
-      "Passing lineNumber and colNumber is deprecated to babel-code-frame. Please use `codeFrameColumns`."
+      "Passing lineNumber and colNumber is deprecated to babel-code-frame. Please use `codeFrameColumns`.",
     );
     deprecationError.name = "DeprecationWarning";
 
@@ -249,7 +261,9 @@ export default function (
 
   colNumber = Math.max(colNumber, 0);
 
-  const location: NodeLocation = { start: { column: colNumber, line: lineNumber } };
+  const location: NodeLocation = {
+    start: { column: colNumber, line: lineNumber },
+  };
 
   return codeFrameColumns(rawLines, location, opts);
 }

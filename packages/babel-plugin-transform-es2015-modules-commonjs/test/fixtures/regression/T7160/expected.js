@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
 var foo = exports.foo = function foo(gen) {
   var ctx = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 };

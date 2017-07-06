@@ -1,0 +1,3 @@
+{
+  "throws": "'super.*' is not allowed before super()"
+}

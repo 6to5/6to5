@@ -1,4 +1,5 @@
 /*:: export type GraphQLFormattedError = number;*/
+
 /*:: export type GraphQLFormattedError = {
   message: string,
   locations?: Array<{
@@ -6,5 +7,7 @@
     column: number
   }>
 };*/
+
 /*:: export interface foo { p: number }*/
+
 /*:: export interface foo<T> { p: T }*/

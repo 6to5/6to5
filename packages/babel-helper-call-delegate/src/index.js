@@ -18,15 +18,21 @@ const visitor = {
   },
 };
 
-export default function (path: NodePath, scope = path.scope) {
+export default function(path: NodePath, scope = path.scope) {
   const { node } = path;
-  const container = t.functionExpression(null, [], node.body, node.generator, node.async);
+  const container = t.functionExpression(
+    null,
+    [],
+    node.body,
+    node.generator,
+    node.async,
+  );
 
   let callee = container;
   let args = [];
 
   // todo: only hoist if necessary
-  hoistVariables(path, (id) => scope.push({ id }));
+  hoistVariables(path, id => scope.push({ id }));
 
   const state = {
     foundThis: false,

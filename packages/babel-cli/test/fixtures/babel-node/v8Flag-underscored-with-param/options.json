@@ -1,4 +1,4 @@
 {
-  "args": ["--expose_debug_as=customDebug", "--eval", "console.log(customDebug.Debug.DebugEvent.Break)"],
-  "stdout": "1"
+  "args": ["--expose_gc_as=garbageCollector", "--eval", "console.log(typeof global.garbageCollector)"],
+  "stdout": "function"
 }

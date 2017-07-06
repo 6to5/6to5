@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
 function _default() {
   return function () {
     function Select() {
@@ -16,4 +17,5 @@ function _default() {
     return Select;
   }();
 }
+
 exports.default = _default;

@@ -4,7 +4,9 @@ foo.func1 = function () {
       if (cond2) {
         var _ret = function () {
           function func2() {}
+
           function func3() {}
+
           func4(function () {
             func2();
           });

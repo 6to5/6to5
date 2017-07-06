@@ -6,7 +6,10 @@ import * as babel from "babel-core";
 import findCacheDir from "find-cache-dir";
 
 const DEFAULT_CACHE_DIR = findCacheDir({ name: "babel-register" }) || homeOrTmp;
-const DEFAULT_FILENAME = path.join(DEFAULT_CACHE_DIR, `.babel.${babel.version}.${babel.getEnv()}.json`);
+const DEFAULT_FILENAME = path.join(
+  DEFAULT_CACHE_DIR,
+  `.babel.${babel.version}.${babel.getEnv()}.json`,
+);
 const FILENAME: string = process.env.BABEL_CACHE_PATH || DEFAULT_FILENAME;
 let data: Object = {};
 
@@ -20,7 +23,6 @@ export function save() {
   try {
     serialised = JSON.stringify(data, null, "  ");
   } catch (err) {
-
     if (err.message === "Invalid string length") {
       err.message = "Cache too large so it's been cleared.";
       console.error(err.stack);

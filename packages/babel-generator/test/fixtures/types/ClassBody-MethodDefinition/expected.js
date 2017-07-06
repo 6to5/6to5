@@ -1,15 +1,24 @@
 class Foo {
   async foo() {}
+
   foo() {}
+
   ["foo"]() {}
+
   get foo() {}
+
   set foo(bar) {}
 
   static async foo() {}
+
   static foo() {}
+
   static ["foo"]() {}
+
   static get foo() {}
+
   static set foo(bar) {}
+
   static static() {}
 
   get() {}
@@ -33,4 +42,5 @@ class Foo {
   get async() {}
 
   static get static() {}
+
 }

@@ -39,17 +39,17 @@ traverse.NodePath = require("./path");
 traverse.Scope = require("./scope");
 traverse.Hub = require("./hub");
 
-traverse.cheap = function (node, enter) {
+traverse.cheap = function(node, enter) {
   return t.traverseFast(node, enter);
 };
 
-traverse.node = function (
+traverse.node = function(
   node: Object,
   opts: Object,
   scope: Object,
   state: Object,
   parentPath: Object,
-  skipKeys?
+  skipKeys?,
 ) {
   const keys: Array = t.VISITOR_KEYS[node.type];
   if (!keys) return;
@@ -61,13 +61,13 @@ traverse.node = function (
   }
 };
 
-traverse.clearNode = function (node, opts) {
+traverse.clearNode = function(node, opts) {
   t.removeProperties(node, opts);
 
   cache.path.delete(node);
 };
 
-traverse.removeProperties = function (tree, opts) {
+traverse.removeProperties = function(tree, opts) {
   t.traverseFast(tree, traverse.clearNode, opts);
   return tree;
 };
@@ -79,11 +79,11 @@ function hasBlacklistedType(path, state) {
   }
 }
 
-traverse.hasType = function (
+traverse.hasType = function(
   tree: Object,
   scope: Object,
   type: Object,
-  blacklistTypes: Array<string>
+  blacklistTypes: Array<string>,
 ): boolean {
   // the node we're searching in is blacklisted
   if (includes(blacklistTypes, tree.type)) return false;
@@ -96,10 +96,15 @@ traverse.hasType = function (
     type: type,
   };
 
-  traverse(tree, {
-    blacklist: blacklistTypes,
-    enter: hasBlacklistedType,
-  }, scope, state);
+  traverse(
+    tree,
+    {
+      blacklist: blacklistTypes,
+      enter: hasBlacklistedType,
+    },
+    scope,
+    state,
+  );
 
   return state.has;
 };

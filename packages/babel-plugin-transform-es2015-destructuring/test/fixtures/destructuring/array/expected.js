@@ -6,5 +6,4 @@ a = "hello";
 var _ref2 = [", ", "junk"];
 b = _ref2[0];
 c = "world";
-
 ;

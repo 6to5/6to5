@@ -51,7 +51,7 @@ const lines = [];
 for (const type in t.NODE_FIELDS) {
   const fields = t.NODE_FIELDS[type];
 
-  const struct = ["type: \"" + type + "\";"];
+  const struct = ['type: "' + type + '";'];
   const args = [];
 
   for (const fieldName in fields) {
@@ -65,9 +65,11 @@ for (const type in t.NODE_FIELDS) {
     const validate = field.validate;
     if (validate) {
       if (validate.oneOf) {
-        typeAnnotation = validate.oneOf.map(function (val) {
-          return JSON.stringify(val);
-        }).join(" | ");
+        typeAnnotation = validate.oneOf
+          .map(function(val) {
+            return JSON.stringify(val);
+          })
+          .join(" | ");
       }
 
       if (validate.type) {
@@ -79,7 +81,9 @@ for (const type in t.NODE_FIELDS) {
       }
 
       if (validate.oneOfNodeTypes) {
-        const types = validate.oneOfNodeTypes.map((type) => `${NODE_PREFIX}${type}`);
+        const types = validate.oneOfNodeTypes.map(
+          type => `${NODE_PREFIX}${type}`
+        );
         typeAnnotation = types.join(" | ");
         if (suffix === "?") typeAnnotation = "?" + typeAnnotation;
       }
@@ -101,18 +105,24 @@ for (const type in t.NODE_FIELDS) {
   // Flow chokes on super() :/
   if (type !== "Super") {
     lines.push(
-      `declare function ${type[0].toLowerCase() + type.slice(1)}(${args.join(", ")}): ${NODE_PREFIX}${type};`
+      `declare function ${type[0].toLowerCase() + type.slice(1)}(${args.join(
+        ", "
+      )}): ${NODE_PREFIX}${type};`
     );
   }
 }
 
 for (let i = 0; i < t.TYPES.length; i++) {
-  lines.push(`declare function is${t.TYPES[i]}(node: Object, opts?: Object): boolean;`);
+  lines.push(
+    `declare function is${t.TYPES[i]}(node: Object, opts?: Object): boolean;`
+  );
 }
 
 for (const type in t.FLIPPED_ALIAS_KEYS) {
   const types = t.FLIPPED_ALIAS_KEYS[type];
-  code += `type ${NODE_PREFIX}${type} = ${types.map((type) => `${NODE_PREFIX}${type}`).join(" | ")};\n`;
+  code += `type ${NODE_PREFIX}${type} = ${types
+    .map(type => `${NODE_PREFIX}${type}`)
+    .join(" | ")};\n`;
 }
 
 code += `\ndeclare module "babel-types" {

@@ -7,9 +7,9 @@ function r() {
   }
 
   return rest;
-}
+} // multiple references
 
-// multiple references
+
 function r() {
   if (noNeedToWork) return 0;
 
@@ -19,9 +19,9 @@ function r() {
 
   rest;
   rest;
-}
+} // multiple nested references
 
-// multiple nested references
+
 function r() {
   if (noNeedToWork) return 0;
 
@@ -34,9 +34,9 @@ function r() {
   } else {
     return rest;
   }
-}
+} // deeply nested
 
-// deeply nested
+
 function r() {
   if (true) {
     for (var _len4 = arguments.length, rest = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
@@ -49,9 +49,9 @@ function r() {
       return rest;
     }
   }
-}
+} // nested reference with root reference
 
-// nested reference with root reference
+
 function r() {
   if (noNeedToWork) return 0;
 
@@ -61,9 +61,9 @@ function r() {
 
   if (lol) rest;
   rest;
-}
+} // nested functions
 
-// nested functions
+
 function a() {
   for (var _len6 = arguments.length, args = Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
     args[_key6] = arguments[_key6];
@@ -74,9 +74,9 @@ function a() {
 
     console.log("Shouldn't args be from a's scope?", args);
   };
-}
+} // loop
 
-// loop
+
 function runQueue(queue) {
   for (var _len7 = arguments.length, args = Array(_len7 > 1 ? _len7 - 1 : 0), _key7 = 1; _key7 < _len7; _key7++) {
     args[_key7 - 1] = arguments[_key7];
@@ -85,9 +85,9 @@ function runQueue(queue) {
   for (var i = 0; i < queue.length; i++) {
     queue[i].apply(queue, args);
   }
-}
+} // nested loop
 
-// nested loop
+
 function runQueue(queue) {
   if (foo) {
     for (var _len8 = arguments.length, args = Array(_len8 > 1 ? _len8 - 1 : 0), _key8 = 1; _key8 < _len8; _key8++) {
@@ -112,6 +112,5 @@ function r() {
   var _x2 = babelHelpers.slicedToArray(_x, 1);
 
   rest[0] = _x2[0];
-
   return rest;
 }

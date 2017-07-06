@@ -1,5 +1,4 @@
 // #1649
-
 var Foo = function () {
   function Foo() {
     babelHelpers.classCallCheck(this, Foo);

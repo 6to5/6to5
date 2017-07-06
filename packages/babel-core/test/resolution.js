@@ -2,7 +2,7 @@ import assert from "assert";
 import * as babel from "../lib/index";
 import path from "path";
 
-describe("addon resolution", function () {
+describe("addon resolution", function() {
   const base = path.join(__dirname, "fixtures", "resolution");
 
   beforeEach(function() {
@@ -20,9 +20,7 @@ describe("addon resolution", function () {
     babel.transform("", {
       filename: "filename.js",
       babelrc: false,
-      presets: [
-        "module:preset",
-      ],
+      presets: ["module:preset"],
     });
   });
 
@@ -32,9 +30,7 @@ describe("addon resolution", function () {
     babel.transform("", {
       filename: "filename.js",
       babelrc: false,
-      plugins: [
-        "module:plugin",
-      ],
+      plugins: ["module:plugin"],
     });
   });
 
@@ -44,9 +40,7 @@ describe("addon resolution", function () {
     babel.transform("", {
       filename: "filename.js",
       babelrc: false,
-      presets: [
-        "mod",
-      ],
+      presets: ["mod"],
     });
   });
 
@@ -56,9 +50,7 @@ describe("addon resolution", function () {
     babel.transform("", {
       filename: "filename.js",
       babelrc: false,
-      plugins: [
-        "mod",
-      ],
+      plugins: ["mod"],
     });
   });
 
@@ -68,9 +60,7 @@ describe("addon resolution", function () {
     babel.transform("", {
       filename: "filename.js",
       babelrc: false,
-      presets: [
-        "babel-preset-mod",
-      ],
+      presets: ["babel-preset-mod"],
     });
   });
 
@@ -80,9 +70,7 @@ describe("addon resolution", function () {
     babel.transform("", {
       filename: "filename.js",
       babelrc: false,
-      plugins: [
-        "babel-plugin-mod",
-      ],
+      plugins: ["babel-plugin-mod"],
     });
   });
 
@@ -92,9 +80,7 @@ describe("addon resolution", function () {
     babel.transform("", {
       filename: "filename.js",
       babelrc: false,
-      presets: [
-        "@babel/foo",
-      ],
+      presets: ["@babel/foo"],
     });
   });
 
@@ -104,9 +90,7 @@ describe("addon resolution", function () {
     babel.transform("", {
       filename: "filename.js",
       babelrc: false,
-      plugins: [
-        "@babel/foo",
-      ],
+      plugins: ["@babel/foo"],
     });
   });
 
@@ -116,9 +100,7 @@ describe("addon resolution", function () {
     babel.transform("", {
       filename: "filename.js",
       babelrc: false,
-      presets: [
-        "@babel/preset-foo",
-      ],
+      presets: ["@babel/preset-foo"],
     });
   });
 
@@ -128,9 +110,7 @@ describe("addon resolution", function () {
     babel.transform("", {
       filename: "filename.js",
       babelrc: false,
-      plugins: [
-        "@babel/plugin-foo",
-      ],
+      plugins: ["@babel/plugin-foo"],
     });
   });
 
@@ -140,9 +120,7 @@ describe("addon resolution", function () {
     babel.transform("", {
       filename: "filename.js",
       babelrc: false,
-      presets: [
-        "@foo/mod",
-      ],
+      presets: ["@foo/mod"],
     });
   });
 
@@ -152,9 +130,7 @@ describe("addon resolution", function () {
     babel.transform("", {
       filename: "filename.js",
       babelrc: false,
-      plugins: [
-        "@foo/mod",
-      ],
+      plugins: ["@foo/mod"],
     });
   });
 
@@ -164,9 +140,7 @@ describe("addon resolution", function () {
     babel.transform("", {
       filename: "filename.js",
       babelrc: false,
-      presets: [
-        "@foo/babel-preset-mod",
-      ],
+      presets: ["@foo/babel-preset-mod"],
     });
   });
 
@@ -176,9 +150,7 @@ describe("addon resolution", function () {
     babel.transform("", {
       filename: "filename.js",
       babelrc: false,
-      plugins: [
-        "@foo/babel-plugin-mod",
-      ],
+      plugins: ["@foo/babel-plugin-mod"],
     });
   });
 
@@ -188,9 +160,7 @@ describe("addon resolution", function () {
     babel.transform("", {
       filename: "filename.js",
       babelrc: false,
-      presets: [
-        "./dir/preset.js",
-      ],
+      presets: ["./dir/preset.js"],
     });
   });
 
@@ -200,9 +170,7 @@ describe("addon resolution", function () {
     babel.transform("", {
       filename: "filename.js",
       babelrc: false,
-      plugins: [
-        "./dir/plugin.js",
-      ],
+      plugins: ["./dir/plugin.js"],
     });
   });
 
@@ -212,9 +180,7 @@ describe("addon resolution", function () {
     babel.transform("", {
       filename: "filename.js",
       babelrc: false,
-      presets: [
-        "mod/preset",
-      ],
+      presets: ["mod/preset"],
     });
   });
 
@@ -224,9 +190,7 @@ describe("addon resolution", function () {
     babel.transform("", {
       filename: "filename.js",
       babelrc: false,
-      plugins: [
-        "mod/plugin",
-      ],
+      plugins: ["mod/plugin"],
     });
   });
 
@@ -236,9 +200,7 @@ describe("addon resolution", function () {
     babel.transform("", {
       filename: "filename.js",
       babelrc: false,
-      presets: [
-        "@foo/mod/preset",
-      ],
+      presets: ["@foo/mod/preset"],
     });
   });
 
@@ -248,9 +210,7 @@ describe("addon resolution", function () {
     babel.transform("", {
       filename: "filename.js",
       babelrc: false,
-      plugins: [
-        "@foo/mod/plugin",
-      ],
+      plugins: ["@foo/mod/plugin"],
     });
   });
 
@@ -260,9 +220,7 @@ describe("addon resolution", function () {
     babel.transform("", {
       filename: "filename.js",
       babelrc: false,
-      presets: [
-        "@babel/mod/preset",
-      ],
+      presets: ["@babel/mod/preset"],
     });
   });
 
@@ -272,9 +230,7 @@ describe("addon resolution", function () {
     babel.transform("", {
       filename: "filename.js",
       babelrc: false,
-      plugins: [
-        "@babel/mod/plugin",
-      ],
+      plugins: ["@babel/mod/plugin"],
     });
   });
 
@@ -285,9 +241,7 @@ describe("addon resolution", function () {
       babel.transform("", {
         filename: "filename.js",
         babelrc: false,
-        presets: [
-          "foo",
-        ],
+        presets: ["foo"],
       });
       // eslint-disable-next-line max-len
     }, /Cannot find module 'babel-preset-foo'.*\n- If you want to resolve "foo", use "module:foo"/);
@@ -300,9 +254,7 @@ describe("addon resolution", function () {
       babel.transform("", {
         filename: "filename.js",
         babelrc: false,
-        plugins: [
-          "foo",
-        ],
+        plugins: ["foo"],
       });
       // eslint-disable-next-line max-len
     }, /Cannot find module 'babel-plugin-foo'.*\n- If you want to resolve "foo", use "module:foo"/);
@@ -315,9 +267,7 @@ describe("addon resolution", function () {
       babel.transform("", {
         filename: "filename.js",
         babelrc: false,
-        presets: [
-          "foo",
-        ],
+        presets: ["foo"],
       });
       // eslint-disable-next-line max-len
     }, /Cannot find module 'babel-preset-foo'.*\n- Did you mean "@babel\/foo"\?/);
@@ -330,9 +280,7 @@ describe("addon resolution", function () {
       babel.transform("", {
         filename: "filename.js",
         babelrc: false,
-        plugins: [
-          "foo",
-        ],
+        plugins: ["foo"],
       });
       // eslint-disable-next-line max-len
     }, /Cannot find module 'babel-plugin-foo'.*\n- Did you mean "@babel\/foo"\?/);
@@ -345,9 +293,7 @@ describe("addon resolution", function () {
       babel.transform("", {
         filename: "filename.js",
         babelrc: false,
-        presets: [
-          "testplugin",
-        ],
+        presets: ["testplugin"],
       });
       // eslint-disable-next-line max-len
     }, /Cannot find module 'babel-preset-testplugin'.*\n- Did you accidentally pass a preset as a plugin\?/);
@@ -360,9 +306,7 @@ describe("addon resolution", function () {
       babel.transform("", {
         filename: "filename.js",
         babelrc: false,
-        plugins: [
-          "testpreset",
-        ],
+        plugins: ["testpreset"],
       });
       // eslint-disable-next-line max-len
     }, /Cannot find module 'babel-plugin-testpreset'.*\n- Did you accidentally pass a plugin as a preset\?/);
@@ -375,9 +319,7 @@ describe("addon resolution", function () {
       babel.transform("", {
         filename: "filename.js",
         babelrc: false,
-        presets: [
-          "foo",
-        ],
+        presets: ["foo"],
       });
     }, /Cannot find module 'babel-preset-foo'/);
   });
@@ -389,9 +331,7 @@ describe("addon resolution", function () {
       babel.transform("", {
         filename: "filename.js",
         babelrc: false,
-        plugins: [
-          "foo",
-        ],
+        plugins: ["foo"],
       });
     }, /Cannot find module 'babel-plugin-foo'/);
   });

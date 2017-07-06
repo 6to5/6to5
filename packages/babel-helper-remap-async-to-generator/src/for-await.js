@@ -48,13 +48,17 @@ const forAwaitVisitor = {
     const callee = path.node.callee;
 
     // if no await wrapping is being applied, unwrap the call expression
-    if (t.isIdentifier(callee) && callee.name === "AWAIT" && !replacements.AWAIT) {
+    if (
+      t.isIdentifier(callee) &&
+      callee.name === "AWAIT" &&
+      !replacements.AWAIT
+    ) {
       path.replaceWith(path.node.arguments[0]);
     }
   },
 };
 
-export default function (path, helpers) {
+export default function(path, helpers) {
   const { node, scope, parent } = path;
 
   const stepKey = scope.generateUidIdentifier("step");
@@ -64,7 +68,9 @@ export default function (path, helpers) {
 
   if (t.isIdentifier(left) || t.isPattern(left) || t.isMemberExpression(left)) {
     // for await (i of test), for await ({ i } of test)
-    declar = t.expressionStatement(t.assignmentExpression("=", left, stepValue));
+    declar = t.expressionStatement(
+      t.assignmentExpression("=", left, stepValue),
+    );
   } else if (t.isVariableDeclaration(left)) {
     // for await (let i of test)
     declar = t.variableDeclaration(left.kind, [
@@ -76,7 +82,9 @@ export default function (path, helpers) {
 
   traverse(template, forAwaitVisitor, null, {
     ITERATOR_HAD_ERROR_KEY: scope.generateUidIdentifier("didIteratorError"),
-    ITERATOR_COMPLETION: scope.generateUidIdentifier("iteratorNormalCompletion"),
+    ITERATOR_COMPLETION: scope.generateUidIdentifier(
+      "iteratorNormalCompletion",
+    ),
     ITERATOR_ERROR_KEY: scope.generateUidIdentifier("iteratorError"),
     ITERATOR_KEY: scope.generateUidIdentifier("iterator"),
     GET_ITERATOR: helpers.getAsyncIterator,

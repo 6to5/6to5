@@ -7,9 +7,7 @@ ${'the energy motron'}
 {
   const foo = `spam
 and eggs!`;
-
   const bar = `${4 + 2}`;
-
   const hello = `Hello
 ${'world'}`;
 }

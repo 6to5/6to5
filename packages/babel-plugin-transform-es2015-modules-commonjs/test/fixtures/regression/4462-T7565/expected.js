@@ -5,7 +5,5 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.yy = yy;
 exports.zz = zz;
-
-
 var yy = 0;
 var zz = (exports.yy = yy += 1, yy - 1);

@@ -1,10 +1,8 @@
 // optimisation
-
 function foo() {
   foo.apply(undefined, arguments);
-}
+} // deoptimisation
 
-// deoptimisation
 
 function foo(a) {
   for (var _len = arguments.length, b = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {

@@ -1,4 +1,4 @@
-export default function ({ types: t, template }) {
+export default function({ types: t, template }) {
   const buildMutatorMapAssign = template(`
     MUTATOR_MAP_REF[KEY] = MUTATOR_MAP_REF[KEY] || {};
     MUTATOR_MAP_REF[KEY].KIND = VALUE;
@@ -8,7 +8,13 @@ export default function ({ types: t, template }) {
     if (t.isObjectProperty(prop)) {
       return prop.value;
     } else if (t.isObjectMethod(prop)) {
-      return t.functionExpression(null, prop.params, prop.body, prop.generator, prop.async);
+      return t.functionExpression(
+        null,
+        prop.params,
+        prop.body,
+        prop.generator,
+        prop.async,
+      );
     }
   }
 
@@ -16,31 +22,44 @@ export default function ({ types: t, template }) {
     if (prop.kind === "get" && prop.kind === "set") {
       pushMutatorDefine(objId, prop, body);
     } else {
-      body.push(t.expressionStatement(
-        t.assignmentExpression(
-          "=",
-          t.memberExpression(objId, prop.key, prop.computed || t.isLiteral(prop.key)),
-          getValue(prop)
-        )
-      ));
+      body.push(
+        t.expressionStatement(
+          t.assignmentExpression(
+            "=",
+            t.memberExpression(
+              objId,
+              prop.key,
+              prop.computed || t.isLiteral(prop.key),
+            ),
+            getValue(prop),
+          ),
+        ),
+      );
     }
   }
 
   function pushMutatorDefine({ objId, body, getMutatorId, scope }, prop) {
-    let key = !prop.computed && t.isIdentifier(prop.key) ? t.stringLiteral(prop.key.name) : prop.key;
+    let key =
+      !prop.computed && t.isIdentifier(prop.key)
+        ? t.stringLiteral(prop.key.name)
+        : prop.key;
 
     const maybeMemoise = scope.maybeGenerateMemoised(key);
     if (maybeMemoise) {
-      body.push(t.expressionStatement(t.assignmentExpression("=", maybeMemoise, key)));
+      body.push(
+        t.expressionStatement(t.assignmentExpression("=", maybeMemoise, key)),
+      );
       key = maybeMemoise;
     }
 
-    body.push(...buildMutatorMapAssign({
-      MUTATOR_MAP_REF: getMutatorId(),
-      KEY: key,
-      VALUE: getValue(prop),
-      KIND: t.identifier(prop.kind),
-    }));
+    body.push(
+      ...buildMutatorMapAssign({
+        MUTATOR_MAP_REF: getMutatorId(),
+        KEY: key,
+        VALUE: getValue(prop),
+        KIND: t.identifier(prop.kind),
+      }),
+    );
   }
 
   function loose(info) {
@@ -71,13 +90,15 @@ export default function ({ types: t, template }) {
             getValue(prop),
           ]);
         } else {
-          body.push(t.expressionStatement(
-            t.callExpression(state.addHelper("defineProperty"), [
-              objId,
-              key,
-              getValue(prop),
-            ])
-          ));
+          body.push(
+            t.expressionStatement(
+              t.callExpression(state.addHelper("defineProperty"), [
+                objId,
+                key,
+                getValue(prop),
+              ]),
+            ),
+          );
         }
       }
     }
@@ -118,22 +139,26 @@ export default function ({ types: t, template }) {
           const initPropExpression = t.objectExpression(initProps);
           const body = [];
 
-          body.push(t.variableDeclaration("var", [
-            t.variableDeclarator(objId, initPropExpression),
-          ]));
+          body.push(
+            t.variableDeclaration("var", [
+              t.variableDeclarator(objId, initPropExpression),
+            ]),
+          );
 
           let callback = spec;
           if (state.opts.loose) callback = loose;
 
           let mutatorRef;
 
-          const getMutatorId = function () {
+          const getMutatorId = function() {
             if (!mutatorRef) {
               mutatorRef = scope.generateUidIdentifier("mutatorMap");
 
-              body.push(t.variableDeclaration("var", [
-                t.variableDeclarator(mutatorRef, t.objectExpression([])),
-              ]));
+              body.push(
+                t.variableDeclaration("var", [
+                  t.variableDeclarator(mutatorRef, t.objectExpression([])),
+                ]),
+              );
             }
 
             return mutatorRef;
@@ -150,10 +175,14 @@ export default function ({ types: t, template }) {
           });
 
           if (mutatorRef) {
-            body.push(t.expressionStatement(t.callExpression(
-              state.addHelper("defineEnumerableProperties"),
-              [objId, mutatorRef]
-            )));
+            body.push(
+              t.expressionStatement(
+                t.callExpression(
+                  state.addHelper("defineEnumerableProperties"),
+                  [objId, mutatorRef],
+                ),
+              ),
+            );
           }
 
           if (single) {

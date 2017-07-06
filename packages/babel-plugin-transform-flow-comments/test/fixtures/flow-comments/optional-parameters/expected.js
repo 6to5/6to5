@@ -1,1 +1,3 @@
-function multiply(num /*:: ?: number*/) {}
+function multiply(num
+/*:: ?: number*/
+) {}

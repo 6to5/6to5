@@ -5,6 +5,7 @@ obj.constructor === Object;
 obj.constructor === _Promise;
 
 _Symbol();
+
 _Symbol("test");
 
 new _Map();

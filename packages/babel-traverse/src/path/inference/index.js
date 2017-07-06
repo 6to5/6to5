@@ -11,7 +11,7 @@ export function getTypeAnnotation(): Object {
 
   let type = this._getTypeAnnotation() || t.anyTypeAnnotation();
   if (t.isTypeAnnotation(type)) type = type.typeAnnotation;
-  return this.typeAnnotation = type;
+  return (this.typeAnnotation = type);
 }
 
 /**
@@ -113,5 +113,8 @@ export function baseTypeStrictlyMatches(right: NodePath) {
 
 export function isGenericType(genericName: string): boolean {
   const type = this.getTypeAnnotation();
-  return t.isGenericTypeAnnotation(type) && t.isIdentifier(type.id, { name: genericName });
+  return (
+    t.isGenericTypeAnnotation(type) &&
+    t.isIdentifier(type.id, { name: genericName })
+  );
 }

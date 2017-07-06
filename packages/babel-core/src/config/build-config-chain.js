@@ -7,14 +7,14 @@ import micromatch from "micromatch";
 import { findConfigs, loadConfig } from "./loading/files";
 
 type ConfigItem = {
-  type: "options"|"arguments",
+  type: "options" | "arguments",
   options: {},
   dirname: string,
   alias: string,
   loc: string,
 };
 
-export default function buildConfigChain(opts: {}): Array<ConfigItem>|null {
+export default function buildConfigChain(opts: {}): Array<ConfigItem> | null {
   if (typeof opts.filename !== "string" && opts.filename != null) {
     throw new Error(".filename must be a string, null, or undefined");
   }
@@ -44,9 +44,9 @@ export default function buildConfigChain(opts: {}): Array<ConfigItem>|null {
 }
 
 class ConfigChainBuilder {
-  filename: string|null;
+  filename: string | null;
   configs: Array<ConfigItem>;
-  possibleDirs: null|Array<string>;
+  possibleDirs: null | Array<string>;
 
   constructor(filename) {
     this.configs = [];
@@ -57,16 +57,14 @@ class ConfigChainBuilder {
   /**
    * Tests if a filename should be ignored based on "ignore" and "only" options.
    */
-  shouldIgnore(
-    ignore: mixed,
-    only: mixed,
-    dirname: string,
-  ): boolean {
+  shouldIgnore(ignore: mixed, only: mixed, dirname: string): boolean {
     if (!this.filename) return false;
 
     if (ignore) {
       if (!Array.isArray(ignore)) {
-        throw new Error(`.ignore should be an array, ${JSON.stringify(ignore)} given`);
+        throw new Error(
+          `.ignore should be an array, ${JSON.stringify(ignore)} given`,
+        );
       }
 
       if (this.matchesPatterns(ignore, dirname)) return true;
@@ -74,7 +72,9 @@ class ConfigChainBuilder {
 
     if (only) {
       if (!Array.isArray(only)) {
-        throw new Error(`.only should be an array, ${JSON.stringify(only)} given`);
+        throw new Error(
+          `.only should be an array, ${JSON.stringify(only)} given`,
+        );
       }
 
       if (!this.matchesPatterns(only, dirname)) return true;
@@ -89,21 +89,27 @@ class ConfigChainBuilder {
    */
   matchesPatterns(patterns: Array<mixed>, dirname: string) {
     const filename = this.filename;
-    if (!filename) throw new Error("Assertion failure: .filename should always exist here");
+    if (!filename) {
+      throw new Error("Assertion failure: .filename should always exist here");
+    }
 
     const res = [];
     const strings = [];
     const fns = [];
 
-    patterns.forEach((pattern) => {
+    patterns.forEach(pattern => {
       if (typeof pattern === "string") strings.push(pattern);
       else if (typeof pattern === "function") fns.push(pattern);
       else if (pattern instanceof RegExp) res.push(pattern);
-      else throw new Error("Patterns must be a string, function, or regular expression");
+      else {
+        throw new Error(
+          "Patterns must be a string, function, or regular expression",
+        );
+      }
     });
 
-    if (res.some((re) => re.test(filename))) return true;
-    if (fns.some((fn) => fn(filename))) return true;
+    if (res.some(re => re.test(filename))) return true;
+    if (fns.some(fn => fn(filename))) return true;
 
     if (strings.length > 0) {
       let possibleDirs = this.possibleDirs;
@@ -123,7 +129,7 @@ class ConfigChainBuilder {
         }
       }
 
-      const absolutePatterns = strings.map((pattern) => {
+      const absolutePatterns = strings.map(pattern => {
         // Preserve the "!" prefix so that micromatch can use it for negation.
         const negate = pattern[0] === "!";
         if (negate) pattern = pattern.slice(1);
@@ -131,7 +137,9 @@ class ConfigChainBuilder {
         return (negate ? "!" : "") + path.resolve(dirname, pattern);
       });
 
-      if (micromatch(possibleDirs, absolutePatterns, { nocase: true }).length > 0) {
+      if (
+        micromatch(possibleDirs, absolutePatterns, { nocase: true }).length > 0
+      ) {
         return true;
       }
     }
@@ -150,16 +158,16 @@ class ConfigChainBuilder {
     });
   }
 
-  mergeConfig({
-    type,
-    options: rawOpts,
-    alias,
-    dirname,
-  }) {
+  mergeConfig({ type, options: rawOpts, alias, dirname }) {
     // Bail out ASAP if this file is ignored so that we run as little logic as possible on ignored files.
-    if (this.filename && this.shouldIgnore(rawOpts.ignore || null, rawOpts.only || null, dirname)) {
+    if (
+      this.filename &&
+      this.shouldIgnore(rawOpts.ignore || null, rawOpts.only || null, dirname)
+    ) {
       // TODO(logan): This is a really cross way to bail out. Avoid this in rewrite.
-      throw Object.assign((new Error("This file has been ignored."): any), { code: "BABEL_IGNORED_FILE" });
+      throw Object.assign((new Error("This file has been ignored."): any), {
+        code: "BABEL_IGNORED_FILE",
+      });
     }
 
     const options = Object.assign({}, rawOpts);
@@ -168,13 +176,19 @@ class ConfigChainBuilder {
 
     const envKey = getEnv();
 
-    if (rawOpts.env != null && (typeof rawOpts.env !== "object" || Array.isArray(rawOpts.env))) {
+    if (
+      rawOpts.env != null &&
+      (typeof rawOpts.env !== "object" || Array.isArray(rawOpts.env))
+    ) {
       throw new Error(".env block must be an object, null, or undefined");
     }
 
     const envOpts = rawOpts.env && rawOpts.env[envKey];
 
-    if (envOpts != null && (typeof envOpts !== "object" || Array.isArray(envOpts))) {
+    if (
+      envOpts != null &&
+      (typeof envOpts !== "object" || Array.isArray(envOpts))
+    ) {
       throw new Error(".env[...] block must be an object, null, or undefined");
     }
 
@@ -196,11 +210,13 @@ class ConfigChainBuilder {
     });
 
     if (rawOpts.extends) {
-      if (typeof rawOpts.extends !== "string") throw new Error(".extends must be a string");
+      if (typeof rawOpts.extends !== "string") {
+        throw new Error(".extends must be a string");
+      }
 
       const extendsConfig = loadConfig(rawOpts.extends, dirname);
 
-      const existingConfig = this.configs.some((config) => {
+      const existingConfig = this.configs.some(config => {
         return config.alias === extendsConfig.filepath;
       });
       if (!existingConfig) {
@@ -214,4 +230,3 @@ class ConfigChainBuilder {
     }
   }
 }
-

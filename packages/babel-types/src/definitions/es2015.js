@@ -13,13 +13,16 @@ defineType("AssignmentPattern", {
   aliases: ["Pattern", "LVal"],
   fields: {
     left: {
-      validate: assertNodeType("Identifier"),
+      validate: assertNodeType("Identifier", "ObjectPattern", "ArrayPattern"),
     },
     right: {
       validate: assertNodeType("Expression"),
     },
     decorators: {
-      validate: chain(assertValueType("array"), assertEach(assertNodeType("Decorator"))),
+      validate: chain(
+        assertValueType("array"),
+        assertEach(assertNodeType("Decorator")),
+      ),
     },
   },
 });
@@ -29,10 +32,16 @@ defineType("ArrayPattern", {
   aliases: ["Pattern", "LVal"],
   fields: {
     elements: {
-      validate: chain(assertValueType("array"), assertEach(assertNodeType("Identifier", "Pattern", "RestElement"))),
+      validate: chain(
+        assertValueType("array"),
+        assertEach(assertNodeType("Identifier", "Pattern", "RestElement")),
+      ),
     },
     decorators: {
-      validate: chain(assertValueType("array"), assertEach(assertNodeType("Decorator"))),
+      validate: chain(
+        assertValueType("array"),
+        assertEach(assertNodeType("Decorator")),
+      ),
     },
   },
 });
@@ -40,10 +49,20 @@ defineType("ArrayPattern", {
 defineType("ArrowFunctionExpression", {
   builder: ["params", "body", "async"],
   visitor: ["params", "body", "returnType", "typeParameters"],
-  aliases: ["Scopable", "Function", "BlockParent", "FunctionParent", "Expression", "Pureish"],
+  aliases: [
+    "Scopable",
+    "Function",
+    "BlockParent",
+    "FunctionParent",
+    "Expression",
+    "Pureish",
+  ],
   fields: {
     params: {
-      validate: chain(assertValueType("array"), assertEach(assertNodeType("LVal"))),
+      validate: chain(
+        assertValueType("array"),
+        assertEach(assertNodeType("LVal")),
+      ),
     },
     body: {
       validate: assertNodeType("BlockStatement", "Expression"),
@@ -59,7 +78,10 @@ defineType("ClassBody", {
   visitor: ["body"],
   fields: {
     body: {
-      validate: chain(assertValueType("array"), assertEach(assertNodeType("ClassMethod", "ClassProperty"))),
+      validate: chain(
+        assertValueType("array"),
+        assertEach(assertNodeType("ClassMethod", "ClassProperty")),
+      ),
     },
   },
 });
@@ -89,7 +111,10 @@ defineType("ClassDeclaration", {
       validate: assertNodeType("Expression"),
     },
     decorators: {
-      validate: chain(assertValueType("array"), assertEach(assertNodeType("Decorator"))),
+      validate: chain(
+        assertValueType("array"),
+        assertEach(assertNodeType("Decorator")),
+      ),
     },
   },
 });
@@ -110,14 +135,22 @@ defineType("ClassExpression", {
       validate: assertNodeType("Expression"),
     },
     decorators: {
-      validate: chain(assertValueType("array"), assertEach(assertNodeType("Decorator"))),
+      validate: chain(
+        assertValueType("array"),
+        assertEach(assertNodeType("Decorator")),
+      ),
     },
   },
 });
 
 defineType("ExportAllDeclaration", {
   visitor: ["source"],
-  aliases: ["Statement", "Declaration", "ModuleDeclaration", "ExportDeclaration"],
+  aliases: [
+    "Statement",
+    "Declaration",
+    "ModuleDeclaration",
+    "ExportDeclaration",
+  ],
   fields: {
     source: {
       validate: assertNodeType("StringLiteral"),
@@ -127,24 +160,41 @@ defineType("ExportAllDeclaration", {
 
 defineType("ExportDefaultDeclaration", {
   visitor: ["declaration"],
-  aliases: ["Statement", "Declaration", "ModuleDeclaration", "ExportDeclaration"],
+  aliases: [
+    "Statement",
+    "Declaration",
+    "ModuleDeclaration",
+    "ExportDeclaration",
+  ],
   fields: {
     declaration: {
-      validate: assertNodeType("FunctionDeclaration", "ClassDeclaration", "Expression"),
+      validate: assertNodeType(
+        "FunctionDeclaration",
+        "ClassDeclaration",
+        "Expression",
+      ),
     },
   },
 });
 
 defineType("ExportNamedDeclaration", {
   visitor: ["declaration", "specifiers", "source"],
-  aliases: ["Statement", "Declaration", "ModuleDeclaration", "ExportDeclaration"],
+  aliases: [
+    "Statement",
+    "Declaration",
+    "ModuleDeclaration",
+    "ExportDeclaration",
+  ],
   fields: {
     declaration: {
       validate: assertNodeType("Declaration"),
       optional: true,
     },
     specifiers: {
-      validate: chain(assertValueType("array"), assertEach(assertNodeType("ExportSpecifier"))),
+      validate: chain(
+        assertValueType("array"),
+        assertEach(assertNodeType("ExportSpecifier")),
+      ),
     },
     source: {
       validate: assertNodeType("StringLiteral"),
@@ -168,7 +218,14 @@ defineType("ExportSpecifier", {
 
 defineType("ForOfStatement", {
   visitor: ["left", "right", "body"],
-  aliases: ["Scopable", "Statement", "For", "BlockParent", "Loop", "ForXStatement"],
+  aliases: [
+    "Scopable",
+    "Statement",
+    "For",
+    "BlockParent",
+    "Loop",
+    "ForXStatement",
+  ],
   fields: {
     left: {
       validate: assertNodeType("VariableDeclaration", "LVal"),
@@ -193,7 +250,13 @@ defineType("ImportDeclaration", {
     specifiers: {
       validate: chain(
         assertValueType("array"),
-        assertEach(assertNodeType("ImportSpecifier", "ImportDefaultSpecifier", "ImportNamespaceSpecifier"))
+        assertEach(
+          assertNodeType(
+            "ImportSpecifier",
+            "ImportDefaultSpecifier",
+            "ImportNamespaceSpecifier",
+          ),
+        ),
       ),
     },
     source: {
@@ -256,10 +319,20 @@ defineType("MetaProperty", {
 defineType("ClassMethod", {
   aliases: ["Function", "Scopable", "BlockParent", "FunctionParent", "Method"],
   builder: ["kind", "key", "params", "body", "computed", "static"],
-  visitor: ["key", "params", "body", "decorators", "returnType", "typeParameters"],
+  visitor: [
+    "key",
+    "params",
+    "body",
+    "decorators",
+    "returnType",
+    "typeParameters",
+  ],
   fields: {
     kind: {
-      validate: chain(assertValueType("string"), assertOneOf("get", "set", "method", "constructor")),
+      validate: chain(
+        assertValueType("string"),
+        assertOneOf("get", "set", "method", "constructor"),
+      ),
       default: "method",
     },
     computed: {
@@ -271,18 +344,25 @@ defineType("ClassMethod", {
       validate: assertValueType("boolean"),
     },
     key: {
-      validate: (function () {
+      validate: (function() {
         const normal = assertNodeType("Expression");
-        const computed = assertNodeType("Identifier", "StringLiteral", "NumericLiteral");
+        const computed = assertNodeType(
+          "Identifier",
+          "StringLiteral",
+          "NumericLiteral",
+        );
 
-        return function (node, key, val) {
+        return function(node, key, val) {
           const validator = node.computed ? computed : normal;
           validator(node, key, val);
         };
-      }()),
+      })(),
     },
     params: {
-      validate: chain(assertValueType("array"), assertEach(assertNodeType("LVal"))),
+      validate: chain(
+        assertValueType("array"),
+        assertEach(assertNodeType("LVal")),
+      ),
     },
     body: {
       validate: assertNodeType("BlockStatement"),
@@ -303,10 +383,16 @@ defineType("ObjectPattern", {
   aliases: ["Pattern", "LVal"],
   fields: {
     properties: {
-      validate: chain(assertValueType("array"), assertEach(assertNodeType("RestElement", "Property"))),
+      validate: chain(
+        assertValueType("array"),
+        assertEach(assertNodeType("RestElement", "Property")),
+      ),
     },
     decorators: {
-      validate: chain(assertValueType("array"), assertEach(assertNodeType("Decorator"))),
+      validate: chain(
+        assertValueType("array"),
+        assertEach(assertNodeType("Decorator")),
+      ),
     },
   },
 });
@@ -356,10 +442,16 @@ defineType("TemplateLiteral", {
   aliases: ["Expression", "Literal"],
   fields: {
     quasis: {
-      validate: chain(assertValueType("array"), assertEach(assertNodeType("TemplateElement"))),
+      validate: chain(
+        assertValueType("array"),
+        assertEach(assertNodeType("TemplateElement")),
+      ),
     },
     expressions: {
-      validate: chain(assertValueType("array"), assertEach(assertNodeType("Expression"))),
+      validate: chain(
+        assertValueType("array"),
+        assertEach(assertNodeType("Expression")),
+      ),
     },
   },
 });

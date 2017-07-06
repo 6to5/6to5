@@ -14,3 +14,4 @@ declare type A = string
 declare type T<U> = { [k:string]: U }
 declare interface I { foo: string }
 declare interface I<T> { foo: T }
+declare module.exports: string;

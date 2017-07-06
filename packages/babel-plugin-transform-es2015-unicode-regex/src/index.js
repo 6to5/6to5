@@ -1,7 +1,7 @@
 import rewritePattern from "regexpu-core";
 import * as regex from "babel-helper-regex";
 
-export default function () {
+export default function() {
   return {
     visitor: {
       RegExpLiteral({ node }) {

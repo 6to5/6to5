@@ -1,7 +1,5 @@
 var Foo = function () {
-  function Foo() {
-    babelHelpers.classCallCheck(this, Foo);
-  }
+  function Foo() {}
 
   Foo.prototype["bar"] = function bar() {};
 

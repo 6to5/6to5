@@ -1,6 +1,4 @@
-import defineType, {
-  assertValueType,
-} from "./index";
+import defineType, { assertValueType } from "./index";
 
 defineType("AnyTypeAnnotation", {
   aliases: ["Flow", "FlowBaseAnnotation"],
@@ -105,6 +103,22 @@ defineType("DeclareTypeAlias", {
 
 defineType("DeclareVariable", {
   visitor: ["id"],
+  aliases: ["Flow", "FlowDeclaration", "Statement", "Declaration"],
+  fields: {
+    // todo
+  },
+});
+
+defineType("DeclareExportDeclaration", {
+  visitor: ["declaration", "specifiers", "source"],
+  aliases: ["Flow", "FlowDeclaration", "Statement", "Declaration"],
+  fields: {
+    // todo
+  },
+});
+
+defineType("DeclareExportAllDeclaration", {
+  visitor: ["source"],
   aliases: ["Flow", "FlowDeclaration", "Statement", "Declaration"],
   fields: {
     // todo

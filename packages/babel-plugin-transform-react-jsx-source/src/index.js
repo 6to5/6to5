@@ -1,5 +1,4 @@
-
- /**
+/**
  * This adds {fileName, lineNumber} annotations to React component definitions
  * and to jsx tag literals.
  *
@@ -14,15 +13,21 @@
  * <sometag __source={{fileName: __jsxFileName, lineNumber: 10}}/>
  */
 
-
 const TRACE_ID = "__source";
 const FILE_NAME_VAR = "_jsxFileName";
 
-export default function ({ types: t }) {
+export default function({ types: t }) {
   function makeTrace(fileNameIdentifier, lineNumber) {
-    const fileLineLiteral = lineNumber != null ? t.numericLiteral(lineNumber) : t.nullLiteral();
-    const fileNameProperty = t.objectProperty(t.identifier("fileName"), fileNameIdentifier);
-    const lineNumberProperty = t.objectProperty(t.identifier("lineNumber"), fileLineLiteral);
+    const fileLineLiteral =
+      lineNumber != null ? t.numericLiteral(lineNumber) : t.nullLiteral();
+    const fileNameProperty = t.objectProperty(
+      t.identifier("fileName"),
+      fileNameIdentifier,
+    );
+    const lineNumberProperty = t.objectProperty(
+      t.identifier("lineNumber"),
+      fileLineLiteral,
+    );
     return t.objectExpression([fileNameProperty, lineNumberProperty]);
   }
 
@@ -47,8 +52,13 @@ export default function ({ types: t }) {
       if (!state.fileNameIdentifier) {
         const fileName = state.file.opts.filename;
 
-        const fileNameIdentifier = path.scope.generateUidIdentifier(FILE_NAME_VAR);
-        path.hub.file.scope.push({ id: fileNameIdentifier, init: t.stringLiteral(fileName) });
+        const fileNameIdentifier = path.scope.generateUidIdentifier(
+          FILE_NAME_VAR,
+        );
+        path.hub.file.scope.push({
+          id: fileNameIdentifier,
+          init: t.stringLiteral(fileName),
+        });
         state.fileNameIdentifier = fileNameIdentifier;
       }
 

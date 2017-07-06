@@ -17,5 +17,6 @@
     value: true
   });
   exports.default = foo;
+
   function foo() {}
 });

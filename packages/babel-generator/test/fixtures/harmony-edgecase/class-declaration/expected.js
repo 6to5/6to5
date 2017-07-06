@@ -1,5 +1,7 @@
 class Test {}
+
 class Derived extends Super {}
+
 class StaticMethods {
   static n1() {}
 
@@ -8,7 +10,9 @@ class StaticMethods {
   static set set1(value) {}
 
   static *gen1() {}
+
 }
+
 class Methods {
   n2() {}
 
@@ -17,7 +21,9 @@ class Methods {
   set set2(value) {}
 
   *gen1() {}
+
 }
+
 class ComputedStaticMethods {
   static [n1]() {}
 
@@ -26,7 +32,9 @@ class ComputedStaticMethods {
   static set [set1](value) {}
 
   static *[gen1]() {}
+
 }
+
 class ComputedMethods {
   [n2]() {}
 
@@ -35,4 +43,5 @@ class ComputedMethods {
   set [set2](value) {}
 
   *[gen1]() {}
+
 }

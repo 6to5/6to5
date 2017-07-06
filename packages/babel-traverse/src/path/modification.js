@@ -14,7 +14,10 @@ export function insertBefore(nodes) {
 
   nodes = this._verifyNodeList(nodes);
 
-  if (this.parentPath.isExpressionStatement() || this.parentPath.isLabeledStatement()) {
+  if (
+    this.parentPath.isExpressionStatement() ||
+    this.parentPath.isLabeledStatement()
+  ) {
     return this.parentPath.insertBefore(nodes);
   } else if (
     this.isNodeType("Expression") ||
@@ -30,8 +33,10 @@ export function insertBefore(nodes) {
       if (this.node) nodes.push(this.node);
       this._replaceWith(t.blockStatement(nodes));
     } else {
-      throw new Error("We don't know what to do with this node type. " +
-        "We were previously a Statement but we can't fit in here?");
+      throw new Error(
+        "We don't know what to do with this node type. " +
+          "We were previously a Statement but we can't fit in here?",
+      );
     }
   }
 
@@ -49,7 +54,12 @@ export function _containerInsert(from, nodes) {
     this.container.splice(to, 0, node);
 
     if (this.context) {
-      const path = this.context.create(this.parent, this.container, to, this.listKey);
+      const path = this.context.create(
+        this.parent,
+        this.container,
+        to,
+        this.listKey,
+      );
 
       // While this path may have a context, there is currently no guarantee that the context
       // will be the active context, because `popContext` may leave a final context in place.
@@ -57,13 +67,15 @@ export function _containerInsert(from, nodes) {
       if (this.context.queue) path.pushContext(this.context);
       paths.push(path);
     } else {
-      paths.push(NodePath.get({
-        parentPath: this.parentPath,
-        parent: this.parent,
-        container: this.container,
-        listKey: this.listKey,
-        key: to,
-      }));
+      paths.push(
+        NodePath.get({
+          parentPath: this.parentPath,
+          parent: this.parent,
+          container: this.container,
+          listKey: this.listKey,
+          key: to,
+        }),
+      );
     }
   }
 
@@ -91,7 +103,8 @@ export function _containerInsertAfter(nodes) {
 
 export function _maybePopFromStatements(nodes) {
   const last = nodes[nodes.length - 1];
-  const isIdentifier = t.isIdentifier(last) ||
+  const isIdentifier =
+    t.isIdentifier(last) ||
     (t.isExpressionStatement(last) && t.isIdentifier(last.expression));
 
   if (isIdentifier && !this.isCompletionRecord()) {
@@ -109,7 +122,10 @@ export function insertAfter(nodes) {
 
   nodes = this._verifyNodeList(nodes);
 
-  if (this.parentPath.isExpressionStatement() || this.parentPath.isLabeledStatement()) {
+  if (
+    this.parentPath.isExpressionStatement() ||
+    this.parentPath.isLabeledStatement()
+  ) {
     return this.parentPath.insertAfter(nodes);
   } else if (
     this.isNodeType("Expression") ||
@@ -117,7 +133,9 @@ export function insertAfter(nodes) {
   ) {
     if (this.node) {
       const temp = this.scope.generateDeclaredUidIdentifier();
-      nodes.unshift(t.expressionStatement(t.assignmentExpression("=", temp, this.node)));
+      nodes.unshift(
+        t.expressionStatement(t.assignmentExpression("=", temp, this.node)),
+      );
       nodes.push(t.expressionStatement(temp));
     }
     this.replaceExpressionWithStatements(nodes);
@@ -127,13 +145,18 @@ export function insertAfter(nodes) {
       return this._containerInsertAfter(nodes);
     } else if (this.isStatementOrBlock()) {
       // Unshift current node if it's not an empty expression
-      if (this.node && (!this.isExpressionStatement() || this.node.expression != null)) {
+      if (
+        this.node &&
+        (!this.isExpressionStatement() || this.node.expression != null)
+      ) {
         nodes.unshift(this.node);
       }
       this._replaceWith(t.blockStatement(nodes));
     } else {
-      throw new Error("We don't know what to do with this node type. " +
-        "We were previously a Statement but we can't fit in here?");
+      throw new Error(
+        "We don't know what to do with this node type. " +
+          "We were previously a Statement but we can't fit in here?",
+      );
     }
   }
 
@@ -181,7 +204,9 @@ export function _verifyNodeList(nodes) {
 
     if (msg) {
       const type = Array.isArray(node) ? "array" : typeof node;
-      throw new Error(`Node list ${msg} with the index of ${i} and type of ${type}`);
+      throw new Error(
+        `Node list ${msg} with the index of ${i} and type of ${type}`,
+      );
     }
   }
 

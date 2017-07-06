@@ -3,5 +3,6 @@ define(["exports"], function (exports) {
 
   exports.__esModule = true;
   exports.a = a;
+
   function a() {}
 });

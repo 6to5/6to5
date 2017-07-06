@@ -1,4 +1,5 @@
 let p;
+
 let a = function () {
   var _ret;
 
@@ -9,5 +10,6 @@ let a = function () {
       _ret = 'b';
     }
   }
+
   return _ret;
 }();

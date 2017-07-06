@@ -1,4 +1,4 @@
-export default function () {
+export default function() {
   return {
     visitor: {
       NumericLiteral({ node }) {

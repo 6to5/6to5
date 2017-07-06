@@ -1,0 +1,17 @@
+{
+  "name": "babel-plugin-transform-optional-chaining",
+  "version": "7.0.0-alpha.13",
+  "description": "Transform optional chaining operators into a series of nil checks",
+  "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-optional-chaining",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "dependencies": {
+    "babel-plugin-syntax-optional-chaining": "7.0.0-alpha.13"
+  },
+  "keywords": [
+    "babel-plugin"
+  ],
+  "devDependencies": {
+    "babel-helper-plugin-test-runner": "7.0.0-alpha.12"
+  }
+}

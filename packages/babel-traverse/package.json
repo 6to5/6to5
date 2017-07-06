@@ -9,10 +9,10 @@
   "main": "lib/index.js",
   "dependencies": {
     "babel-code-frame": "7.0.0-alpha.12",
-    "babel-helper-function-name": "7.0.0-alpha.7",
+    "babel-helper-function-name": "7.0.0-alpha.12",
     "babel-messages": "7.0.0-alpha.12",
     "babel-types": "7.0.0-alpha.12",
-    "babylon": "7.0.0-beta.12",
+    "babylon": "7.0.0-beta.15",
     "debug": "^2.2.0",
     "globals": "^9.0.0",
     "invariant": "^2.2.0",

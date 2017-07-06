@@ -2,8 +2,8 @@ const assert = require("assert");
 const babel = require("babel-core");
 const vm = require("vm");
 
-test("Re-export doesn't overwrite __esModule flag", function () {
-  let code = "export * from \"./dep\";";
+test("Re-export doesn't overwrite __esModule flag", function() {
+  let code = 'export * from "./dep";';
   const depStub = {
     __esModule: false,
   };
@@ -12,7 +12,7 @@ test("Re-export doesn't overwrite __esModule flag", function () {
     module: {
       exports: {},
     },
-    require: function (id) {
+    require: function(id) {
       if (id === "./dep") return depStub;
       return require(id);
     },
@@ -20,10 +20,8 @@ test("Re-export doesn't overwrite __esModule flag", function () {
   context.exports = context.module.exports;
 
   code = babel.transform(code, {
-    "plugins": [
-      [require("../"), { loose: true }],
-    ],
-    "ast": false,
+    plugins: [[require("../"), { loose: true }]],
+    ast: false,
   }).code;
 
   vm.runInNewContext(code, context);
@@ -32,6 +30,6 @@ test("Re-export doesn't overwrite __esModule flag", function () {
   assert.equal(
     context.exports.__esModule,
     true,
-    "Expected exports.__esModule === true"
+    "Expected exports.__esModule === true",
   );
 });

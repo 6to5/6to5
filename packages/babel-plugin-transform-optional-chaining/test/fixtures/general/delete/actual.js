@@ -1,0 +1,3 @@
+delete a?.b
+
+delete a?.b?.c?.d

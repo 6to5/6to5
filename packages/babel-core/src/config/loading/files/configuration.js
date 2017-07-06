@@ -41,13 +41,16 @@ export function findConfigs(dirname: string): Array<ConfigFile> {
         BABELRC_FILENAME,
         BABELRC_JS_FILENAME,
         PACKAGE_FILENAME,
-      ].reduce((previousConfig: ConfigFile|null, name) => {
+      ].reduce((previousConfig: ConfigFile | null, name) => {
         const filepath = path.join(loc, name);
         const config = readConfig(filepath);
 
         if (config && previousConfig) {
-          throw new Error(`Multiple configuration files found. Please remove one:\n- ${
-            path.basename(previousConfig.filepath)}\n- ${name}\nfrom ${loc}`);
+          throw new Error(
+            `Multiple configuration files found. Please remove one:\n- ${path.basename(
+              previousConfig.filepath,
+            )}\n- ${name}\nfrom ${loc}`,
+          );
         }
 
         return config || previousConfig;
@@ -73,7 +76,9 @@ export function loadConfig(name: string, dirname: string): ConfigFile {
   const filepath = resolve.sync(name, { basedir: dirname });
 
   const conf = readConfig(filepath);
-  if (!conf) throw new Error(`Config file ${filepath} contains no configuration data`);
+  if (!conf) {
+    throw new Error(`Config file ${filepath} contains no configuration data`);
+  }
 
   return conf;
 }
@@ -83,7 +88,9 @@ export function loadConfig(name: string, dirname: string): ConfigFile {
  * throw if there are parsing errors while loading a config.
  */
 function readConfig(filepath) {
-  return (path.extname(filepath) === ".js") ? readConfigJS(filepath) : readConfigFile(filepath);
+  return path.extname(filepath) === ".js"
+    ? readConfigJS(filepath)
+    : readConfigFile(filepath);
 }
 
 const readConfigJS = makeStrongCache((filepath, cache) => {
@@ -96,7 +103,10 @@ const readConfigJS = makeStrongCache((filepath, cache) => {
   try {
     // $FlowIssue
     const configModule = (require(filepath): mixed);
-    options = configModule && configModule.__esModule ? (configModule.default || undefined) : configModule;
+    options =
+      configModule && configModule.__esModule
+        ? configModule.default || undefined
+        : configModule;
   } catch (err) {
     err.message = `${filepath}: Error while loading config - ${err.message}`;
     throw err;
@@ -113,7 +123,9 @@ const readConfigJS = makeStrongCache((filepath, cache) => {
   }
 
   if (!options || typeof options !== "object" || Array.isArray(options)) {
-    throw new Error(`${filepath}: Configuration should be an exported JavaScript object.`);
+    throw new Error(
+      `${filepath}: Configuration should be an exported JavaScript object.`,
+    );
   }
 
   return {
@@ -144,8 +156,12 @@ const readConfigFile = makeStaticFileCache((filepath, content) => {
     if (!options) throw new Error(`${filepath}: No config detected`);
   }
 
-  if (typeof options !== "object") throw new Error(`${filepath}: Config returned typeof ${typeof options}`);
-  if (Array.isArray(options)) throw new Error(`${filepath}: Expected config object but found array`);
+  if (typeof options !== "object") {
+    throw new Error(`${filepath}: Config returned typeof ${typeof options}`);
+  }
+  if (Array.isArray(options)) {
+    throw new Error(`${filepath}: Expected config object but found array`);
+  }
 
   return {
     filepath,
@@ -157,8 +173,8 @@ const readConfigFile = makeStaticFileCache((filepath, content) => {
 const readIgnoreConfig = makeStaticFileCache((filepath, content) => {
   const ignore = content
     .split("\n")
-    .map((line) => line.replace(/#(.*?)$/, "").trim())
-    .filter((line) => !!line);
+    .map(line => line.replace(/#(.*?)$/, "").trim())
+    .filter(line => !!line);
 
   return {
     filepath,
@@ -167,7 +183,7 @@ const readIgnoreConfig = makeStaticFileCache((filepath, content) => {
   };
 });
 
-function makeStaticFileCache<T>(fn: (string, string) => T): (string) => T|null {
+function makeStaticFileCache<T>(fn: (string, string) => T): string => T | null {
   return makeStrongCache((filepath, cache) => {
     if (cache.invalidate(() => fileMtime(filepath)) === null) {
       cache.forever();
@@ -178,7 +194,7 @@ function makeStaticFileCache<T>(fn: (string, string) => T): (string) => T|null {
   });
 }
 
-function fileMtime(filepath: string): number|null {
+function fileMtime(filepath: string): number | null {
   try {
     return +fs.statSync(filepath).mtime;
   } catch (e) {

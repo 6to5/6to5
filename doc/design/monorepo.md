@@ -21,7 +21,6 @@ This is quite taboo but let's look at the pros and cons:
 
  * Codebase looks more intimidating.
  * Repo is bigger in size.
- * Lower ranking in [npms](https://npms.io/) results. At least until [npms-io/npms-analyzer#83](https://github.com/npms-io/npms-analyzer/issues/83) is fixed.
  * ???
 
 ## This is dumb! Nobody in open source does this!

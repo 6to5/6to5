@@ -25,7 +25,6 @@ var _foo5 = require("foo5");
 
 exports.test = test;
 var test2 = exports.test2 = 5;
-
 _foo4.bar;
 _foo5.foo;
 _foo2.default;

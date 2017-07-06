@@ -2,52 +2,58 @@
 /* eslint max-len: "off" */
 
 export default {
-  "auxiliaryComment": {
-    "message": "Use `auxiliaryCommentBefore` or `auxiliaryCommentAfter`",
+  auxiliaryComment: {
+    message: "Use `auxiliaryCommentBefore` or `auxiliaryCommentAfter`",
   },
-  "blacklist": {
-    "message": "Put the specific transforms you want in the `plugins` option",
+  blacklist: {
+    message: "Put the specific transforms you want in the `plugins` option",
   },
-  "breakConfig": {
-    "message": "This is not a necessary option in Babel 6",
+  breakConfig: {
+    message: "This is not a necessary option in Babel 6",
   },
-  "experimental": {
-    "message": "Put the specific transforms you want in the `plugins` option",
+  experimental: {
+    message: "Put the specific transforms you want in the `plugins` option",
   },
-  "externalHelpers": {
-    "message": "Use the `external-helpers` plugin instead. Check out http://babeljs.io/docs/plugins/external-helpers/",
+  externalHelpers: {
+    message:
+      "Use the `external-helpers` plugin instead. Check out http://babeljs.io/docs/plugins/external-helpers/",
   },
-  "extra": {
-    "message": "",
+  extra: {
+    message: "",
   },
-  "jsxPragma": {
-    "message": "use the `pragma` option in the `react-jsx` plugin . Check out http://babeljs.io/docs/plugins/transform-react-jsx/",
+  jsxPragma: {
+    message:
+      "use the `pragma` option in the `react-jsx` plugin . Check out http://babeljs.io/docs/plugins/transform-react-jsx/",
   },
   // "keepModuleIdExtensions": {
   //   "message": ""
   // },
-  "loose": {
-    "message": "Specify the `loose` option for the relevant plugin you are using or use a preset that sets the option.",
+  loose: {
+    message:
+      "Specify the `loose` option for the relevant plugin you are using or use a preset that sets the option.",
   },
-  "metadataUsedHelpers": {
-    "message": "Not required anymore as this is enabled by default",
+  metadataUsedHelpers: {
+    message: "Not required anymore as this is enabled by default",
   },
-  "modules": {
-    "message": "Use the corresponding module transform plugin in the `plugins` option. Check out http://babeljs.io/docs/plugins/#modules",
+  modules: {
+    message:
+      "Use the corresponding module transform plugin in the `plugins` option. Check out http://babeljs.io/docs/plugins/#modules",
   },
-  "nonStandard": {
-    "message": "Use the `react-jsx` and `flow-strip-types` plugins to support JSX and Flow. Also check out the react preset http://babeljs.io/docs/plugins/preset-react/",
+  nonStandard: {
+    message:
+      "Use the `react-jsx` and `flow-strip-types` plugins to support JSX and Flow. Also check out the react preset http://babeljs.io/docs/plugins/preset-react/",
   },
-  "optional": {
-    "message": "Put the specific transforms you want in the `plugins` option",
+  optional: {
+    message: "Put the specific transforms you want in the `plugins` option",
   },
-  "sourceMapName": {
-    "message": "Use the `sourceMapTarget` option",
+  sourceMapName: {
+    message: "Use the `sourceMapTarget` option",
   },
-  "stage": {
-    "message": "Check out the corresponding stage-x presets http://babeljs.io/docs/plugins/#presets",
+  stage: {
+    message:
+      "Check out the corresponding stage-x presets http://babeljs.io/docs/plugins/#presets",
   },
-  "whitelist": {
-    "message": "Put the specific transforms you want in the `plugins` option",
+  whitelist: {
+    message: "Put the specific transforms you want in the `plugins` option",
   },
 };

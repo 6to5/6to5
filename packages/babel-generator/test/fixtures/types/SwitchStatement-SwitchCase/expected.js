@@ -35,8 +35,10 @@ switch (foo) {
 switch (foo) {
   case "foo":
     foo();
+
   case "bar":
     bar();
+
   default:
     yay();
 }

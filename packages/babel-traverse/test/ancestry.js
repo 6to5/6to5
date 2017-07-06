@@ -3,8 +3,8 @@ import assert from "assert";
 import { parse } from "babylon";
 import { expect } from "chai";
 
-describe("path/ancestry", function () {
-  describe("isAncestor", function () {
+describe("path/ancestry", function() {
+  describe("isAncestor", function() {
     const ast = parse("var a = 1; 'a';");
 
     it("returns true if ancestor", function() {
@@ -15,7 +15,7 @@ describe("path/ancestry", function () {
         },
       });
 
-      const [ programPath, numberPath ] = paths;
+      const [programPath, numberPath] = paths;
 
       assert(programPath.isAncestor(numberPath));
     });
@@ -28,13 +28,13 @@ describe("path/ancestry", function () {
         },
       });
 
-      const [ , numberPath, stringPath ] = paths;
+      const [, numberPath, stringPath] = paths;
 
       assert(!stringPath.isAncestor(numberPath));
     });
   });
 
-  describe("isDescendant", function () {
+  describe("isDescendant", function() {
     const ast = parse("var a = 1; 'a';");
 
     it("returns true if descendant", function() {
@@ -45,7 +45,7 @@ describe("path/ancestry", function () {
         },
       });
 
-      const [ programPath, numberPath ] = paths;
+      const [programPath, numberPath] = paths;
 
       assert(numberPath.isDescendant(programPath));
     });
@@ -58,16 +58,16 @@ describe("path/ancestry", function () {
         },
       });
 
-      const [ , numberPath, stringPath ] = paths;
+      const [, numberPath, stringPath] = paths;
 
       assert(!numberPath.isDescendant(stringPath));
     });
   });
 
-  describe("getStatementParent", function () {
+  describe("getStatementParent", function() {
     const ast = parse("var a = 1;");
-    it("should throw", function () {
-      expect(function () {
+    it("should throw", function() {
+      expect(function() {
         traverse(ast, {
           Program(path) {
             path.getStatementParent();

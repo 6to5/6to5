@@ -7,7 +7,7 @@ import * as t from "babel-types";
 const FROM_TEMPLATE = "_fromTemplate"; //Symbol(); // todo: probably wont get copied over
 const TEMPLATE_SKIP = Symbol();
 
-export default function (code: string, opts?: Object): Function {
+export default function(code: string, opts?: Object): Function {
   // since we lazy parse the template, we get the current stack so we have the
   // original stack to append if it errors when parsing
   let stack;
@@ -22,21 +22,26 @@ export default function (code: string, opts?: Object): Function {
     }
   }
 
-  opts = Object.assign({
-    allowReturnOutsideFunction: true,
-    allowSuperOutsideMethod: true,
-    preserveComments: false,
-  }, opts);
+  opts = Object.assign(
+    {
+      allowReturnOutsideFunction: true,
+      allowSuperOutsideMethod: true,
+      preserveComments: false,
+    },
+    opts,
+  );
 
-  let getAst = function () {
+  let getAst = function() {
     let ast;
 
     try {
       ast = babylon.parse(code, opts);
 
-      ast = traverse.removeProperties(ast, { preserveComments: opts.preserveComments });
+      ast = traverse.removeProperties(ast, {
+        preserveComments: opts.preserveComments,
+      });
 
-      traverse.cheap(ast, function (node) {
+      traverse.cheap(ast, function(node) {
         node[FROM_TEMPLATE] = true;
       });
     } catch (err) {
@@ -44,14 +49,14 @@ export default function (code: string, opts?: Object): Function {
       throw err;
     }
 
-    getAst = function () {
+    getAst = function() {
       return ast;
     };
 
     return ast;
   };
 
-  return function (...args) {
+  return function(...args) {
     return useTemplate(getAst(), args);
   };
 }
@@ -105,7 +110,8 @@ const templateVisitor = {
   },
 
   exit({ node }) {
-    if (!node.loc)
-      {traverse.clearNode(node);}
+    if (!node.loc) {
+      traverse.clearNode(node);
+    }
   },
 };

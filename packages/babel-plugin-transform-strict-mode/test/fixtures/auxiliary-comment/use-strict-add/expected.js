@@ -1,3 +1,5 @@
-/*before*/"use strict";
+/*before*/
+"use strict";
 
-/*after*/foo();
+/*after*/
+foo();

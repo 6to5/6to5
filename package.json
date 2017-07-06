@@ -3,16 +3,17 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "test": "make test",
     "build": "make build",
+    "fix": "make fix",
     "lint": "make lint",
-    "fix": "make fix"
+    "precommit": "lint-staged",
+    "test": "make test"
   },
   "devDependencies": {
     "async": "^1.5.0",
     "babel-cli": "7.0.0-alpha.12",
     "babel-core": "7.0.0-alpha.12",
-    "babel-eslint": "^7.0.0",
+    "babel-eslint": "8.0.0-alpha.12",
     "babel-plugin-istanbul": "^2.0.1",
     "babel-preset-env": "2.0.0-alpha.12",
     "babel-preset-flow": "7.0.0-alpha.12",
@@ -24,9 +25,10 @@
     "chalk": "1.1.1",
     "codecov": "^1.0.1",
     "derequire": "^2.0.2",
-    "eslint": "^3.9.0",
-    "eslint-config-babel": "^6.0.0",
+    "eslint": "^3.14.1",
+    "eslint-config-babel": "^7.0.1",
     "eslint-plugin-flowtype": "^2.20.0",
+    "eslint-plugin-prettier": "^2.1.2",
     "flow-bin": "^0.41.0",
     "gulp": "^3.9.0",
     "gulp-babel": "babel/gulp-babel#b7-alpha",
@@ -34,12 +36,15 @@
     "gulp-plumber": "^1.0.1",
     "gulp-util": "^3.0.7",
     "gulp-watch": "^4.3.5",
+    "husky": "^0.13.2",
     "lerna": "2.0.0-rc.4",
     "lerna-changelog": "^0.2.0",
+    "lint-staged": "^3.6.1",
     "lodash": "^4.2.0",
     "mocha": "^3.0.0",
     "nyc": "^10.0.0",
     "output-file-sync": "^1.1.1",
+    "prettier": "1.5.0",
     "rimraf": "^2.4.3",
     "semver": "^5.0.0",
     "through2": "^2.0.0",
@@ -57,5 +62,11 @@
     ],
     "sourceMap": false,
     "instrument": false
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --format=codeframe --fix",
+      "git add"
+    ]
   }
 }

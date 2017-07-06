@@ -2,6 +2,7 @@ export default class App extends React.Component {
   render() {
     return _ref;
   }
+
 }
 
 var _ref2 = <div>child</div>;

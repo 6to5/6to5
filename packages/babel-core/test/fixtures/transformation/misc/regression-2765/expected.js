@@ -10,7 +10,7 @@ function f() {
       return _ref.apply(this, arguments);
     };
   }();
-};
+}
 
 class Class {
   m() {
@@ -28,4 +28,5 @@ class Class {
       }();
     })();
   }
+
 }

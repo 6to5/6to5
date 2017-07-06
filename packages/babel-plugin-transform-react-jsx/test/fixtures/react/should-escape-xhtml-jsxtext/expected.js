@@ -8,7 +8,6 @@ React.createElement(
   null,
   "w\xF4w"
 );
-
 React.createElement(
   "div",
   null,
@@ -19,7 +18,6 @@ React.createElement(
   null,
   "w & w"
 );
-
 React.createElement(
   "div",
   null,
@@ -41,7 +39,6 @@ React.createElement(
   "this should parse as unicode: ",
   '\u00a0 '
 );
-
 React.createElement(
   "div",
   null,

@@ -1,3 +1,6 @@
 import a from "assert";
 
-export default () => { a.foo(); return "b"; };
+export default () => {
+  a.foo();
+  return "b";
+};

@@ -22,48 +22,61 @@ const noMethodVisitor = {
   },
 };
 
-const verifyConstructorVisitor = visitors.merge([noMethodVisitor, {
-  Super(path) {
-    if (
-      this.isDerived && !this.hasBareSuper &&
-      !path.parentPath.isCallExpression({ callee: path.node })
-    ) {
-      const hasArrowFunctionParent = path.findParent((p) => p.isArrowFunctionExpression());
+const verifyConstructorVisitor = visitors.merge([
+  noMethodVisitor,
+  {
+    MemberExpression: {
+      exit(path) {
+        const objectPath = path.get("object");
+        if (this.isDerived && !this.hasBareSuper && objectPath.isSuper()) {
+          const hasArrowFunctionParent = path.findParent(p =>
+            p.isArrowFunctionExpression(),
+          );
+          if (!hasArrowFunctionParent) {
+            throw objectPath.buildCodeFrameError(
+              "'super.*' is not allowed before super()",
+            );
+          }
+        }
+      },
+    },
 
-      if (!hasArrowFunctionParent) {
-        throw path.buildCodeFrameError("'super.*' is not allowed before super()");
-      }
-    }
-  },
+    CallExpression: {
+      exit(path) {
+        if (path.get("callee").isSuper()) {
+          this.hasBareSuper = true;
 
-  CallExpression: {
-    exit(path) {
-      if (path.get("callee").isSuper()) {
-        this.hasBareSuper = true;
+          if (!this.isDerived) {
+            throw path.buildCodeFrameError(
+              "super() is only allowed in a derived constructor",
+            );
+          }
+        }
+      },
+    },
 
-        if (!this.isDerived) {
-          throw path.buildCodeFrameError("super() is only allowed in a derived constructor");
+    ThisExpression(path) {
+      if (this.isDerived && !this.hasBareSuper) {
+        const fn = path.find(p => p.isFunction());
+
+        if (!fn || !fn.isArrowFunctionExpression()) {
+          throw path.buildCodeFrameError(
+            "'this' is not allowed before super()",
+          );
         }
       }
     },
   },
+]);
 
-  ThisExpression(path) {
-    if (this.isDerived && !this.hasBareSuper) {
-      const fn = path.find((p) => p.isFunction());
-
-      if (!fn || !fn.isArrowFunctionExpression()) {
-        throw path.buildCodeFrameError("'this' is not allowed before super()");
-      }
-    }
+const findThisesVisitor = visitors.merge([
+  noMethodVisitor,
+  {
+    ThisExpression(path) {
+      this.superThises.push(path);
+    },
   },
-}]);
-
-const findThisesVisitor = visitors.merge([noMethodVisitor, {
-  ThisExpression(path) {
-    this.superThises.push(path);
-  },
-}]);
+]);
 
 export default class ClassTransformer {
   constructor(path: NodePath, file) {
@@ -93,8 +106,9 @@ export default class ClassTransformer {
     this.classId = this.node.id;
 
     // this is the name of the binding that will **always** reference the class we've constructed
-    this.classRef = this.node.id ? t.identifier(this.node.id.name) :
-      this.scope.generateUidIdentifier("class");
+    this.classRef = this.node.id
+      ? t.identifier(this.node.id.name)
+      : this.scope.generateUidIdentifier("class");
 
     this.superName = this.node.superClass || t.identifier("Function");
     this.isDerived = !!this.node.superClass;
@@ -107,7 +121,7 @@ export default class ClassTransformer {
 
     //
 
-    const constructorBody = this.constructorBody = t.blockStatement([]);
+    const constructorBody = (this.constructorBody = t.blockStatement([]));
     this.constructor = this.buildConstructor();
 
     //
@@ -128,15 +142,19 @@ export default class ClassTransformer {
     //
     this.buildBody();
 
-    // make sure this class isn't directly called
-    constructorBody.body.unshift(t.expressionStatement(t.callExpression(
-      file.addHelper("classCallCheck"), [
-        t.thisExpression(),
-        this.classRef,
-      ]
-    )));
+    // make sure this class isn't directly called (with A() instead new A())
+    if (!this.isLoose) {
+      constructorBody.body.unshift(
+        t.expressionStatement(
+          t.callExpression(file.addHelper("classCallCheck"), [
+            t.thisExpression(),
+            this.classRef,
+          ]),
+        ),
+      );
+    }
 
-    body = body.concat(this.staticPropBody.map((fn) => fn(this.classRef)));
+    body = body.concat(this.staticPropBody.map(fn => fn(this.classRef)));
 
     if (this.classId) {
       // named class with only a constructor
@@ -146,7 +164,10 @@ export default class ClassTransformer {
     //
     body.push(t.returnStatement(this.classRef));
 
-    const container = t.arrowFunctionExpression(closureParams, t.blockStatement(body));
+    const container = t.arrowFunctionExpression(
+      closureParams,
+      t.blockStatement(body),
+    );
     return t.callExpression(container, closureArgs);
   }
 
@@ -200,12 +221,12 @@ export default class ClassTransformer {
       body = t.blockStatement([]);
     }
 
-    this.path.get("body").unshiftContainer("body", t.classMethod(
-      "constructor",
-      t.identifier("constructor"),
-      params,
-      body
-    ));
+    this.path
+      .get("body")
+      .unshiftContainer(
+        "body",
+        t.classMethod("constructor", t.identifier("constructor"), params, body),
+      );
   }
 
   buildBody() {
@@ -215,7 +236,9 @@ export default class ClassTransformer {
 
     if (this.userConstructor) {
       const constructorBody = this.constructorBody;
-      constructorBody.body = constructorBody.body.concat(this.userConstructor.body.body);
+      constructorBody.body = constructorBody.body.concat(
+        this.userConstructor.body.body,
+      );
       t.inherits(this.constructor, this.userConstructor);
       t.inherits(constructorBody, this.userConstructor.body);
     }
@@ -235,7 +258,8 @@ export default class ClassTransformer {
 
       if (node.decorators) {
         throw path.buildCodeFrameError(
-          "Method has decorators, put the decorator plugin before the classes one.");
+          "Method has decorators, put the decorator plugin before the classes one.",
+        );
       }
 
       if (t.isClassMethod(node)) {
@@ -245,21 +269,26 @@ export default class ClassTransformer {
           path.traverse(verifyConstructorVisitor, this);
 
           if (!this.hasBareSuper && this.isDerived) {
-            throw path.buildCodeFrameError("missing super() call in constructor");
+            throw path.buildCodeFrameError(
+              "missing super() call in constructor",
+            );
           }
         }
 
-        const replaceSupers = new ReplaceSupers({
-          forceSuperMemoisation: isConstructor,
-          methodPath: path,
-          methodNode: node,
-          objectRef: this.classRef,
-          superRef: this.superName,
-          isStatic: node.static,
-          isLoose: this.isLoose,
-          scope: this.scope,
-          file: this.file,
-        }, true);
+        const replaceSupers = new ReplaceSupers(
+          {
+            forceSuperMemoisation: isConstructor,
+            methodPath: path,
+            methodNode: node,
+            objectRef: this.classRef,
+            superRef: this.superName,
+            isStatic: node.static,
+            isLoose: this.isLoose,
+            scope: this.scope,
+            file: this.file,
+          },
+          true,
+        );
 
         replaceSupers.replace();
 
@@ -297,8 +326,12 @@ export default class ClassTransformer {
     }
 
     if (instanceProps || staticProps) {
-      if (instanceProps) instanceProps = defineMap.toComputedObjectFromClass(instanceProps);
-      if (staticProps) staticProps = defineMap.toComputedObjectFromClass(staticProps);
+      if (instanceProps) {
+        instanceProps = defineMap.toComputedObjectFromClass(instanceProps);
+      }
+      if (staticProps) {
+        staticProps = defineMap.toComputedObjectFromClass(staticProps);
+      }
 
       const nullNode = t.nullLiteral();
 
@@ -329,10 +362,11 @@ export default class ClassTransformer {
       }
       args = args.slice(0, lastNonNullIndex + 1);
 
-
-      body.push(t.expressionStatement(
-        t.callExpression(this.file.addHelper("createClass"), args)
-      ));
+      body.push(
+        t.expressionStatement(
+          t.callExpression(this.file.addHelper("createClass"), args),
+        ),
+      );
     }
 
     this.clearDescriptors();
@@ -352,13 +386,21 @@ export default class ClassTransformer {
       if (
         bareSuperNode.arguments.length === 2 &&
         t.isSpreadElement(bareSuperNode.arguments[1]) &&
-        t.isIdentifier(bareSuperNode.arguments[1].argument, { name: "arguments" })
+        t.isIdentifier(bareSuperNode.arguments[1].argument, {
+          name: "arguments",
+        })
       ) {
         // special case single arguments spread
         bareSuperNode.arguments[1] = bareSuperNode.arguments[1].argument;
-        bareSuperNode.callee = t.memberExpression(superRef, t.identifier("apply"));
+        bareSuperNode.callee = t.memberExpression(
+          superRef,
+          t.identifier("apply"),
+        );
       } else {
-        bareSuperNode.callee = t.memberExpression(superRef, t.identifier("call"));
+        bareSuperNode.callee = t.memberExpression(
+          superRef,
+          t.identifier("call"),
+        );
       }
     } else {
       bareSuperNode = optimiseCall(
@@ -366,21 +408,30 @@ export default class ClassTransformer {
           "||",
           t.memberExpression(this.classRef, t.identifier("__proto__")),
           t.callExpression(
-            t.memberExpression(t.identifier("Object"), t.identifier("getPrototypeOf")),
-            [this.classRef]
-          )
+            t.memberExpression(
+              t.identifier("Object"),
+              t.identifier("getPrototypeOf"),
+            ),
+            [this.classRef],
+          ),
         ),
         t.thisExpression(),
-        bareSuperNode.arguments
+        bareSuperNode.arguments,
       );
     }
 
-    let call = t.callExpression(
-      this.file.addHelper("possibleConstructorReturn"),
-      [t.thisExpression(), bareSuperNode]
-    );
+    let call;
 
-    const bareSuperAfter = this.bareSuperAfter.map((fn) => fn(thisRef));
+    if (this.isLoose) {
+      call = t.logicalExpression("||", bareSuperNode, t.thisExpression());
+    } else {
+      call = t.callExpression(
+        this.file.addHelper("possibleConstructorReturn"),
+        [t.thisExpression(), bareSuperNode],
+      );
+    }
+
+    const bareSuperAfter = this.bareSuperAfter.map(fn => fn(thisRef));
 
     if (
       bareSuper.parentPath.isExpressionStatement() &&
@@ -402,14 +453,11 @@ export default class ClassTransformer {
       bareSuper.parentPath.replaceWith(t.returnStatement(call));
     } else {
       bareSuper.replaceWithMultiple([
-        t.variableDeclaration("var", [
-          t.variableDeclarator(thisRef, call),
-        ]),
+        t.variableDeclaration("var", [t.variableDeclarator(thisRef, call)]),
         ...bareSuperAfter,
         t.expressionStatement(thisRef),
       ]);
     }
-
   }
 
   verifyConstructor() {
@@ -429,7 +477,7 @@ export default class ClassTransformer {
       this.wrapSuperCall(bareSuper, superRef, thisRef, body);
 
       if (guaranteedSuperBeforeFinish) {
-        bareSuper.find(function (parentPath) {
+        bareSuper.find(function(parentPath) {
           // hit top so short circuit
           if (parentPath === path) {
             return true;
@@ -447,26 +495,41 @@ export default class ClassTransformer {
       thisPath.replaceWith(thisRef);
     }
 
-    const wrapReturn = (returnArg) => t.callExpression(
-      this.file.addHelper("possibleConstructorReturn"),
-      [thisRef].concat(returnArg || [])
-    );
+    let wrapReturn;
+
+    if (this.isLoose) {
+      wrapReturn = returnArg => {
+        return returnArg
+          ? t.logicalExpression("||", returnArg, thisRef)
+          : thisRef;
+      };
+    } else {
+      wrapReturn = returnArg =>
+        t.callExpression(
+          this.file.addHelper("possibleConstructorReturn"),
+          [thisRef].concat(returnArg || []),
+        );
+    }
 
     // if we have a return as the last node in the body then we've already caught that
     // return
     const bodyPaths = body.get("body");
     if (bodyPaths.length && !bodyPaths.pop().isReturnStatement()) {
-      body.pushContainer("body", t.returnStatement(
-        guaranteedSuperBeforeFinish ? thisRef : wrapReturn()));
+      body.pushContainer(
+        "body",
+        t.returnStatement(guaranteedSuperBeforeFinish ? thisRef : wrapReturn()),
+      );
     }
 
     for (const returnPath of this.superReturns) {
       if (returnPath.node.argument) {
         const ref = returnPath.scope.generateDeclaredUidIdentifier("ret");
-        returnPath.get("argument").replaceWithMultiple([
-          t.assignmentExpression("=", ref, returnPath.node.argument),
-          wrapReturn(ref),
-        ]);
+        returnPath
+          .get("argument")
+          .replaceWithMultiple([
+            t.assignmentExpression("=", ref, returnPath.node.argument),
+            wrapReturn(ref),
+          ]);
       } else {
         returnPath.get("argument").replaceWith(wrapReturn());
       }
@@ -495,7 +558,11 @@ export default class ClassTransformer {
    * Replace the constructor body of our class.
    */
 
-  pushConstructor(replaceSupers, method: { type: "ClassMethod" }, path: NodePath) {
+  pushConstructor(
+    replaceSupers,
+    method: { type: "ClassMethod" },
+    path: NodePath,
+  ) {
     this.bareSupers = replaceSupers.bareSupers;
     this.superReturns = replaceSupers.returns;
 
@@ -546,9 +613,15 @@ export default class ClassTransformer {
     // Unshift to ensure that the constructor inheritance is set up before
     // any properties can be assigned to the prototype.
     this.pushedInherits = true;
-    this.body.unshift(t.expressionStatement(t.callExpression(
-      this.file.addHelper("inherits"),
-      [this.classRef, this.superName]
-    )));
+    this.body.unshift(
+      t.expressionStatement(
+        t.callExpression(
+          this.isLoose
+            ? this.file.addHelper("inheritsLoose")
+            : this.file.addHelper("inherits"),
+          [this.classRef, this.superName],
+        ),
+      ),
+    );
   }
 }

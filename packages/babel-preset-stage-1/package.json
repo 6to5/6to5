@@ -11,6 +11,7 @@
     "babel-plugin-transform-decorators": "7.0.0-alpha.12",
     "babel-plugin-transform-export-extensions": "7.0.0-alpha.12",
     "babel-plugin-transform-numeric-separator": "7.0.0-alpha.12",
+    "babel-plugin-transform-optional-chaining": "7.0.0-alpha.13",
     "babel-preset-stage-2": "7.0.0-alpha.12"
   }
 }

@@ -1,9 +1,7 @@
 "use strict";
 
 var C = function () {
-  function C() {
-    babelHelpers.classCallCheck(this, C);
-  }
+  function C() {}
 
   C.prototype.m = function m(x) {
     return 'a';

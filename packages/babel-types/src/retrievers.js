@@ -7,7 +7,7 @@ import * as t from "./index";
 export function getBindingIdentifiers(
   node: Object,
   duplicates?: boolean,
-  outerOnly?: boolean
+  outerOnly?: boolean,
 ): Object {
   let search = [].concat(node);
   const ids = Object.create(null);
@@ -20,7 +20,7 @@ export function getBindingIdentifiers(
 
     if (t.isIdentifier(id)) {
       if (duplicates) {
-        const _ids = ids[id.name] = ids[id.name] || [];
+        const _ids = (ids[id.name] = ids[id.name] || []);
         _ids.push(id);
       } else {
         ids[id.name] = id;

@@ -9,7 +9,6 @@
   "main": "lib/index.js",
   "dependencies": {
     "babel-plugin-transform-class-properties": "7.0.0-alpha.12",
-    "babel-plugin-transform-unicode-property-regex": "^2.0.0",
     "babel-preset-stage-3": "7.0.0-alpha.12"
   }
 }

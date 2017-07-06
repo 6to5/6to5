@@ -4,7 +4,7 @@ export function _params(node: Object) {
   this.print(node.typeParameters, node);
   this.token("(");
   this.printList(node.params, node, {
-    iterator: (node) => {
+    iterator: node => {
       if (node.optional) this.token("?");
       this.print(node.typeAnnotation, node);
     },
@@ -79,7 +79,11 @@ export function ArrowFunctionExpression(node: Object) {
 
   const firstParam = node.params[0];
 
-  if (node.params.length === 1 && t.isIdentifier(firstParam) && !hasTypes(node, firstParam)) {
+  if (
+    node.params.length === 1 &&
+    t.isIdentifier(firstParam) &&
+    !hasTypes(node, firstParam)
+  ) {
     this.print(firstParam, node);
   } else {
     this._params(node);
@@ -93,6 +97,11 @@ export function ArrowFunctionExpression(node: Object) {
 }
 
 function hasTypes(node, param) {
-  return node.typeParameters || node.returnType || param.typeAnnotation || param.optional ||
-    param.trailingComments;
+  return (
+    node.typeParameters ||
+    node.returnType ||
+    param.typeAnnotation ||
+    param.optional ||
+    param.trailingComments
+  );
 }

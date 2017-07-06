@@ -9,7 +9,6 @@ var _templateObject = _taggedTemplateLiteralLoose([void 0], ["\\unicode and \\u{
 function _taggedTemplateLiteralLoose(strings, raw) { strings.raw = raw; return strings; }
 
 tag(_templateObject);
-
 tag(_templateObject2);
 tag(_templateObject3, 0);
 tag(_templateObject4, 0);

@@ -2,11 +2,17 @@ import * as babel from "../lib/index";
 import assert from "assert";
 import path from "path";
 
-const decoratorsPlugin = require.resolve("../../babel-plugin-transform-class-properties");
-const classPropertiesPlugin = require.resolve("../../babel-plugin-transform-decorators");
-const functionBindPlugin = require.resolve("../../babel-plugin-transform-function-bind");
+const decoratorsPlugin = require.resolve(
+  "../../babel-plugin-transform-class-properties",
+);
+const classPropertiesPlugin = require.resolve(
+  "../../babel-plugin-transform-decorators",
+);
+const functionBindPlugin = require.resolve(
+  "../../babel-plugin-transform-function-bind",
+);
 
-describe("plugin ordering", function () {
+describe("plugin ordering", function() {
   it("reorders for class properties and decorators", function() {
     const code = `
       function myDecorator() {}
@@ -22,24 +28,18 @@ describe("plugin ordering", function () {
     `;
 
     const res1 = babel.transform(code, {
-      plugins: [
-        decoratorsPlugin,
-        classPropertiesPlugin,
-      ],
+      plugins: [decoratorsPlugin, classPropertiesPlugin],
     });
 
     const res2 = babel.transform(code, {
-      plugins: [
-        classPropertiesPlugin,
-        decoratorsPlugin,
-      ],
+      plugins: [classPropertiesPlugin, decoratorsPlugin],
     });
 
     assert.equal(res1.code, res2.code);
   });
 });
 
-describe("plugin ordering with unordered plugin", function () {
+describe("plugin ordering with unordered plugin", function() {
   it("reorders correctly with an unordered plugin", function() {
     const code = `
       function myDecorator() {}
@@ -55,19 +55,11 @@ describe("plugin ordering with unordered plugin", function () {
     `;
 
     const res1 = babel.transform(code, {
-      plugins: [
-        decoratorsPlugin,
-        classPropertiesPlugin,
-        functionBindPlugin,
-      ],
+      plugins: [decoratorsPlugin, classPropertiesPlugin, functionBindPlugin],
     });
 
     const res2 = babel.transform(code, {
-      plugins: [
-        functionBindPlugin,
-        classPropertiesPlugin,
-        decoratorsPlugin,
-      ],
+      plugins: [functionBindPlugin, classPropertiesPlugin, decoratorsPlugin],
     });
 
     assert.equal(res1.code, res2.code);
@@ -80,7 +72,10 @@ it("complex plugin and preset ordering", function() {
       name: name,
       visitor: {
         Program(path) {
-          path.pushContainer("body", babel.types.expressionStatement(babel.types.identifier(name)));
+          path.pushContainer(
+            "body",
+            babel.types.expressionStatement(babel.types.identifier(name)),
+          );
         },
       },
     };
@@ -91,55 +86,55 @@ it("complex plugin and preset ordering", function() {
   }
 
   const result = babel.transform("", {
-    filename: path.join(__dirname, "fixtures", "config", "complex-plugin-config", "file.js"),
-    presets: [
-      pushPreset("argone"),
-      pushPreset("argtwo"),
-    ],
+    filename: path.join(
+      __dirname,
+      "fixtures",
+      "config",
+      "complex-plugin-config",
+      "file.js",
+    ),
+    presets: [pushPreset("argone"), pushPreset("argtwo")],
     env: {
       development: {
-        presets: [
-          pushPreset("argthree"),
-          pushPreset("argfour"),
-        ],
+        presets: [pushPreset("argthree"), pushPreset("argfour")],
         env: {
           development: {
-            presets: [
-              pushPreset("argfive"),
-              pushPreset("argsix"),
-            ],
+            presets: [pushPreset("argfive"), pushPreset("argsix")],
           },
         },
       },
     },
   });
 
-  assert.equal(result.code, [
-    "argsix;",
-    "argfive;",
-    "argfour;",
-    "argthree;",
-    "argtwo;",
-    "argone;",
-    "one;",
-    "two;",
-    "three;",
-    "four;",
-    "five;",
-    "six;",
-    "seven;",
-    "eight;",
-    "nine;",
-    "ten;",
-    "eleven;",
-    "twelve;",
-    "thirteen;",
-    "fourteen;",
-    "fifteen;",
-    "sixteen;",
-    "seventeen;",
-    "eighteen;",
-    "nineteen;",
-    "twenty;",
-  ].join("\n"));
+  assert.equal(
+    result.code,
+    [
+      "argsix;",
+      "argfive;",
+      "argfour;",
+      "argthree;",
+      "argtwo;",
+      "argone;",
+      "one;",
+      "two;",
+      "three;",
+      "four;",
+      "five;",
+      "six;",
+      "seven;",
+      "eight;",
+      "nine;",
+      "ten;",
+      "eleven;",
+      "twelve;",
+      "thirteen;",
+      "fourteen;",
+      "fifteen;",
+      "sixteen;",
+      "seventeen;",
+      "eighteen;",
+      "nineteen;",
+      "twenty;",
+    ].join("\n"),
+  );
 });

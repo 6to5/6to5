@@ -1,0 +1,5 @@
+{
+  "rules": {
+    "prettier/prettier": ["error", { "trailingComma": "all" }]
+  }
+}

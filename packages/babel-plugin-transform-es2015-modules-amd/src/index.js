@@ -12,7 +12,7 @@ const buildFactory = template(`
   })
 `);
 
-export default function ({ types: t }) {
+export default function({ types: t }) {
   function isValidRequireCall(path) {
     if (!path.isCallExpression()) return false;
     if (!path.get("callee").isIdentifier({ name: "require" })) return false;
@@ -46,7 +46,7 @@ export default function ({ types: t }) {
       params.unshift(source[0]);
     }
 
-    return [ params, sources];
+    return [params, sources];
   }
 
   const amdVisitor = {
@@ -63,7 +63,9 @@ export default function ({ types: t }) {
     CallExpression(path) {
       if (!isValidRequireCall(path)) return;
       const source = path.node.arguments[0];
-      const ref = path.scope.generateUidIdentifier(basename(source.value, extname(source.value)));
+      const ref = path.scope.generateUidIdentifier(
+        basename(source.value, extname(source.value)),
+      );
       this.sources.push([ref, source, true]);
       path.remove();
     },
@@ -103,7 +105,7 @@ export default function ({ types: t }) {
 
           path.traverse(amdVisitor, this);
 
-          const [params, sources ] = buildParamsAndSource(this.sources);
+          const [params, sources] = buildParamsAndSource(this.sources);
 
           let moduleName = this.getModuleName();
           if (moduleName) moduleName = t.stringLiteral(moduleName);
@@ -126,11 +128,13 @@ export default function ({ types: t }) {
           factory.expression.body.directives = node.directives;
           node.directives = [];
 
-          node.body = [buildDefine({
-            MODULE_NAME: moduleName,
-            SOURCES: sources,
-            FACTORY: factory,
-          })];
+          node.body = [
+            buildDefine({
+              MODULE_NAME: moduleName,
+              SOURCES: sources,
+              FACTORY: factory,
+            }),
+          ];
         },
       },
     },

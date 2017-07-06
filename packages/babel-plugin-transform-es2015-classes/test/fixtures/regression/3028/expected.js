@@ -19,6 +19,7 @@ var a1 = function (_b) {
     _this.x = function () {
       return _this;
     };
+
     return _this;
   }
 
@@ -36,6 +37,7 @@ var a2 = function (_b2) {
     _this2.x = function () {
       return _this2;
     };
+
     return _this2;
   }
 

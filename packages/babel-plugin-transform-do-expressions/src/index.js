@@ -1,6 +1,6 @@
 import syntaxDoExpressions from "babel-plugin-syntax-do-expressions";
 
-export default function () {
+export default function() {
   return {
     inherits: syntaxDoExpressions,
 

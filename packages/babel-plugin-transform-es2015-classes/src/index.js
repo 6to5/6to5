@@ -2,7 +2,7 @@ import LooseTransformer from "./loose";
 import VanillaTransformer from "./vanilla";
 import nameFunction from "babel-helper-function-name";
 
-export default function ({ types: t }) {
+export default function({ types: t }) {
   // todo: investigate traversal requeueing
   const VISITED = Symbol();
 
@@ -12,15 +12,17 @@ export default function ({ types: t }) {
         if (!path.get("declaration").isClassDeclaration()) return;
 
         const { node } = path;
-        const ref = node.declaration.id || path.scope.generateUidIdentifier("class");
+        const ref =
+          node.declaration.id || path.scope.generateUidIdentifier("class");
         node.declaration.id = ref;
 
         // Split the class declaration and the export into two separate statements.
         path.replaceWith(node.declaration);
-        path.insertAfter(t.exportNamedDeclaration(
-          null,
-          [t.exportSpecifier(ref, t.identifier("default"))]
-        ));
+        path.insertAfter(
+          t.exportNamedDeclaration(null, [
+            t.exportSpecifier(ref, t.identifier("default")),
+          ]),
+        );
       },
 
       ClassDeclaration(path) {
@@ -28,9 +30,11 @@ export default function ({ types: t }) {
 
         const ref = node.id || path.scope.generateUidIdentifier("class");
 
-        path.replaceWith(t.variableDeclaration("let", [
-          t.variableDeclarator(ref, t.toExpression(node)),
-        ]));
+        path.replaceWith(
+          t.variableDeclaration("let", [
+            t.variableDeclarator(ref, t.toExpression(node)),
+          ]),
+        );
       },
 
       ClassExpression(path, state) {
@@ -47,7 +51,10 @@ export default function ({ types: t }) {
 
         path.replaceWith(new Constructor(path, state.file).run());
 
-        if (path.isCallExpression() && path.get("callee").isArrowFunctionExpression()) {
+        if (
+          path.isCallExpression() &&
+          path.get("callee").isArrowFunctionExpression()
+        ) {
           path.get("callee").arrowFunctionToExpression();
         }
       },

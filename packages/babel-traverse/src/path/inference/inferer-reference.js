@@ -1,7 +1,7 @@
 import type NodePath from "../index";
 import * as t from "babel-types";
 
-export default function (node: Object) {
+export default function(node: Object) {
   if (!this.isReferenced()) return;
 
   // check if a binding exists of this value and if so then return a union type of all
@@ -32,14 +32,23 @@ function getTypeAnnotationBindingConstantViolations(path, name) {
   path.typeAnnotation = t.unionTypeAnnotation(types);
 
   const functionConstantViolations = [];
-  let constantViolations = getConstantViolationsBefore(binding, path, functionConstantViolations);
+  let constantViolations = getConstantViolationsBefore(
+    binding,
+    path,
+    functionConstantViolations,
+  );
 
   const testType = getConditionalAnnotation(path, name);
   if (testType) {
-    const testConstantViolations = getConstantViolationsBefore(binding, testType.ifStatement);
+    const testConstantViolations = getConstantViolationsBefore(
+      binding,
+      testType.ifStatement,
+    );
 
     // remove constant violations observed before the IfStatement
-    constantViolations = constantViolations.filter((path) => testConstantViolations.indexOf(path) < 0);
+    constantViolations = constantViolations.filter(
+      path => testConstantViolations.indexOf(path) < 0,
+    );
 
     // clear current types and add in observed test type
     types.push(testType.typeAnnotation);
@@ -89,7 +98,7 @@ function getTypeAnnotationBindingConstantViolations(path, name) {
 function getConstantViolationsBefore(binding, path, functions) {
   const violations = binding.constantViolations.slice();
   violations.unshift(binding.path);
-  return violations.filter((violation) => {
+  return violations.filter(violation => {
     violation = violation.resolve();
     const status = violation._guessExecutionStatusRelativeTo(path);
     if (functions && status === "function") functions.push(violation);
@@ -150,7 +159,7 @@ function inferAnnotationFromBinaryExpression(name, path) {
 
 function getParentConditionalPath(path) {
   let parentPath;
-  while (parentPath = path.parentPath) {
+  while ((parentPath = path.parentPath)) {
     if (parentPath.isIfStatement() || parentPath.isConditionalExpression()) {
       if (path.key === "test") {
         return;

@@ -25,8 +25,8 @@ let s = (() => {
             return _ref3.apply(this, arguments);
           };
         })();
-        yield r();
 
+        yield r();
         console.log(_this, args, _arguments);
         return _this.g(r);
       });

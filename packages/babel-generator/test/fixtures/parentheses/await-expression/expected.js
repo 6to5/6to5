@@ -9,5 +9,7 @@ async function asdf() {
 }
 
 async function a(b) {
-  (await xhr({ url: "views/test.html" })).data;
+  (await xhr({
+    url: "views/test.html"
+  })).data;
 }

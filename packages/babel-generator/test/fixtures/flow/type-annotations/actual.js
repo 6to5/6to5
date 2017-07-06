@@ -35,6 +35,8 @@ class Foo {
   get fooProp(): number {}
 }
 var numVal: number;
+var numVal: empty;
+var numVal: mixed;
 var numVal: number = otherNumVal;
 var a: { numVal: number };
 var a: { numVal: number; };
@@ -103,8 +105,8 @@ import { type Foo as Bar } from "bar";
 import { typeof Foo as Bar } from "bar";
 export type { foo };
 export type { bar } from "bar";
-export interface baz { p: number };
-export interface qux<T> { p: T };
+export interface baz { p: number }
+export interface qux<T> { p: T }
 var a: ?Array<?string>;
 var a: {| numVal: number |};
 var a: {| numVal: number; |};

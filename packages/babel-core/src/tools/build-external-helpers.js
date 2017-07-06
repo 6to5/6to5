@@ -20,17 +20,29 @@ const buildUmdWrapper = template(`
 
 function buildGlobal(namespace, builder) {
   const body = [];
-  const container = t.functionExpression(null, [t.identifier("global")], t.blockStatement(body));
+  const container = t.functionExpression(
+    null,
+    [t.identifier("global")],
+    t.blockStatement(body),
+  );
   const tree = t.program([
-    t.expressionStatement(t.callExpression(container, [helpers.get("selfGlobal")]))]);
-
-  body.push(t.variableDeclaration("var", [
-    t.variableDeclarator(
-      namespace,
-      t.assignmentExpression("=", t.memberExpression(t.identifier("global"), namespace),
-        t.objectExpression([]))
+    t.expressionStatement(
+      t.callExpression(container, [helpers.get("selfGlobal")]),
     ),
-  ]));
+  ]);
+
+  body.push(
+    t.variableDeclaration("var", [
+      t.variableDeclarator(
+        namespace,
+        t.assignmentExpression(
+          "=",
+          t.memberExpression(t.identifier("global"), namespace),
+          t.objectExpression([]),
+        ),
+      ),
+    ]),
+  );
 
   builder(body);
 
@@ -39,9 +51,11 @@ function buildGlobal(namespace, builder) {
 
 function buildUmd(namespace, builder) {
   const body = [];
-  body.push(t.variableDeclaration("var", [
-    t.variableDeclarator(namespace, t.identifier("global")),
-  ]));
+  body.push(
+    t.variableDeclaration("var", [
+      t.variableDeclarator(namespace, t.identifier("global")),
+    ]),
+  );
 
   builder(body);
 
@@ -51,7 +65,7 @@ function buildUmd(namespace, builder) {
       BROWSER_ARGUMENTS: t.assignmentExpression(
         "=",
         t.memberExpression(t.identifier("root"), namespace),
-        t.objectExpression([])
+        t.objectExpression([]),
       ),
       COMMON_ARGUMENTS: t.identifier("exports"),
       AMD_ARGUMENTS: t.arrayExpression([t.stringLiteral("exports")]),
@@ -63,31 +77,39 @@ function buildUmd(namespace, builder) {
 
 function buildVar(namespace, builder) {
   const body = [];
-  body.push(t.variableDeclaration("var", [
-    t.variableDeclarator(namespace, t.objectExpression([])),
-  ]));
+  body.push(
+    t.variableDeclaration("var", [
+      t.variableDeclarator(namespace, t.objectExpression([])),
+    ]),
+  );
   builder(body);
   body.push(t.expressionStatement(namespace));
   return t.program(body);
 }
 
 function buildHelpers(body, namespace, whitelist) {
-  helpers.list.forEach(function (name) {
+  helpers.list.forEach(function(name) {
     if (whitelist && whitelist.indexOf(name) < 0) return;
 
     const key = t.identifier(name);
-    body.push(t.expressionStatement(
-      t.assignmentExpression("=", t.memberExpression(namespace, key), helpers.get(name))
-    ));
+    body.push(
+      t.expressionStatement(
+        t.assignmentExpression(
+          "=",
+          t.memberExpression(namespace, key),
+          helpers.get(name),
+        ),
+      ),
+    );
   });
 }
-export default function (
+export default function(
   whitelist?: Array<string>,
   outputType: "global" | "umd" | "var" = "global",
 ) {
   const namespace = t.identifier("babelHelpers");
 
-  const builder = function (body) {
+  const builder = function(body) {
     return buildHelpers(body, namespace, whitelist);
   };
 

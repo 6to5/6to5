@@ -9,4 +9,5 @@ class C {
       return 3;
     })();
   }
+
 }

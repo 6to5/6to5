@@ -2,19 +2,31 @@
 {
   hasPrev;
   /* top */
-  /* left */ /* right */
+
+  /* left */
+
+  /* right */
+
   /* bottom */
 }
 {
   /* top */
-  /* left */ /* right */
+
+  /* left */
+
+  /* right */
+
   /* bottom */
   hasNext;
 }
 {
   hasPrev;
   /* top */
-  /* left */ /* right */
+
+  /* left */
+
+  /* right */
+
   /* bottom */
   hasNext;
 }

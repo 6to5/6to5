@@ -4,7 +4,6 @@ import _Symbol from "foo/core-js/symbol";
 var _marked = [giveWord].map(_regeneratorRuntime.mark);
 
 import foo, * as bar from "someModule";
-
 export const myWord = _Symbol("abc");
 export function giveWord() {
   return _regeneratorRuntime.wrap(function giveWord$(_context) {
@@ -19,6 +18,5 @@ export function giveWord() {
     }
   }, _marked[0], this);
 }
-
 foo;
 bar;

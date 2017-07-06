@@ -5,7 +5,11 @@ import * as t from "babel-types";
 import File from "./file";
 import loadConfig from "../config";
 
-export function analyse(code: string, opts: Object = {}, visitor?: Object): ?BabelFileMetadata {
+export function analyse(
+  code: string,
+  opts: Object = {},
+  visitor?: Object,
+): ?BabelFileMetadata {
   opts.code = false;
   if (visitor) {
     opts.plugins = opts.plugins || [];
@@ -19,14 +23,18 @@ export function transform(code: string, opts?: Object): BabelFileResult {
   if (config === null) return null;
 
   const file = new File(config);
-  return file.wrap(code, function () {
+  return file.wrap(code, function() {
     file.addCode(code);
     file.parseCode(code);
     return file.transform();
   });
 }
 
-export function transformFromAst(ast: Object, code: string, opts: Object): BabelFileResult {
+export function transformFromAst(
+  ast: Object,
+  code: string,
+  opts: Object,
+): BabelFileResult {
   const config = loadConfig(opts);
   if (config === null) return null;
 
@@ -37,14 +45,18 @@ export function transformFromAst(ast: Object, code: string, opts: Object): Babel
   }
 
   const file = new File(config);
-  return file.wrap(code, function () {
+  return file.wrap(code, function() {
     file.addCode(code);
     file.addAst(ast);
     return file.transform();
   });
 }
 
-export function transformFile(filename: string, opts?: Object, callback: Function) {
+export function transformFile(
+  filename: string,
+  opts?: Object,
+  callback: Function,
+) {
   if (typeof opts === "function") {
     callback = opts;
     opts = {};
@@ -54,13 +66,13 @@ export function transformFile(filename: string, opts?: Object, callback: Functio
   const config = loadConfig(opts);
   if (config === null) return callback(null, null);
 
-  fs.readFile(filename, function (err, code) {
+  fs.readFile(filename, function(err, code) {
     let result;
 
     if (!err) {
       try {
         const file = new File(config);
-        result = file.wrap(code, function () {
+        result = file.wrap(code, function() {
           file.addCode(code);
           file.parseCode(code);
           return file.transform();
@@ -78,7 +90,10 @@ export function transformFile(filename: string, opts?: Object, callback: Functio
   });
 }
 
-export function transformFileSync(filename: string, opts?: Object = {}): string {
+export function transformFileSync(
+  filename: string,
+  opts?: Object = {},
+): string {
   opts.filename = filename;
   const config = loadConfig(opts);
   if (config === null) return null;
@@ -86,7 +101,7 @@ export function transformFileSync(filename: string, opts?: Object = {}): string 
   const code = fs.readFileSync(filename, "utf8");
   const file = new File(config);
 
-  return file.wrap(code, function () {
+  return file.wrap(code, function() {
     file.addCode(code);
     file.parseCode(code);
     return file.transform();

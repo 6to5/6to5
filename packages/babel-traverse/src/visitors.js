@@ -91,7 +91,9 @@ export function explode(visitor) {
 
     const deprecratedKey = t.DEPRECATED_KEYS[nodeType];
     if (deprecratedKey) {
-      console.trace(`Visitor defined for ${nodeType} but it has been renamed to ${deprecratedKey}`);
+      console.trace(
+        `Visitor defined for ${nodeType} but it has been renamed to ${deprecratedKey}`,
+      );
       aliases = [deprecratedKey];
     }
 
@@ -142,9 +144,14 @@ export function verify(visitor) {
       for (const visitorKey in visitors) {
         if (visitorKey === "enter" || visitorKey === "exit") {
           // verify that it just contains functions
-          validateVisitorMethods(`${nodeType}.${visitorKey}`, visitors[visitorKey]);
+          validateVisitorMethods(
+            `${nodeType}.${visitorKey}`,
+            visitors[visitorKey],
+          );
         } else {
-          throw new Error(messages.get("traverseVerifyVisitorProperty", nodeType, visitorKey));
+          throw new Error(
+            messages.get("traverseVerifyVisitorProperty", nodeType, visitorKey),
+          );
         }
       }
     }
@@ -157,12 +164,18 @@ function validateVisitorMethods(path, val) {
   const fns = [].concat(val);
   for (const fn of fns) {
     if (typeof fn !== "function") {
-      throw new TypeError(`Non-function found defined in ${path} with type ${typeof fn}`);
+      throw new TypeError(
+        `Non-function found defined in ${path} with type ${typeof fn}`,
+      );
     }
   }
 }
 
-export function merge(visitors: Array, states: Array = [], wrapper?: ?Function) {
+export function merge(
+  visitors: Array,
+  states: Array = [],
+  wrapper?: ?Function,
+) {
   const rootVisitor = {};
 
   for (let i = 0; i < visitors.length; i++) {
@@ -179,7 +192,7 @@ export function merge(visitors: Array, states: Array = [], wrapper?: ?Function) 
         visitorType = wrapWithStateOrWrapper(visitorType, state, wrapper);
       }
 
-      const nodeVisitor = rootVisitor[type] = rootVisitor[type] || {};
+      const nodeVisitor = (rootVisitor[type] = rootVisitor[type] || {});
       mergePair(nodeVisitor, visitorType);
     }
   }
@@ -196,11 +209,11 @@ function wrapWithStateOrWrapper(oldVisitor, state, wrapper: ?Function) {
     // not an enter/exit array of callbacks
     if (!Array.isArray(fns)) continue;
 
-    fns = fns.map(function (fn) {
+    fns = fns.map(function(fn) {
       let newFn = fn;
 
       if (state) {
-        newFn = function (path) {
+        newFn = function(path) {
           return fn.call(state, path, state);
         };
       }
@@ -235,7 +248,7 @@ function ensureCallbackArrays(obj) {
 }
 
 function wrapCheck(wrapper, fn) {
-  const newFn = function (path) {
+  const newFn = function(path) {
     if (wrapper.checkPath(path)) {
       return fn.apply(this, arguments);
     }
@@ -252,7 +265,9 @@ function shouldIgnoreKey(key) {
   if (key === "enter" || key === "exit" || key === "shouldSkip") return true;
 
   // ignore other options
-  if (key === "blacklist" || key === "noScope" || key === "skipKeys") return true;
+  if (key === "blacklist" || key === "noScope" || key === "skipKeys") {
+    return true;
+  }
 
   return false;
 }

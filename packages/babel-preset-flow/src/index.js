@@ -1,9 +1,7 @@
 import transformFlowStripTypes from "babel-plugin-transform-flow-strip-types";
 
-export default function () {
+export default function() {
   return {
-    plugins: [
-      transformFlowStripTypes,
-    ],
+    plugins: [transformFlowStripTypes],
   };
 }

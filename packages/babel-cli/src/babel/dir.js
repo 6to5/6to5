@@ -6,19 +6,27 @@ import fs from "fs";
 
 import * as util from "./util";
 
-export default function (commander, filenames, opts) {
+export default function(commander, filenames, opts) {
   function write(src, relative) {
-    if (!util.isCompilableExtension(relative, commander.extensions)) return false;
+    if (!util.isCompilableExtension(relative, commander.extensions)) {
+      return false;
+    }
 
     // remove extension and then append back on .js
     relative = relative.replace(/\.(\w*?)$/, "") + ".js";
 
     const dest = path.join(commander.outDir, relative);
 
-    const data = util.compile(src, defaults({
-      sourceFileName: slash(path.relative(dest + "/..", src)),
-      sourceMapTarget: path.basename(relative),
-    }, opts));
+    const data = util.compile(
+      src,
+      defaults(
+        {
+          sourceFileName: slash(path.relative(dest + "/..", src)),
+          sourceMapTarget: path.basename(relative),
+        },
+        opts,
+      ),
+    );
 
     if (!data) return false;
 
@@ -55,7 +63,7 @@ export default function (commander, filenames, opts) {
     if (stat.isDirectory(filename)) {
       const dirname = filename;
 
-      util.readdir(dirname).forEach(function (filename) {
+      util.readdir(dirname).forEach(function(filename) {
         const src = path.join(dirname, filename);
         handleFile(src, filename);
       });
@@ -71,7 +79,7 @@ export default function (commander, filenames, opts) {
   if (commander.watch) {
     const chokidar = util.requireChokidar();
 
-    filenames.forEach(function (dirname) {
+    filenames.forEach(function(dirname) {
       const watcher = chokidar.watch(dirname, {
         persistent: true,
         ignoreInitial: true,
@@ -81,8 +89,8 @@ export default function (commander, filenames, opts) {
         },
       });
 
-      ["add", "change"].forEach(function (type) {
-        watcher.on(type, function (filename) {
+      ["add", "change"].forEach(function(type) {
+        watcher.on(type, function(filename) {
           const relative = path.relative(dirname, filename) || filename;
           try {
             handleFile(filename, relative);

@@ -1,7 +1,9 @@
 let foo = (() => {
   var _ref2 = babelHelpers.asyncToGenerator(function* (_ref) {
-    let { a, b = mandatory("b") } = _ref;
-
+    let {
+      a,
+      b = mandatory("b")
+    } = _ref;
     return Promise.resolve(b);
   });
 

@@ -359,7 +359,6 @@ helpers.get = template(`
   });
 `);
 
-
 helpers.inherits = template(`
   (function (subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
@@ -377,6 +376,14 @@ helpers.inherits = template(`
   })
 `);
 
+helpers.inheritsLoose = template(`
+  (function (subClass, superClass) {
+    subClass.prototype = Object.create(superClass.prototype);
+    subClass.prototype.constructor = subClass;
+    subClass.__proto__ = superClass;
+  })
+`);
+
 helpers.instanceof = template(`
   (function (left, right) {
     if (right != null && typeof Symbol !== "undefined" && right[Symbol.hasInstance]) {
@@ -386,7 +393,6 @@ helpers.instanceof = template(`
     }
   });
 `);
-
 
 helpers.interopRequireDefault = template(`
   (function (obj) {

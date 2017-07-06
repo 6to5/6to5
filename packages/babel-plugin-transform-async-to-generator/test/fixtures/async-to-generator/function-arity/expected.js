@@ -31,7 +31,9 @@ let four = (() => {
 })();
 
 let five = (() => {
-  var _ref5 = babelHelpers.asyncToGenerator(function* (a, { b }) {});
+  var _ref5 = babelHelpers.asyncToGenerator(function* (a, {
+    b
+  }) {});
 
   return function five(_x6, _x7) {
     return _ref5.apply(this, arguments);
@@ -39,7 +41,9 @@ let five = (() => {
 })();
 
 let six = (() => {
-  var _ref6 = babelHelpers.asyncToGenerator(function* (a, { b } = {}) {});
+  var _ref6 = babelHelpers.asyncToGenerator(function* (a, {
+    b
+  } = {}) {});
 
   return function six(_x8) {
     return _ref6.apply(this, arguments);

@@ -3,15 +3,21 @@ import isRegExp from "lodash/isRegExp";
 import type { Scope } from "babel-traverse";
 import * as t from "./index";
 
-export function toComputedKey(node: Object, key: Object = node.key || node.property): Object {
+export function toComputedKey(
+  node: Object,
+  key: Object = node.key || node.property,
+): Object {
   if (!node.computed) {
     if (t.isIdentifier(key)) key = t.stringLiteral(key.name);
   }
   return key;
 }
 
-
-function gatherSequenceExpressions(nodes: Array<Object>, scope: Scope, declars: Array<Object>): ?Object {
+function gatherSequenceExpressions(
+  nodes: Array<Object>,
+  scope: Scope,
+  declars: Array<Object>,
+): ?Object {
   const exprs = [];
   let ensureLastUndefined = true;
 
@@ -41,12 +47,12 @@ function gatherSequenceExpressions(nodes: Array<Object>, scope: Scope, declars: 
 
       ensureLastUndefined = true;
     } else if (t.isIfStatement(node)) {
-      const consequent = node.consequent ?
-        gatherSequenceExpressions([node.consequent], scope, declars) :
-        scope.buildUndefinedNode();
-      const alternate = node.alternate ?
-        gatherSequenceExpressions([node.alternate], scope, declars) :
-        scope.buildUndefinedNode();
+      const consequent = node.consequent
+        ? gatherSequenceExpressions([node.consequent], scope, declars)
+        : scope.buildUndefinedNode();
+      const alternate = node.alternate
+        ? gatherSequenceExpressions([node.alternate], scope, declars)
+        : scope.buildUndefinedNode();
       if (!consequent || !alternate) return; // bailed
 
       exprs.push(t.conditionalExpression(node.test, consequent, alternate));
@@ -84,7 +90,10 @@ function gatherSequenceExpressions(nodes: Array<Object>, scope: Scope, declars: 
  * Expression statements are just resolved to their expression.
  */
 
-export function toSequenceExpression(nodes: Array<Object>, scope: Scope): ?Object {
+export function toSequenceExpression(
+  nodes: Array<Object>,
+  scope: Scope,
+): ?Object {
   if (!nodes || !nodes.length) return;
 
   const declars = [];
@@ -124,9 +133,9 @@ export function toKeyAlias(node: Object, key: Object = node.key): string {
 
 toKeyAlias.uid = 0;
 
-toKeyAlias.increment = function () {
+toKeyAlias.increment = function() {
   if (toKeyAlias.uid >= Number.MAX_SAFE_INTEGER) {
-    return toKeyAlias.uid = 0;
+    return (toKeyAlias.uid = 0);
   } else {
     return toKeyAlias.uid++;
   }
@@ -142,7 +151,7 @@ export function toIdentifier(name: string): string {
   name = name.replace(/^[-0-9]+/, "");
 
   // camel case
-  name = name.replace(/[-\s]+(.)?/g, function (match, c) {
+  name = name.replace(/[-\s]+(.)?/g, function(match, c) {
     return c ? c.toUpperCase() : "";
   });
 

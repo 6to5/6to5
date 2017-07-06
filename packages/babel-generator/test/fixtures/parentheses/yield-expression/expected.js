@@ -8,5 +8,7 @@ function* asdf() {
 }
 
 function* a(b) {
-  (yield xhr({ url: "views/test.html" })).data;
+  (yield xhr({
+    url: "views/test.html"
+  })).data;
 }

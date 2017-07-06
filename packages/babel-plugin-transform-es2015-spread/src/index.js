@@ -1,6 +1,9 @@
-export default function ({ types: t }) {
+export default function({ types: t }) {
   function getSpreadLiteral(spread, scope, state) {
-    if (state.opts.loose && !t.isIdentifier(spread.argument, { name: "arguments" })) {
+    if (
+      state.opts.loose &&
+      !t.isIdentifier(spread.argument, { name: "arguments" })
+    ) {
       return spread.argument;
     } else {
       return scope.toArray(spread.argument, true);
@@ -16,27 +19,26 @@ export default function ({ types: t }) {
     return false;
   }
 
+  function push(_props, nodes) {
+    if (!_props.length) return _props;
+    nodes.push(t.arrayExpression(_props));
+    return [];
+  }
+
   function build(props: Array, scope, state) {
     const nodes = [];
-
     let _props = [];
-
-    function push() {
-      if (!_props.length) return;
-      nodes.push(t.arrayExpression(_props));
-      _props = [];
-    }
 
     for (const prop of props) {
       if (t.isSpreadElement(prop)) {
-        push();
+        _props = push(_props, nodes);
         nodes.push(getSpreadLiteral(prop, scope, state));
       } else {
         _props.push(prop);
       }
     }
 
-    push();
+    push(_props, nodes);
 
     return nodes;
   }
@@ -56,7 +58,12 @@ export default function ({ types: t }) {
           first = t.arrayExpression([]);
         }
 
-        path.replaceWith(t.callExpression(t.memberExpression(first, t.identifier("concat")), nodes));
+        path.replaceWith(
+          t.callExpression(
+            t.memberExpression(first, t.identifier("concat")),
+            nodes,
+          ),
+        );
       },
 
       CallExpression(path, state) {
@@ -81,7 +88,12 @@ export default function ({ types: t }) {
 
         const first = nodes.shift();
         if (nodes.length) {
-          node.arguments.push(t.callExpression(t.memberExpression(first, t.identifier("concat")), nodes));
+          node.arguments.push(
+            t.callExpression(
+              t.memberExpression(first, t.identifier("concat")),
+              nodes,
+            ),
+          );
         } else {
           node.arguments.push(first);
         }
@@ -117,25 +129,29 @@ export default function ({ types: t }) {
 
         const context = t.arrayExpression([t.nullLiteral()]);
 
+        args = t.callExpression(
+          t.memberExpression(context, t.identifier("concat")),
+          nodes,
+        );
 
-        args = t.callExpression(t.memberExpression(context, t.identifier("concat")), nodes);
-
-        path.replaceWith(t.newExpression(
-          t.callExpression(
-            t.memberExpression(
+        path.replaceWith(
+          t.newExpression(
+            t.callExpression(
               t.memberExpression(
                 t.memberExpression(
-                  t.identifier("Function"),
-                  t.identifier("prototype"),
+                  t.memberExpression(
+                    t.identifier("Function"),
+                    t.identifier("prototype"),
+                  ),
+                  t.identifier("bind"),
                 ),
-                t.identifier("bind")
+                t.identifier("apply"),
               ),
-              t.identifier("apply")
+              [node.callee, args],
             ),
-            [node.callee, args]
+            [],
           ),
-          []
-        ));
+        );
       },
     },
   };

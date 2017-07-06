@@ -17,5 +17,6 @@
     value: true
   });
   exports.a = a;
+
   function a() {}
 });

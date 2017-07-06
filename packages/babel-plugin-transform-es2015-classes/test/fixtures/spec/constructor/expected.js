@@ -1,6 +1,5 @@
 var Test = function Test() {
   babelHelpers.classCallCheck(this, Test);
-
   this.state = "test";
 };
 
@@ -21,7 +20,6 @@ var Foo = function (_Bar) {
 
 var ConstructorScoping = function ConstructorScoping() {
   babelHelpers.classCallCheck(this, ConstructorScoping);
-
   var bar = void 0;
   {
     var _bar = void 0;

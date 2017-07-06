@@ -8,4 +8,5 @@ class Foo extends class {} {
       var arrow = () => _superprop_callMethod();
     })();
   }
+
 }

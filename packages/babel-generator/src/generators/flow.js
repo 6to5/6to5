@@ -1,3 +1,5 @@
+import * as t from "babel-types";
+
 export function AnyTypeAnnotation() {
   this.word("any");
 }
@@ -20,17 +22,21 @@ export function NullLiteralTypeAnnotation() {
   this.word("null");
 }
 
-export function DeclareClass(node: Object) {
-  this.word("declare");
-  this.space();
+export function DeclareClass(node: Object, parent: Object) {
+  if (!t.isDeclareExportDeclaration(parent)) {
+    this.word("declare");
+    this.space();
+  }
   this.word("class");
   this.space();
   this._interfaceish(node);
 }
 
-export function DeclareFunction(node: Object) {
-  this.word("declare");
-  this.space();
+export function DeclareFunction(node: Object, parent: Object) {
+  if (!t.isDeclareExportDeclaration(parent)) {
+    this.word("declare");
+    this.space();
+  }
   this.word("function");
   this.space();
   this.print(node.id, node);
@@ -69,14 +75,67 @@ export function DeclareTypeAlias(node: Object) {
   this.TypeAlias(node);
 }
 
-export function DeclareVariable(node: Object) {
-  this.word("declare");
-  this.space();
+export function DeclareVariable(node: Object, parent: Object) {
+  if (!t.isDeclareExportDeclaration(parent)) {
+    this.word("declare");
+    this.space();
+  }
   this.word("var");
   this.space();
   this.print(node.id, node);
   this.print(node.id.typeAnnotation, node);
   this.semicolon();
+}
+
+export function DeclareExportDeclaration(node: Object) {
+  this.word("declare");
+  this.space();
+  this.word("export");
+  this.space();
+  if (node.default) {
+    this.word("default");
+    this.space();
+  }
+
+  FlowExportDeclaration.apply(this, arguments);
+}
+
+export function DeclareExportAllDeclaration(node: Object) {
+  this.word("declare");
+  this.space();
+  this.word("export");
+  this.space();
+  this.token("*");
+  this.space();
+  this.word("from");
+  this.space();
+  this.print(node.source, node);
+  this.semicolon();
+}
+
+function FlowExportDeclaration(node: Object) {
+  if (node.declaration) {
+    const declar = node.declaration;
+    this.print(declar, node);
+    if (!t.isStatement(declar)) this.semicolon();
+  } else {
+    this.token("{");
+    if (node.specifiers.length) {
+      this.space();
+      this.printList(node.specifiers, node);
+      this.space();
+    }
+    this.token("}");
+
+    if (node.source) {
+      this.space();
+      this.word("from");
+      this.space();
+      this.print(node.source, node);
+    }
+
+    this.semicolon();
+  }
 }
 
 export function ExistsTypeAnnotation() {
@@ -100,7 +159,10 @@ export function FunctionTypeAnnotation(node: Object, parent: Object) {
   this.token(")");
 
   // this node type is overloaded, not sure why but it makes it EXTREMELY annoying
-  if (parent.type === "ObjectTypeCallProperty" || parent.type === "DeclareFunction") {
+  if (
+    parent.type === "ObjectTypeCallProperty" ||
+    parent.type === "DeclareFunction"
+  ) {
     this.token(":");
   } else {
     this.space();
@@ -124,7 +186,10 @@ export function InterfaceExtends(node: Object) {
   this.print(node.typeParameters, node);
 }
 
-export { InterfaceExtends as ClassImplements, InterfaceExtends as GenericTypeAnnotation };
+export {
+  InterfaceExtends as ClassImplements,
+  InterfaceExtends as GenericTypeAnnotation,
+};
 
 export function _interfaceish(node: Object) {
   this.print(node.id, node);
@@ -264,7 +329,11 @@ export function ObjectTypeAnnotation(node: Object) {
     this.token("{");
   }
 
-  const props = node.properties.concat(node.callProperties, node.indexers);
+  // TODO: remove the array fallbacks and instead enforce the types to require an array
+  const props = node.properties.concat(
+    node.callProperties || [],
+    node.indexers || [],
+  );
 
   if (props.length) {
     this.space();

@@ -3,7 +3,6 @@ function foo() {
 }
 
 if (a, b, c) d();
-
 throw a, b, c;
 
 switch (a, b, c) {}

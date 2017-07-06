@@ -1,1 +1,5 @@
-var coords = { x: x, y: y, foo: "bar" };
+var coords = {
+  x: x,
+  y: y,
+  foo: "bar"
+};

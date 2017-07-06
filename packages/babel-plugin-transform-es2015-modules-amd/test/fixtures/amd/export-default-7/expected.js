@@ -5,5 +5,6 @@ define(["exports"], function (exports) {
     value: true
   });
   exports.default = foo;
+
   function foo() {}
 });

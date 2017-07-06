@@ -1,4 +1,4 @@
-export default function ({ types: t }) {
+export default function({ types: t }) {
   function statementList(key, path) {
     const paths: Array = path.get(key);
 
@@ -24,7 +24,10 @@ export default function ({ types: t }) {
     visitor: {
       BlockStatement(path) {
         const { node, parent } = path;
-        if (t.isFunction(parent, { body: node }) || t.isExportDeclaration(parent)) {
+        if (
+          t.isFunction(parent, { body: node }) ||
+          t.isExportDeclaration(parent)
+        ) {
           return;
         }
 

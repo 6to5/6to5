@@ -3,6 +3,7 @@
     fns.push(function () {
       return i;
     });
+
     if (i === 1) {
       return "continue";
     } else if (i === 2) {

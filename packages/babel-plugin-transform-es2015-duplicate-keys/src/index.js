@@ -12,7 +12,9 @@ export default function() {
     visitor: {
       ObjectExpression(path) {
         const { node } = path;
-        const plainProps = node.properties.filter((prop) => !t.isSpreadElement(prop) && !prop.computed);
+        const plainProps = node.properties.filter(
+          prop => !t.isSpreadElement(prop) && !prop.computed,
+        );
 
         // A property is a duplicate key if:
         // * the property is a data property, and is preceeded by a data,
@@ -43,7 +45,11 @@ export default function() {
               alreadySeenSetters[name] = true;
               break;
             default:
-              if (alreadySeenData[name] || alreadySeenGetters[name] || alreadySeenSetters[name]) {
+              if (
+                alreadySeenData[name] ||
+                alreadySeenGetters[name] ||
+                alreadySeenSetters[name]
+              ) {
                 isDuplicate = true;
               }
               alreadySeenData[name] = true;

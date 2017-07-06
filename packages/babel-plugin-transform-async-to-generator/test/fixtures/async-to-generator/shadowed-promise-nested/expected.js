@@ -11,7 +11,6 @@ let foo = (() => {
     })();
 
     let Promise;
-
     yield bar();
   });
 

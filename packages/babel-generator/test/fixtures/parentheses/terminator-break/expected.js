@@ -5,8 +5,7 @@ function foo() {
 }
 
 function foo() {
-  return (
-    // foobar
+  return (// foobar
     "bar"
   );
 }

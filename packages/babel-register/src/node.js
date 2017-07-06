@@ -37,11 +37,13 @@ function mtime(filename) {
 
 function compile(code, filename) {
   // merge in base options and resolve all the plugins and presets relative to this file
-  const opts = new OptionManager().init(Object.assign(
-    { sourceRoot: path.dirname(filename) }, // sourceRoot can be overwritten
-    deepClone(transformOpts),
-    { filename }
-  ));
+  const opts = new OptionManager().init(
+    Object.assign(
+      { sourceRoot: path.dirname(filename) }, // sourceRoot can be overwritten
+      deepClone(transformOpts),
+      { filename },
+    ),
+  );
 
   // Bail out ASAP if the file has been ignored.
   if (opts === null) return code;
@@ -59,13 +61,16 @@ function compile(code, filename) {
     }
   }
 
-  const result = babel.transform(code, Object.assign(opts, {
-    // Do not process config files since has already been done with the OptionManager
-    // calls above and would introduce duplicates.
-    babelrc: false,
-    sourceMaps: "both",
-    ast: false,
-  }));
+  const result = babel.transform(
+    code,
+    Object.assign(opts, {
+      // Do not process config files since has already been done with the OptionManager
+      // calls above and would introduce duplicates.
+      babelrc: false,
+      sourceMaps: "both",
+      ast: false,
+    }),
+  );
 
   if (cache) {
     cache[cacheKey] = result;
@@ -105,17 +110,23 @@ export default function register(opts?: Object = {}) {
     transformOpts.ignore = [
       // Ignore any node_modules content outside the current working directory.
       new RegExp(
-        "^(?!" + escapeRegExp(process.cwd()) + ").*" +
-        escapeRegExp(path.sep + "node_modules" + path.sep)
-      , "i"),
+        "^(?!" +
+          escapeRegExp(process.cwd()) +
+          ").*" +
+          escapeRegExp(path.sep + "node_modules" + path.sep),
+        "i",
+      ),
 
       // Ignore any node_modules inside the current working directory.
       new RegExp(
         "^" +
-        escapeRegExp(process.cwd()) +
-        "(?:" + path.sep + ".*)?" +
-        escapeRegExp(path.sep + "node_modules" + path.sep)
-      , "i"),
+          escapeRegExp(process.cwd()) +
+          "(?:" +
+          path.sep +
+          ".*)?" +
+          escapeRegExp(path.sep + "node_modules" + path.sep),
+        "i",
+      ),
     ];
   }
 }

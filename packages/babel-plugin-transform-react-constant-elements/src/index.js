@@ -1,4 +1,4 @@
-export default function ({ types: t }) {
+export default function({ types: t }) {
   const immutabilityVisitor = {
     enter(path, state) {
       const stop = () => {
@@ -12,12 +12,19 @@ export default function ({ types: t }) {
       }
 
       // Elements with refs are not safe to hoist.
-      if (path.isJSXIdentifier({ name: "ref" }) && path.parentPath.isJSXAttribute({ name: path.node })) {
+      if (
+        path.isJSXIdentifier({ name: "ref" }) &&
+        path.parentPath.isJSXAttribute({ name: path.node })
+      ) {
         return stop();
       }
 
       // Ignore identifiers & JSX expressions.
-      if (path.isJSXIdentifier() || path.isIdentifier() || path.isJSXMemberExpression()) {
+      if (
+        path.isJSXIdentifier() ||
+        path.isIdentifier() ||
+        path.isJSXMemberExpression()
+      ) {
         return;
       }
 
@@ -31,7 +38,9 @@ export default function ({ types: t }) {
           if (expressionResult.confident) {
             // We know the result; check its mutability.
             const { value } = expressionResult;
-            const isMutable = (value && typeof value === "object") || (typeof value === "function");
+            const isMutable =
+              (value && typeof value === "object") ||
+              typeof value === "function";
             if (!isMutable) {
               // It evaluated to an immutable value, so we can hoist it.
               return;

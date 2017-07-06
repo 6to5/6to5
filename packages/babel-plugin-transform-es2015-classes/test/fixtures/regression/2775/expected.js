@@ -22,7 +22,9 @@ var RandomComponent = function (_Component) {
     value: function render() {
       return _react2.default.createElement(
         "div",
-        { className: "sui-RandomComponent" },
+        {
+          className: "sui-RandomComponent"
+        },
         _react2.default.createElement(
           "h2",
           null,

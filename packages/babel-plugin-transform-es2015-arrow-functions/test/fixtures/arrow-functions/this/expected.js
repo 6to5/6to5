@@ -21,4 +21,5 @@ class Foo extends function () {} {
       console.log(foo());
     }
   }
+
 }
