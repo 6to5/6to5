@@ -25,24 +25,21 @@ export default function(api, options) {
     }
   }
 
-  function pushAssign(objId, prop, body) {
-    if (prop.kind === "get" && prop.kind === "set") {
-      pushMutatorDefine(objId, prop, body);
-    } else {
-      body.push(
-        t.expressionStatement(
-          t.assignmentExpression(
-            "=",
-            t.memberExpression(
-              objId,
-              prop.key,
-              prop.computed || t.isLiteral(prop.key),
-            ),
-            getValue(prop),
+  function pushAssign({ getObjId, deoptObjRef }, prop, body) {
+    deoptObjRef();
+    body.push(
+      t.expressionStatement(
+        t.assignmentExpression(
+          "=",
+          t.memberExpression(
+            getObjId(),
+            prop.key,
+            prop.computed || t.isLiteral(prop.key),
           ),
+          getValue(prop),
         ),
-      );
-    }
+      ),
+    );
   }
 
   function pushMutatorDefine({ body, getMutatorId, scope }, prop) {
@@ -74,13 +71,37 @@ export default function(api, options) {
       if (prop.kind === "get" || prop.kind === "set") {
         pushMutatorDefine(info, prop);
       } else {
-        pushAssign(info.objId, prop, info.body);
+        pushAssign(info, prop, info.body);
       }
     }
   }
 
+  function toDefinePropertyCall(propNode, definedObject, state) {
+    const defineProperty = state.addHelper("defineProperty");
+    state.set("defineProperty", defineProperty);
+    return t.callExpression(defineProperty, [
+      definedObject,
+      t.toComputedKey(propNode),
+      getValue(propNode),
+    ]);
+  }
+
+  function canWrapPrevious(body, state) {
+    const previous = body[body.length - 1];
+
+    if (
+      t.isObjectExpression(previous) ||
+      (t.isCallExpression(previous) &&
+        t.isNodesEquivalent(previous.callee, state.get("defineProperty")))
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
   function pushComputedPropsSpec(info) {
-    const { objId, body, computedProps, state } = info;
+    const { getObjId, body, computedProps, state } = info;
 
     for (const prop of computedProps) {
       const key = t.toComputedKey(prop);
@@ -88,24 +109,13 @@ export default function(api, options) {
       if (prop.kind === "get" || prop.kind === "set") {
         pushMutatorDefine(info, prop);
       } else if (t.isStringLiteral(key, { value: "__proto__" })) {
-        pushAssign(objId, prop, body);
+        pushAssign(info, prop, body);
       } else {
-        if (computedProps.length === 1) {
-          return t.callExpression(state.addHelper("defineProperty"), [
-            info.initPropExpression,
-            key,
-            getValue(prop),
-          ]);
+        if (canWrapPrevious(body, state)) {
+          const previous = body[body.length - 1];
+          body[body.length - 1] = toDefinePropertyCall(prop, previous, state);
         } else {
-          body.push(
-            t.expressionStatement(
-              t.callExpression(state.addHelper("defineProperty"), [
-                objId,
-                key,
-                getValue(prop),
-              ]),
-            ),
-          );
+          body.push(toDefinePropertyCall(prop, getObjId(), state));
         }
       }
     }
@@ -122,6 +132,23 @@ export default function(api, options) {
             if (hasComputed) break;
           }
           if (!hasComputed) return;
+
+          const body = [];
+
+          let needObjectRef = false;
+          let objId = null;
+          const getObjId = () => objId;
+
+          const deoptObjRef = () => {
+            if (needObjectRef) {
+              return;
+            }
+            needObjectRef = true;
+            objId = scope.generateUidIdentifierBasedOnNode(parent);
+            body[0] = t.variableDeclaration("var", [
+              t.variableDeclarator(objId, body[0]),
+            ]);
+          };
 
           // put all getters/setters into the first object expression as well as all initialisers up
           // to the first computed property
@@ -142,20 +169,13 @@ export default function(api, options) {
             }
           }
 
-          const objId = scope.generateUidIdentifierBasedOnNode(parent);
-          const initPropExpression = t.objectExpression(initProps);
-          const body = [];
-
-          body.push(
-            t.variableDeclaration("var", [
-              t.variableDeclarator(objId, initPropExpression),
-            ]),
-          );
+          body.push(t.objectExpression(initProps));
 
           let mutatorRef;
 
           const getMutatorId = function() {
             if (!mutatorRef) {
+              deoptObjRef();
               mutatorRef = scope.generateUidIdentifier("mutatorMap");
 
               body.push(
@@ -168,13 +188,13 @@ export default function(api, options) {
             return mutatorRef;
           };
 
-          const single = pushComputedProps({
+          pushComputedProps({
             scope,
-            objId,
+            getObjId,
             body,
             computedProps,
-            initPropExpression,
             getMutatorId,
+            deoptObjRef,
             state,
           });
 
@@ -189,10 +209,12 @@ export default function(api, options) {
             );
           }
 
-          if (single) {
-            path.replaceWith(single);
+          if (body.length === 1) {
+            path.replaceWith(body[0]);
           } else {
-            body.push(t.expressionStatement(objId));
+            if (needObjectRef) {
+              body.push(t.expressionStatement(objId));
+            }
             path.replaceWithMultiple(body);
           }
         },

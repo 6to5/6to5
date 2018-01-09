@@ -1,3 +1,5 @@
-var _obj;
+var heh = "heh";
+var noo = "noo";
+var foo = "foo";
+var obj = babelHelpers.defineProperty(babelHelpers.defineProperty(babelHelpers.defineProperty(babelHelpers.defineProperty(babelHelpers.defineProperty({}, "x" + heh, "heh"), "y" + noo, "noo"), foo, "foo1"), "foo", "foo2"), "bar", "bar");
 
-var obj = (_obj = {}, babelHelpers.defineProperty(_obj, "x" + foo, "heh"), babelHelpers.defineProperty(_obj, "y" + bar, "noo"), babelHelpers.defineProperty(_obj, "foo", "foo"), babelHelpers.defineProperty(_obj, "bar", "bar"), _obj);

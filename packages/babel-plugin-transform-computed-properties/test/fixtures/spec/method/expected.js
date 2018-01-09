@@ -1,7 +1,5 @@
-var _obj;
-
-var obj = (_obj = {}, babelHelpers.defineProperty(_obj, foobar, function () {
+var obj = babelHelpers.defineProperty(babelHelpers.defineProperty({}, foobar, function () {
   return "foobar";
-}), babelHelpers.defineProperty(_obj, "test", function () {
+}), "test", function () {
   return "regular method after computed property";
-}), _obj);
+});
