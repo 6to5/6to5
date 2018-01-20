@@ -193,7 +193,10 @@ export function codeFrameColumns(
     chalk = new Chalk.constructor({ enabled: true, level: 1 });
   }
   const maybeHighlight = (chalkFn, string) => {
-    return highlighted ? chalkFn(string) : string;
+    if (highlighted || opts.highlightFrame) {
+      return chalkFn(string);
+    }
+    return string;
   };
   const defs = getDefs(chalk);
   if (highlighted) rawLines = highlight(defs, rawLines);
@@ -237,7 +240,7 @@ export function codeFrameColumns(
     })
     .join("\n");
 
-  if (highlighted) {
+  if (highlighted || opts.highlightFrame) {
     return chalk.reset(frame);
   } else {
     return frame;
