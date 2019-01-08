@@ -17,6 +17,7 @@ build: clean clean-lib
 	# generate flow and typescript typings
 	node scripts/generators/flow.js > ./packages/babel-types/lib/index.js.flow
 	node scripts/generators/typescript.js > ./packages/babel-types/lib/index.d.ts
+	node ./packages/babel-traverse/scripts/generators/typescript.js > ./packages/babel-traverse/lib/index.d.ts
 ifneq ("$(BABEL_COVERAGE)", "true")
 	make build-standalone
 	make build-preset-env-standalone

@@ -10,6 +10,7 @@
   },
   "repository": "https://github.com/babel/babel/tree/master/packages/babel-traverse",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "dependencies": {
     "@babel/code-frame": "^7.0.0",
     "@babel/generator": "^7.2.2",

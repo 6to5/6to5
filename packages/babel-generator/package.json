@@ -10,8 +10,10 @@
   },
   "repository": "https://github.com/babel/babel/tree/master/packages/babel-generator",
   "main": "lib/index.js",
+  "types": "typings/babel-generator.d.ts",
   "files": [
-    "lib"
+    "lib",
+    "typings"
   ],
   "dependencies": {
     "@babel/types": "^7.2.2",
