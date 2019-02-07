@@ -1,9 +1,11 @@
 var C = function C() {
   "use strict";
 
+  var _this = this;
+
   babelHelpers.classCallCheck(this, C);
-  this.y = babelHelpers.classPrivateFieldLooseBase(this, _x)[_x];
-  Object.defineProperty(this, _x, {
+  _this.y = babelHelpers.classPrivateFieldLooseBase(_this, _x)[_x];
+  Object.defineProperty(_this, _x, {
     writable: true,
     value: void 0
   });

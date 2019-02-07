@@ -1,24 +1,26 @@
 var Foo = function Foo() {
   "use strict";
 
-  babelHelpers.classCallCheck(this, Foo);
-  babelHelpers.defineProperty(this, "one", babelHelpers.classPrivateFieldGet(this, _private));
+  var _this = this;
 
-  _two.set(this, {
+  babelHelpers.classCallCheck(this, Foo);
+  babelHelpers.defineProperty(_this, "one", babelHelpers.classPrivateFieldGet(_this, _private));
+
+  _two.set(_this, {
     writable: true,
-    value: babelHelpers.classPrivateFieldGet(this, _private)
+    value: babelHelpers.classPrivateFieldGet(_this, _private)
   });
 
-  _private.set(this, {
+  _private.set(_this, {
     writable: true,
     value: 0
   });
 
-  babelHelpers.defineProperty(this, "three", babelHelpers.classPrivateFieldGet(this, _private));
+  babelHelpers.defineProperty(_this, "three", babelHelpers.classPrivateFieldGet(_this, _private));
 
-  _four.set(this, {
+  _four.set(_this, {
     writable: true,
-    value: babelHelpers.classPrivateFieldGet(this, _private)
+    value: babelHelpers.classPrivateFieldGet(_this, _private)
   });
 };
 

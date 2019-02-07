@@ -1,20 +1,22 @@
 var Foo = function Foo() {
   "use strict";
 
+  var _this = this;
+
   babelHelpers.classCallCheck(this, Foo);
-  this.one = babelHelpers.classPrivateFieldLooseBase(this, _private)[_private];
-  Object.defineProperty(this, _two, {
+  _this.one = babelHelpers.classPrivateFieldLooseBase(_this, _private)[_private];
+  Object.defineProperty(_this, _two, {
     writable: true,
-    value: babelHelpers.classPrivateFieldLooseBase(this, _private)[_private]
+    value: babelHelpers.classPrivateFieldLooseBase(_this, _private)[_private]
   });
-  Object.defineProperty(this, _private, {
+  Object.defineProperty(_this, _private, {
     writable: true,
     value: 0
   });
-  this.three = babelHelpers.classPrivateFieldLooseBase(this, _private)[_private];
-  Object.defineProperty(this, _four, {
+  _this.three = babelHelpers.classPrivateFieldLooseBase(_this, _private)[_private];
+  Object.defineProperty(_this, _four, {
     writable: true,
-    value: babelHelpers.classPrivateFieldLooseBase(this, _private)[_private]
+    value: babelHelpers.classPrivateFieldLooseBase(_this, _private)[_private]
   });
 };
 

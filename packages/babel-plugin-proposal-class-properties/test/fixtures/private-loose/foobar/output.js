@@ -10,7 +10,7 @@ function (_Parent) {
 
     babelHelpers.classCallCheck(this, Child);
     _this = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(Child).call(this));
-    Object.defineProperty(babelHelpers.assertThisInitialized(babelHelpers.assertThisInitialized(_this)), _scopedFunctionWithThis, {
+    Object.defineProperty(_this, _scopedFunctionWithThis, {
       writable: true,
       value: function value() {
         _this.name = {};

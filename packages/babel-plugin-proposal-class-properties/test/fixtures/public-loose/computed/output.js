@@ -26,16 +26,18 @@ function () {
   "use strict";
 
   function MyClass() {
+    var _this = this;
+
     babelHelpers.classCallCheck(this, MyClass);
-    this[null] = "null";
-    this[_undefined] = "undefined";
-    this[void 0] = "void 0";
-    this[_ref3] = "regex";
-    this[foo] = "foo";
-    this[bar] = "bar";
-    this[_baz] = "baz";
-    this[`template`] = "template";
-    this[_ref4] = "template-with-expression";
+    _this[null] = "null";
+    _this[_undefined] = "undefined";
+    _this[void 0] = "void 0";
+    _this[_ref3] = "regex";
+    _this[foo] = "foo";
+    _this[bar] = "bar";
+    _this[_baz] = "baz";
+    _this[`template`] = "template";
+    _this[_ref4] = "template-with-expression";
   }
 
   babelHelpers.createClass(MyClass, [{

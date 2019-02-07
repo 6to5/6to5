@@ -4,20 +4,22 @@ function () {
   "use strict";
 
   function Point(_x2 = 0, _y2 = 0) {
+    var _this = this;
+
     babelHelpers.classCallCheck(this, Point);
 
-    _x.set(this, {
+    _x.set(_this, {
       writable: true,
       value: void 0
     });
 
-    _y.set(this, {
+    _y.set(_this, {
       writable: true,
       value: void 0
     });
 
-    babelHelpers.classPrivateFieldSet(this, _x, +_x2);
-    babelHelpers.classPrivateFieldSet(this, _y, +_y2);
+    babelHelpers.classPrivateFieldSet(_this, _x, +_x2);
+    babelHelpers.classPrivateFieldSet(_this, _y, +_y2);
   }
 
   babelHelpers.createClass(Point, [{

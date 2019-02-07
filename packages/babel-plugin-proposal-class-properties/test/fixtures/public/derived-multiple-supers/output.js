@@ -12,10 +12,10 @@ function (_Bar) {
 
     if (condition) {
       _this = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(Foo).call(this));
-      babelHelpers.defineProperty(babelHelpers.assertThisInitialized(babelHelpers.assertThisInitialized(babelHelpers.assertThisInitialized(_this))), "bar", "foo");
+      babelHelpers.defineProperty(_this, "bar", "foo");
     } else {
       _this = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(Foo).call(this));
-      babelHelpers.defineProperty(babelHelpers.assertThisInitialized(babelHelpers.assertThisInitialized(babelHelpers.assertThisInitialized(_this))), "bar", "foo");
+      babelHelpers.defineProperty(_this, "bar", "foo");
     }
 
     return babelHelpers.possibleConstructorReturn(_this);

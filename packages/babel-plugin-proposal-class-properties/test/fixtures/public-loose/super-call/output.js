@@ -28,7 +28,7 @@ function (_A) {
 
     babelHelpers.classCallCheck(this, B);
     _this = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(B).call(this, ...args));
-    _this.foo = babelHelpers.get(babelHelpers.getPrototypeOf(B.prototype), "foo", babelHelpers.assertThisInitialized(_this)).call(babelHelpers.assertThisInitialized(_this));
+    _this.foo = babelHelpers.get(babelHelpers.getPrototypeOf(B.prototype), "foo", _this).call(_this);
     return _this;
   }
 

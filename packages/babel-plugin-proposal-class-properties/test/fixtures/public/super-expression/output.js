@@ -9,7 +9,7 @@ function (_Bar) {
     var _temp, _this;
 
     babelHelpers.classCallCheck(this, Foo);
-    foo((_temp = _this = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(Foo).call(this)), babelHelpers.defineProperty(babelHelpers.assertThisInitialized(babelHelpers.assertThisInitialized(_this)), "bar", "foo"), _temp));
+    foo((_temp = _this = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(Foo).call(this)), babelHelpers.defineProperty(_this, "bar", "foo"), _temp));
     return _this;
   }
 

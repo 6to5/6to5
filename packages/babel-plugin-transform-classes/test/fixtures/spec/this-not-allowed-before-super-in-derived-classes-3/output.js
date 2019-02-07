@@ -10,7 +10,7 @@ function (_Bar) {
 
     babelHelpers.classCallCheck(this, Foo);
 
-    var fn = () => babelHelpers.assertThisInitialized(babelHelpers.assertThisInitialized(_this));
+    var fn = () => babelHelpers.assertThisInitialized(_this);
 
     fn();
     return _this = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(Foo).call(this));

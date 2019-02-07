@@ -1,14 +1,16 @@
 var Foo = function Foo() {
   "use strict";
 
+  var _this = this;
+
   babelHelpers.classCallCheck(this, Foo);
-  Object.defineProperty(this, _x, {
+  Object.defineProperty(_this, _x, {
     writable: true,
     value: 0
   });
-  Object.defineProperty(this, _y, {
+  Object.defineProperty(_this, _y, {
     writable: true,
-    value: babelHelpers.classPrivateFieldLooseBase(this, _x)[_x]
+    value: babelHelpers.classPrivateFieldLooseBase(_this, _x)[_x]
   });
 };
 

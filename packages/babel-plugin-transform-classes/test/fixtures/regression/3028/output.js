@@ -21,7 +21,7 @@ function (_b) {
     _this = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(a1).call(this));
 
     _this.x = function () {
-      return babelHelpers.assertThisInitialized(babelHelpers.assertThisInitialized(_this));
+      return _this;
     };
 
     return _this;
@@ -42,7 +42,7 @@ function (_b2) {
     _this2 = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(a2).call(this));
 
     _this2.x = function () {
-      return babelHelpers.assertThisInitialized(babelHelpers.assertThisInitialized(_this2));
+      return _this2;
     };
 
     return _this2;

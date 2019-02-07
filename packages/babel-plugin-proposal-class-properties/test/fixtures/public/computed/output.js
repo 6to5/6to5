@@ -26,16 +26,18 @@ function () {
   "use strict";
 
   function MyClass() {
+    var _this = this;
+
     babelHelpers.classCallCheck(this, MyClass);
-    babelHelpers.defineProperty(this, null, "null");
-    babelHelpers.defineProperty(this, _undefined, "undefined");
-    babelHelpers.defineProperty(this, void 0, "void 0");
-    babelHelpers.defineProperty(this, _ref3, "regex");
-    babelHelpers.defineProperty(this, foo, "foo");
-    babelHelpers.defineProperty(this, bar, "bar");
-    babelHelpers.defineProperty(this, _baz, "baz");
-    babelHelpers.defineProperty(this, `template`, "template");
-    babelHelpers.defineProperty(this, _ref4, "template-with-expression");
+    babelHelpers.defineProperty(_this, null, "null");
+    babelHelpers.defineProperty(_this, _undefined, "undefined");
+    babelHelpers.defineProperty(_this, void 0, "void 0");
+    babelHelpers.defineProperty(_this, _ref3, "regex");
+    babelHelpers.defineProperty(_this, foo, "foo");
+    babelHelpers.defineProperty(_this, bar, "bar");
+    babelHelpers.defineProperty(_this, _baz, "baz");
+    babelHelpers.defineProperty(_this, `template`, "template");
+    babelHelpers.defineProperty(_this, _ref4, "template-with-expression");
   }
 
   babelHelpers.createClass(MyClass, [{

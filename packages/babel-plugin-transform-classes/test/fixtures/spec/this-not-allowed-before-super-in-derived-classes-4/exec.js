@@ -9,3 +9,13 @@ class Foo extends Bar {
 }
 
 new Foo();
+
+class A extends Bar {
+  constructor() {
+    super();
+    const fn = () => this;
+    fn();
+  }
+}
+
+new A();

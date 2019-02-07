@@ -3,14 +3,16 @@ var foo = "bar";
 var Foo = function Foo(_foo) {
   "use strict";
 
+  var _this = this;
+
   babelHelpers.classCallCheck(this, Foo);
 
-  _bar.set(this, {
+  _bar.set(_this, {
     writable: true,
-    value: this
+    value: _this
   });
 
-  _baz.set(this, {
+  _baz.set(_this, {
     writable: true,
     value: foo
   });

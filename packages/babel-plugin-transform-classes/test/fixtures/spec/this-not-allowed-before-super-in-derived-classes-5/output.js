@@ -9,8 +9,8 @@ function (_Bar) {
     var _this;
 
     babelHelpers.classCallCheck(this, Foo);
-    Foo[babelHelpers.assertThisInitialized(babelHelpers.assertThisInitialized(_this))];
-    return babelHelpers.possibleConstructorReturn(_this);
+    Foo[babelHelpers.assertThisInitialized(_this)];
+    return _this;
   }
 
   return Foo;

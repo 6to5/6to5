@@ -22,7 +22,7 @@ function (_Foo) {
 
     babelHelpers.classCallCheck(this, Bar);
     _this = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(Bar).call(this, ...args));
-    Object.defineProperty(babelHelpers.assertThisInitialized(babelHelpers.assertThisInitialized(_this)), _prop2, {
+    Object.defineProperty(_this, _prop2, {
       writable: true,
       value: "bar"
     });

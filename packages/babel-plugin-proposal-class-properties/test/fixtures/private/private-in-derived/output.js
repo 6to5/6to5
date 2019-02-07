@@ -1,9 +1,11 @@
 var Outer = function Outer() {
   "use strict";
 
+  var _this = this;
+
   babelHelpers.classCallCheck(this, Outer);
 
-  _outer.set(this, {
+  _outer.set(_this, {
     writable: true,
     value: void 0
   });
@@ -19,7 +21,7 @@ var Outer = function Outer() {
     }
 
     return Test;
-  }(babelHelpers.classPrivateFieldGet(this, _outer));
+  }(babelHelpers.classPrivateFieldGet(_this, _outer));
 };
 
 var _outer = new WeakMap();

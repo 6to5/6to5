@@ -5,3 +5,13 @@ class Foo extends Bar {
     fn();
   }
 }
+
+// 'assertThisInitialized` should be cleanup
+class A extends Bar {
+  constructor() {
+    super();
+    const fn = () => this;
+    this;
+    fn();
+  }
+}

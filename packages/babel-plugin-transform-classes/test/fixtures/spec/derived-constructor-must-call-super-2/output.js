@@ -15,3 +15,22 @@ function (_Bar) {
 
   return Foo;
 }(Bar);
+
+var Baz =
+/*#__PURE__*/
+function (_Bar2) {
+  "use strict";
+
+  babelHelpers.inherits(Baz, _Bar2);
+
+  function Baz() {
+    var _this2;
+
+    babelHelpers.classCallCheck(this, Baz);
+    false && babelHelpers.assertThisInitialized(_this2);
+    babelHelpers.assertThisInitialized(_this2);
+    return _this2;
+  }
+
+  return Baz;
+}(Bar);

@@ -1,8 +1,10 @@
 var Outer = function Outer() {
   "use strict";
 
+  var _this = this;
+
   babelHelpers.classCallCheck(this, Outer);
-  Object.defineProperty(this, _outer, {
+  Object.defineProperty(_this, _outer, {
     writable: true,
     value: void 0
   });
@@ -18,7 +20,7 @@ var Outer = function Outer() {
     }
 
     return Test;
-  }(babelHelpers.classPrivateFieldLooseBase(this, _outer)[_outer]);
+  }(babelHelpers.classPrivateFieldLooseBase(_this, _outer)[_outer]);
 };
 
 var _outer = babelHelpers.classPrivateFieldLooseKey("outer");

@@ -1,10 +1,12 @@
 var C = function C() {
   "use strict";
 
-  babelHelpers.classCallCheck(this, C);
-  babelHelpers.defineProperty(this, "y", babelHelpers.classPrivateFieldGet(this, _x));
+  var _this = this;
 
-  _x.set(this, {
+  babelHelpers.classCallCheck(this, C);
+  babelHelpers.defineProperty(_this, "y", babelHelpers.classPrivateFieldGet(_this, _x));
+
+  _x.set(_this, {
     writable: true,
     value: void 0
   });

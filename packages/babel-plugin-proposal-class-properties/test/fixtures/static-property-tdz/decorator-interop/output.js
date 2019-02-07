@@ -20,9 +20,11 @@ function () {
   "use strict";
 
   function A() {
+    var _this = this;
+
     _classCallCheck(this, A);
 
-    _initializerDefineProperty(this, "a", _descriptor, this);
+    _initializerDefineProperty(_this, "a", _descriptor, _this);
   }
 
   _createClass(A, [{

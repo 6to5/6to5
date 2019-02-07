@@ -12,7 +12,7 @@ function (_Foo) {
 
     _Foo.prototype.test.whatever();
 
-    _Foo.prototype.test.call(babelHelpers.assertThisInitialized(_this));
+    _Foo.prototype.test.call(_this);
 
     return _this;
   }

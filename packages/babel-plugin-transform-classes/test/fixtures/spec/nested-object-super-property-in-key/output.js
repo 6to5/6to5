@@ -27,12 +27,12 @@ function (_Hello) {
     babelHelpers.classCallCheck(this, Outer);
     _this = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(Outer).call(this));
     var Inner = {
-      [babelHelpers.get(babelHelpers.getPrototypeOf(Outer.prototype), "toString", babelHelpers.assertThisInitialized(_this)).call(babelHelpers.assertThisInitialized(_this))]() {
+      [babelHelpers.get(babelHelpers.getPrototypeOf(Outer.prototype), "toString", _this).call(_this)]() {
         return 'hello';
       }
 
     };
-    return babelHelpers.possibleConstructorReturn(_this, Inner);
+    return Inner || _this;
   }
 
   return Outer;

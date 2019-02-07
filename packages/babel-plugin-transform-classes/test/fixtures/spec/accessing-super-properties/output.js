@@ -10,8 +10,8 @@ function (_Foo) {
 
     babelHelpers.classCallCheck(this, Test);
     _this = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(Test).call(this));
-    babelHelpers.get(babelHelpers.getPrototypeOf(Test.prototype), "test", babelHelpers.assertThisInitialized(_this));
-    babelHelpers.get(babelHelpers.getPrototypeOf(Test.prototype), "test", babelHelpers.assertThisInitialized(_this)).whatever;
+    babelHelpers.get(babelHelpers.getPrototypeOf(Test.prototype), "test", _this);
+    babelHelpers.get(babelHelpers.getPrototypeOf(Test.prototype), "test", _this).whatever;
     return _this;
   }
 

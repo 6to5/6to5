@@ -3,12 +3,14 @@ var foo = "bar";
 var Foo = function Foo(_foo) {
   "use strict";
 
+  var _this = this;
+
   babelHelpers.classCallCheck(this, Foo);
-  Object.defineProperty(this, _bar, {
+  Object.defineProperty(_this, _bar, {
     writable: true,
-    value: this
+    value: _this
   });
-  Object.defineProperty(this, _baz, {
+  Object.defineProperty(_this, _baz, {
     writable: true,
     value: foo
   });

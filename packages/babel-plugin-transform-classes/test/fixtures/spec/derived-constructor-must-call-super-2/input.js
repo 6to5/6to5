@@ -3,3 +3,10 @@ class Foo extends Bar {
     if (eval("false")) super();
   }
 }
+
+class Baz extends Bar {
+  constructor() {
+    false && this;
+    this;
+  }
+}

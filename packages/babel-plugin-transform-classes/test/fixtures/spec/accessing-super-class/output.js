@@ -13,12 +13,12 @@ function (_Foo) {
     babelHelpers.classCallCheck(this, Test);
     woops.super.test();
     _this = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(Test).call(this));
-    babelHelpers.get(babelHelpers.getPrototypeOf(Test.prototype), "test", babelHelpers.assertThisInitialized(_this)).call(babelHelpers.assertThisInitialized(_this));
+    babelHelpers.get(babelHelpers.getPrototypeOf(Test.prototype), "test", _this).call(_this);
     _this = babelHelpers.possibleConstructorReturn(this, babelHelpers.getPrototypeOf(Test).apply(this, arguments));
     _this = babelHelpers.possibleConstructorReturn(this, (_babelHelpers$getProt = babelHelpers.getPrototypeOf(Test)).call.apply(_babelHelpers$getProt, [this, "test"].concat(Array.prototype.slice.call(arguments))));
-    babelHelpers.get(babelHelpers.getPrototypeOf(Test.prototype), "test", babelHelpers.assertThisInitialized(_this)).apply(babelHelpers.assertThisInitialized(_this), arguments);
+    babelHelpers.get(babelHelpers.getPrototypeOf(Test.prototype), "test", _this).apply(_this, arguments);
 
-    (_babelHelpers$get = babelHelpers.get(babelHelpers.getPrototypeOf(Test.prototype), "test", babelHelpers.assertThisInitialized(_this))).call.apply(_babelHelpers$get, [babelHelpers.assertThisInitialized(_this), "test"].concat(Array.prototype.slice.call(arguments)));
+    (_babelHelpers$get = babelHelpers.get(babelHelpers.getPrototypeOf(Test.prototype), "test", _this)).call.apply(_babelHelpers$get, [_this, "test"].concat(Array.prototype.slice.call(arguments)));
 
     return _this;
   }
