@@ -22,7 +22,8 @@ export default class LocationParser extends CommentsParser {
     } = {},
   ): empty {
     const loc = getLineInfo(this.state.input, pos);
-    message += ` (${loc.line}:${loc.column})`;
+    const filename = this.filename ? this.filename + ":" : "";
+    message += ` (${filename}${loc.line}:${loc.column})`;
     // $FlowIgnore
     const err: SyntaxError & { pos: number, loc: Position } = new SyntaxError(
       message,
