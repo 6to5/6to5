@@ -1,0 +1,4 @@
+{
+  "throws": "Unexpected token (path/to/input-file.js:1:10)",
+  "sourceFilename": "path/to/input-file.js"
+}
