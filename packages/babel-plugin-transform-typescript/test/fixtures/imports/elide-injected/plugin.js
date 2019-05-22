@@ -19,6 +19,7 @@ module.exports = function({ types: t }) {
           // https://github.com/babel/babel/issues/7592
           path.scope.crawl();
           path.node.callee = t.identifier("local");
+          path.scope.crawl();
         }
       },
     },
