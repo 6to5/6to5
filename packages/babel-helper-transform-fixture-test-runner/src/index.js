@@ -196,7 +196,7 @@ function run(task) {
   if (!execCode || actualCode) {
     result = babel.transform(actualCode, getOpts(actual));
     const expectedCode = result.code.replace(
-      escapeRegExp(path.resolve(__dirname, "../../../")),
+      new RegExp(escapeRegExp(path.resolve(__dirname, "../../../"))),
       "<CWD>",
     );
 
