@@ -1,3 +1,7 @@
+/*================================!!! NOTE !!!==================================*\
+|  When updating this file, don't forget to update typings/babel-parser.js.flow  |
+\*==============================================================================*/
+
 // Type definitions for @babel/parser
 // Project: https://github.com/babel/babel/tree/master/packages/babel-parser
 // Definitions by: Troy Gerwien <https://github.com/yortus>

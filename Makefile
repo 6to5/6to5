@@ -136,6 +136,8 @@ prepublish-build:
 	rm -rf packages/babel-runtime-corejs2/core-js
 	NODE_ENV=production BABEL_ENV=production make build-dist
 	make clone-license
+	# move flow typings to build
+	cp packages/babel-parser/typings/babel-parser.js.flow packages/babel-parser/lib/index.js.flow
 
 prepublish:
 	make bootstrap-only
