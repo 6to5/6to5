@@ -23,4 +23,8 @@ if [ -n "$TEST_ONLY" ]; then
   jestArgs+=("(packages|codemods|eslint)/.*$TEST_ONLY.*/test")
 fi
 
+if [ -n "$TEST_WATCH" ]; then
+  jestArgs+=("--watch")
+fi
+
 $node node_modules/jest/bin/jest.js "${jestArgs[@]}"
