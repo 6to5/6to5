@@ -1,0 +1,23 @@
+{
+  "name": "@babel/plugin-syntax-eventual-send",
+  "version": "7.6.2",
+  "description": "Allow parsing of eventual send",
+  "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-eventual-send",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "lib/index.js",
+  "keywords": [
+    "babel-plugin"
+  ],
+  "dependencies": {
+    "@babel/helper-plugin-utils": "^7.0.0"
+  },
+  "peerDependencies": {
+    "@babel/core": "^7.6.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.2"
+  }
+}

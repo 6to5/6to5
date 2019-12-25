@@ -481,6 +481,16 @@ export default class ExpressionParser extends LValParser {
         this.unexpected(refShorthandDefaultPos.start);
       }
 
+      if (node.operator === "delete" && node.argument.maybeDeleteWavyDot) {
+        // delete x ~. [i] := HandledPromise.delete(x, i)
+        this.expectPlugin("eventualSend");
+        const arg = node.argument;
+        let deleteId = this.startNodeAtNode(node);
+        deleteId = this.createIdentifier(deleteId, "delete");
+        arg.callee.property = deleteId;
+        return arg;
+      }
+
       if (update) {
         this.checkLVal(node.argument, undefined, undefined, "prefix operation");
       } else if (this.state.strict && node.operator === "delete") {
@@ -582,6 +592,83 @@ export default class ExpressionParser extends LValParser {
         startLoc,
         noCalls,
       );
+    } else if (this.match(tt.tildeDot)) {
+      this.expectPlugin("eventualSend");
+      if (noCalls && this.lookahead().type === tt.parenL) {
+        state.stop = true;
+        return base;
+      }
+      this.next();
+
+      // Look up the handled promise statics.
+      const HANDLED_PROMISE =
+        this.getPluginOption("eventualSend", "handledPromise") ||
+        "HandledPromise";
+      const node = this.startNodeAt(startPos, startLoc);
+
+      // Do HandledPromise.METHOD(BASE, ...)
+      let method;
+      const args = [base];
+      if (this.eat(tt.bracketL)) {
+        // x ~. [i]...
+        // The second argument is always the computed expression.
+        args.push(this.parseExpression());
+        this.expect(tt.bracketR);
+      } else if (this.match(tt.parenL)) {
+        // x ~. (y, z) := HandledPromise.applyFunction(base, [y, z])
+        // No argument other than base.
+        method = "applyFunction";
+      } else {
+        // Simple case: x ~. p...
+        // Second argument is stringified identifier.
+        const property = this.parseIdentifier();
+        let arg = this.startNodeAtNode(property);
+        arg.value = property.name;
+        arg = this.finishNode(arg, "StringLiteral");
+        args.push(arg);
+      }
+
+      if (this.eat(tt.parenL)) {
+        // x ~. [i](y, z) := HandledPromise.applyMethod(base, i, [y, z])
+        // x ~. (y, z) := HandledPromise.applyFunction(base, [y, z]);
+        if (method !== "applyFunction") {
+          method = "applyMethod";
+        }
+        // The rest of the arguments are in parens.
+        let expr = this.startNode();
+        expr.elements = this.parseCallExpressionArguments(tt.parenR, false);
+        expr = this.finishNode(expr, "ArrayExpression");
+        args.push(expr);
+      } else if (this.eat(tt.eq)) {
+        // x ~. [i] = foo := HandledPromise.set(base, i)
+        method = "set";
+        args.push(this.parseMaybeAssign());
+      } else {
+        // x ~. [i] := HandledPromise.get(base, i)
+        // Method may change to HandledPromise.delete(base, i)
+        method = "get";
+      }
+
+      let callee = this.startNodeAtNode(node);
+      callee.object = this.createIdentifier(
+        this.startNodeAtNode(node),
+        HANDLED_PROMISE,
+      );
+      callee.property = this.createIdentifier(
+        this.startNodeAtNode(node),
+        method,
+      );
+      callee.computed = false;
+      callee = this.finishNode(callee, "MemberExpression");
+
+      // Create a WavyDot CallExpression.
+      const wdot = this.startNodeAtNode(node);
+      if (method === "get") {
+        wdot.maybeDeleteWavyDot = true;
+      }
+      wdot.callee = callee;
+      wdot.arguments = args;
+      return this.finishNode(wdot, "CallExpression");
     } else if (this.match(tt.questionDot)) {
       this.expectPlugin("optionalChaining");
       state.optionalChainMember = true;
