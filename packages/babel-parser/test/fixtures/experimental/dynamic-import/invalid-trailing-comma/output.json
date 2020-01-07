@@ -75,9 +75,6 @@
               }
             }
           },
-          "extra": {
-            "trailingComma": 12
-          },
           "arguments": [
             {
               "type": "StringLiteral",

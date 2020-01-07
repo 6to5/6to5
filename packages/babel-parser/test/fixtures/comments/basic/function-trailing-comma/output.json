@@ -74,9 +74,6 @@
             },
             "name": "fn"
           },
-          "extra": {
-            "trailingComma": 7
-          },
           "arguments": [
             {
               "type": "Identifier",
