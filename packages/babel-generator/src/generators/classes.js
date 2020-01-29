@@ -65,7 +65,9 @@ export function ClassBody(node: Object) {
 
     if (!this.endsWith("\n")) this.newline();
 
-    this.rightBrace();
+    this.withSource("end", node.loc, () => {
+      this.rightBrace();
+    });
   }
 }
 

@@ -30,7 +30,9 @@ export function ObjectExpression(node: Object) {
     this.space();
   }
 
-  this.token("}");
+  this.withSource("end", node.loc, () => {
+    this.token("}");
+  });
 }
 
 export { ObjectExpression as ObjectPattern };

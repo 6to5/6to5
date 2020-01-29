@@ -235,7 +235,9 @@ export function tsPrintBraced(members, node) {
       this.newline();
     }
     this.dedent();
-    this.rightBrace();
+    this.withSource("end", node.loc, () => {
+      this.rightBrace();
+    });
   } else {
     this.token("}");
   }

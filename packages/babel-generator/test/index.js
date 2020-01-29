@@ -50,7 +50,7 @@ describe("generation", function() {
         sources: ["a.js", "b.js"],
         mappings:
           // eslint-disable-next-line max-len
-          "AAAA,SAASA,EAAT,CAAaC,GAAb,EAAkB;AAAEC,EAAAA,OAAO,CAACC,GAAR,CAAYF,GAAZ;AAAmB;;ACAvCD,EAAE,CAAC,OAAD,CAAF",
+          "AAAA,SAASA,EAAT,CAAaC,GAAb,EAAkB;AAAEC,EAAAA,OAAO,CAACC,GAAR,CAAYF,GAAI,CAAhB;AAAmB;;ACAvCD,EAAE,CAAC,OAAQ,CAAX",
         names: ["hi", "msg", "console", "log"],
         sourcesContent: [
           "function hi (msg) { console.log(msg); }\n",
@@ -138,6 +138,12 @@ describe("generation", function() {
           name: undefined,
           generated: { line: 2, column: 17 },
           source: "a.js",
+          original: { line: 1, column: 36 },
+        },
+        {
+          name: undefined,
+          generated: { line: 2, column: 18 },
+          source: "a.js",
           original: { line: 1, column: 20 },
         },
         {
@@ -168,7 +174,7 @@ describe("generation", function() {
           name: undefined,
           generated: { line: 5, column: 10 },
           source: "b.js",
-          original: { line: 1, column: 2 },
+          original: { line: 1, column: 11 },
         },
         {
           name: undefined,
