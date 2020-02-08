@@ -19,10 +19,6 @@ type TransformFromAst = {
     opts: ?InputOptions,
     callback: FileResultCallback,
   ): void,
-
-  // Here for backward-compatibility. Ideally use ".transformSync" if you want
-  // a synchronous API.
-  (ast: AstRoot, code: string, opts: ?InputOptions): FileResult | null,
 };
 
 const transformFromAstRunner = gensync<
@@ -46,12 +42,6 @@ export const transformFromAst: TransformFromAst = (function transformFromAst(
   if (typeof opts === "function") {
     callback = opts;
     opts = undefined;
-  }
-
-  // For backward-compat with Babel 6, we allow sync transformation when
-  // no callback is given. Will be dropped in some future Babel major version.
-  if (callback === undefined) {
-    return transformFromAstRunner.sync(ast, code, opts);
   }
 
   transformFromAstRunner.errback(ast, code, opts, callback);
