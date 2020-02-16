@@ -33,9 +33,11 @@ export const transform: Transform = (function transform(code, opts, callback) {
     opts = undefined;
   }
 
-  // For backward-compat with Babel 6, we allow sync transformation when
-  // no callback is given. Will be dropped in some future Babel major version.
-  if (callback === undefined) return transformRunner.sync(code, opts);
+  if (callback === undefined) {
+    throw new Error(
+      "Starting from Babel 8.0.0, the 'transform' function expects a callback. If you need to call it synchronously, please use 'transformSync",
+    );
+  }
 
   transformRunner.errback(code, opts, callback);
 }: Function);
