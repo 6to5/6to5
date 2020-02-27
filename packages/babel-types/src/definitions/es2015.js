@@ -382,7 +382,8 @@ defineType("ImportDeclaration", {
       validate: assertNodeType("StringLiteral"),
     },
     importKind: {
-      // Handle Flowtype's extension "import {typeof foo} from"
+      // Handle TypeScript/Flowtype's extension "import type foo from"
+      // TypeScript doesn't support typeof
       validate: assertOneOf("type", "typeof", "value"),
       optional: true,
     },

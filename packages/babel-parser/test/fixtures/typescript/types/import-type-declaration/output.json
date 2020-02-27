@@ -1,0 +1,311 @@
+{
+  "type": "File",
+  "start": 0,
+  "end": 99,
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 36
+    }
+  },
+  "program": {
+    "type": "Program",
+    "start": 0,
+    "end": 99,
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 36
+      }
+    },
+    "sourceType": "module",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ImportDeclaration",
+        "start": 0,
+        "end": 27,
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 1,
+            "column": 27
+          }
+        },
+        "importKind": "type",
+        "specifiers": [
+          {
+            "type": "ImportDefaultSpecifier",
+            "start": 12,
+            "end": 13,
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 12
+              },
+              "end": {
+                "line": 1,
+                "column": 13
+              }
+            },
+            "local": {
+              "type": "Identifier",
+              "start": 12,
+              "end": 13,
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 12
+                },
+                "end": {
+                  "line": 1,
+                  "column": 13
+                },
+                "identifierName": "T"
+              },
+              "name": "T"
+            }
+          }
+        ],
+        "source": {
+          "type": "StringLiteral",
+          "start": 19,
+          "end": 26,
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 19
+            },
+            "end": {
+              "line": 1,
+              "column": 26
+            }
+          },
+          "extra": {
+            "rawValue": "./mod",
+            "raw": "'./mod'"
+          },
+          "value": "./mod"
+        }
+      },
+      {
+        "type": "ImportDeclaration",
+        "start": 28,
+        "end": 62,
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 34
+          }
+        },
+        "importKind": "type",
+        "specifiers": [
+          {
+            "type": "ImportSpecifier",
+            "start": 42,
+            "end": 43,
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 14
+              },
+              "end": {
+                "line": 2,
+                "column": 15
+              }
+            },
+            "imported": {
+              "type": "Identifier",
+              "start": 42,
+              "end": 43,
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 14
+                },
+                "end": {
+                  "line": 2,
+                  "column": 15
+                },
+                "identifierName": "A"
+              },
+              "name": "A"
+            },
+            "local": {
+              "type": "Identifier",
+              "start": 42,
+              "end": 43,
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 14
+                },
+                "end": {
+                  "line": 2,
+                  "column": 15
+                },
+                "identifierName": "A"
+              },
+              "name": "A"
+            }
+          },
+          {
+            "type": "ImportSpecifier",
+            "start": 45,
+            "end": 46,
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 17
+              },
+              "end": {
+                "line": 2,
+                "column": 18
+              }
+            },
+            "imported": {
+              "type": "Identifier",
+              "start": 45,
+              "end": 46,
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 17
+                },
+                "end": {
+                  "line": 2,
+                  "column": 18
+                },
+                "identifierName": "B"
+              },
+              "name": "B"
+            },
+            "local": {
+              "type": "Identifier",
+              "start": 45,
+              "end": 46,
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 17
+                },
+                "end": {
+                  "line": 2,
+                  "column": 18
+                },
+                "identifierName": "B"
+              },
+              "name": "B"
+            }
+          }
+        ],
+        "source": {
+          "type": "StringLiteral",
+          "start": 54,
+          "end": 61,
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 26
+            },
+            "end": {
+              "line": 2,
+              "column": 33
+            }
+          },
+          "extra": {
+            "rawValue": "./mod",
+            "raw": "'./mod'"
+          },
+          "value": "./mod"
+        }
+      },
+      {
+        "type": "ImportDeclaration",
+        "start": 63,
+        "end": 99,
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 36
+          }
+        },
+        "importKind": "type",
+        "specifiers": [
+          {
+            "type": "ImportNamespaceSpecifier",
+            "start": 75,
+            "end": 85,
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 12
+              },
+              "end": {
+                "line": 3,
+                "column": 22
+              }
+            },
+            "local": {
+              "type": "Identifier",
+              "start": 80,
+              "end": 85,
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 17
+                },
+                "end": {
+                  "line": 3,
+                  "column": 22
+                },
+                "identifierName": "Types"
+              },
+              "name": "Types"
+            }
+          }
+        ],
+        "source": {
+          "type": "StringLiteral",
+          "start": 91,
+          "end": 98,
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 28
+            },
+            "end": {
+              "line": 3,
+              "column": 35
+            }
+          },
+          "extra": {
+            "rawValue": "./mod",
+            "raw": "'./mod'"
+          },
+          "value": "./mod"
+        }
+      }
+    ],
+    "directives": []
+  }
+}

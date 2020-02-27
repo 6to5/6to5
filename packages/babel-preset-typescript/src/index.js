@@ -5,11 +5,12 @@ export default declare(
   (
     api,
     {
-      jsxPragma,
       allExtensions = false,
-      isTSX = false,
-      allowNamespaces,
       allowDeclareFields,
+      allowNamespaces,
+      jsxPragma,
+      isTSX = false,
+      onlyRemoveTypeImports,
     },
   ) => {
     api.assertVersion(7);
@@ -27,10 +28,11 @@ export default declare(
     }
 
     const pluginOptions = isTSX => ({
-      jsxPragma,
-      isTSX,
-      allowNamespaces,
       allowDeclareFields,
+      allowNamespaces,
+      isTSX,
+      jsxPragma,
+      onlyRemoveTypeImports,
     });
 
     return {

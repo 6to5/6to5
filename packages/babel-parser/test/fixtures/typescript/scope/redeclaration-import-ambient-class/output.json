@@ -43,6 +43,7 @@
             "column": 38
           }
         },
+        "importKind": "value",
         "specifiers": [
           {
             "type": "ImportDefaultSpecifier",

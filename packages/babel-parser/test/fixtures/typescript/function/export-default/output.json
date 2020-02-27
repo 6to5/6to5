@@ -43,6 +43,7 @@
             "column": 42
           }
         },
+        "exportKind": "value",
         "declaration": {
           "type": "TSDeclareFunction",
           "start": 15,

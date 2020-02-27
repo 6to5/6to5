@@ -1,0 +1,206 @@
+{
+  "type": "File",
+  "start": 0,
+  "end": 51,
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 1,
+      "column": 51
+    }
+  },
+  "errors": [
+    "SyntaxError: A type-only import can specify a default import or named bindings, but not both. (1:0)"
+  ],
+  "program": {
+    "type": "Program",
+    "start": 0,
+    "end": 51,
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 1,
+        "column": 51
+      }
+    },
+    "sourceType": "module",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ImportDeclaration",
+        "start": 0,
+        "end": 51,
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 1,
+            "column": 51
+          }
+        },
+        "importKind": "type",
+        "specifiers": [
+          {
+            "type": "ImportDefaultSpecifier",
+            "start": 12,
+            "end": 22,
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 12
+              },
+              "end": {
+                "line": 1,
+                "column": 22
+              }
+            },
+            "local": {
+              "type": "Identifier",
+              "start": 12,
+              "end": 22,
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 12
+                },
+                "end": {
+                  "line": 1,
+                  "column": 22
+                },
+                "identifierName": "FooDefault"
+              },
+              "name": "FooDefault"
+            }
+          },
+          {
+            "type": "ImportSpecifier",
+            "start": 26,
+            "end": 29,
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 26
+              },
+              "end": {
+                "line": 1,
+                "column": 29
+              }
+            },
+            "imported": {
+              "type": "Identifier",
+              "start": 26,
+              "end": 29,
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 26
+                },
+                "end": {
+                  "line": 1,
+                  "column": 29
+                },
+                "identifierName": "Bar"
+              },
+              "name": "Bar"
+            },
+            "local": {
+              "type": "Identifier",
+              "start": 26,
+              "end": 29,
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 26
+                },
+                "end": {
+                  "line": 1,
+                  "column": 29
+                },
+                "identifierName": "Bar"
+              },
+              "name": "Bar"
+            }
+          },
+          {
+            "type": "ImportSpecifier",
+            "start": 31,
+            "end": 34,
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 31
+              },
+              "end": {
+                "line": 1,
+                "column": 34
+              }
+            },
+            "imported": {
+              "type": "Identifier",
+              "start": 31,
+              "end": 34,
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 31
+                },
+                "end": {
+                  "line": 1,
+                  "column": 34
+                },
+                "identifierName": "Baz"
+              },
+              "name": "Baz"
+            },
+            "local": {
+              "type": "Identifier",
+              "start": 31,
+              "end": 34,
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 31
+                },
+                "end": {
+                  "line": 1,
+                  "column": 34
+                },
+                "identifierName": "Baz"
+              },
+              "name": "Baz"
+            }
+          }
+        ],
+        "source": {
+          "type": "StringLiteral",
+          "start": 42,
+          "end": 50,
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 42
+            },
+            "end": {
+              "line": 1,
+              "column": 50
+            }
+          },
+          "extra": {
+            "rawValue": "module",
+            "raw": "\"module\""
+          },
+          "value": "module"
+        }
+      }
+    ],
+    "directives": []
+  }
+}

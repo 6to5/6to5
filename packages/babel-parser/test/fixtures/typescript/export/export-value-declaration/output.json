@@ -1,0 +1,358 @@
+{
+  "type": "File",
+  "start": 0,
+  "end": 94,
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 6,
+      "column": 21
+    }
+  },
+  "program": {
+    "type": "Program",
+    "start": 0,
+    "end": 94,
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 6,
+        "column": 21
+      }
+    },
+    "sourceType": "module",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExportNamedDeclaration",
+        "start": 0,
+        "end": 13,
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 1,
+            "column": 13
+          }
+        },
+        "exportKind": "value",
+        "specifiers": [],
+        "source": null,
+        "declaration": {
+          "type": "VariableDeclaration",
+          "start": 7,
+          "end": 13,
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 7
+            },
+            "end": {
+              "line": 1,
+              "column": 13
+            }
+          },
+          "declarations": [
+            {
+              "type": "VariableDeclarator",
+              "start": 11,
+              "end": 12,
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 11
+                },
+                "end": {
+                  "line": 1,
+                  "column": 12
+                }
+              },
+              "id": {
+                "type": "Identifier",
+                "start": 11,
+                "end": 12,
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 11
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 12
+                  },
+                  "identifierName": "a"
+                },
+                "name": "a"
+              },
+              "init": null
+            }
+          ],
+          "kind": "var"
+        }
+      },
+      {
+        "type": "ExportNamedDeclaration",
+        "start": 14,
+        "end": 36,
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 22
+          }
+        },
+        "exportKind": "value",
+        "specifiers": [],
+        "source": null,
+        "declaration": {
+          "type": "FunctionDeclaration",
+          "start": 21,
+          "end": 36,
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 22
+            }
+          },
+          "id": {
+            "type": "Identifier",
+            "start": 30,
+            "end": 31,
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 16
+              },
+              "end": {
+                "line": 2,
+                "column": 17
+              },
+              "identifierName": "b"
+            },
+            "name": "b"
+          },
+          "generator": false,
+          "async": false,
+          "params": [],
+          "body": {
+            "type": "BlockStatement",
+            "start": 34,
+            "end": 36,
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 20
+              },
+              "end": {
+                "line": 2,
+                "column": 22
+              }
+            },
+            "body": [],
+            "directives": []
+          }
+        }
+      },
+      {
+        "type": "ExportNamedDeclaration",
+        "start": 37,
+        "end": 54,
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 17
+          }
+        },
+        "exportKind": "value",
+        "specifiers": [],
+        "source": null,
+        "declaration": {
+          "type": "ClassDeclaration",
+          "start": 44,
+          "end": 54,
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 7
+            },
+            "end": {
+              "line": 3,
+              "column": 17
+            }
+          },
+          "id": {
+            "type": "Identifier",
+            "start": 50,
+            "end": 51,
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 13
+              },
+              "end": {
+                "line": 3,
+                "column": 14
+              },
+              "identifierName": "C"
+            },
+            "name": "C"
+          },
+          "superClass": null,
+          "body": {
+            "type": "ClassBody",
+            "start": 52,
+            "end": 54,
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 15
+              },
+              "end": {
+                "line": 3,
+                "column": 17
+              }
+            },
+            "body": []
+          }
+        }
+      },
+      {
+        "type": "ExportNamedDeclaration",
+        "start": 56,
+        "end": 72,
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 16
+          }
+        },
+        "exportKind": "value",
+        "specifiers": [],
+        "source": null,
+        "declaration": {
+          "type": "TSEnumDeclaration",
+          "start": 63,
+          "end": 72,
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 7
+            },
+            "end": {
+              "line": 5,
+              "column": 16
+            }
+          },
+          "id": {
+            "type": "Identifier",
+            "start": 68,
+            "end": 69,
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 12
+              },
+              "end": {
+                "line": 5,
+                "column": 13
+              },
+              "identifierName": "D"
+            },
+            "name": "D"
+          },
+          "members": []
+        }
+      },
+      {
+        "type": "ExportNamedDeclaration",
+        "start": 73,
+        "end": 94,
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 21
+          }
+        },
+        "exportKind": "value",
+        "specifiers": [],
+        "source": null,
+        "declaration": {
+          "type": "TSModuleDeclaration",
+          "start": 80,
+          "end": 94,
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 7
+            },
+            "end": {
+              "line": 6,
+              "column": 21
+            }
+          },
+          "id": {
+            "type": "Identifier",
+            "start": 90,
+            "end": 91,
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 17
+              },
+              "end": {
+                "line": 6,
+                "column": 18
+              },
+              "identifierName": "E"
+            },
+            "name": "E"
+          },
+          "body": {
+            "type": "TSModuleBlock",
+            "start": 92,
+            "end": 94,
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 19
+              },
+              "end": {
+                "line": 6,
+                "column": 21
+              }
+            },
+            "body": []
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}

@@ -43,6 +43,7 @@
             "column": 23
           }
         },
+        "exportKind": "value",
         "specifiers": [],
         "source": null,
         "declaration": {
@@ -140,6 +141,7 @@
             "column": 18
           }
         },
+        "exportKind": "value",
         "specifiers": [],
         "source": null,
         "declaration": {

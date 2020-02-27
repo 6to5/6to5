@@ -43,6 +43,7 @@
             "column": 1
           }
         },
+        "declare": true,
         "id": {
           "type": "Identifier",
           "start": 14,
@@ -76,8 +77,7 @@
             }
           },
           "body": []
-        },
-        "declare": true
+        }
       },
       {
         "type": "TSModuleDeclaration",
@@ -139,6 +139,7 @@
                   "column": 22
                 }
               },
+              "exportKind": "value",
               "specifiers": [],
               "source": null,
               "declaration": {

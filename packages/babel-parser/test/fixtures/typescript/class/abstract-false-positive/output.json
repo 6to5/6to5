@@ -43,6 +43,7 @@
             "column": 24
           }
         },
+        "exportKind": "value",
         "declaration": {
           "type": "Identifier",
           "start": 78,

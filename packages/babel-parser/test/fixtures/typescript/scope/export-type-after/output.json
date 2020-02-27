@@ -90,6 +90,7 @@
             "column": 13
           }
         },
+        "exportKind": "value",
         "specifiers": [
           {
             "type": "ExportSpecifier",

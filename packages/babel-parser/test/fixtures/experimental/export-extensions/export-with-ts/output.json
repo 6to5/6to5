@@ -43,6 +43,7 @@
             "column": 26
           }
         },
+        "exportKind": "value",
         "specifiers": [],
         "source": null,
         "declaration": {
@@ -110,6 +111,7 @@
             "column": 29
           }
         },
+        "exportKind": "type",
         "specifiers": [],
         "source": null,
         "declaration": {
@@ -176,6 +178,7 @@
             "column": 16
           }
         },
+        "exportKind": "value",
         "specifiers": [],
         "source": null,
         "declaration": {
@@ -226,6 +229,7 @@
             "column": 21
           }
         },
+        "exportKind": "type",
         "specifiers": [],
         "source": null,
         "declaration": {
@@ -291,6 +295,7 @@
             "column": 18
           }
         },
+        "exportKind": "value",
         "specifiers": [],
         "source": null,
         "declaration": {
@@ -356,6 +361,7 @@
             "column": 21
           }
         },
+        "exportKind": "value",
         "specifiers": [],
         "source": null,
         "declaration": {
@@ -421,6 +427,7 @@
             "column": 27
           }
         },
+        "exportKind": "type",
         "specifiers": [],
         "source": null,
         "declaration": {
