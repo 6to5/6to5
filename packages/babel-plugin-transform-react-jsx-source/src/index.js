@@ -21,9 +21,13 @@ const FILE_NAME_VAR = "_jsxFileName";
 export default declare(api => {
   api.assertVersion(7);
 
-  function makeTrace(fileNameIdentifier, lineNumber) {
+  function makeTrace(fileNameIdentifier, lineNumber, colNumber, toLineNumber) {
     const fileLineLiteral =
       lineNumber != null ? t.numericLiteral(lineNumber) : t.nullLiteral();
+    const fileColLiteral =
+      colNumber != null ? t.numericLiteral(colNumber) : t.nullLiteral();
+    const fileToLineLiteral =
+      toLineNumber != null ? t.numericLiteral(toLineNumber) : t.nullLiteral();
     const fileNameProperty = t.objectProperty(
       t.identifier("fileName"),
       fileNameIdentifier,
@@ -32,13 +36,29 @@ export default declare(api => {
       t.identifier("lineNumber"),
       fileLineLiteral,
     );
-    return t.objectExpression([fileNameProperty, lineNumberProperty]);
+    const colNumberProperty = t.objectProperty(
+      t.identifier("colNumber"),
+      fileColLiteral,
+    );
+    const toLineNumberProperty = t.objectProperty(
+      t.identifier("toLineNumber"),
+      fileToLineLiteral,
+    );
+    return t.objectExpression([
+      fileNameProperty,
+      lineNumberProperty,
+      colNumberProperty,
+      toLineNumberProperty,
+    ]);
   }
 
   const visitor = {
     JSXOpeningElement(path, state) {
       const id = t.jsxIdentifier(TRACE_ID);
       const location = path.container.openingElement.loc;
+      const closingLocation = path.container.closingElement
+        ? path.container.closingElement.loc
+        : location;
       if (!location) {
         // the element was generated and doesn't have location information
         return;
@@ -69,7 +89,12 @@ export default declare(api => {
         state.fileNameIdentifier = fileNameIdentifier;
       }
 
-      const trace = makeTrace(state.fileNameIdentifier, location.start.line);
+      const trace = makeTrace(
+        state.fileNameIdentifier,
+        location.start.line,
+        location.start.column,
+        closingLocation.start.line,
+      );
       attributes.push(t.jsxAttribute(id, t.jsxExpressionContainer(trace)));
     },
   };
