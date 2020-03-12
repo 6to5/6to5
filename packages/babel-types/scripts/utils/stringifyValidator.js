@@ -33,7 +33,7 @@ module.exports = function stringifyValidator(validator, nodePrefix) {
 
   if (validator.shapeOf) {
     return (
-      "{ " +
+      "{| " +
       Object.keys(validator.shapeOf)
         .map(shapeKey => {
           const propertyDefinition = validator.shapeOf[shapeKey];
@@ -50,11 +50,11 @@ module.exports = function stringifyValidator(validator, nodePrefix) {
         })
         .filter(Boolean)
         .join(", ") +
-      " }"
+      " |}"
     );
   }
 
-  return ["any"];
+  return "any";
 };
 
 /**

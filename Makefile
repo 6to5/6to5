@@ -45,6 +45,12 @@ generate-type-helpers:
 build-typings: build-flow-typings build-typescript-typings
 
 build-flow-typings:
+	mkdir -p packages/babel-core/lib packages/babel-generator/lib packages/babel-parser/lib packages/babel-template/lib packages/babel-traverse/lib packages/babel-types/lib
+	cp packages/babel-core/index.flow.js packages/babel-core/lib/index.js.flow
+	cp packages/babel-generator/index.flow.js packages/babel-generator/lib/index.js.flow
+	cp packages/babel-parser/index.flow.js packages/babel-parser/lib/index.js.flow
+	cp packages/babel-template/index.flow.js packages/babel-template/lib/index.js.flow
+	$(NODE) packages/babel-traverse/scripts/flow.js > packages/babel-traverse/lib/index.js.flow
 	$(NODE) packages/babel-types/scripts/generators/flow.js > packages/babel-types/lib/index.js.flow
 
 build-typescript-typings:

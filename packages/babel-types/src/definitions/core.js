@@ -449,13 +449,13 @@ defineType("Identifier", {
   fields: {
     ...patternLikeCommon,
     name: {
-      validate: chain(assertValueType("string"), function(node, key, val) {
+      validate: chain(function(node, key, val) {
         if (!process.env.BABEL_TYPES_8_BREAKING) return;
 
         if (!esutils.keyword.isIdentifierNameES6(val)) {
           throw new TypeError(`"${val}" is not a valid identifier name`);
         }
-      }),
+      }, assertValueType("string")),
     },
     optional: {
       validate: assertValueType("boolean"),
