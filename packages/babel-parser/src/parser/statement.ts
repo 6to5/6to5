@@ -34,8 +34,9 @@ import type { SourceType } from "../options";
 import { Token } from "../tokenizer";
 import { Position } from "../util/location";
 
-const loopLabel = { kind: "loop" },
-  switchLabel = { kind: "switch" };
+// todo: export label type
+const loopLabel: any = { kind: "loop" },
+  switchLabel: any = { kind: "switch" };
 
 const FUNC_NO_FLAGS = 0b000,
   FUNC_STATEMENT = 0b001,
@@ -88,7 +89,7 @@ function babel7CompatTokens(tokens) {
   }
   return tokens;
 }
-export default class StatementParser extends ExpressionParser {
+export default abstract class StatementParser extends ExpressionParser {
   // ### Statement parsing
 
   // Parse a program. Initializes the parser, reads any number of
@@ -132,7 +133,10 @@ export default class StatementParser extends ExpressionParser {
     const expr = stmt.expression;
 
     const directiveLiteral = this.startNodeAt(expr.start, expr.loc.start);
-    const directive = this.startNodeAt(stmt.start, stmt.loc.start);
+    const directive = this.startNodeAt(
+      stmt.start,
+      stmt.loc.start,
+    ) as N.Directive;
 
     const raw = this.input.slice(expr.start, expr.end);
     const val = (directiveLiteral.value = raw.slice(1, -1)); // remove quotes
@@ -1405,10 +1409,10 @@ export default class StatementParser extends ExpressionParser {
     state: N.ParseClassMemberState,
     isStatic: boolean,
   ) {
-    const publicMethod: $FlowSubtype<N.ClassMethod> = member;
-    const privateMethod: $FlowSubtype<N.ClassPrivateMethod> = member;
-    const publicProp: $FlowSubtype<N.ClassMethod> = member;
-    const privateProp: $FlowSubtype<N.ClassPrivateMethod> = member;
+    const publicMethod: N.ClassMethod = member;
+    const privateMethod: N.ClassPrivateMethod = member;
+    const publicProp: N.ClassMethod = member;
+    const privateProp: N.ClassPrivateMethod = member;
 
     const method: typeof publicMethod | typeof privateMethod = publicMethod;
     const publicMember: typeof publicMethod | typeof publicProp = publicMethod;

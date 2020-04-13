@@ -45,7 +45,9 @@ const forbiddenNumericSeparatorSiblings = {
   ],
 };
 
-const allowedNumericSeparatorSiblings = {};
+const allowedNumericSeparatorSiblings: {
+  [K in "bin" | "oct" | "dec" | "hex"]: any[];
+} = {} as any;
 allowedNumericSeparatorSiblings.bin = [
   // 0 - 1
   charCodes.digit0,
@@ -111,14 +113,16 @@ export class Token {
 
 // ## Tokenizer
 
-export default class Tokenizer extends ParserErrors {
+export default abstract class Tokenizer extends ParserErrors {
+  // export default abstract class Tokenizer extends LocationParser {
   // Forward-declarations
   // parser/util.js
-  /*::
-  +hasPrecedingLineBreak: () => boolean;
-  +unexpected: (pos?: ?number, messageOrType?: ErrorTemplate | TokenType) => empty;
-  +expectPlugin: (name: string, pos?: ?number) => true;
-  */
+  abstract hasPrecedingLineBreak(): boolean;
+  abstract unexpected(
+    pos?: number | null,
+    messageOrType?: ErrorTemplate | TokenType,
+  ): never;
+  abstract expectPlugin(name: string, pos?: number | null): true | never;
 
   isLookahead: boolean;
 
@@ -272,7 +276,7 @@ export default class Tokenizer extends ParserErrors {
     startLoc: Position,
     endLoc: Position,
   ): void {
-    const comment = {
+    const comment: N.Comment = {
       type: block ? "CommentBlock" : "CommentLine",
       value: text,
       start: start,
@@ -397,7 +401,7 @@ export default class Tokenizer extends ParserErrors {
   // the token, so that the next one's `start` will point at the
   // right position.
 
-  finishToken(type: TokenType, val: any): void {
+  finishToken(type: TokenType, val?: any): void {
     this.state.end = this.state.pos;
     this.state.endLoc = this.state.curPosition();
     const prevType = this.state.type;
@@ -1257,7 +1261,7 @@ export default class Tokenizer extends ParserErrors {
       if (ch === quote) break;
       if (ch === charCodes.backslash) {
         out += this.input.slice(chunkStart, this.state.pos);
-        // @ts-expect-error todo($FlowFixMe)
+        // todo($FlowFixMe)
         out += this.readEscapedChar(false);
         chunkStart = this.state.pos;
       } else if (

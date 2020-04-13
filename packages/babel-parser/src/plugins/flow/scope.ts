@@ -23,7 +23,7 @@ export default class FlowScopeHandler extends ScopeHandler<FlowScope> {
       return;
     }
 
-    super.declareName(...arguments);
+    super.declareName(name, bindingType, pos);
   }
 
   isRedeclaredInScope(
@@ -31,7 +31,7 @@ export default class FlowScopeHandler extends ScopeHandler<FlowScope> {
     name: string,
     bindingType: BindingTypes,
   ): boolean {
-    if (super.isRedeclaredInScope(...arguments)) return true;
+    if (super.isRedeclaredInScope(scope, name, bindingType)) return true;
 
     if (bindingType & BIND_FLAGS_FLOW_DECLARE_FN) {
       return (

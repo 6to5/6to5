@@ -182,7 +182,7 @@ export default class CommentsParser extends BaseParser {
         if (
           lastChild !== node &&
           lastChild.leadingComments.length > 0 &&
-          last(lastChild.leadingComments).end <= node.start
+          last<Comment>(lastChild.leadingComments).end <= node.start
         ) {
           node.leadingComments = lastChild.leadingComments;
           delete lastChild.leadingComments;
@@ -258,7 +258,7 @@ export default class CommentsParser extends BaseParser {
       if (
         trailingComments.length &&
         trailingComments[0].start >= node.start &&
-        last(trailingComments).end <= node.end
+        last<Comment>(trailingComments).end <= node.end
       ) {
         node.innerComments = trailingComments;
       } else {

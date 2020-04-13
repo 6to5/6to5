@@ -169,7 +169,7 @@ export type Function =
 
 export type NormalFunction = FunctionDeclaration | FunctionExpression;
 
-interface BodilessFunctionOrMethodBase extends HasDecorators {
+export interface BodilessFunctionOrMethodBase extends HasDecorators {
   // TODO: Remove this. Should not assign "id" to methods.
   // https://github.com/babel/babylon/issues/535
   id: Identifier | undefined | null;

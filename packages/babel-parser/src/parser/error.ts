@@ -56,11 +56,9 @@ export {
 
 export type raiseFunction = (b: number, a: ErrorTemplate) => void;
 
-export default class ParserError extends CommentsParser {
+export default abstract class ParserError extends CommentsParser {
   // Forward-declaration: defined in tokenizer/index.js
-  /*::
-  +isLookahead: boolean;
-  */
+  abstract isLookahead: boolean;
 
   getLocationForPosition(pos: number): Position {
     let loc;
@@ -78,6 +76,7 @@ export default class ParserError extends CommentsParser {
     { code, reasonCode, template }: ErrorTemplate,
     ...params: any
   ): Error | never {
+    // @ts-expect-error todo(flow->ts) data has unexpected shape
     return this.raiseWithData(pos, { code, reasonCode }, template, ...params);
   }
 
@@ -136,7 +135,7 @@ export default class ParserError extends CommentsParser {
   }
 
   _raise(errorContext: ErrorContext, message: string): Error | never {
-    // @ts-ignore todo($FlowIgnore)
+    // @ts-ignore todo($FlowIgnore) looks like no longer needed workaround for flow
     const err: SyntaxError & ErrorContext = new SyntaxError(message);
     Object.assign(err, errorContext);
     if (this.options.errorRecovery) {

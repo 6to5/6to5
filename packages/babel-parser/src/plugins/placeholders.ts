@@ -4,50 +4,41 @@ import { types as tt, TokenType } from "../tokenizer/types";
 import type Parser from "../parser";
 import * as N from "../types";
 import { makeErrorTemplates, ErrorCodes } from "../parser/error";
-
-type $Call1<F extends (...args: any) => any, A> = F extends (
-  a: A,
-  ...args: any
-) => infer R
-  ? R
-  : never;
+import { ExpressionErrors } from "../parser/util";
+import type { Expression } from "../types";
+import { BIND_NONE } from "../util/scopeflags";
+import type { BindingTypes } from "../util/scopeflags";
 
 tt.placeholder = new TokenType("%%", { startsExpr: true });
 
-export type PlaceholderTypes =
-  | "Identifier"
-  | "StringLiteral"
-  | "Expression"
-  | "Statement"
-  | "Declaration"
-  | "BlockStatement"
-  | "ClassBody"
-  | "Pattern";
+type PossiblePlaceholedrs = {
+  Identifier: N.Identifier;
+  StringLiteral: N.StringLiteral;
+  Expression: N.Expression;
+  Statement: N.Statement;
+  Declaration: N.Declaration;
+  BlockStatement: N.BlockStatement;
+  ClassBody: N.ClassBody;
+  Pattern: N.Pattern;
+};
 
-// $PropertyType doesn't support enums. Use a fake "switch" (GetPlaceholderNode)
-//type MaybePlaceholder<T: PlaceholderTypes> = $PropertyType<N, T> | N.Placeholder<T>;
+export type PlaceholderTypes = keyof PossiblePlaceholedrs;
+// todo:
+// export type PlaceholderTypes =
+//   | "Identifier"
+//   | "StringLiteral"
+//   | "Expression"
+//   | "Statement"
+//   | "Declaration"
+//   | "BlockStatement"
+//   | "ClassBody"
+//   | "Pattern";
 
-type _Switch<Value, Cases, Index> = $Call1<
-  (a: Cases[Index][0]) => Cases[Index][1],
-  Value
->;
+type NodeOf<T extends keyof PossiblePlaceholedrs> = PossiblePlaceholedrs[T];
+// todo: when there  is proper union type for Node
+// type NodeOf<T extends PlaceholderTypes> = Extract<N.Node, { type: T }>;
 
-type $Switch<Value, Cases> = _Switch<Value, Cases, any>;
-type NodeOf<T extends PlaceholderTypes> = $Switch<
-  T,
-  [
-    ["Identifier", N.Identifier],
-    ["StringLiteral", N.StringLiteral],
-    ["Expression", N.Expression],
-    ["Statement", N.Statement],
-    ["Declaration", N.Declaration],
-    ["BlockStatement", N.BlockStatement],
-    ["ClassBody", N.ClassBody],
-    ["Pattern", N.Pattern],
-  ]
->;
-
-// Placeholder<T> breaks everything, because its type is incompatible with
+// todo: Placeholder<T> breaks everything, because its type is incompatible with
 // the substituted nodes.
 type MaybePlaceholder<T extends PlaceholderTypes> = NodeOf<T>; // | Placeholder<T>
 
@@ -58,12 +49,8 @@ const PlaceHolderErrors = makeErrorTemplates(
   /* code */ ErrorCodes.SyntaxError,
 );
 
-export default (superClass: {
-  new (...args: any): Parser;
-}): {
-  new (...args: any): Parser;
-} =>
-  class extends superClass {
+export default (superClass: typeof Parser) =>
+  class PlaceholdersParserMixin extends superClass implements Parser {
     parsePlaceholder<T extends PlaceholderTypes>(
       expectedNode: T,
     ): /*?N.Placeholder<T>*/ MaybePlaceholder<T> | undefined | null {
@@ -104,35 +91,44 @@ export default (superClass: {
         return this.finishOp(tt.placeholder, 2);
       }
 
-      return super.getTokenFromCode(...arguments);
+      return super.getTokenFromCode(code);
     }
 
     /* ============================================================ *
      * parser/expression.js                                         *
      * ============================================================ */
 
-    parseExprAtom(): MaybePlaceholder<"Expression"> {
+    parseExprAtom(
+      refExpressionErrors?: ExpressionErrors | null,
+    ): MaybePlaceholder<"Expression"> {
       return (
-        this.parsePlaceholder("Expression") || super.parseExprAtom(...arguments)
+        this.parsePlaceholder("Expression") ||
+        super.parseExprAtom(refExpressionErrors)
       );
     }
 
-    parseIdentifier(): MaybePlaceholder<"Identifier"> {
+    parseIdentifier(liberal?: boolean): MaybePlaceholder<"Identifier"> {
       // NOTE: This function only handles identifiers outside of
       // expressions and binding patterns, since they are already
       // handled by the parseExprAtom and parseBindingAtom functions.
       // This is needed, for example, to parse "class %%NAME%% {}".
       return (
-        this.parsePlaceholder("Identifier") ||
-        super.parseIdentifier(...arguments)
+        this.parsePlaceholder("Identifier") || super.parseIdentifier(liberal)
       );
     }
 
-    checkReservedWord(word: string): void {
+    checkReservedWord(
+      word: string,
+      startLoc: number,
+      checkKeywords: boolean,
+      isBinding: boolean,
+    ) {
       // Sometimes we call #checkReservedWord(node.name), expecting
       // that node is an Identifier. If it is a Placeholder, name
       // will be undefined.
-      if (word !== undefined) super.checkReservedWord(...arguments);
+      if (word !== undefined) {
+        super.checkReservedWord(word, startLoc, checkKeywords, isBinding);
+      }
     }
 
     /* ============================================================ *
@@ -140,13 +136,32 @@ export default (superClass: {
      * ============================================================ */
 
     parseBindingAtom(): MaybePlaceholder<"Pattern"> {
-      return (
-        this.parsePlaceholder("Pattern") || super.parseBindingAtom(...arguments)
-      );
+      return this.parsePlaceholder("Pattern") || super.parseBindingAtom();
     }
 
-    checkLVal(expr: N.Expression): void {
-      if (expr.type !== "Placeholder") super.checkLVal(...arguments);
+    checkLVal(
+      expr: Expression,
+      bindingType: BindingTypes = BIND_NONE,
+      checkClashes:
+        | {
+            [key: string]: boolean;
+          }
+        | undefined
+        | null,
+      contextDescription: string,
+      disallowLetBinding?: boolean,
+      strictModeChanged?: boolean,
+    ): void {
+      if (expr.type !== "Placeholder") {
+        super.checkLVal(
+          expr,
+          bindingType,
+          checkClashes,
+          contextDescription,
+          disallowLetBinding,
+          strictModeChanged,
+        );
+      }
     }
 
     toAssignable(node: N.Node): N.Node {
@@ -158,7 +173,7 @@ export default (superClass: {
         node.expectedNode = "Pattern";
         return node;
       }
-      return super.toAssignable(...arguments);
+      return super.toAssignable(node);
     }
 
     /* ============================================================ *
@@ -187,9 +202,12 @@ export default (superClass: {
       return false;
     }
 
-    verifyBreakContinue(node: N.BreakStatement | N.ContinueStatement) {
+    verifyBreakContinue(
+      node: N.BreakStatement | N.ContinueStatement,
+      keyword: string,
+    ) {
       if (node.label && node.label.type === "Placeholder") return;
-      super.verifyBreakContinue(...arguments);
+      super.verifyBreakContinue(node, keyword);
     }
 
     parseExpressionStatement(
@@ -200,7 +218,7 @@ export default (superClass: {
         expr.type !== "Placeholder" ||
         (expr.extra && expr.extra.parenthesized)
       ) {
-        return super.parseExpressionStatement(...arguments);
+        return super.parseExpressionStatement(node, expr);
       }
 
       if (this.match(tt.colon)) {
@@ -217,17 +235,26 @@ export default (superClass: {
       return this.finishPlaceholder(node, "Statement");
     }
 
-    parseBlock(): MaybePlaceholder<"BlockStatement"> {
+    parseBlock(
+      allowDirectives?: boolean,
+      createNewLexicalScope?: boolean,
+      afterBlockParse?: (hasStrictModeDirective: boolean) => void,
+    ): MaybePlaceholder<"BlockStatement"> {
       return (
         this.parsePlaceholder("BlockStatement") ||
-        super.parseBlock(...arguments)
+        super.parseBlock(
+          allowDirectives,
+          createNewLexicalScope,
+          afterBlockParse,
+        )
       );
     }
 
-    parseFunctionId(): MaybePlaceholder<"Identifier"> | undefined | null {
+    parseFunctionId(
+      requireId?: boolean,
+    ): MaybePlaceholder<"Identifier"> | undefined | null {
       return (
-        this.parsePlaceholder("Identifier") ||
-        super.parseFunctionId(...arguments)
+        this.parsePlaceholder("Identifier") || super.parseFunctionId(requireId)
       );
     }
 
@@ -268,9 +295,9 @@ export default (superClass: {
       return this.finishNode(node, type);
     }
 
-    parseExport(node: N.Node): N.Node {
+    parseExport(node: N.Node): N.AnyExport {
       const placeholder = this.parsePlaceholder("Identifier");
-      if (!placeholder) return super.parseExport(...arguments);
+      if (!placeholder) return super.parseExport(node);
 
       if (!this.isContextual("from") && !this.match(tt.comma)) {
         // export %%DECL%%;
@@ -311,7 +338,7 @@ export default (superClass: {
         // "export %%NAME%%" has already been parsed by #parseExport.
         return true;
       }
-      return super.maybeParseExportDefaultSpecifier(...arguments);
+      return super.maybeParseExportDefaultSpecifier(node);
     }
 
     checkExport(node: N.ExportNamedDeclaration): void {
@@ -329,7 +356,7 @@ export default (superClass: {
       node: N.Node,
     ): N.ImportDeclaration | N.TsImportEqualsDeclaration {
       const placeholder = this.parsePlaceholder("Identifier");
-      if (!placeholder) return super.parseImport(...arguments);
+      if (!placeholder) return super.parseImport(node);
 
       node.specifiers = [];
 
@@ -364,8 +391,7 @@ export default (superClass: {
       // import ... from %%STRING%%;
 
       return (
-        this.parsePlaceholder("StringLiteral") ||
-        super.parseImportSource(...arguments)
+        this.parsePlaceholder("StringLiteral") || super.parseImportSource()
       );
     }
   };

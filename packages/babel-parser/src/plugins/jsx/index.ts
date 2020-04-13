@@ -96,12 +96,14 @@ function getQualifiedJSXName(
   throw new Error("Node had unexpected type: " + object.type);
 }
 
-export default (superClass: {
-  new (...args: any): Parser;
-}): {
-  new (...args: any): Parser;
-} =>
-  class extends superClass {
+export interface IJSXParserMixin {
+  jsxParseOpeningElementAfterName(
+    node: N.JSXOpeningElement,
+  ): N.JSXOpeningElement;
+}
+
+export default (superClass: typeof Parser) =>
+  class JSXParserMixin extends superClass implements Parser, IJSXParserMixin {
     // Reads inline JSX contents token.
 
     jsxReadToken(): void {

@@ -1,13 +1,10 @@
-import type Parser from "../parser";
+import Parser from "../parser";
 import { types as tt } from "../tokenizer/types";
 import * as N from "../types";
+import type { ExpressionErrors } from "../parser/util";
 
-export default (superClass: {
-  new (...args: any): Parser;
-}): {
-  new (...args: any): Parser;
-} =>
-  class extends superClass {
+export default (superClass: typeof Parser) =>
+  class V8IntrinsicMixin extends superClass implements Parser {
     parseV8Intrinsic(): N.Expression {
       if (this.match(tt.modulo)) {
         const v8IntrinsicStart = this.state.start;
@@ -17,6 +14,7 @@ export default (superClass: {
         if (this.match(tt.name)) {
           const name = this.parseIdentifierName(this.state.start);
           const identifier = this.createIdentifier(node, name);
+          // @ts-expect-error todo(flow->ts) avoid mutations
           identifier.type = "V8IntrinsicIdentifier";
           if (this.match(tt.parenL)) {
             return identifier;
@@ -30,7 +28,9 @@ export default (superClass: {
      * parser/expression.js                                         *
      * ============================================================ */
 
-    parseExprAtom(): N.Expression {
-      return this.parseV8Intrinsic() || super.parseExprAtom(...arguments);
+    parseExprAtom(refExpressionErrors?: ExpressionErrors | null): N.Expression {
+      return (
+        this.parseV8Intrinsic() || super.parseExprAtom(refExpressionErrors)
+      );
     }
   };

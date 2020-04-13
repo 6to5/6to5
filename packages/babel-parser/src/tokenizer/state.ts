@@ -96,8 +96,8 @@ export default class State {
   leadingComments: Array<N.Comment> = [];
   commentStack: Array<{
     start: number;
-    leadingComments: Array<N.Comment> | undefined | null;
-    trailingComments: Array<N.Comment> | undefined | null;
+    leadingComments?: Array<N.Comment>;
+    trailingComments?: Array<N.Comment>;
     type: string;
   }> = [];
   // @ts-ignore todo($FlowIgnore) this is initialized when the parser starts.

@@ -59,7 +59,7 @@ class ExpressionScope {
     this.type = type;
   }
 
-  canBeArrowParameterDeclaration() {
+  canBeArrowParameterDeclaration(): this is ArrowHeadParsingScope {
     return (
       this.type === kMaybeAsyncArrowParameterDeclaration ||
       this.type === kMaybeArrowParameterDeclaration

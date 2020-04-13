@@ -5,12 +5,8 @@ import * as N from "../types";
 import type { Position } from "../util/location";
 import { Errors } from "../parser/error";
 
-export default (superClass: {
-  new (...args: any): Parser;
-}): {
-  new (...args: any): Parser;
-} =>
-  class extends superClass {
+export default (superClass: typeof Parser) =>
+  class ESTreeParserMixin extends superClass implements Parser {
     parseRegExpLiteral({ pattern, flags }): N.Node {
       let regex = null;
       try {
@@ -146,19 +142,23 @@ export default (superClass: {
 
     parseBlockBody(
       node: N.BlockStatementLike,
-      ...args: [
-        boolean | undefined | null,
-        boolean,
-        TokenType,
-        void | ((a: boolean) => void),
-      ]
+      allowDirectives: boolean | undefined | null,
+      topLevel: boolean,
+      end: TokenType,
+      afterBlockParse?: (hasStrictModeDirective: boolean) => void,
     ): void {
-      super.parseBlockBody(node, ...args);
+      super.parseBlockBody(
+        node,
+        allowDirectives,
+        topLevel,
+        end,
+        afterBlockParse,
+      );
 
       const directiveStatements = node.directives.map(d =>
         this.directiveToStmt(d),
       );
-      node.body = directiveStatements.concat(node.body);
+      node.body = [...directiveStatements, ...node.body];
       // @ts-ignore todo($FlowIgnore) - directives isn't optional in the type definition
       delete node.directives;
     }
@@ -188,8 +188,8 @@ export default (superClass: {
       classBody.body.push(method);
     }
 
-    parseMaybePrivateName(...args: [boolean]): any {
-      const node = super.parseMaybePrivateName(...args);
+    parseMaybePrivateName(isPrivateNameAllowed: boolean): any {
+      const node = super.parseMaybePrivateName(isPrivateNameAllowed);
       if (
         node.type === "PrivateName" &&
         this.getPluginOption("estree", "classFeatures")
@@ -273,16 +273,16 @@ export default (superClass: {
       return this.finishNode(node, type);
     }
 
-    parseClassProperty(...args: [N.ClassProperty]): any {
-      const propertyNode = super.parseClassProperty(...args) as any;
+    parseClassProperty(node: N.ClassProperty): any {
+      const propertyNode = super.parseClassProperty(node) as any;
       if (this.getPluginOption("estree", "classFeatures")) {
         propertyNode.type = "PropertyDefinition";
       }
       return propertyNode as N.EstreePropertyDefinition;
     }
 
-    parseClassPrivateProperty(...args: [N.ClassPrivateProperty]): any {
-      const propertyNode = super.parseClassPrivateProperty(...args) as any;
+    parseClassPrivateProperty(node: N.ClassPrivateProperty): any {
+      const propertyNode = super.parseClassPrivateProperty(node) as any;
       if (this.getPluginOption("estree", "classFeatures")) {
         propertyNode.type = "PropertyDefinition";
         propertyNode.computed = false;
@@ -349,13 +349,17 @@ export default (superClass: {
       return super.toAssignable(node, isLHS);
     }
 
-    toAssignableObjectExpressionProp(prop: N.Node, ...args) {
+    toAssignableObjectExpressionProp(
+      prop: N.Node,
+      isLast: boolean,
+      isLHS: boolean,
+    ) {
       if (prop.kind === "get" || prop.kind === "set") {
         this.raise(prop.key.start, Errors.PatternHasAccessor);
       } else if (prop.method) {
         this.raise(prop.key.start, Errors.PatternHasMethod);
       } else {
-        super.toAssignableObjectExpressionProp(prop, ...args);
+        super.toAssignableObjectExpressionProp(prop, isLast, isLHS);
       }
     }
 
@@ -396,7 +400,7 @@ export default (superClass: {
       super.toReferencedArguments(node);
     }
 
-    parseExport(node: N.Node) {
+    parseExport(node: N.Node): N.AnyExport {
       super.parseExport(node);
 
       switch (node.type) {
@@ -417,7 +421,7 @@ export default (superClass: {
           break;
       }
 
-      return node;
+      return node as N.AnyExport;
     }
 
     parseSubscript(

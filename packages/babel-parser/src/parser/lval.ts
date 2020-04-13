@@ -10,9 +10,9 @@ import type {
   Pattern,
   RestElement,
   SpreadElement,
-  /*:: Identifier, */
-  /*:: ObjectExpression, */
-  /*:: ObjectPattern, */
+  Identifier,
+  ObjectExpression,
+  ObjectPattern,
 } from "../types";
 import type { Pos, Position } from "../util/location";
 import {
@@ -31,26 +31,29 @@ const unwrapParenthesizedExpression = (node: Node): Node => {
     : node;
 };
 
-export default class LValParser extends NodeUtils {
+export default abstract class LValParser extends NodeUtils {
   // Forward-declaration: defined in expression.js
-  /*::
-  +parseIdentifier: (liberal?: boolean) => Identifier;
-  +parseMaybeAssignAllowIn: (
-    refExpressionErrors?: ?ExpressionErrors,
+  abstract parseIdentifier(liberal?: boolean): Identifier;
+  abstract parseMaybeAssign(
+    refExpressionErrors?: ExpressionErrors | null,
     afterLeftParse?: Function,
-    refNeedsArrowPos?: ?Pos,
-  ) => Expression;
-  +parseObjectLike: <T: ObjectPattern | ObjectExpression>(
+    refNeedsArrowPos?: Pos | null,
+  ): Expression;
+
+  abstract parseMaybeAssignAllowIn(
+    refExpressionErrors?: ExpressionErrors | null,
+    afterLeftParse?: Function,
+    refNeedsArrowPos?: Pos | null,
+  ): Expression;
+
+  abstract parseObjectLike<T extends ObjectPattern | ObjectExpression>(
     close: TokenType,
     isPattern: boolean,
-    isRecord?: ?boolean,
-    refExpressionErrors?: ?ExpressionErrors,
-  ) => T;
-  */
+    isRecord?: boolean | null,
+    refExpressionErrors?: ExpressionErrors | null,
+  ): T;
   // Forward-declaration: defined in statement.js
-  /*::
-  +parseDecorator: () => Decorator;
-  */
+  abstract parseDecorator(): Decorator;
 
   /**
    * Convert existing expression atom to assignable pattern
@@ -128,6 +131,7 @@ export default class LValParser extends NodeUtils {
         break;
 
       case "SpreadElement": {
+        // @ts-expect-error todo(flow->ts): better node types
         this.checkToRestConversion(node);
 
         node.type = "RestElement";
@@ -190,7 +194,7 @@ export default class LValParser extends NodeUtils {
     exprList: Expression[],
     trailingCommaPos: number | undefined | null,
     isLHS: boolean,
-  ): ReadonlyArray<Pattern> {
+  ): Array<Pattern> {
     let end = exprList.length;
     if (end) {
       const last = exprList[end - 1];
@@ -226,6 +230,7 @@ export default class LValParser extends NodeUtils {
         }
       }
     }
+    // @ts-expect-error todo(flow->ts):
     return exprList;
   }
 
@@ -293,6 +298,7 @@ export default class LValParser extends NodeUtils {
       }
 
       case tt.braceL:
+        // @ts-expect-error todo(flow->ts): better node types
         return this.parseObjectLike(tt.braceR, true);
     }
 
@@ -316,7 +322,7 @@ export default class LValParser extends NodeUtils {
         this.expect(tt.comma);
       }
       if (allowEmpty && this.match(tt.comma)) {
-        // @ts-expect-error todo($FlowFixMe) This method returns `$ReadOnlyArray<?Pattern>` if `allowEmpty` is set.
+        // todo($FlowFixMe) This method returns `$ReadOnlyArray<?Pattern>` if `allowEmpty` is set.
         elts.push(null);
       } else if (this.eat(close)) {
         break;

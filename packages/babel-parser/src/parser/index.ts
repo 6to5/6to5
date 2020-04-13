@@ -1,5 +1,5 @@
 import type { Options } from "../options";
-import type { File /*::, JSXOpeningElement */ } from "../types";
+import type * as N from "../types";
 import type { PluginList } from "../plugin-utils";
 import { getOptions } from "../options";
 import StatementParser from "./statement";
@@ -14,11 +14,10 @@ export type PluginsMap = Map<
 
 export default class Parser extends StatementParser {
   // Forward-declaration so typescript plugin can override jsx plugin
-  /*::
-  +jsxParseOpeningElementAfterName: (
-    node: JSXOpeningElement,
-  ) => JSXOpeningElement;
-  */
+  // todo(flow->ts) - this probably can be removed
+  // abstract jsxParseOpeningElementAfterName(
+  //   node: N.JSXOpeningElement,
+  // ): N.JSXOpeningElement;
 
   constructor(options: Options | undefined | null, input: string) {
     options = getOptions(options);
@@ -32,12 +31,12 @@ export default class Parser extends StatementParser {
 
   // This can be overwritten, for example, by the TypeScript plugin.
   getScopeHandler(): {
-    new (...args: any): ScopeHandler<any>;
+    new (...args: any): ScopeHandler;
   } {
     return ScopeHandler;
   }
 
-  parse(): File {
+  parse(): N.File {
     this.enterInitialScopes();
     const file = this.startNode();
     const program = this.startNode();

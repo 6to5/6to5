@@ -29,12 +29,16 @@ export const // Initial Parameter flags
 // 6. parse function body
 // 7. exit current stack
 
-export type ParamKind =
-  | typeof PARAM
-  | typeof PARAM_AWAIT
-  | typeof PARAM_IN
-  | typeof PARAM_RETURN
-  | typeof PARAM_YIELD;
+export type ParamKind = number;
+
+// todo(flow->ts) - check if more granular type can be used,
+//  type below is not good because things like PARAM_AWAIT|PARAM_YIELD are not included
+// export type ParamKind =
+//   | typeof PARAM
+//   | typeof PARAM_AWAIT
+//   | typeof PARAM_IN
+//   | typeof PARAM_RETURN
+//   | typeof PARAM_YIELD;
 
 export default class ProductionParameterHandler {
   stacks: Array<ParamKind> = [];

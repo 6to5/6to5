@@ -21,6 +21,7 @@ import {
   BIND_TS_NAMESPACE,
   BIND_CLASS,
   BIND_LEXICAL,
+  BIND_NONE,
 } from "../../util/scopeflags";
 import type { BindingTypes } from "../../util/scopeflags";
 import TypeScriptScopeHandler from "./scope";
@@ -28,6 +29,9 @@ import * as charCodes from "charcodes";
 import type { ExpressionErrors } from "../../parser/util";
 import { PARAM } from "../../util/production-parameter";
 import { Errors, makeErrorTemplates, ErrorCodes } from "../../parser/error";
+import type { Pattern } from "../../types";
+import type { Expression } from "../../types";
+import type { IJSXParserMixin } from "../jsx";
 
 import type { ErrorTemplate } from "../../parser/error";
 type TsModifier =
@@ -186,12 +190,13 @@ function tsIsAccessModifier(modifier: string): boolean {
   );
 }
 
-export default (superClass: {
-  new (...args: any): Parser;
-}): {
-  new (...args: any): Parser;
-} =>
-  class extends superClass {
+type ClassWithMixin<T extends new (...args: any) => any, M extends object> =
+  T extends new (...args: infer P) => infer I
+    ? new (...args: P) => I & M
+    : never;
+
+export default (superClass: ClassWithMixin<typeof Parser, IJSXParserMixin>) =>
+  class TypeScriptParserMixin extends superClass implements Parser {
     getScopeHandler(): {
       new (...args: any): TypeScriptScopeHandler;
     } {
@@ -251,7 +256,8 @@ export default (superClass: {
     tsParseModifiers(
       modified: {
         accessibility?: N.Accessibility;
-        [key: TsModifier]: true | undefined | null;
+      } & {
+        [key in TsModifier]: true | undefined | null;
       },
       allowedModifiers: TsModifier[],
       disallowedModifiers?: TsModifier[],
@@ -1106,7 +1112,7 @@ export default (superClass: {
     }
 
     tsParseTypeOperatorOrHigher(): N.TsType {
-      const operator = ["keyof", "unique", "readonly"].find(kw =>
+      const operator = (["keyof", "unique", "readonly"] as const).find(kw =>
         this.isContextual(kw),
       );
       return operator
@@ -1982,7 +1988,7 @@ export default (superClass: {
     }
 
     parseFunctionBodyAndFinish(
-      node: N.BodilessFunctionOrMethodBase,
+      node: N.FunctionBase,
       type: string,
       isMethod: boolean = false,
     ): void {
@@ -2020,7 +2026,7 @@ export default (superClass: {
         // For bodyless function, we need to do it here.
         this.checkLVal(node.id, "function name", BIND_TS_AMBIENT);
       } else {
-        super.registerFunctionStatementId(...arguments);
+        super.registerFunctionStatementId(node);
       }
     }
 
@@ -2050,8 +2056,18 @@ export default (superClass: {
       return exprList;
     }
 
-    parseArrayLike(...args): N.ArrayExpression | N.TupleExpression {
-      const node = super.parseArrayLike(...args);
+    parseArrayLike(
+      close: TokenType,
+      canBePattern: boolean,
+      isTuple: boolean,
+      refExpressionErrors?: ExpressionErrors | null,
+    ): N.ArrayExpression | N.TupleExpression {
+      const node = super.parseArrayLike(
+        close,
+        canBePattern,
+        isTuple,
+        refExpressionErrors,
+      );
 
       if (node.type === "ArrayExpression") {
         this.tsCheckForInvalidTypeCasts(node.elements);
@@ -2693,11 +2709,29 @@ export default (superClass: {
       }
     }
 
-    parseObjPropValue(prop: N.ObjectMember, ...args): void {
+    parseObjPropValue(
+      prop: N.ObjectMember,
+      startPos: number | undefined | null,
+      startLoc: Position | undefined | null,
+      isGenerator: boolean,
+      isAsync: boolean,
+      isPattern: boolean,
+      isAccessor: boolean,
+      refExpressionErrors?: ExpressionErrors | null,
+    ) {
       const typeParameters = this.tsTryParseTypeParameters();
       if (typeParameters) prop.typeParameters = typeParameters;
 
-      super.parseObjPropValue(prop, ...args);
+      super.parseObjPropValue(
+        prop,
+        startPos,
+        startLoc,
+        isGenerator,
+        isAsync,
+        isPattern,
+        isAccessor,
+        refExpressionErrors,
+      );
     }
 
     parseFunctionParams(node: N.Function, allowModifiers?: boolean): void {
@@ -2734,7 +2768,12 @@ export default (superClass: {
       return super.parseAsyncArrowFromCallExpression(node, call);
     }
 
-    parseMaybeAssign(...args): N.Expression {
+    parseMaybeAssign(
+      noIn?: boolean | null,
+      refExpressionErrors?: ExpressionErrors | null,
+      afterLeftParse?: Function,
+      refNeedsArrowPos?: Pos | null,
+    ): N.Expression {
       // Note: When the JSX plugin is on, type assertions (`<T> x`) aren't valid syntax.
 
       let state: State | undefined | null;
@@ -2748,7 +2787,16 @@ export default (superClass: {
         // Prefer to parse JSX if possible. But may be an arrow fn.
         state = this.state.clone();
 
-        jsx = this.tryParse(() => super.parseMaybeAssign(...args), state);
+        jsx = this.tryParse(
+          () =>
+            super.parseMaybeAssign(
+              noIn,
+              refExpressionErrors,
+              afterLeftParse,
+              refNeedsArrowPos,
+            ),
+          state,
+        );
         /*:: invariant(!jsx.aborted) */
 
         if (!jsx.error) return jsx.node;
@@ -2765,7 +2813,12 @@ export default (superClass: {
       }
 
       if (!jsx?.error && !this.isRelational("<")) {
-        return super.parseMaybeAssign(...args);
+        return super.parseMaybeAssign(
+          noIn,
+          refExpressionErrors,
+          afterLeftParse,
+          refNeedsArrowPos,
+        );
       }
 
       // Either way, we're looking at a '<': tt.jsxTagStart or relational.
@@ -2776,7 +2829,12 @@ export default (superClass: {
       const arrow = this.tryParse(abort => {
         // This is similar to TypeScript's `tryParseParenthesizedArrowFunctionExpression`.
         typeParameters = this.tsParseTypeParameters();
-        const expr = super.parseMaybeAssign(...args);
+        const expr = super.parseMaybeAssign(
+          noIn,
+          refExpressionErrors,
+          afterLeftParse,
+          refNeedsArrowPos,
+        );
 
         if (
           expr.type !== "ArrowFunctionExpression" ||
@@ -2803,7 +2861,16 @@ export default (superClass: {
 
         // This will start with a type assertion (via parseMaybeUnary).
         // But don't directly call `this.tsParseTypeAssertion` because we want to handle any binary after it.
-        typeCast = this.tryParse(() => super.parseMaybeAssign(...args), state);
+        typeCast = this.tryParse(
+          () =>
+            super.parseMaybeAssign(
+              noIn,
+              refExpressionErrors,
+              afterLeftParse,
+              refNeedsArrowPos,
+            ),
+          state,
+        );
         /*:: invariant(!typeCast.aborted) */
         if (!typeCast.error) return typeCast.node;
       }
@@ -2922,16 +2989,12 @@ export default (superClass: {
     }
 
     checkLVal(
-      expr: N.Expression,
+      expr: Expression,
       contextDescription: string,
-      ...args:
-        | [BindingTypes | void]
-        | [
-            BindingTypes | void,
-            Set<string> | undefined | null,
-            boolean | void,
-            boolean | void,
-          ]
+      bindingType: BindingTypes = BIND_NONE,
+      checkClashes?: Set<string> | null,
+      disallowLetBinding?: boolean,
+      strictModeChanged: boolean = false,
     ): void {
       switch (expr.type) {
         case "TSTypeCastExpression":
@@ -2940,25 +3003,53 @@ export default (superClass: {
           // e.g. `const f = (foo: number = 0) => foo;`
           return;
         case "TSParameterProperty":
-          this.checkLVal(expr.parameter, "parameter property", ...args);
+          this.checkLVal(
+            expr.parameter,
+            "parameter property",
+            bindingType,
+            checkClashes,
+            disallowLetBinding,
+            strictModeChanged,
+          );
           return;
         case "TSAsExpression":
         case "TSTypeAssertion":
           if (
-            /*bindingType*/ !args[0] &&
+            !bindingType &&
             contextDescription !== "parenthesized expression" &&
             !expr.extra?.parenthesized
           ) {
             this.raise(expr.start, Errors.InvalidLhs, contextDescription);
             break;
           }
-          this.checkLVal(expr.expression, "parenthesized expression", ...args);
+          this.checkLVal(
+            expr.expression,
+            "parenthesized expression",
+            bindingType,
+            checkClashes,
+            disallowLetBinding,
+            strictModeChanged,
+          );
           return;
         case "TSNonNullExpression":
-          this.checkLVal(expr.expression, contextDescription, ...args);
+          this.checkLVal(
+            expr.expression,
+            contextDescription,
+            bindingType,
+            checkClashes,
+            disallowLetBinding,
+            strictModeChanged,
+          );
           return;
         default:
-          super.checkLVal(expr, contextDescription, ...args);
+          super.checkLVal(
+            expr,
+            contextDescription,
+            bindingType,
+            checkClashes,
+            disallowLetBinding,
+            strictModeChanged,
+          );
           return;
       }
     }
@@ -3016,8 +3107,12 @@ export default (superClass: {
       );
     }
 
-    parseMaybeDefault(...args): N.Pattern {
-      const node = super.parseMaybeDefault(...args);
+    parseMaybeDefault(
+      startPos?: number | null,
+      startLoc?: Position | null,
+      left?: Pattern | null,
+    ): N.Pattern {
+      const node = super.parseMaybeDefault(startPos, startLoc, left);
 
       if (
         node.type === "AssignmentPattern" &&
@@ -3056,7 +3151,10 @@ export default (superClass: {
       }
     }
 
-    toAssignableList(exprList: N.Expression[]): ReadonlyArray<N.Pattern> {
+    toAssignableList(
+      exprList: Expression[],
+      trailingCommaPos?: number | null,
+    ): ReadonlyArray<N.Pattern> {
       for (let i = 0; i < exprList.length; i++) {
         const expr = exprList[i];
         if (!expr) continue;
@@ -3074,7 +3172,7 @@ export default (superClass: {
             break;
         }
       }
-      return super.toAssignableList(...arguments);
+      return super.toAssignableList(exprList, trailingCommaPos);
     }
 
     typeCastToParameter(node: N.TsTypeCastExpression): N.Node {
@@ -3147,11 +3245,15 @@ export default (superClass: {
       }
     }
 
-    parseClass<T extends N.Class>(node: T, ...args: any[]): T {
+    parseClass<T extends N.Class>(
+      node: T,
+      isStatement: boolean,
+      optionalId?: boolean,
+    ): T {
       const oldInAbstractClass = this.state.inAbstractClass;
       this.state.inAbstractClass = !!(node as any).abstract;
       try {
-        return super.parseClass(node, ...args);
+        return super.parseClass(node, isStatement, optionalId);
       } finally {
         this.state.inAbstractClass = oldInAbstractClass;
       }
@@ -3189,8 +3291,24 @@ export default (superClass: {
       }
     }
 
-    parseMethod(...args: any[]) {
-      const method = super.parseMethod(...args);
+    parseMethod<T extends N.MethodLike>(
+      node: T,
+      isGenerator: boolean,
+      isAsync: boolean,
+      isConstructor: boolean,
+      allowDirectSuper: boolean,
+      type: string,
+      inClassScope?: boolean,
+    ) {
+      const method = super.parseMethod<T>(
+        node,
+        isGenerator,
+        isAsync,
+        isConstructor,
+        allowDirectSuper,
+        type,
+        inClassScope,
+      );
       if (method.abstract) {
         const hasBody = this.hasPlugin("estree")
           ? !!method.value.body
