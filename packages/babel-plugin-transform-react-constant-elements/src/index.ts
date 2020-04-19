@@ -249,7 +249,8 @@ export default declare((api, options) => {
         const id = path.scope.generateUidBasedOnNode(name);
         targetScope.push({ id: t.identifier(id) });
 
-        let replacement = template.expression.ast`
+        let replacement: t.Expression | t.JSXExpressionContainer = template
+          .expression.ast`
           ${t.identifier(id)} || (${t.identifier(id)} = ${path.node})
         `;
         if (
