@@ -29,10 +29,10 @@ const awaitVisitor = {
 };
 
 export default function (
-  path: NodePath,
+  path: NodePath<any>,
   helpers: {
     wrapAsync: any;
-    wrapAwait: any;
+    wrapAwait?: any;
   },
   noNewArrows?: boolean,
 ) {
