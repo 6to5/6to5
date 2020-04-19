@@ -24,7 +24,7 @@ export function push(
 
   //
 
-  let map = {};
+  let map = {} as any;
   if (has(mutatorMap, alias)) map = mutatorMap[alias];
   mutatorMap[alias] = map;
 
