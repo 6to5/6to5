@@ -1,18 +1,19 @@
 // Fork of https://github.com/loganfsmyth/babel-plugin-proposal-decorators-legacy
 
 import { template, types as t } from "@babel/core";
+import type { Visitor } from "@babel/traverse";
 
 const buildClassDecorator = template(`
   DECORATOR(CLASS_REF = INNER) || CLASS_REF;
-`);
+`) as (replacements: { DECORATOR; CLASS_REF; INNER }) => t.ExpressionStatement;
 
 const buildClassPrototype = template(`
   CLASS_REF.prototype;
-`);
+`) as (replacements: { CLASS_REF }) => t.ExpressionStatement;
 
 const buildGetDescriptor = template(`
     Object.getOwnPropertyDescriptor(TARGET, PROPERTY);
-`);
+`) as (replacements: { TARGET; PROPERTY }) => t.ExpressionStatement;
 
 const buildGetObjectInitializer = template(`
     (TEMP = Object.getOwnPropertyDescriptor(TARGET, PROPERTY), (TEMP = TEMP ? TEMP.value : undefined), {
@@ -23,7 +24,7 @@ const buildGetObjectInitializer = template(`
             return TEMP;
         }
     })
-`);
+`) as (replacements: { TEMP; TARGET; PROPERTY }) => t.ExpressionStatement;
 
 const WARNING_CALLS = new WeakSet();
 
@@ -241,6 +242,7 @@ export default {
         replacement,
         t.exportNamedDeclaration(null, [
           t.exportSpecifier(
+            // @ts-expect-error todo(flow->ts) might be add more specific return type for decoratedClassToExpression
             t.cloneNode(replacement.declarations[0].id),
             t.identifier("default"),
           ),
@@ -263,7 +265,7 @@ export default {
     // class decorators, and a second pass to process method decorators.
     const decoratedClass =
       applyEnsureOrdering(path) ||
-      applyClassDecorators(path, state) ||
+      applyClassDecorators(path) ||
       applyMethodDecorators(path, state);
 
     if (decoratedClass) path.replaceWith(decoratedClass);
@@ -280,9 +282,12 @@ export default {
 
     path.replaceWith(
       t.callExpression(state.addHelper("initializerDefineProperty"), [
+        // @ts-expect-error todo(flow->ts) typesafe NodePath.get
         t.cloneNode(path.get("left.object").node),
         t.stringLiteral(
+          // @ts-expect-error todo(flow->ts) typesafe NodePath.get
           path.get("left.property").node.name ||
+            // @ts-expect-error todo(flow->ts) typesafe NodePath.get
             path.get("left.property").node.value,
         ),
         t.cloneNode(path.get("right.arguments")[0].node),
@@ -297,6 +302,7 @@ export default {
 
     // If the class properties plugin isn't enabled, this line will add an unused helper
     // to the code. It's not ideal, but it's ok since the configuration is not valid anyway.
+    // @ts-expect-error todo(flow->ts) check that `callee` is Identifier
     if (path.node.callee.name !== state.addHelper("defineProperty").name) {
       return;
     }
@@ -310,4 +316,4 @@ export default {
       ]),
     );
   },
-};
+} as Visitor<any>;
