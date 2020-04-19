@@ -32,7 +32,7 @@ export default declare((api, options) => {
 
   function pushAssign(objId, prop, body) {
     if (prop.kind === "get" && prop.kind === "set") {
-      pushMutatorDefine(objId, prop, body);
+      pushMutatorDefine(objId, prop);
     } else {
       body.push(
         t.expressionStatement(
@@ -43,6 +43,7 @@ export default declare((api, options) => {
               prop.key,
               prop.computed || t.isLiteral(prop.key),
             ),
+            // @ts-expect-error todo(flow->ts): double-check type error
             getValue(prop),
           ),
         ),
@@ -65,12 +66,12 @@ export default declare((api, options) => {
     }
 
     body.push(
-      ...buildMutatorMapAssign({
+      ...(buildMutatorMapAssign({
         MUTATOR_MAP_REF: getMutatorId(),
         KEY: t.cloneNode(key),
         VALUE: getValue(prop),
         KIND: t.identifier(prop.kind),
-      }),
+      }) as t.Statement[]),
     );
   }
 
@@ -194,6 +195,7 @@ export default declare((api, options) => {
             );
           }
 
+          // @ts-expect-error todo(flow->ts) `void` should not be used as variable
           if (single) {
             path.replaceWith(single);
           } else {
