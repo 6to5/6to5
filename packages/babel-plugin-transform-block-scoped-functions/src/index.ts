@@ -5,7 +5,7 @@ export default declare(api => {
   api.assertVersion(7);
 
   function statementList(key, path) {
-    const paths: Array = path.get(key);
+    const paths = path.get(key);
 
     for (const path of paths) {
       const func = path.node;
@@ -16,6 +16,7 @@ export default declare(api => {
       ]);
 
       // hoist it up above everything else
+      // @ts-expect-error todo(flow->ts): avoid mutations
       declar._blockHoist = 2;
 
       // todo: name this
