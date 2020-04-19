@@ -48,9 +48,11 @@ export default declare(api => {
       let hasKey = false;
       if (t.isObjectExpression(props)) {
         const keyIndex = props.properties.findIndex(prop =>
+          // @ts-expect-error todo(flow->ts) key does not exist on SpeadElement
           t.isIdentifier(prop.key, { name: "key" }),
         );
         if (keyIndex > -1) {
+          // @ts-expect-error todo(flow->ts) value does not exist on ObjectMethod
           state.args.splice(2, 0, props.properties[keyIndex].value);
           props.properties.splice(keyIndex, 1);
           hasKey = true;
