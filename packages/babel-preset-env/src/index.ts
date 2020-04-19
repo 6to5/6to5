@@ -336,7 +336,7 @@ option \`forceAllTransforms: true\` instead.
       ? forceAllTransforms
       : forceAllTransforms || hasUglifyTarget
   )
-    ? {}
+    ? ({} as Targets)
     : targets;
 
   const include = transformIncludesAndExcludes(optionsInclude);
