@@ -147,6 +147,7 @@ export default declare((api, options) => {
           const browserGlobals = globals || {};
 
           let moduleName = getModuleName(this.file.opts, options);
+          // @ts-expect-error todo(flow->ts): do not reuse variables
           if (moduleName) moduleName = t.stringLiteral(moduleName);
 
           const { meta, headers } = rewriteModuleStatementsAndPrepareHeader(
@@ -202,6 +203,7 @@ export default declare((api, options) => {
                     interop,
                   ),
                 );
+                // @ts-expect-error todo(flow->ts)
                 header.loc = meta.loc;
                 headers.push(header);
               }
