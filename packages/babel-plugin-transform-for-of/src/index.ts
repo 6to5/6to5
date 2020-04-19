@@ -157,7 +157,7 @@ export default declare((api, options) => {
       KEY: iterationKey,
       NAME: right,
       ARR: node.right,
-    });
+    }) as t.For;
 
     t.inherits(loop, node);
     t.ensureBlock(loop);
@@ -171,8 +171,10 @@ export default declare((api, options) => {
     const left = node.left;
     if (t.isVariableDeclaration(left)) {
       left.declarations[0].init = iterationValue;
+      // @ts-expect-error todo(flow->ts):
       loop.body.body.unshift(left);
     } else {
+      // @ts-expect-error todo(flow->ts):
       loop.body.body.unshift(
         t.expressionStatement(
           t.assignmentExpression("=", left, iterationValue),

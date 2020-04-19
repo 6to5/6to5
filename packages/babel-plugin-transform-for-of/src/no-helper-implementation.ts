@@ -115,7 +115,7 @@ function pushComputedPropsLoose(path, file) {
     INDEX: scope.generateUidIdentifier("i"),
     ID: id,
     INTERMEDIATE: intermediate,
-  });
+  }) as t.Statement;
 
   //
   const isLabeledParent = t.isLabeledStatement(parent);
