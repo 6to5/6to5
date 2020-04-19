@@ -3,6 +3,7 @@ import ReplaceSupers from "@babel/helper-replace-supers";
 import { types as t } from "@babel/core";
 
 function replacePropertySuper(path, getObjectRef, file) {
+  // @ts-expect-error todo(flow->ts):
   const replaceSupers = new ReplaceSupers({
     getObjectRef: getObjectRef,
     methodPath: path,
