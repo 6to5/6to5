@@ -1,4 +1,5 @@
 import { types as t, template } from "@babel/core";
+import type { Visitor } from "@babel/traverse";
 
 function getTDZStatus(refPath, bindingPath) {
   const executionStatus = bindingPath._guessExecutionStatusRelativeTo(refPath);
@@ -29,7 +30,12 @@ function isReference(node, scope, state) {
 
 const visitedMaybeTDZNodes = new WeakSet();
 
-export const visitor = {
+export interface TDZVisitorState {
+  tdzEnabled: boolean;
+  addHelper: (name) => any;
+}
+
+export const visitor: Visitor<TDZVisitorState> = {
   ReferencedIdentifier(path, state) {
     if (!state.tdzEnabled) return;
 
@@ -53,16 +59,22 @@ export const visitor = {
       const assert = buildTDZAssert(node, state);
 
       // add tdzThis to parent variable declarator so it's exploded
+      // @ts-expect-error todo(flow->ts): avoid mutations
       bindingPath.parent._tdzThis = true;
 
       if (path.parentPath.isUpdateExpression()) {
+        // @ts-expect-error todo(flow->ts): avoid node mutations
         if (parent._ignoreBlockScopingTDZ) return;
-        path.parentPath.replaceWith(t.sequenceExpression([assert, parent]));
+        path.parentPath.replaceWith(
+          t.sequenceExpression([assert, parent as t.UpdateExpression]),
+        );
       } else {
         path.replaceWith(assert);
       }
     } else if (status === "inside") {
-      path.replaceWith(template.ast`${state.addHelper("tdz")}("${node.name}")`);
+      path.replaceWith(
+        template.ast`${state.addHelper("tdz")}("${node.name}")` as t.Statement,
+      );
     }
   },
 
@@ -71,6 +83,8 @@ export const visitor = {
       if (!state.tdzEnabled) return;
 
       const { node } = path;
+
+      // @ts-expect-error todo(flow->ts): avoid node mutations
       if (node._ignoreBlockScopingTDZ) return;
 
       const nodes = [];
@@ -85,6 +99,7 @@ export const visitor = {
       }
 
       if (nodes.length) {
+        // @ts-expect-error todo(flow->ts): avoid mutations
         node._ignoreBlockScopingTDZ = true;
         nodes.push(node);
         path.replaceWithMultiple(nodes.map(n => t.expressionStatement(n)));
