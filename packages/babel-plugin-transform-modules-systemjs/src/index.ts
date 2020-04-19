@@ -37,7 +37,7 @@ ERROR: Dynamic import() transformation must be enabled using the
 //todo: use getExportSpecifierName in `helper-module-transforms` when this library is refactored to NodePath usage.
 
 export function getExportSpecifierName(
-  node: Node,
+  node: t.Node,
   stringSpecifiers: Set<string>,
 ): string {
   if (node.type === "Identifier") {
@@ -562,6 +562,7 @@ export default declare((api, options) => {
           });
 
           let moduleName = getModuleName(this.file.opts, options);
+          // @ts-expect-error todo(flow->ts): do not reuse variables
           if (moduleName) moduleName = t.stringLiteral(moduleName);
 
           hoistVariables(
