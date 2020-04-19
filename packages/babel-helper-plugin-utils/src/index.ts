@@ -1,4 +1,16 @@
-export function declare(builder) {
+export function declare<
+  Args extends
+    | [any]
+    | [any, any?]
+    | [any, any?, any?]
+    | [any, any]
+    | [any, any, any?]
+    | [any, any, any],
+  Builder extends (...args: Args) => any,
+>(
+  builder: Builder,
+): Builder extends (...args: infer A) => infer R ? (...args: A) => R : never {
+  // @ts-ignore
   return (api, options, dirname) => {
     let clonedApi;
 
@@ -10,6 +22,7 @@ export function declare(builder) {
       clonedApi[name] = apiPolyfills[name](clonedApi);
     }
 
+    // @ts-ignore
     return builder(clonedApi ?? api, options || {}, dirname);
   };
 }
