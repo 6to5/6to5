@@ -30,7 +30,10 @@ const buildDeclarationWrapper = template(`
   }
 `);
 
-function classOrObjectMethod(path: NodePath, callId: any) {
+function classOrObjectMethod(
+  path: NodePath<t.ClassMethod | t.ClassPrivateMethod | t.ObjectMethod>,
+  callId: any,
+) {
   const node = path.node;
   const body = node.body;
 
@@ -52,12 +55,12 @@ function classOrObjectMethod(path: NodePath, callId: any) {
   node.generator = false;
 
   // Unwrap the wrapper IIFE's environment so super and this and such still work.
-  path
-    .get("body.body.0.argument.callee.arguments.0")
-    .unwrapFunctionEnvironment();
+  (path.get(
+    "body.body.0.argument.callee.arguments.0",
+  ) as NodePath).unwrapFunctionEnvironment();
 }
 
-function plainFunction(path: NodePath, callId: any, noNewArrows: boolean) {
+function plainFunction(path: NodePath<any>, callId: any, noNewArrows: boolean) {
   const node = path.node;
   const isDeclaration = path.isFunctionDeclaration();
   const functionId = node.id;
@@ -104,6 +107,7 @@ function plainFunction(path: NodePath, callId: any, noNewArrows: boolean) {
     path.replaceWith(container[0]);
     path.insertAfter(container[1]);
   } else {
+    // @ts-expect-error todo(flow->ts) separate `wrapper` for `isDeclaration` and `else` branches
     const retFunction = container.callee.body.body[1].argument;
     if (!functionId) {
       nameFunction({
@@ -115,6 +119,7 @@ function plainFunction(path: NodePath, callId: any, noNewArrows: boolean) {
 
     if (!retFunction || retFunction.id || node.params.length) {
       // we have an inferred function id or params so we need this wrapper
+      // @ts-expect-error todo(flow->ts) separate `wrapper` for `isDeclaration` and `else` branches
       path.replaceWith(container);
     } else {
       // we can omit this wrapper as the conditions it protects for do not apply
