@@ -39,7 +39,7 @@ export default declare((api, options) => {
     return [];
   }
 
-  function build(props: Array, scope, file) {
+  function build(props: Array<any>, scope, file) {
     const nodes = [];
     let _props = [];
 
@@ -152,7 +152,7 @@ export default declare((api, options) => {
 
         const callee = calleePath.node;
 
-        if (calleePath.isMemberExpression()) {
+        if (t.isMemberExpression(callee)) {
           const temp = scope.maybeGenerateMemoised(callee.object);
           if (temp) {
             callee.object = t.assignmentExpression("=", temp, callee.object);
