@@ -61,7 +61,7 @@ export default declare((api, options) => {
         // Flag variable to check if contents of strings and raw are equal
         let isStringsRawEqual = true;
 
-        for (const elem of quasi.quasis as Array) {
+        for (const elem of quasi.quasis) {
           const { raw, cooked } = elem.value;
           const value =
             cooked == null
@@ -103,7 +103,7 @@ export default declare((api, options) => {
         const expressions = path.get("expressions");
 
         let index = 0;
-        for (const elem of path.node.quasis as Array) {
+        for (const elem of path.node.quasis) {
           if (elem.value.cooked) {
             nodes.push(t.stringLiteral(elem.value.cooked));
           }
