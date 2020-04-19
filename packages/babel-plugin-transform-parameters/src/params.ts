@@ -45,8 +45,8 @@ const iifeVisitor = {
 export default function convertFunctionParams(
   path,
   ignoreFunctionLength,
-  shouldTransformParam,
-  replaceRestElement,
+  shouldTransformParam?,
+  replaceRestElement?,
 ) {
   const params = path.get("params");
 
