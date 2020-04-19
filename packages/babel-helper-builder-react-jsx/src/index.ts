@@ -1,5 +1,6 @@
 import * as t from "@babel/types";
 import annotateAsPure from "@babel/helper-annotate-as-pure";
+import type { Visitor } from "@babel/traverse";
 
 type ElementState = {
   tagExpr: any; // tag node,
@@ -7,10 +8,11 @@ type ElementState = {
   args: Array<any>; // array of call arguments,
   call?: any; // optional call property that can be set to override the call expression returned,
   pure: boolean; // true if the element can be marked with a #__PURE__ annotation
+  callee?: any;
 };
 
 export default function (opts) {
-  const visitor = {};
+  const visitor: Visitor = {};
 
   visitor.JSXNamespacedName = function (path) {
     if (opts.throwIfNamespace) {
@@ -57,6 +59,7 @@ You can set \`throwIfNamespace: false\` to bypass this warning.`,
       if (node.name === "this" && t.isReferenced(node, parent)) {
         return t.thisExpression();
       } else if (t.isValidIdentifier(node.name, false)) {
+        // @ts-expect-error todo(flow->ts) avoid type unsafe mutations
         node.type = "Identifier";
       } else {
         return t.stringLiteral(node.name);
@@ -128,6 +131,7 @@ You can set \`throwIfNamespace: false\` to bypass this warning.`,
     if (t.isIdentifier(tagExpr)) {
       tagName = tagExpr.name;
     } else if (t.isLiteral(tagExpr)) {
+      // @ts-expect-error todo(flow->ts) NullLiteral
       tagName = tagExpr.value;
     }
 
