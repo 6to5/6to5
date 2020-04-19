@@ -9,7 +9,7 @@ import path from "path";
 import Module from "module";
 
 const maps = {};
-let transformOpts = {};
+let transformOpts: any = {};
 let piratesRevert = null;
 
 function installSourceMapSupport() {
@@ -52,7 +52,7 @@ function compile(code, filename) {
 
   let cacheKey = `${JSON.stringify(opts)}:${babel.version}`;
 
-  const env = babel.getEnv(false);
+  const env = babel.getEnv("");
 
   if (env) cacheKey += `:${env}`;
 
@@ -83,18 +83,22 @@ function compile(code, filename) {
 }
 
 let compiling = false;
+// @ts-expect-error field is missing in type definitions
 const internalModuleCache = Module._cache;
 
 function compileHook(code, filename) {
   if (compiling) return code;
 
+  // @ts-expect-error field is missing in type definitions
   const globalModuleCache = Module._cache;
   try {
     compiling = true;
+    // @ts-expect-error field is missing in type definitions
     Module._cache = internalModuleCache;
     return compile(code, filename);
   } finally {
     compiling = false;
+    // @ts-expect-error field is missing in type definitions
     Module._cache = globalModuleCache;
   }
 }

@@ -5,6 +5,7 @@
  * and allows register to transform these modules if they are loaded externally.
  */
 
+// @ts-ignore todo(flow->ts) convert to esm
 const Module = require("module");
 
 const globalModuleCache = Module._cache;
