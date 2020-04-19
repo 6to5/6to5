@@ -70,7 +70,7 @@ export default declare((api, options) => {
           state.rejectId = rejectId;
         }
 
-        let result = t.identifier("imported");
+        let result: t.Node = t.identifier("imported");
         if (!noInterop) result = wrapInterop(path, result, "namespace");
 
         path.replaceWith(
@@ -105,6 +105,7 @@ export default declare((api, options) => {
           }
 
           let moduleName = getModuleName(this.file.opts, options);
+          // @ts-expect-error todo(flow->ts): do not reuse variables
           if (moduleName) moduleName = t.stringLiteral(moduleName);
 
           const { meta, headers } = rewriteModuleStatementsAndPrepareHeader(
