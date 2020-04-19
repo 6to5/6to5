@@ -1,5 +1,6 @@
 import { declare } from "@babel/helper-plugin-utils";
-import type NodePath from "@babel/traverse";
+import type { NodePath } from "@babel/traverse";
+import type * as t from "@babel/types";
 
 export default declare((api, options) => {
   api.assertVersion(7);
@@ -10,9 +11,7 @@ export default declare((api, options) => {
     name: "transform-arrow-functions",
 
     visitor: {
-      ArrowFunctionExpression(
-        path: NodePath<BabelNodeArrowFunctionExpression>,
-      ) {
+      ArrowFunctionExpression(path: NodePath<t.ArrowFunctionExpression>) {
         // In some conversion cases, it may have already been converted to a function while this callback
         // was queued up.
         if (!path.isArrowFunctionExpression()) return;
