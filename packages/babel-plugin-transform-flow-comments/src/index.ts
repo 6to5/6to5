@@ -19,6 +19,13 @@ export default declare(api => {
     optional = false,
     comments = generateComment(ofPath, optional),
     keepType = false,
+  }: {
+    ofPath?;
+    toPath?;
+    where?: string;
+    optional?;
+    comments?;
+    keepType?;
   }) {
     if (!toPath?.node) {
       toPath = ofPath.getPrevSibling();
@@ -67,7 +74,7 @@ export default declare(api => {
     });
   }
 
-  function generateComment(path, optional) {
+  function generateComment(path, optional?) {
     let comment = path
       .getSource()
       .replace(/\*-\//g, "*-ESCAPED/")
