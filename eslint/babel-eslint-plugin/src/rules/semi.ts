@@ -47,7 +47,7 @@ function isOneLinerBlock(context, node) {
   );
 }
 
-function report(context, node, missing) {
+function report(context, node, missing?) {
   const lastToken = context.getSourceCode().getLastToken(node);
 
   let message,
