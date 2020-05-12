@@ -6,6 +6,8 @@ import { makeStaticFileCache } from "./utils";
 
 import type { ConfigFile, FilePackageData } from "./types";
 
+import ConfigError from "../../errors/config-error";
+
 const PACKAGE_FILENAME = "package.json";
 
 /**
@@ -41,15 +43,20 @@ const readConfigPackage = makeStaticFileCache(
     try {
       options = JSON.parse(content);
     } catch (err) {
-      err.message = `${filepath}: Error while parsing JSON - ${err.message}`;
-      throw err;
+      throw new ConfigError(
+        `Error while parsing JSON - ${err.message}`,
+        filepath,
+      );
     }
 
     if (typeof options !== "object") {
-      throw new Error(`${filepath}: Config returned typeof ${typeof options}`);
+      throw new ConfigError(
+        `Config returned typeof ${typeof options}`,
+        filepath,
+      );
     }
     if (Array.isArray(options)) {
-      throw new Error(`${filepath}: Expected config object but found array`);
+      throw new ConfigError(`Expected config object but found array`, filepath);
     }
 
     return {
