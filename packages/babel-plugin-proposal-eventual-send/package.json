@@ -1,0 +1,25 @@
+{
+  "name": "@babel/plugin-proposal-eventual-send",
+  "version": "7.9.0",
+  "description": "Transform wavy-dot (tildot) operator into call expressions",
+  "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-proposal-eventual-send",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "lib/index.js",
+  "keywords": [
+    "babel-plugin"
+  ],
+  "dependencies": {
+    "@babel/helper-plugin-utils": "^7.8.3",
+    "@babel/plugin-syntax-eventual-send": "^7.9.0"
+  },
+  "peerDependencies": {
+    "@babel/core": "^7.0.0-0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/helper-plugin-test-runner": "^7.8.3"
+  }
+}

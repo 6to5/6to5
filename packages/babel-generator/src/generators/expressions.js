@@ -139,6 +139,69 @@ export function OptionalCallExpression(node: Object) {
   this.token(")");
 }
 
+export function EventualMemberExpression(node: Object) {
+  this.print(node.object, node);
+
+  if (!node.computed && t.isMemberExpression(node.property)) {
+    throw new TypeError("Got a MemberExpression for MemberExpression property");
+  }
+
+  let computed = node.computed;
+  if (t.isLiteral(node.property) && typeof node.property.value === "number") {
+    computed = true;
+  }
+  this.token("~.");
+
+  if (computed) {
+    this.token("[");
+    this.print(node.property, node);
+    this.token("]");
+  } else {
+    this.print(node.property, node);
+  }
+}
+
+export function EventualCallExpression(node: Object) {
+  this.print(node.callee, node);
+
+  this.print(node.typeArguments, node); // Flow
+  this.print(node.typeParameters, node); // TS
+
+  this.token("~.");
+  this.token("(");
+  this.printList(node.arguments, node);
+  this.token(")");
+}
+
+export function EventualMemberCallExpression(node: Object) {
+  this.print(node.callee, node);
+
+  if (!node.computed && t.isMemberExpression(node.property)) {
+    throw new TypeError("Got a MemberExpression for MemberExpression property");
+  }
+
+  let computed = node.computed;
+  if (t.isLiteral(node.property) && typeof node.property.value === "number") {
+    computed = true;
+  }
+
+  this.print(node.typeArguments, node); // Flow
+  this.print(node.typeParameters, node); // TS
+
+  this.token("~.");
+
+  if (computed) {
+    this.token("[");
+    this.print(node.property, node);
+    this.token("]");
+  } else {
+    this.print(node.property, node);
+  }
+  this.token("(");
+  this.printList(node.arguments, node);
+  this.token(")");
+}
+
 export function CallExpression(node: Object) {
   this.print(node.callee, node);
 

@@ -1,0 +1,23 @@
+{
+  "name": "@babel/plugin-syntax-eventual-send",
+  "version": "7.9.0",
+  "description": "Allow parsing of the wavy-dot (tildot) operator",
+  "repository": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-eventual-send",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "lib/index.js",
+  "keywords": [
+    "babel-plugin"
+  ],
+  "dependencies": {
+    "@babel/helper-plugin-utils": "^7.8.3"
+  },
+  "peerDependencies": {
+    "@babel/core": "^7.0.0-0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0"
+  }
+}

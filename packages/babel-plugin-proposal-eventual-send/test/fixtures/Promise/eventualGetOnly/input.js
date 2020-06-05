@@ -1,0 +1,2 @@
+'abc'~.toString;
+1;

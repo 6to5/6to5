@@ -1,0 +1,44 @@
+{
+  "type": "File",
+  "start":0,"end":12,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":12}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":12,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":12}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "VariableDeclaration",
+        "start":0,"end":12,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":12}},
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "start":4,"end":12,"loc":{"start":{"line":1,"column":4},"end":{"line":1,"column":12}},
+            "id": {
+              "type": "Identifier",
+              "start":4,"end":6,"loc":{"start":{"line":1,"column":4},"end":{"line":1,"column":6},"identifierName":"v1"},
+              "name": "v1"
+            },
+            "init": {
+              "type": "UnaryExpression",
+              "start":9,"end":12,"loc":{"start":{"line":1,"column":9},"end":{"line":1,"column":12}},
+              "operator": "~",
+              "prefix": true,
+              "argument": {
+                "type": "NumericLiteral",
+                "start":10,"end":12,"loc":{"start":{"line":1,"column":10},"end":{"line":1,"column":12}},
+                "extra": {
+                  "rawValue": 0,
+                  "raw": ".0"
+                },
+                "value": 0
+              }
+            }
+          }
+        ],
+        "kind": "let"
+      }
+    ],
+    "directives": []
+  }
+}

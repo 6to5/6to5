@@ -1,0 +1,60 @@
+{
+  "type": "File",
+  "start":0,"end":34,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":34}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":34,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":34}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "VariableDeclaration",
+        "start":0,"end":34,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":34}},
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "start":4,"end":34,"loc":{"start":{"line":1,"column":4},"end":{"line":1,"column":34}},
+            "id": {
+              "type": "Identifier",
+              "start":4,"end":6,"loc":{"start":{"line":1,"column":4},"end":{"line":1,"column":6},"identifierName":"v1"},
+              "name": "v1"
+            },
+            "init": {
+              "type": "EventualMemberCallExpression",
+              "start":9,"end":34,"loc":{"start":{"line":1,"column":9},"end":{"line":1,"column":34}},
+              "callee": {
+                "type": "StringLiteral",
+                "start":9,"end":14,"loc":{"start":{"line":1,"column":9},"end":{"line":1,"column":14}},
+                "extra": {
+                  "rawValue": "abc",
+                  "raw": "'abc'"
+                },
+                "value": "abc"
+              },
+              "arguments": [
+                {
+                  "type": "Identifier",
+                  "start":23,"end":27,"loc":{"start":{"line":1,"column":23},"end":{"line":1,"column":27},"identifierName":"arg1"},
+                  "name": "arg1"
+                },
+                {
+                  "type": "Identifier",
+                  "start":29,"end":33,"loc":{"start":{"line":1,"column":29},"end":{"line":1,"column":33},"identifierName":"arg2"},
+                  "name": "arg2"
+                }
+              ],
+              "property": {
+                "type": "Identifier",
+                "start":17,"end":21,"loc":{"start":{"line":1,"column":17},"end":{"line":1,"column":21},"identifierName":"prop"},
+                "name": "prop"
+              },
+              "computed": true
+            }
+          }
+        ],
+        "kind": "let"
+      }
+    ],
+    "directives": []
+  }
+}

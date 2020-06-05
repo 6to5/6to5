@@ -1,0 +1,1 @@
+HandledPromise.get('abc', "toString");

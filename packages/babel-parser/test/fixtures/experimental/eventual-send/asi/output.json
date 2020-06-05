@@ -1,0 +1,48 @@
+{
+  "type": "File",
+  "start":0,"end":20,"loc":{"start":{"line":1,"column":0},"end":{"line":2,"column":5}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":20,"loc":{"start":{"line":1,"column":0},"end":{"line":2,"column":5}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "VariableDeclaration",
+        "start":0,"end":20,"loc":{"start":{"line":1,"column":0},"end":{"line":2,"column":5}},
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "start":4,"end":20,"loc":{"start":{"line":1,"column":4},"end":{"line":2,"column":5}},
+            "id": {
+              "type": "Identifier",
+              "start":4,"end":6,"loc":{"start":{"line":1,"column":4},"end":{"line":1,"column":6},"identifierName":"v1"},
+              "name": "v1"
+            },
+            "init": {
+              "type": "EventualMemberExpression",
+              "start":9,"end":20,"loc":{"start":{"line":1,"column":9},"end":{"line":2,"column":5}},
+              "object": {
+                "type": "StringLiteral",
+                "start":9,"end":14,"loc":{"start":{"line":1,"column":9},"end":{"line":1,"column":14}},
+                "extra": {
+                  "rawValue": "abc",
+                  "raw": "'abc'"
+                },
+                "value": "abc"
+              },
+              "property": {
+                "type": "Identifier",
+                "start":17,"end":20,"loc":{"start":{"line":2,"column":2},"end":{"line":2,"column":5},"identifierName":"def"},
+                "name": "def"
+              },
+              "computed": false
+            }
+          }
+        ],
+        "kind": "let"
+      }
+    ],
+    "directives": []
+  }
+}

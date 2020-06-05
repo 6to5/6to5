@@ -1,0 +1,1 @@
+Promise.eventualGet('abc', "toString");

@@ -709,6 +709,22 @@ export default class Tokenizer extends ParserErrors {
     }
   }
 
+  readToken_tilde(): void {
+    // '~'
+    const next = this.input.charCodeAt(this.state.pos + 1);
+    if (next === charCodes.dot) {
+      // '~.'
+      const next2 = this.input.charCodeAt(this.state.pos + 2);
+      if (!(next2 >= charCodes.digit0 && next2 <= charCodes.digit9)) {
+        // '~.' not followed by a number
+        this.state.pos += 2;
+        this.finishToken(tt.tildeDot);
+        return;
+      }
+    }
+    this.finishOp(tt.tilde, 1);
+  }
+
   getTokenFromCode(code: number): void {
     switch (code) {
       // The interpretation of a dot depends on whether it is followed
@@ -882,7 +898,7 @@ export default class Tokenizer extends ParserErrors {
         return;
 
       case charCodes.tilde:
-        this.finishOp(tt.tilde, 1);
+        this.readToken_tilde();
         return;
 
       case charCodes.atSign:

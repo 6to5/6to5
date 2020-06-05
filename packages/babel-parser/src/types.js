@@ -537,6 +537,13 @@ export type MemberExpression = NodeBase & {
   computed: boolean,
 };
 
+export type EventualMemberExpression = NodeBase & {
+  type: "EventualMemberExpression",
+  object: Expression | Super,
+  property: Expression,
+  computed: boolean,
+};
+
 export type OptionalMemberExpression = NodeBase & {
   type: "OptionalMemberExpression",
   object: Expression | Super,
@@ -545,6 +552,14 @@ export type OptionalMemberExpression = NodeBase & {
   optional: boolean,
 };
 
+export type EventualCallExpression = CallOrNewBase & {
+  type: "EventualCallExpression",
+};
+export type EventualMemberCallExpression = CallOrNewBase & {
+  type: "EventualMemberCallExpression",
+  property: Expression,
+  computed: boolean,
+};
 export type OptionalCallExpression = CallOrNewBase & {
   type: "OptionalCallExpression",
   optional: boolean,

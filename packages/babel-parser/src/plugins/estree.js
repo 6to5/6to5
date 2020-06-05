@@ -381,11 +381,10 @@ export default (superClass: Class<Parser>): Class<Parser> =>
       }
     }
 
-    finishCallExpression<T: N.CallExpression | N.OptionalCallExpression>(
-      node: T,
-      optional: boolean,
-    ): N.Expression {
-      super.finishCallExpression(node, optional);
+    finishCallExpression<
+      T: N.CallExpression | N.OptionalCallExpression | N.EventualCallExpression,
+    >(node: T, optional: boolean, eventual: boolean): N.Expression {
+      super.finishCallExpression(node, optional, eventual);
 
       if (node.callee.type === "Import") {
         ((node: N.Node): N.EstreeImportExpression).type = "ImportExpression";

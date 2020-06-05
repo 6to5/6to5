@@ -8,6 +8,7 @@ import syntaxAsyncGenerators from "@babel/plugin-syntax-async-generators";
 import syntaxClassProperties from "@babel/plugin-syntax-class-properties";
 import syntaxDecorators from "@babel/plugin-syntax-decorators";
 import syntaxDoExpressions from "@babel/plugin-syntax-do-expressions";
+import syntaxEventualSend from "@babel/plugin-syntax-eventual-send";
 import syntaxExportDefaultFrom from "@babel/plugin-syntax-export-default-from";
 import syntaxFlow from "@babel/plugin-syntax-flow";
 import syntaxFunctionBind from "@babel/plugin-syntax-function-bind";
@@ -26,6 +27,7 @@ import proposalClassProperties from "@babel/plugin-proposal-class-properties";
 import proposalDecorators from "@babel/plugin-proposal-decorators";
 import proposalDoExpressions from "@babel/plugin-proposal-do-expressions";
 import proposalDynamicImport from "@babel/plugin-proposal-dynamic-import";
+import proposalEventualSend from "@babel/plugin-proposal-eventual-send";
 import proposalExportDefaultFrom from "@babel/plugin-proposal-export-default-from";
 import proposalExportNamespaceFrom from "@babel/plugin-proposal-export-namespace-from";
 import proposalFunctionBind from "@babel/plugin-proposal-function-bind";
@@ -100,6 +102,7 @@ export {
   syntaxClassProperties,
   syntaxDecorators,
   syntaxDoExpressions,
+  syntaxEventualSend,
   syntaxExportDefaultFrom,
   syntaxFlow,
   syntaxFunctionBind,
@@ -118,6 +121,7 @@ export {
   proposalDecorators,
   proposalDoExpressions,
   proposalDynamicImport,
+  proposalEventualSend,
   proposalExportDefaultFrom,
   proposalExportNamespaceFrom,
   proposalFunctionBind,
@@ -193,6 +197,7 @@ export const all = {
   "syntax-class-properties": syntaxClassProperties,
   "syntax-decorators": syntaxDecorators,
   "syntax-do-expressions": syntaxDoExpressions,
+  "syntax-eventual-send": syntaxEventualSend,
   "syntax-export-default-from": syntaxExportDefaultFrom,
   "syntax-flow": syntaxFlow,
   "syntax-function-bind": syntaxFunctionBind,
@@ -211,6 +216,7 @@ export const all = {
   "proposal-decorators": proposalDecorators,
   "proposal-do-expressions": proposalDoExpressions,
   "proposal-dynamic-import": proposalDynamicImport,
+  "proposal-eventual-send": proposalEventualSend,
   "proposal-export-default-from": proposalExportDefaultFrom,
   "proposal-export-namespace-from": proposalExportNamespaceFrom,
   "proposal-function-bind": proposalFunctionBind,

@@ -1767,7 +1767,11 @@ export default (superClass: Class<Parser>): Class<Parser> =>
                 /* possibleAsync */ false,
               );
               node.typeParameters = typeArguments;
-              return this.finishCallExpression(node, state.optionalChainMember);
+              return this.finishCallExpression(
+                node,
+                state.optionalChainMember,
+                state.eventualMember,
+              );
             } else if (this.match(tt.backQuote)) {
               return this.parseTaggedTemplateExpression(
                 startPos,
