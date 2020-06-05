@@ -1,0 +1,60 @@
+{
+  "type": "File",
+  "start":0,"end":33,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":33}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":33,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":33}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "VariableDeclaration",
+        "start":0,"end":33,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":33}},
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "start":4,"end":33,"loc":{"start":{"line":1,"column":4},"end":{"line":1,"column":33}},
+            "id": {
+              "type": "Identifier",
+              "start":4,"end":6,"loc":{"start":{"line":1,"column":4},"end":{"line":1,"column":6},"identifierName":"v1"},
+              "name": "v1"
+            },
+            "init": {
+              "type": "EventualMemberCallExpression",
+              "start":9,"end":33,"loc":{"start":{"line":1,"column":9},"end":{"line":1,"column":33}},
+              "callee": {
+                "type": "StringLiteral",
+                "start":9,"end":14,"loc":{"start":{"line":1,"column":9},"end":{"line":1,"column":14}},
+                "extra": {
+                  "rawValue": "abc",
+                  "raw": "'abc'"
+                },
+                "value": "abc"
+              },
+              "arguments": [
+                {
+                  "type": "Identifier",
+                  "start":22,"end":26,"loc":{"start":{"line":1,"column":22},"end":{"line":1,"column":26},"identifierName":"arg1"},
+                  "name": "arg1"
+                },
+                {
+                  "type": "Identifier",
+                  "start":28,"end":32,"loc":{"start":{"line":1,"column":28},"end":{"line":1,"column":32},"identifierName":"arg2"},
+                  "name": "arg2"
+                }
+              ],
+              "property": {
+                "type": "Identifier",
+                "start":16,"end":21,"loc":{"start":{"line":1,"column":16},"end":{"line":1,"column":21},"identifierName":"func1"},
+                "name": "func1"
+              },
+              "computed": false
+            }
+          }
+        ],
+        "kind": "let"
+      }
+    ],
+    "directives": []
+  }
+}

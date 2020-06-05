@@ -722,6 +722,18 @@ export function assertBindExpression(node: Object, opts?: Object = {}): void {
 export function assertClassProperty(node: Object, opts?: Object = {}): void {
   assert("ClassProperty", node, opts);
 }
+export function assertEventualMemberExpression(
+  node: Object,
+  opts?: Object = {},
+): void {
+  assert("EventualMemberExpression", node, opts);
+}
+export function assertEventualMemberCallExpression(
+  node: Object,
+  opts?: Object = {},
+): void {
+  assert("EventualMemberCallExpression", node, opts);
+}
 export function assertOptionalMemberExpression(
   node: Object,
   opts?: Object = {},
@@ -745,6 +757,12 @@ export function assertPipelinePrimaryTopicReference(
   opts?: Object = {},
 ): void {
   assert("PipelinePrimaryTopicReference", node, opts);
+}
+export function assertEventualCallExpression(
+  node: Object,
+  opts?: Object = {},
+): void {
+  assert("EventualCallExpression", node, opts);
 }
 export function assertOptionalCallExpression(
   node: Object,
