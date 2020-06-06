@@ -275,11 +275,7 @@ function shouldIgnoreKey(key) {
   if (key === "enter" || key === "exit" || key === "shouldSkip") return true;
 
   // ignore other options
-  if (key === "blacklist" || key === "noScope" || key === "skipKeys") {
-    return true;
-  }
-
-  return false;
+  return ["blacklist", "noScope", "skipKeys", "exitOrder"].indexOf(key) !== -1;
 }
 
 function mergePair(dest, src) {

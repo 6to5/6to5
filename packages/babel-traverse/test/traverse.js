@@ -28,6 +28,53 @@ describe("traverse", function() {
     expect(ast2.body[1].expression.left.object).toBe(replacement);
   });
 
+  describe("traverse order", function() {
+    const ast2 = parse(`
+      "string literal";
+    `);
+    let acc = "";
+
+    const getVisitors = function(order) {
+      return {
+        blacklist: ["DirectiveLiteral"],
+        exitOrder: order,
+        enter: function() {
+          acc += "1";
+        },
+        exit: function() {
+          acc += "4";
+        },
+        Directive: {
+          enter: function() {
+            acc += "2";
+          },
+          exit: function() {
+            acc += "3";
+          },
+        },
+      };
+    };
+
+    beforeEach(function() {
+      acc = "";
+    });
+
+    it("traverse default order", function() {
+      traverse(ast2.program, getVisitors());
+      expect(acc).toBe("1243");
+    });
+
+    it("traverse direct order", function() {
+      traverse(ast2.program, getVisitors("direct"));
+      expect(acc).toBe("1243");
+    });
+
+    it("traverse reverse order", function() {
+      traverse(ast2.program, getVisitors("reverse"));
+      expect(acc).toBe("1234");
+    });
+  });
+
   it("traverse", function() {
     const expected = [
       body[0],

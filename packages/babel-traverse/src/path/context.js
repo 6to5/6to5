@@ -5,15 +5,22 @@ import { SHOULD_SKIP, SHOULD_STOP } from "./index";
 
 export function call(key): boolean {
   const opts = this.opts;
+  const order = opts.exitOrder || "direct";
 
   this.debug(key);
 
   if (this.node) {
-    if (this._call(opts[key])) return true;
-  }
+    const common = opts[key];
+    const typed = opts[this.node.type] && opts[this.node.type][key];
+    if (key === "exit" && order === "reverse") {
+      return this._call(typed) || this._call(common);
+    }
 
-  if (this.node) {
-    return this._call(opts[this.node.type] && opts[this.node.type][key]);
+    if (key === "exit" && common && typed && !opts.exitOrder) {
+      // There we can show a warning about unexpected behavior
+    }
+
+    return this._call(common) || this._call(typed);
   }
 
   return false;
