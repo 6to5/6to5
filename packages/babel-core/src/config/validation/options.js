@@ -29,6 +29,8 @@ import {
 } from "./option-assertions";
 import type { UnloadedDescriptor } from "../config-descriptors";
 
+import ConfigError from "../../errors/config-error";
+
 const ROOT_VALIDATORS: ValidatorSet = {
   cwd: (assertString: Validator<$PropertyType<ValidatedOptions, "cwd">>),
   root: (assertString: Validator<$PropertyType<ValidatedOptions, "root">>),
@@ -296,14 +298,22 @@ function getSource(loc: NestingPath): OptionsSource {
   return loc.type === "root" ? loc.source : getSource(loc.parent);
 }
 
-export function validate(type: OptionsSource, opts: {}): ValidatedOptions {
-  return validateNested(
-    {
-      type: "root",
-      source: type,
-    },
-    opts,
-  );
+export function validate(
+  type: OptionsSource,
+  opts: {},
+  filename: string,
+): ValidatedOptions {
+  try {
+    return validateNested(
+      {
+        type: "root",
+        source: type,
+      },
+      opts,
+    );
+  } catch (err) {
+    throw new ConfigError(err.message, filename);
+  }
 }
 
 function validateNested(loc: NestingPath, opts: {}) {

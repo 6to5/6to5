@@ -8,6 +8,8 @@ import buildDebug from "debug";
 import resolve from "resolve";
 import path from "path";
 
+import ConfigError from "../../errors/config-error";
+
 const debug = buildDebug("babel:config:loading:files:plugins");
 
 const EXACT_RE = /^module:/;
@@ -33,7 +35,7 @@ export function loadPlugin(
 ): { filepath: string, value: mixed } {
   const filepath = resolvePlugin(name, dirname);
   if (!filepath) {
-    throw new Error(`Plugin ${name} not found relative to ${dirname}`);
+    throw new ConfigError(`Plugin ${name} not found relative to ${dirname}`);
   }
 
   const value = requireModule("plugin", filepath);

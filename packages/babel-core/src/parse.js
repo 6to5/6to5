@@ -7,6 +7,8 @@ import parser from "./parser";
 import type { ParseResult } from "./parser";
 import normalizeOptions from "./transformation/normalize-opts";
 
+import { beginHiddenCallStack } from "./errors/rewrite-stack-trace";
+
 type FileParseCallback = {
   (Error, null): any,
   (null, ParseResult | null): any,
@@ -41,10 +43,15 @@ export const parse: Parse = (function parse(code, opts, callback) {
 
   // For backward-compat with Babel 7's early betas, we allow sync parsing when
   // no callback is given. Will be dropped in some future Babel major version.
-  if (callback === undefined) return parseRunner.sync(code, opts);
+  if (callback === undefined) return parseSync(code, opts);
 
-  parseRunner.errback(code, opts, callback);
+  beginHiddenCallStack(parseRunner.errback)(code, opts, callback);
 }: Function);
 
-export const parseSync = parseRunner.sync;
-export const parseAsync = parseRunner.async;
+export function parseSync(...args) {
+  return beginHiddenCallStack(parseRunner.sync)(...args);
+}
+
+export function parseAsync(...args) {
+  return beginHiddenCallStack(parseRunner.async)(...args);
+}

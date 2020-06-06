@@ -3,6 +3,9 @@ import type { Handler } from "gensync";
 import path from "path";
 import { pathToFileURL } from "url";
 
+import { endHiddenCallStack } from "../../errors/rewrite-stack-trace";
+import ConfigError from "../../errors/config-error";
+
 let import_;
 try {
   // Node < 13.3 doesn't support import() syntax.
@@ -27,7 +30,7 @@ export default function* loadCjsOrMjsDefault(
       if (yield* isAsync()) {
         return yield* waitFor(loadMjsDefault(filepath));
       }
-      throw new Error(asyncError);
+      throw new ConfigError(asyncError);
   }
 }
 
@@ -43,21 +46,22 @@ function guessJSModuleType(filename: string): "cjs" | "mjs" | "unknown" {
 }
 
 function loadCjsDefault(filepath: string) {
-  const module = (require(filepath): mixed);
+  const module = (endHiddenCallStack(require)(filepath): mixed);
   // TODO (Babel 8): Remove "undefined" fallback
   return module?.__esModule ? module.default || undefined : module;
 }
 
 async function loadMjsDefault(filepath: string) {
   if (!import_) {
-    throw new Error(
+    throw new ConfigError(
       "Internal error: Native ECMAScript modules aren't supported" +
         " by this platform.\n",
+      filepath,
     );
   }
 
   // import() expects URLs, not file paths.
   // https://github.com/nodejs/node/issues/31710
-  const module = await import_(pathToFileURL(filepath));
+  const module = await endHiddenCallStack(import_)(pathToFileURL(filepath));
   return module.default;
 }
