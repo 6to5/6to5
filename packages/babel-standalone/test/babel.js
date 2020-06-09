@@ -110,6 +110,14 @@
       ).toThrow(/Invalid plugin specified in Babel options: "lolfail"/);
     });
 
+    it("exports babel toolings", () => {
+      expect(Babel.parser).toBeDefined();
+      expect(Babel.traverse).toBeDefined();
+      expect(Babel.template).toBeDefined();
+      expect(Babel.generate).toBeDefined();
+      expect(Babel.types).toBeDefined();
+    });
+
     describe("env preset", () => {
       it("works w/o targets", () => {
         const output = Babel.transform("const a = 1;", {

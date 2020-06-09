@@ -99,6 +99,8 @@ function processOptions(options) {
   };
 }
 
+export { parser, traverse, template, generate, types } from "@babel/core";
+
 export function transform(code: string, options: Object) {
   return babelTransform(code, processOptions(options));
 }
