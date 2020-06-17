@@ -15,4 +15,4 @@ expect(() => {
     // hard to assert on ANSI escape codes
     highlightCode: false,
   });
-}).toThrow(/^unknown: someMsg\s+> 1 \| function f\(\) {}/);
+}).toThrow(/^unknown file: someMsg\s+> 1 \| function f\(\) {}/);

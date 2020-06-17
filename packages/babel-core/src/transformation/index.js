@@ -42,7 +42,7 @@ export function* run(
   try {
     yield* transformFile(file, config.passes);
   } catch (e) {
-    e.message = `${opts.filename ?? "unknown"}: ${e.message}`;
+    e.message = `${opts.filename ?? "unknown file"}: ${e.message}`;
     if (!e.code) {
       e.code = "BABEL_TRANSFORM_ERROR";
     }
@@ -55,7 +55,7 @@ export function* run(
       ({ outputCode, outputMap } = generateCode(config.passes, file));
     }
   } catch (e) {
-    e.message = `${opts.filename ?? "unknown"}: ${e.message}`;
+    e.message = `${opts.filename ?? "unknown file"}: ${e.message}`;
     if (!e.code) {
       e.code = "BABEL_GENERATE_ERROR";
     }

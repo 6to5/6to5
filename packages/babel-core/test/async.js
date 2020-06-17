@@ -114,7 +114,7 @@ describe("asynchronicity", () => {
         expect(() =>
           babel.transformSync(""),
         ).toThrowErrorMatchingInlineSnapshot(
-          `"[BABEL] unknown: You appear to be using an async plugin, which your current version of Babel` +
+          `"[BABEL] unknown file: You appear to be using an async plugin, which your current version of Babel` +
             ` does not support. If you're using a published plugin, you may need to upgrade your` +
             ` @babel/core version."`,
         );
@@ -126,7 +126,7 @@ describe("asynchronicity", () => {
         await expect(
           babel.transformAsync(""),
         ).rejects.toThrowErrorMatchingInlineSnapshot(
-          `"[BABEL] unknown: You appear to be using an async plugin, which your current version of Babel` +
+          `"[BABEL] unknown file: You appear to be using an async plugin, which your current version of Babel` +
             ` does not support. If you're using a published plugin, you may need to upgrade your` +
             ` @babel/core version."`,
         );
@@ -140,7 +140,7 @@ describe("asynchronicity", () => {
         expect(() =>
           babel.transformSync(""),
         ).toThrowErrorMatchingInlineSnapshot(
-          `"unknown: You appear to be using an plugin with an async .pre, which your current version` +
+          `"unknown file: You appear to be using an plugin with an async .pre, which your current version` +
             ` of Babel does not support. If you're using a published plugin, you may need to upgrade your` +
             ` @babel/core version."`,
         );
@@ -152,7 +152,7 @@ describe("asynchronicity", () => {
         await expect(
           babel.transformAsync(""),
         ).rejects.toThrowErrorMatchingInlineSnapshot(
-          `"unknown: You appear to be using an plugin with an async .pre, which your current version` +
+          `"unknown file: You appear to be using an plugin with an async .pre, which your current version` +
             ` of Babel does not support. If you're using a published plugin, you may need to upgrade your` +
             ` @babel/core version."`,
         );
@@ -166,7 +166,7 @@ describe("asynchronicity", () => {
         expect(() =>
           babel.transformSync(""),
         ).toThrowErrorMatchingInlineSnapshot(
-          `"unknown: You appear to be using an plugin with an async .post, which your current version` +
+          `"unknown file: You appear to be using an plugin with an async .post, which your current version` +
             ` of Babel does not support. If you're using a published plugin, you may need to upgrade your` +
             ` @babel/core version."`,
         );
@@ -178,7 +178,7 @@ describe("asynchronicity", () => {
         await expect(
           babel.transformAsync(""),
         ).rejects.toThrowErrorMatchingInlineSnapshot(
-          `"unknown: You appear to be using an plugin with an async .post, which your current version` +
+          `"unknown file: You appear to be using an plugin with an async .post, which your current version` +
             ` of Babel does not support. If you're using a published plugin, you may need to upgrade your` +
             ` @babel/core version."`,
         );
@@ -192,7 +192,7 @@ describe("asynchronicity", () => {
         expect(() =>
           babel.transformSync(""),
         ).toThrowErrorMatchingInlineSnapshot(
-          `"[BABEL] unknown: You appear to be using an async plugin, which your current version of Babel` +
+          `"[BABEL] unknown file: You appear to be using an async plugin, which your current version of Babel` +
             ` does not support. If you're using a published plugin, you may need to upgrade your` +
             ` @babel/core version."`,
         );
@@ -204,7 +204,7 @@ describe("asynchronicity", () => {
         await expect(
           babel.transformAsync(""),
         ).rejects.toThrowErrorMatchingInlineSnapshot(
-          `"[BABEL] unknown: You appear to be using an async plugin, which your current version of Babel` +
+          `"[BABEL] unknown file: You appear to be using an async plugin, which your current version of Babel` +
             ` does not support. If you're using a published plugin, you may need to upgrade your` +
             ` @babel/core version."`,
         );
