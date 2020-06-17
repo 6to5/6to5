@@ -1,0 +1,31 @@
+name: Ping Assignees
+
+on:
+  # Every day at 0:00
+  schedule: 0 0 * * *
+
+jobs:
+  ping_assignees:
+    name: Ping Assignees
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Assignees
+        uses: babel/actions/check-assigned-issues@v2
+        with:
+          token: ${{ secrets.BOT_TOKEN }}
+          bot_name: babel-bot
+          days_before_warning: 14
+          days_before_unassigning: 70
+          comment: >
+            Hi, @${username}! It has been 2 weeks since your last update: are
+            you still working on this issue?
+
+
+            If you need any help, please ask either here or on
+            [Slack](https://babeljs.slack.com/) (you can sign-up
+            [here](https://slack.babeljs.io/) for an invite)!
+            If you just need more time, please leave a comment here.
+
+
+            If I don't get any response in one week, this issue will be
+            unassigned so that other contributors can claim it.
