@@ -256,6 +256,14 @@ export default {
     const replacement = decoratedClassToExpression(path);
     if (replacement) {
       path.replaceWith(replacement);
+
+      const decl = path.get("declarations.0");
+      const { id } = decl.node;
+
+      // TODO: Maybe add this logic to @babel/traverse
+      const binding = path.scope.getOwnBinding(id.name);
+      binding.identifier = id;
+      binding.path = decl;
     }
   },
   ClassExpression(path, state) {
