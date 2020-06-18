@@ -1,11 +1,10 @@
 import { template, types as t } from "@babel/core";
 
 const buildRest = template(`
-  for (var LEN = ARGUMENTS.length,
-           ARRAY = new Array(ARRAY_LEN),
-           KEY = START;
-       KEY < LEN;
-       KEY++) {
+  for (var KEY = ARGUMENTS.length,
+           ARRAY = [];
+       KEY-- > START;
+       ) {
     ARRAY[ARRAY_KEY] = ARGUMENTS[KEY];
   }
 `);
