@@ -80,9 +80,10 @@ const getPlugin = (pluginName: string) => {
 export const transformIncludesAndExcludes = (opts: Array<string>): Object => {
   return opts.reduce(
     (result, opt) => {
-      const target = opt.match(/^(es|es6|es7|esnext|web)\./)
-        ? "builtIns"
-        : "plugins";
+      const target =
+        opt === "regenerator-runtime" || opt.match(/^(es|es6|es7|esnext|web)\./)
+          ? "builtIns"
+          : "plugins";
       result[target].add(opt);
       return result;
     },
@@ -285,7 +286,13 @@ export default declare((api, opts) => {
     getOptionSpecificExcludesFor({ loose }),
     pluginSyntaxMap,
   );
+
   removeUnnecessaryItems(pluginNames, overlappingPlugins);
+
+  const regenerator =
+    (pluginNames.has("transform-regenerator") ||
+      include.builtIns.has("regenerator-runtime")) &&
+    !exclude.builtIns.has("regenerator-runtime");
 
   const polyfillPlugins = getPolyfillPlugins({
     useBuiltIns,
@@ -295,7 +302,7 @@ export default declare((api, opts) => {
     exclude: exclude.builtIns,
     proposals,
     shippedProposals,
-    regenerator: pluginNames.has("transform-regenerator"),
+    regenerator,
     debug,
   });
 

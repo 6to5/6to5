@@ -53,6 +53,7 @@ const getValidIncludesAndExcludes = (
         ? [...Object.keys(corejs2Polyfills), ...defaultWebIncludes]
         : Object.keys(corejs3Polyfills)
       : []),
+    "regenerator-runtime",
   ]);
 
 const pluginToRegExp = (plugin: PluginListItem) => {

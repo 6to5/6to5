@@ -1,0 +1,14 @@
+{
+  "presets": [
+    [
+      "../../../../lib",
+      {
+        "targets": "IE 11",
+        "useBuiltIns": "usage",
+        "corejs": 3,
+        "modules": false,
+        "exclude": ["regenerator-runtime"]
+      }
+    ]
+  ]
+}
