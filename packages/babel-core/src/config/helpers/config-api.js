@@ -86,7 +86,9 @@ function assertVersion(range: string | number): void {
       `it is likely that something in your build process is loading the ` +
       `wrong version. Inspect the stack trace of this error to look for ` +
       `the first entry that doesn't mention "@babel/core" or "babel-core" ` +
-      `to see what is calling Babel.`,
+      `to see what is calling Babel. It is also possible a globally ` +
+      `installed version of babel-cli is being used if neither that package ` +
+      `nor @babel/cli appear inside the package.json`,
   );
 
   if (typeof limit === "number") {
