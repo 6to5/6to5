@@ -31,6 +31,9 @@
   "engines": {
     "node": ">=6.0.0"
   },
+  "dependencies": {
+    "@babel/types": "^7.4.4"
+  },
   "devDependencies": {
     "@babel/code-frame": "^7.10.1",
     "@babel/helper-fixtures": "^7.10.1",
