@@ -37,6 +37,9 @@
     "@babel/helper-validator-identifier": "^7.10.1",
     "charcodes": "^0.2.0"
   },
+  "dependencies": {
+    "@babel/types": "^7.8.3"
+  },
   "bin": {
     "parser": "./bin/babel-parser.js"
   }
