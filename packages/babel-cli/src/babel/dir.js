@@ -26,7 +26,9 @@ export default async function ({
   cliOptions,
   babelOptions,
 }: CmdOptions): Promise<void> {
-  const filepaths = cliOptions.filenames.map(name => path.resolve(name));
+  const absoluteFilePaths = cliOptions.filenames.map(name =>
+    path.resolve(name),
+  );
 
   async function write(
     src: string,
@@ -193,7 +195,7 @@ export default async function ({
       if (
         !util.isCompilableExtension(changedFilePath, cliOptions.extensions) &&
         // See comment on corresponding code in file.js
-        !filepaths.includes(changedFilePath)
+        !absoluteFilePaths.includes(changedFilePath)
       ) {
         return;
       }
@@ -205,7 +207,7 @@ export default async function ({
        * will be path of @var changedFilePath in the output directory.
        */
       let base = null;
-      for (const filePath of filepaths) {
+      for (const filePath of absoluteFilePaths) {
         if (changedFilePath === filePath) {
           // Case: "babel --watch src/bar/foo.js --out-dir dist"
           // We want src/bar/foo.js --> dist/foo.js
@@ -222,13 +224,12 @@ export default async function ({
 
       if (base === null) {
         throw new Error(
-          `path: ${changedFilePath} was not equal to/a child path of any of these paths: ${filepaths}`,
+          `path: ${changedFilePath} was not equal to/a child path of any of these paths: ${absoluteFilePaths}`,
         );
       }
 
       try {
         await handleFile(changedFilePath, base);
-
         compiledFiles++;
       } catch (err) {
         console.error(err);
@@ -237,6 +238,6 @@ export default async function ({
       processing--;
       if (processing === 0 && !cliOptions.quiet) logSuccess();
     }, false);
-    util.watchFiles(filepaths);
+    util.watchFiles(absoluteFilePaths);
   }
 }
