@@ -22,8 +22,12 @@ export {
   loadOptions,
   loadOptionsSync,
   loadOptionsAsync,
-  getExternalDependencies,
 } from "./config";
+
+export {
+  getDependencies,
+  getExternalDependencies,
+} from "./config/helpers/config-api";
 
 export { transform, transformSync, transformAsync } from "./transform";
 export {
