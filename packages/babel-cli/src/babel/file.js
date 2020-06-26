@@ -235,8 +235,8 @@ export default async function ({
           console.error(err);
         });
       }, true);
+      util.watchFiles(filenames);
     }
-    util.watchFiles(filenames);
   }
 
   if (cliOptions.filenames.length) {
