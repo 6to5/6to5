@@ -36,4 +36,3 @@ export const loadPartialConfigAsync = loadPartialConfigRunner.async;
 export const loadOptions = maybeErrback(loadOptionsRunner);
 export const loadOptionsSync = loadOptionsRunner.sync;
 export const loadOptionsAsync = loadOptionsRunner.async;
-export { getExternalDependencies } from "./full";

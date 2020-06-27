@@ -205,9 +205,6 @@ export default gensync<[any], ResolvedConfig | null>(function* loadFullConfig(
   };
 });
 
-const dependencies = new Set<string>();
-export const getExternalDependencies = () => dependencies;
-
 /**
  * Load a generic plugin/preset from the given descriptor loaded from the config object.
  */
@@ -226,7 +223,6 @@ const loadDescriptor = makeWeakCache(function* (
       ...context,
       ...makeAPI(cache),
     };
-    api.addExternalDependency = fileName => dependencies.add(fileName);
     try {
       item = value(api, options, dirname);
     } catch (e) {
