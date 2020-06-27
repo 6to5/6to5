@@ -116,6 +116,10 @@ function subtract(minuend: Set<string>, subtrahend: Set<string>): string[] {
   return diff;
 }
 
+/**
+ * Register new external dependencies with the file system
+ * watcher (chokidar).
+ */
 const watchNewExternalDependencies = (() => {
   let prevDeps = null;
   return (filePath: string) => {
@@ -156,6 +160,13 @@ const getWatcher = (() => {
   };
 })();
 
+/**
+ * Call @param callback whenever a dependency (source file)/
+ * external dependency (non-source file) changes.
+ *
+ * Handles mapping external dependencies to their corresponding
+ * dependencies.
+ */
 export function onDependencyFileChanged(
   callback: (filename_: string | null) => Promise<void>,
   sourceFilesAreCompiledIntoASingleFile: boolean,
