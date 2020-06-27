@@ -208,6 +208,9 @@ export default async function ({
   }
 
   async function files(filenames: Array<string>): Promise<void> {
+    // We need to set watch mode before the initial compilation
+    // so external dependencies are registered during the first compilation pass.
+    if (cliOptions.watch) util.watchMode();
     if (!cliOptions.skipInitialBuild) {
       await walk(filenames);
     }

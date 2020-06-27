@@ -74,7 +74,7 @@ export async function transform(
   };
 
   const result = await babel.transformAsync(code, opts);
-  registerNewExternalDependencies(filename);
+  if (isWatchMode) watchNewExternalDependencies(filename);
   return result;
 }
 
@@ -88,8 +88,14 @@ export async function compile(
   };
 
   const result = await babel.transformFileAsync(filename, opts);
-  registerNewExternalDependencies(filename);
+  if (isWatchMode) watchNewExternalDependencies(filename);
   return result;
+}
+
+let isWatchMode = false;
+
+export function watchMode() {
+  isWatchMode = true;
 }
 
 /**
@@ -110,7 +116,7 @@ function subtract(minuend: Set<string>, subtrahend: Set<string>): string[] {
   return diff;
 }
 
-const registerNewExternalDependencies = (() => {
+const watchNewExternalDependencies = (() => {
   let prevDeps = null;
   return (filePath: string) => {
     // make the file path absolute because
