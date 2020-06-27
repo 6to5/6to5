@@ -111,12 +111,13 @@ function subtract(minuend: Set<string>, subtrahend: Set<string>): string[] {
 }
 
 const registerNewExternalDependencies = (() => {
-  let prevDeps = babel.getDependencies();
+  let prevDeps = null;
   return (filePath: string) => {
     // make the file path absolute because
     // dependencies are registered with absolute file paths
     filePath = path.resolve(filePath);
-    const prevDepsForFile = prevDeps.get(filePath) || new Set();
+    const prevDepsForFile =
+      prevDeps === null ? new Set() : prevDeps.get(filePath) || new Set();
     const newDeps = babel.getDependencies();
     const newDepsForFile = newDeps.get(filePath) || new Set();
     const unwatchedDepsForFile = subtract(newDepsForFile, prevDepsForFile);
