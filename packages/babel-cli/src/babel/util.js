@@ -190,11 +190,9 @@ export function onDependencyFileChanged(
         for (const dependent of externalFileDeps.get(filePath)) {
           await callback(dependent);
         }
-        await callback(filePath);
       }
-    } else {
-      await callback(filePath);
     }
+    return await callback(filePath);
   }
   ["add", "change"].forEach(type => getWatcher().on(type, onFileChanged));
 }
