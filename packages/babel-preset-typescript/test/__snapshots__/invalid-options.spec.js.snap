@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`preset-typescript should throw when allExtensions is supplied 1`] = `
+"[BABEL] /fake/test.ts: @babel/preset-typescript: The .allExtensions and .isTSX options have been removed.
+If you want to disable file extension-based JSX detection, you can set the .ignoreExtensions option to true.
+If you want to force JSX parsing, you can enable the @babel/plugin-syntax-jsx plugin. (While processing: \\"base$0\\")"
+`;
+
+exports[`preset-typescript should throw when boolean options are not provided with boolean values 1`] = `"[BABEL] /fake/test.ts: @babel/preset-typescript: 'allowNamespaces' option must be a boolean. (While processing: \\"base$0\\")"`;
+
+exports[`preset-typescript should throw when isTSX is supplied 1`] = `
+"[BABEL] /fake/test.ts: @babel/preset-typescript: The .allExtensions and .isTSX options have been removed.
+If you want to disable file extension-based JSX detection, you can set the .ignoreExtensions option to true.
+If you want to force JSX parsing, you can enable the @babel/plugin-syntax-jsx plugin. (While processing: \\"base$0\\")"
+`;
+
+exports[`preset-typescript should throw when string options are not provided with string values 1`] = `"[BABEL] /fake/test.ts: @babel/preset-typescript: 'jsxPragma' option must be a string. (While processing: \\"base$0\\")"`;
+
+exports[`preset-typescript should throw when top level options are invalid 1`] = `
+"[BABEL] /fake/test.ts: @babel/preset-typescript: 'jsxpragma' is not a valid top-level option.
+Maybe you meant to use 'jsxPragma'? (While processing: \\"base$0\\")"
+`;

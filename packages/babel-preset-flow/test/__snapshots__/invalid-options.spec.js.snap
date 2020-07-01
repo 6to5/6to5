@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`preset-flow should throw when boolean options are not provided with boolean values 1`] = `"[BABEL] /fake/test.js: @babel/preset-flow: 'all' option must be a boolean. (While processing: \\"base$0\\")"`;
+
+exports[`preset-flow should throw when top level options are invalid 1`] = `
+"[BABEL] /fake/test.js: @babel/preset-flow: 'All' is not a valid top-level option.
+Maybe you meant to use 'all'? (While processing: \\"base$0\\")"
+`;

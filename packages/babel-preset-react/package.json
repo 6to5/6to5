@@ -21,7 +21,8 @@
     "@babel/plugin-transform-react-jsx-development": "workspace:^7.10.1",
     "@babel/plugin-transform-react-jsx-self": "workspace:^7.10.1",
     "@babel/plugin-transform-react-jsx-source": "workspace:^7.10.1",
-    "@babel/plugin-transform-react-pure-annotations": "workspace:^7.10.1"
+    "@babel/plugin-transform-react-pure-annotations": "workspace:^7.10.1",
+    "levenary": "^1.1.1"
   },
   "peerDependencies": {
     "@babel/core": "^7.0.0-0"

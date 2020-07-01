@@ -19,7 +19,8 @@
   "dependencies": {
     "@babel/helper-plugin-utils": "workspace:^7.10.1",
     "@babel/plugin-syntax-jsx": "workspace:^7.10.1",
-    "@babel/plugin-transform-typescript": "workspace:^7.10.1"
+    "@babel/plugin-transform-typescript": "workspace:^7.10.1",
+    "levenary": "^1.1.1"
   },
   "peerDependencies": {
     "@babel/core": "^7.0.0-0"

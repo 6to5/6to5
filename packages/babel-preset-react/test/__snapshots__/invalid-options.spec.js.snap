@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`preset-react should throw when boolean options are not provided with boolean values 1`] = `"[BABEL] /fake/test.jsx: @babel/preset-react: 'useBuiltIns' option must be a boolean. (While processing: \\"base$0\\")"`;
+
+exports[`preset-react should throw when string options are not provided with string values 1`] = `"[BABEL] /fake/test.jsx: @babel/preset-react: 'pragma' option must be a string. (While processing: \\"base$0\\")"`;
+
+exports[`preset-react should throw when top level options are invalid 1`] = `
+"[BABEL] /fake/test.jsx: @babel/preset-react: 'useBuiltins' is not a valid top-level option.
+Maybe you meant to use 'useBuiltIns'? (While processing: \\"base$0\\")"
+`;

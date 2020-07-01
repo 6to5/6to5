@@ -3247,6 +3247,7 @@ __metadata:
     "@babel/helper-plugin-test-runner": "workspace:^7.10.1"
     "@babel/helper-plugin-utils": "workspace:^7.10.1"
     "@babel/plugin-transform-flow-strip-types": "workspace:^7.10.1"
+    levenary: ^1.1.1
   peerDependencies:
     "@babel/core": ^7.0.0-0
   languageName: unknown
@@ -3281,6 +3282,7 @@ __metadata:
     "@babel/plugin-transform-react-jsx-self": "workspace:^7.10.1"
     "@babel/plugin-transform-react-jsx-source": "workspace:^7.10.1"
     "@babel/plugin-transform-react-pure-annotations": "workspace:^7.10.1"
+    levenary: ^1.1.1
   peerDependencies:
     "@babel/core": ^7.0.0-0
   languageName: unknown
@@ -3295,6 +3297,7 @@ __metadata:
     "@babel/helper-plugin-utils": "workspace:^7.10.1"
     "@babel/plugin-syntax-jsx": "workspace:^7.10.1"
     "@babel/plugin-transform-typescript": "workspace:^7.10.1"
+    levenary: ^1.1.1
   peerDependencies:
     "@babel/core": ^7.0.0-0
   languageName: unknown
