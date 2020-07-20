@@ -12,7 +12,11 @@
     "directory": "packages/babel-register"
   },
   "author": "Sebastian McKenzie <sebmck@gmail.com>",
-  "main": "lib/index.js",
+  "main": "./lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
   "browser": {
     "./lib/node.js": "./lib/browser.js"
   },

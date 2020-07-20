@@ -13,7 +13,11 @@
     "url": "https://github.com/babel/babel.git",
     "directory": "packages/babel-helper-simple-access"
   },
-  "main": "lib/index.js",
+  "main": "./lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
   "dependencies": {
     "@babel/template": "workspace:^7.10.4",
     "@babel/types": "workspace:^7.10.4"

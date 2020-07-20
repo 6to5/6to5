@@ -12,7 +12,11 @@
     "url": "https://github.com/babel/babel.git",
     "directory": "packages/babel-helper-fixtures"
   },
-  "main": "lib/index.js",
+  "main": "./lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
   "dependencies": {
     "lodash": "^4.17.13",
     "semver": "^5.3.0"
