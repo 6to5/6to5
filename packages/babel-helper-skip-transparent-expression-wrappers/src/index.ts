@@ -6,7 +6,7 @@ import type { NodePath } from "@babel/traverse";
 // includes expressions used for types, and extra parenthesis. For example, in
 // (a as any)(), this helper can be used to skip the TSAsExpression when
 // determining the callee.
-export function isTransparentExprWrapper(node: Node) {
+export function isTransparentExprWrapper(node: t.Node) {
   return (
     t.isTSAsExpression(node) ||
     t.isTSTypeAssertion(node) ||
@@ -18,7 +18,7 @@ export function isTransparentExprWrapper(node: Node) {
 
 export function skipTransparentExprWrappers(path: NodePath): NodePath {
   while (isTransparentExprWrapper(path.node)) {
-    path = path.get("expression");
+    path = path.get("expression") as NodePath;
   }
 
   return path;
