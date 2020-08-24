@@ -14,6 +14,7 @@
     "directory": "packages/babel-types"
   },
   "main": "lib/index.js",
+  "module": "lib/index.module.js",
   "types": "lib/index.d.ts",
   "dependencies": {
     "@babel/helper-validator-identifier": "^7.10.4",

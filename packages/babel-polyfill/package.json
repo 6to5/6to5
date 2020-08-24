@@ -18,6 +18,17 @@
     "directory": "packages/babel-polyfill"
   },
   "main": "lib/index.js",
+  "module": "lib/index.module.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.module.js",
+      "default": "./lib/index.js"
+    },
+    "./noConflict": {
+      "import": "./lib/noConflict.module.js",
+      "default": "./lib/noConflict.js"
+    }
+  },
   "dependencies": {
     "core-js": "^2.6.5",
     "regenerator-runtime": "^0.13.4"

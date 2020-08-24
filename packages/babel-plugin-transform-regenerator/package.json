@@ -10,6 +10,13 @@
     "directory": "packages/babel-plugin-transform-regenerator"
   },
   "main": "lib/index.js",
+  "module": "lib/index.module.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.module.js",
+      "default": "./lib/index.js"
+    }
+  },
   "dependencies": {
     "regenerator-transform": "^0.14.2"
   },

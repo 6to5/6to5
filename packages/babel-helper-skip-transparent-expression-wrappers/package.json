@@ -11,9 +11,13 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "./lib/index.js",
+  "main": "lib/index.js",
+  "module": "lib/index.module.js",
   "exports": {
-    ".": "./lib/index.js",
+    ".": {
+      "import": "./lib/index.module.js",
+      "default": "./lib/index.js"
+    },
     "./package.json": "./package.json"
   },
   "dependencies": {

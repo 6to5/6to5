@@ -12,6 +12,17 @@
     "access": "public"
   },
   "main": "lib/index.js",
+  "module": "lib/index.module.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.module.js",
+      "default": "./lib/index.js"
+    },
+    "./no-helper-implementation": {
+      "import": "./lib/no-helper-implementation.module.js",
+      "default": "./lib/no-helper-implementation.js"
+    }
+  },
   "keywords": [
     "babel-plugin"
   ],

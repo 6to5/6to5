@@ -3,6 +3,194 @@
   "version": "7.11.4",
   "description": "Babel compiler core.",
   "main": "lib/index.js",
+  "module": "lib/index.module.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.module.js",
+      "default": "./lib/index.js"
+    },
+    "./package.json": "./package.json",
+    "./parse": {
+      "import": "./lib/parse.module.js",
+      "default": "./lib/parse.js"
+    },
+    "./transform": {
+      "import": "./lib/transform.module.js",
+      "default": "./lib/transform.js"
+    },
+    "./transform-ast": {
+      "import": "./lib/transform-ast.module.js",
+      "default": "./lib/transform-ast.js"
+    },
+    "./transform-file": {
+      "import": "./lib/transform-file.module.js",
+      "default": "./lib/transform-file.js"
+    },
+    "./transform-file-browser": {
+      "import": "./lib/transform-file-browser.module.js",
+      "default": "./lib/transform-file-browser.js"
+    },
+    "./config": {
+      "import": "./lib/config/index.module.js",
+      "default": "./lib/config/index.js"
+    },
+    "./config/caching": {
+      "import": "./lib/config/caching.module.js",
+      "default": "./lib/config/caching.js"
+    },
+    "./config/config-chain": {
+      "import": "./lib/config/config-chain.module.js",
+      "default": "./lib/config/config-chain.js"
+    },
+    "./config/config-descriptors": {
+      "import": "./lib/config/config-descriptors.module.js",
+      "default": "./lib/config/config-descriptors.js"
+    },
+    "./config/full": {
+      "import": "./lib/config/full.module.js",
+      "default": "./lib/config/full.js"
+    },
+    "./config/item": {
+      "import": "./lib/config/item.module.js",
+      "default": "./lib/config/item.js"
+    },
+    "./config/partial": {
+      "import": "./lib/config/partial.module.js",
+      "default": "./lib/config/partial.js"
+    },
+    "./config/pattern-no-regex": {
+      "import": "./lib/config/pattern-no-regex.module.js",
+      "default": "./lib/config/pattern-no-regex.js"
+    },
+    "./config/plugin": {
+      "import": "./lib/config/plugin.module.js",
+      "default": "./lib/config/plugin.js"
+    },
+    "./config/printer": {
+      "import": "./lib/config/printer.module.js",
+      "default": "./lib/config/printer.js"
+    },
+    "./config/util": {
+      "import": "./lib/config/util.module.js",
+      "default": "./lib/config/util.js"
+    },
+    "./config/files": {
+      "import": "./lib/config/files/index.module.js",
+      "default": "./lib/config/files/index.js"
+    },
+    "./config/files/configuration": {
+      "import": "./lib/config/files/configuration.module.js",
+      "default": "./lib/config/files/configuration.js"
+    },
+    "./config/files/import": {
+      "import": "./lib/config/files/import.module.js",
+      "default": "./lib/config/files/import.js"
+    },
+    "./config/files/index-browser": {
+      "import": "./lib/config/files/index-browser.module.js",
+      "default": "./lib/config/files/index-browser.js"
+    },
+    "./config/files/module-types": {
+      "import": "./lib/config/files/module-types.module.js",
+      "default": "./lib/config/files/module-types.js"
+    },
+    "./config/files/package": {
+      "import": "./lib/config/files/package.module.js",
+      "default": "./lib/config/files/package.js"
+    },
+    "./config/files/plugins": {
+      "import": "./lib/config/files/plugins.module.js",
+      "default": "./lib/config/files/plugins.js"
+    },
+    "./config/files/types": {
+      "import": "./lib/config/files/types.module.js",
+      "default": "./lib/config/files/types.js"
+    },
+    "./config/files/utils": {
+      "import": "./lib/config/files/utils.module.js",
+      "default": "./lib/config/files/utils.js"
+    },
+    "./config/helpers/config-api": {
+      "import": "./lib/config/helpers/config-api.module.js",
+      "default": "./lib/config/helpers/config-api.js"
+    },
+    "./config/helpers/environment": {
+      "import": "./lib/config/helpers/environment.module.js",
+      "default": "./lib/config/helpers/environment.js"
+    },
+    "./config/validation/option-assertions": {
+      "import": "./lib/config/validation/option-assertions.module.js",
+      "default": "./lib/config/validation/option-assertions.js"
+    },
+    "./config/validation/options": {
+      "import": "./lib/config/validation/options.module.js",
+      "default": "./lib/config/validation/options.js"
+    },
+    "./config/validation/plugins": {
+      "import": "./lib/config/validation/plugins.module.js",
+      "default": "./lib/config/validation/plugins.js"
+    },
+    "./config/validation/removed": {
+      "import": "./lib/config/validation/removed.module.js",
+      "default": "./lib/config/validation/removed.js"
+    },
+    "./gensync-utils/async": {
+      "import": "./lib/gensync-utils/async.module.js",
+      "default": "./lib/gensync-utils/async.js"
+    },
+    "./gensync-utils/fs": {
+      "import": "./lib/gensync-utils/fs.module.js",
+      "default": "./lib/gensync-utils/fs.js"
+    },
+    "./gensync-utils/resolve": {
+      "import": "./lib/gensync-utils/resolve.module.js",
+      "default": "./lib/gensync-utils/resolve.js"
+    },
+    "./parser": {
+      "import": "./lib/parser/index.module.js",
+      "default": "./lib/parser/index.js"
+    },
+    "./parser/util/missing-plugin-helper": {
+      "import": "./lib/parser/util/missing-plugin-helper.module.js",
+      "default": "./lib/parser/util/missing-plugin-helper.js"
+    },
+    "./tools/build-external-helpers": {
+      "import": "./lib/tools/build-external-helpers.module.js",
+      "default": "./lib/tools/build-external-helpers.js"
+    },
+    "./transformation": {
+      "import": "./lib/transformation/index.module.js",
+      "default": "./lib/transformation/index.js"
+    },
+    "./transformation/block-hoist-plugin": {
+      "import": "./lib/transformation/block-hoist-plugin.module.js",
+      "default": "./lib/transformation/block-hoist-plugin.js"
+    },
+    "./transformation/normalize-file": {
+      "import": "./lib/transformation/normalize-file.module.js",
+      "default": "./lib/transformation/normalize-file.js"
+    },
+    "./transformation/normalize-opts": {
+      "import": "./lib/transformation/normalize-opts.module.js",
+      "default": "./lib/transformation/normalize-opts.js"
+    },
+    "./transformation/plugin-pass": {
+      "import": "./lib/transformation/plugin-pass.module.js",
+      "default": "./lib/transformation/plugin-pass.js"
+    },
+    "./transformation/file/file": {
+      "import": "./lib/transformation/file/file.module.js",
+      "default": "./lib/transformation/file/file.js"
+    },
+    "./transformation/file/generate": {
+      "import": "./lib/transformation/file/generate.module.js",
+      "default": "./lib/transformation/file/generate.js"
+    },
+    "./transformation/file/merge-map": {
+      "import": "./lib/transformation/file/merge-map.module.js",
+      "default": "./lib/transformation/file/merge-map.js"
+    }
+  },
   "author": "Sebastian McKenzie <sebmck@gmail.com>",
   "homepage": "https://babeljs.io/",
   "license": "MIT",
@@ -38,9 +226,13 @@
   },
   "browser": {
     "./lib/config/files/index.js": "./lib/config/files/index-browser.js",
+    "./lib/config/files/index.module.js": "./lib/config/files/index-browser.module.js",
     "./lib/transform-file.js": "./lib/transform-file-browser.js",
+    "./lib/transform-file.module.js": "./lib/transform-file-browser.module.js",
     "./src/config/files/index.js": "./src/config/files/index-browser.js",
-    "./src/transform-file.js": "./src/transform-file-browser.js"
+    "./src/config/files/index.module.js": "./src/config/files/index-browser.module.js",
+    "./src/transform-file.js": "./src/transform-file-browser.js",
+    "./src/transform-file.module.js": "./src/transform-file-browser.module.js"
   },
   "dependencies": {
     "@babel/code-frame": "^7.10.4",

@@ -28,6 +28,14 @@ function swapSrcWithLib(srcPath) {
   return parts.join(path.sep);
 }
 
+function swapJsWithMjs(srcPath) {
+  if (srcPath.slice(-3) === ".js") {
+    return srcPath.slice(0, -3) + ".module.js";
+  } else {
+    return srcPath;
+  }
+}
+
 function getIndexFromPackage(name) {
   return `${name}/src/index.js`;
 }
@@ -81,6 +89,39 @@ function buildBabel(exclude, sourcesGlob = defaultSourcesGlob) {
       // Passing 'file.relative' because newer() above uses a relative
       // path and this keeps it consistent.
       rename(file => path.resolve(file.base, swapSrcWithLib(file.relative)))
+    )
+    .pipe(gulp.dest(base));
+}
+
+function buildBabelEsm(exclude, sourcesGlob = defaultSourcesGlob) {
+  const base = __dirname;
+
+  let stream = gulp.src(sourcesGlob, { base: __dirname });
+
+  if (exclude) {
+    const filters = exclude.map(p => `!**/${p.src}/**`);
+    filters.unshift("**");
+    stream = stream.pipe(filter(filters));
+  }
+
+  return stream
+    .pipe(errorsLogger())
+    .pipe(
+      newer({
+        dest: base,
+        map: srcPath => {
+          return swapJsWithMjs(swapSrcWithLib(srcPath));
+        },
+      })
+    )
+    .pipe(compilationLogger())
+    .pipe(babel({ envName: "esm" }))
+    .pipe(
+      // Passing 'file.relative' because newer() above uses a relative
+      // path and this keeps it consistent.
+      rename(file =>
+        path.resolve(file.base, swapJsWithMjs(swapSrcWithLib(file.relative)))
+      )
     )
     .pipe(gulp.dest(base));
 }
@@ -237,7 +278,13 @@ gulp.task("build-rollup", () => buildRollup(libBundles));
 gulp.task("build-babel-standalone", () => buildRollup(standaloneBundle));
 
 gulp.task("build-babel", () => buildBabel(/* exclude */ libBundles));
-gulp.task("build", gulp.parallel("build-rollup", "build-babel"));
+gulp.task("build-babel-esm", () =>
+  buildBabelEsm(/* exclude */ libBundles, defaultSourcesGlob)
+);
+gulp.task(
+  "build",
+  gulp.parallel("build-rollup", "build-babel", "build-babel-esm")
+);
 
 gulp.task("default", gulp.series("build"));
 

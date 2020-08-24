@@ -12,6 +12,13 @@
     "access": "public"
   },
   "main": "lib/index.js",
+  "module": "lib/index.module.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.module.js",
+      "default": "./lib/index.js"
+    }
+  },
   "dependencies": {
     "@babel/helper-explode-assignable-expression": "^7.10.4",
     "@babel/types": "^7.10.4"

@@ -12,6 +12,17 @@
     "access": "public"
   },
   "main": "lib/index.js",
+  "module": "lib/index.module.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.module.js",
+      "default": "./lib/index.js"
+    },
+    "./for-await": {
+      "import": "./lib/for-await.module.js",
+      "default": "./lib/for-await.js"
+    }
+  },
   "keywords": [
     "babel-plugin"
   ],

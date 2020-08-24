@@ -11,8 +11,22 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "./lib/index.js",
-  "exports": "./lib/index.js",
+  "main": "lib/index.js",
+  "module": "lib/index.module.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.module.js",
+      "default": "./lib/index.js"
+    },
+    "./identifier": {
+      "import": "./lib/identifier.module.js",
+      "default": "./lib/identifier.js"
+    },
+    "./keyword": {
+      "import": "./lib/keyword.module.js",
+      "default": "./lib/keyword.js"
+    }
+  },
   "devDependencies": {
     "charcodes": "^0.2.0",
     "unicode-13.0.0": "^0.8.0"

@@ -12,6 +12,21 @@
     "access": "public"
   },
   "main": "lib/index.js",
+  "module": "lib/index.module.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.module.js",
+      "default": "./lib/index.js"
+    },
+    "./inline-createSuper-helper": {
+      "import": "./lib/inline-createSuper-helper.module.js",
+      "default": "./lib/inline-createSuper-helper.js"
+    },
+    "./transformClass": {
+      "import": "./lib/transformClass.module.js",
+      "default": "./lib/transformClass.js"
+    }
+  },
   "dependencies": {
     "@babel/helper-annotate-as-pure": "^7.10.4",
     "@babel/helper-define-map": "^7.10.4",

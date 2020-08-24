@@ -10,6 +10,33 @@
     "directory": "packages/babel-helper-create-class-features-plugin"
   },
   "main": "lib/index.js",
+  "module": "lib/index.module.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.module.js",
+      "default": "./lib/index.js"
+    },
+    "./decorators": {
+      "import": "./lib/decorators.module.js",
+      "default": "./lib/decorators.js"
+    },
+    "./features": {
+      "import": "./lib/features.module.js",
+      "default": "./lib/features.js"
+    },
+    "./fields": {
+      "import": "./lib/fields.module.js",
+      "default": "./lib/fields.js"
+    },
+    "./misc": {
+      "import": "./lib/misc.module.js",
+      "default": "./lib/misc.js"
+    },
+    "./typescript": {
+      "import": "./lib/typescript.module.js",
+      "default": "./lib/typescript.js"
+    }
+  },
   "publishConfig": {
     "access": "public"
   },

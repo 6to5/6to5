@@ -14,6 +14,85 @@
     "directory": "packages/babel-generator"
   },
   "main": "lib/index.js",
+  "module": "lib/index.module.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.module.js",
+      "default": "./lib/index.js"
+    },
+    "./buffer": {
+      "import": "./lib/buffer.module.js",
+      "default": "./lib/buffer.js"
+    },
+    "./printer": {
+      "import": "./lib/printer.module.js",
+      "default": "./lib/printer.js"
+    },
+    "./source-map": {
+      "import": "./lib/source-map.module.js",
+      "default": "./lib/source-map.js"
+    },
+    "./generator": {
+      "import": "./lib/generator/index.module.js",
+      "default": "./lib/generator/index.js"
+    },
+    "./generator/base": {
+      "import": "./lib/generator/base.module.js",
+      "default": "./lib/generator/base.js"
+    },
+    "./generator/classes": {
+      "import": "./lib/generator/classes.module.js",
+      "default": "./lib/generator/classes.js"
+    },
+    "./generator/expressions": {
+      "import": "./lib/generator/expressions.module.js",
+      "default": "./lib/generator/expressions.js"
+    },
+    "./generator/flow": {
+      "import": "./lib/generator/flow.module.js",
+      "default": "./lib/generator/flow.js"
+    },
+    "./generator/jsx": {
+      "import": "./lib/generator/jsx.module.js",
+      "default": "./lib/generator/jsx.js"
+    },
+    "./generator/methods": {
+      "import": "./lib/generator/methods.module.js",
+      "default": "./lib/generator/methods.js"
+    },
+    "./generator/modules": {
+      "import": "./lib/generator/modules.module.js",
+      "default": "./lib/generator/modules.js"
+    },
+    "./generator/statements": {
+      "import": "./lib/generator/statements.module.js",
+      "default": "./lib/generator/statements.js"
+    },
+    "./generator/template-literals": {
+      "import": "./lib/generator/template-literals.module.js",
+      "default": "./lib/generator/template-literals.js"
+    },
+    "./generator/types": {
+      "import": "./lib/generator/types.module.js",
+      "default": "./lib/generator/types.js"
+    },
+    "./generator/typescript": {
+      "import": "./lib/generator/typescript.module.js",
+      "default": "./lib/generator/typescript.js"
+    },
+    "./node": {
+      "import": "./lib/node/index.module.js",
+      "default": "./lib/node/index.js"
+    },
+    "./node/parentheses": {
+      "import": "./lib/node/parentheses.module.js",
+      "default": "./lib/node/parentheses.js"
+    },
+    "./node/whitespace": {
+      "import": "./lib/node/whitespace.module.js",
+      "default": "./lib/node/whitespace.js"
+    }
+  },
   "files": [
     "lib"
   ],

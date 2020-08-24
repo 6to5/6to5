@@ -1,6 +1,7 @@
 "use strict";
 
 const path = require("path");
+const fs = require("fs");
 
 function normalize(src) {
   return src.replace(/\//, path.sep);
@@ -40,7 +41,12 @@ module.exports = function (api) {
   ];
 
   switch (env) {
+    case "esm":
+      convertESM = false;
+      envOpts.targets = { esmodules: true };
+      envOpts.modules = false;
     // Configs used during bundling builds.
+    // fall through
     case "standalone":
       includeRegeneratorRuntime = true;
       unambiguousSources.push("packages/babel-runtime/regenerator");
@@ -115,6 +121,32 @@ module.exports = function (api) {
       compileDynamicImport ? "@babel/plugin-proposal-dynamic-import" : null,
 
       convertESM ? "@babel/transform-modules-commonjs" : null,
+      env === "esm"
+        ? [
+            "module-resolver",
+            {
+              extensions: [".js"],
+              resolvePath(sourcePath, currentFile) {
+                if (sourcePath.slice(0, 2) === "./") {
+                  const parts = currentFile.split(path.sep);
+                  parts.pop();
+                  // Append .module.js ext if the imported path is .js file.
+                  if (
+                    fs.existsSync(
+                      path.sep + path.join(...parts, sourcePath) + ".js"
+                    )
+                  ) {
+                    return sourcePath + ".module.js";
+                  } else {
+                    return sourcePath + path.sep + "index.module.js";
+                  }
+                } else {
+                  return sourcePath;
+                }
+              },
+            },
+          ]
+        : null,
     ].filter(Boolean),
     overrides: [
       {

@@ -14,6 +14,13 @@
     "directory": "packages/babel-highlight"
   },
   "main": "lib/index.js",
+  "module": "lib/index.module.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.module.js",
+      "default": "./lib/index.js"
+    }
+  },
   "dependencies": {
     "@babel/helper-validator-identifier": "^7.10.4",
     "chalk": "^2.0.0",

@@ -13,5 +13,12 @@
     "url": "https://github.com/babel/babel.git",
     "directory": "packages/babel-helper-plugin-utils"
   },
-  "main": "lib/index.js"
+  "main": "lib/index.js",
+  "module": "lib/index.module.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.module.js",
+      "default": "./lib/index.js"
+    }
+  }
 }

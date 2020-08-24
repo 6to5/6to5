@@ -10,8 +10,40 @@
     "directory": "packages/babel-helper-compilation-targets"
   },
   "main": "lib/index.js",
+  "module": "lib/index.module.js",
   "exports": {
-    ".": "./lib/index.js"
+    ".": {
+      "import": "./lib/index.module.js",
+      "default": "./lib/index.js"
+    },
+    "./debug": {
+      "import": "./lib/debug.module.js",
+      "default": "./lib/debug.js"
+    },
+    "./filter-items": {
+      "import": "./lib/filter-items.module.js",
+      "default": "./lib/filter-items.js"
+    },
+    "./options": {
+      "import": "./lib/options.module.js",
+      "default": "./lib/options.js"
+    },
+    "./pretty": {
+      "import": "./lib/pretty.module.js",
+      "default": "./lib/pretty.js"
+    },
+    "./targets": {
+      "import": "./lib/targets.module.js",
+      "default": "./lib/targets.js"
+    },
+    "./types": {
+      "import": "./lib/types.module.js",
+      "default": "./lib/types.js"
+    },
+    "./utils": {
+      "import": "./lib/utils.module.js",
+      "default": "./lib/utils.js"
+    }
   },
   "publishConfig": {
     "access": "public"

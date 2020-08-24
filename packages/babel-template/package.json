@@ -14,6 +14,41 @@
     "directory": "packages/babel-template"
   },
   "main": "lib/index.js",
+  "module": "lib/index.module.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.module.js",
+      "default": "./lib/index.js"
+    },
+    "./builder": {
+      "import": "./lib/builder.module.js",
+      "default": "./lib/builder.js"
+    },
+    "./formatters": {
+      "import": "./lib/formatters.module.js",
+      "default": "./lib/formatters.js"
+    },
+    "./literal": {
+      "import": "./lib/literal.module.js",
+      "default": "./lib/literal.js"
+    },
+    "./options": {
+      "import": "./lib/options.module.js",
+      "default": "./lib/options.js"
+    },
+    "./parse": {
+      "import": "./lib/parse.module.js",
+      "default": "./lib/parse.js"
+    },
+    "./populate": {
+      "import": "./lib/populate.module.js",
+      "default": "./lib/populate.js"
+    },
+    "./string": {
+      "import": "./lib/string.module.js",
+      "default": "./lib/string.js"
+    }
+  },
   "dependencies": {
     "@babel/code-frame": "^7.10.4",
     "@babel/parser": "^7.10.4",

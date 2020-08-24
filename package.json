@@ -29,6 +29,7 @@
     "@babel/runtime": "^7.11.0",
     "@rollup/plugin-json": "4.0.1",
     "babel-jest": "^24.9.0",
+    "babel-plugin-module-resolver": "^4.0.0",
     "babel-plugin-transform-charcodes": "^0.2.0",
     "browserify": "^16.2.3",
     "bundle-collapser": "^1.2.1",

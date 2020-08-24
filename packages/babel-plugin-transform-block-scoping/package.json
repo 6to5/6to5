@@ -12,6 +12,17 @@
     "access": "public"
   },
   "main": "lib/index.js",
+  "module": "lib/index.module.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.module.js",
+      "default": "./lib/index.js"
+    },
+    "./tdz": {
+      "import": "./lib/tdz.module.js",
+      "default": "./lib/tdz.js"
+    }
+  },
   "dependencies": {
     "@babel/helper-plugin-utils": "^7.10.4"
   },

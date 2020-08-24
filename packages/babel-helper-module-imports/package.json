@@ -14,6 +14,25 @@
     "directory": "packages/babel-helper-module-imports"
   },
   "main": "lib/index.js",
+  "module": "lib/index.module.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.module.js",
+      "default": "./lib/index.js"
+    },
+    "./import-builder": {
+      "import": "./lib/import-builder.module.js",
+      "default": "./lib/import-builder.js"
+    },
+    "./import-injector": {
+      "import": "./lib/import-injector.module.js",
+      "default": "./lib/import-injector.js"
+    },
+    "./is-module": {
+      "import": "./lib/is-module.module.js",
+      "default": "./lib/is-module.js"
+    }
+  },
   "dependencies": {
     "@babel/types": "^7.10.4"
   },

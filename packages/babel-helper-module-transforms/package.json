@@ -14,6 +14,29 @@
     "directory": "packages/babel-helper-module-transforms"
   },
   "main": "lib/index.js",
+  "module": "lib/index.module.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.module.js",
+      "default": "./lib/index.js"
+    },
+    "./get-module-name": {
+      "import": "./lib/get-module-name.module.js",
+      "default": "./lib/get-module-name.js"
+    },
+    "./normalize-and-load-metadata": {
+      "import": "./lib/normalize-and-load-metadata.module.js",
+      "default": "./lib/normalize-and-load-metadata.js"
+    },
+    "./rewrite-live-references": {
+      "import": "./lib/rewrite-live-references.module.js",
+      "default": "./lib/rewrite-live-references.js"
+    },
+    "./rewrite-this": {
+      "import": "./lib/rewrite-live-references.module.js",
+      "default": "./lib/rewrite-live-references.js"
+    }
+  },
   "dependencies": {
     "@babel/helper-module-imports": "^7.10.4",
     "@babel/helper-replace-supers": "^7.10.4",

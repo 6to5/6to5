@@ -12,6 +12,13 @@
     "access": "public"
   },
   "main": "lib/index.js",
+  "module": "lib/index.module.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.module.js",
+      "default": "./lib/index.js"
+    }
+  },
   "dependencies": {
     "@babel/helper-module-transforms": "^7.10.5",
     "@babel/helper-plugin-utils": "^7.10.4",

@@ -13,6 +13,17 @@
     "directory": "packages/babel-plugin-proposal-decorators"
   },
   "main": "lib/index.js",
+  "module": "lib/index.module.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.module.js",
+      "default": "./lib/index.js"
+    },
+    "./transformer-legacy": {
+      "import": "./lib/transformer-legacy.module.js",
+      "default": "./lib/transformer-legacy.js"
+    }
+  },
   "keywords": [
     "babel",
     "babel-plugin",

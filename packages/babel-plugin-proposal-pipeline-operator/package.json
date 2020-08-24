@@ -12,6 +12,29 @@
     "access": "public"
   },
   "main": "lib/index.js",
+  "module": "lib/index.module.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.module.js",
+      "default": "./lib/index.js"
+    },
+    "./buildOptimizedSequenceExpression": {
+      "import": "./lib/buildOptimizedSequenceExpression.module.js",
+      "default": "./lib/buildOptimizedSequenceExpression.js"
+    },
+    "./fsharpVisitor": {
+      "import": "./lib/fsharpVisitor.module.js",
+      "default": "./lib/fsharpVisitor.js"
+    },
+    "./minimalVisitor": {
+      "import": "./lib/minimalVisitor.module.js",
+      "default": "./lib/minimalVisitor.js"
+    },
+    "./smartVisitor": {
+      "import": "./lib/smartVisitor.module.js",
+      "default": "./lib/smartVisitor.js"
+    }
+  },
   "keywords": [
     "babel-plugin"
   ],
