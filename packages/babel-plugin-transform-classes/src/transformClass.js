@@ -681,9 +681,56 @@ export default function transformClass(
       directives.push(t.directive(t.directiveLiteral("use strict")));
     }
 
+    const classAddition = t.expressionStatement(
+      t.callExpression(
+        {
+          type: "MemberExpression",
+          object: {
+            type: "Identifier",
+            name: "Object",
+          },
+          property: {
+            type: "Identifier",
+            name: "defineProperty",
+          },
+        },
+        [
+          t.cloneNode(classState.classRef),
+          {
+            type: "StringLiteral",
+            value: "prototype",
+          },
+          {
+            type: "ObjectExpression",
+            properties: [
+              {
+                type: "ObjectProperty",
+                method: false,
+                key: {
+                  type: "Identifier",
+                  name: "writable",
+                },
+                computed: false,
+                shorthand: false,
+                value: {
+                  type: "BooleanLiteral",
+                  value: false,
+                },
+              },
+            ],
+          },
+        ],
+      ),
+    );
+
     if (constructorOnly) {
       // named class with only a constructor
-      return t.toExpression(body[0]);
+      const answer = {
+        classCode: t.toExpression(body[0]),
+        classAddition,
+      };
+      return answer;
+      // return t.toExpression(body[0]);
     }
 
     body.push(t.returnStatement(t.cloneNode(classState.classRef)));
@@ -691,7 +738,12 @@ export default function transformClass(
       closureParams,
       t.blockStatement(body, directives),
     );
-    return t.callExpression(container, closureArgs);
+    const answer = {
+      classCode: t.callExpression(container, closureArgs),
+      classAddition,
+    };
+    return answer;
+    // return t.callExpression(container, closureArgs);
   }
 
   return classTransformer(path, file, builtinClasses, isLoose);

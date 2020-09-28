@@ -57,9 +57,13 @@ export default declare((api, options) => {
 
         node[VISITED] = true;
 
-        path.replaceWith(
-          transformClass(path, state.file, builtinClasses, loose),
-        );
+        const result = transformClass(path, state.file, builtinClasses, loose);
+        if (result.classAddition) {
+          path.replaceWith(result.classCode);
+          path.parentPath.parentPath.insertAfter(result.classAddition);
+        } else {
+          path.replaceWith(result);
+        }
 
         if (path.isCallExpression()) {
           annotateAsPure(path);
