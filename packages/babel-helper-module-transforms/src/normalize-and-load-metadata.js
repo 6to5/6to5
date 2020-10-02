@@ -95,8 +95,6 @@ export default function normalizeModuleAndLoadMetadata(
     lazy,
   });
 
-  removeModuleDeclarations(programPath);
-
   // Reuse the imported namespace name if there is one.
   for (const [, metadata] of source) {
     if (metadata.importsNamespace.size > 0) {
@@ -428,11 +426,9 @@ function nameAnonymousExports(programPath: NodePath) {
   });
 }
 
-function removeModuleDeclarations(programPath: NodePath) {
+export function removeExportDeclarations(programPath: NodePath) {
   programPath.get("body").forEach(child => {
-    if (child.isImportDeclaration()) {
-      child.remove();
-    } else if (child.isExportNamedDeclaration()) {
+    if (child.isExportNamedDeclaration()) {
       if (child.node.declaration) {
         child.node.declaration._blockHoist = child.node._blockHoist;
         child.replaceWith(child.node.declaration);
@@ -455,6 +451,14 @@ function removeModuleDeclarations(programPath: NodePath) {
         );
       }
     } else if (child.isExportAllDeclaration()) {
+      child.remove();
+    }
+  });
+}
+
+export function removeImportDeclarations(programPath: NodePath) {
+  programPath.get("body").forEach(child => {
+    if (child.isImportDeclaration()) {
       child.remove();
     }
   });

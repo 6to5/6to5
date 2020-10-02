@@ -10,6 +10,8 @@ import rewriteLiveReferences from "./rewrite-live-references";
 import normalizeAndLoadModuleMetadata, {
   hasExports,
   isSideEffectImport,
+  removeExportDeclarations,
+  removeImportDeclarations,
 } from "./normalize-and-load-metadata";
 
 export { default as getModuleName } from "./get-module-name";
@@ -49,7 +51,9 @@ export function rewriteModuleStatementsAndPrepareHeader(
     rewriteThis(path);
   }
 
+  removeExportDeclarations(path);
   rewriteLiveReferences(path, meta);
+  removeImportDeclarations(path);
 
   if (strictMode !== false) {
     const hasStrict = path.node.directives.some(directive => {

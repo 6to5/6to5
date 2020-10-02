@@ -5,6 +5,13 @@ import simplifyAccess from "@babel/helper-simple-access";
 
 import type { ModuleMetadata } from "./";
 
+function isSameBinding(scope1, scope2, name) {
+  const binding = scope1.getBinding(name);
+  // TODO: In Babel 8, check if the next code can be uncommented
+  // https://github.com/babel/babel/pull/10628#discussion_r342282695
+  return /* !!binding && */ binding === scope2.getBinding(name);
+}
+
 export default function rewriteLiveReferences(
   programPath: NodePath,
   metadata: ModuleMetadata,
@@ -168,11 +175,8 @@ const rewriteReferencesVisitor = {
 
     const localName = path.node.name;
 
-    const localBinding = path.scope.getBinding(localName);
-    const rootBinding = scope.getBinding(localName);
-
     // redeclared in this scope
-    if (rootBinding !== localBinding) return;
+    if (!isSameBinding(scope, path.scope, localName)) return;
 
     const importData = imported.get(localName);
     if (importData) {
@@ -233,9 +237,7 @@ const rewriteReferencesVisitor = {
         const localName = left.node.name;
 
         // redeclared in this scope
-        if (scope.getBinding(localName) !== path.scope.getBinding(localName)) {
-          return;
-        }
+        if (!isSameBinding(scope, path.scope, localName)) return;
 
         const exportedNames = exported.get(localName);
         const importData = imported.get(localName);
@@ -264,9 +266,8 @@ const rewriteReferencesVisitor = {
         }
       } else {
         const ids = left.getOuterBindingIdentifiers();
-        const programScopeIds = Object.keys(ids).filter(
-          localName =>
-            scope.getBinding(localName) === path.scope.getBinding(localName),
+        const programScopeIds = Object.keys(ids).filter(localName =>
+          isSameBinding(scope, path.scope, localName),
         );
         const id = programScopeIds.find(localName => imported.has(localName));
 
