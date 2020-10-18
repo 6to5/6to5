@@ -6,11 +6,13 @@ import {
   FEATURES,
 } from "@babel/helper-create-class-features-plugin";
 
+import type * as t from "@babel/types";
+import type { NodePath } from "@babel/traverse";
 /**
  * Generate a uid that is not in `denyList`
  *
  * @param {*} scope
- * @param {Set<string>} a deny list that the generated uid should avoid
+ * @param {Set<string>} denyList a deny list that the generated uid should avoid
  * @returns
  */
 function generateUid(scope, denyList: Set<string>) {
@@ -41,16 +43,13 @@ export default declare(({ types: t, template, assertVersion }) => {
       // Run on ClassBody and not on class so that if @babel/helper-create-class-features-plugin
       // is enabled it can generte optimized output without passing from the intermediate
       // private fields representation.
-      ClassBody(
-        classBody: NodePath<{
-          new (...args: any): any;
-        }>,
-      ) {
+      ClassBody(classBody: NodePath<t.ClassBody>) {
         const { scope } = classBody;
-        const privateNames = new Set();
+        const privateNames = new Set<string>();
         const body = classBody.get("body");
         for (const path of body) {
           if (path.isPrivate()) {
+            // @ts-expect-error todo(flow->ts) NodePath.get types
             privateNames.add(path.get("key.id").node.name);
           }
         }
@@ -64,7 +63,9 @@ export default declare(({ types: t, template, assertVersion }) => {
           path.replaceWith(
             t.classPrivateProperty(
               staticBlockRef,
-              template.expression.ast`(() => { ${path.node.body} })()`,
+              template.expression.ast`(() => { ${
+                (path.node as t.StaticBlock).body
+              } })()`,
               [],
               /* static */ true,
             ),

@@ -28,7 +28,9 @@
   },
   "devDependencies": {
     "@babel/core": "workspace:*",
-    "@babel/helper-plugin-test-runner": "workspace:*"
+    "@babel/helper-plugin-test-runner": "workspace:*",
+    "@babel/traverse": "workspace:*",
+    "@babel/types": "workspace:*"
   },
   "homepage": "https://babel.dev/docs/en/next/babel-plugin-proposal-class-static-block",
   "engines": {
