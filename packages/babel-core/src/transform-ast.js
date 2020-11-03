@@ -48,10 +48,10 @@ export const transformFromAst: TransformFromAst = (function transformFromAst(
     opts = undefined;
   }
 
-  // For backward-compat with Babel 6, we allow sync transformation when
-  // no callback is given. Will be dropped in some future Babel major version.
   if (callback === undefined) {
-    return transformFromAstRunner.sync(ast, code, opts);
+    throw new Error(
+      "Starting from Babel 8.0.0, the 'transformFromAst' function expects a callback. If you need to call it synchronously, please use 'transformFromAstSync",
+    );
   }
 
   transformFromAstRunner.errback(ast, code, opts, callback);

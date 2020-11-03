@@ -39,9 +39,11 @@ export const parse: Parse = (function parse(code, opts, callback) {
     opts = undefined;
   }
 
-  // For backward-compat with Babel 7's early betas, we allow sync parsing when
-  // no callback is given. Will be dropped in some future Babel major version.
-  if (callback === undefined) return parseRunner.sync(code, opts);
+  if (callback === undefined) {
+    throw new Error(
+      "Starting from Babel 8.0.0, the 'parse' function expects a callback. If you need to call it synchronously, please use 'parseSync",
+    );
+  }
 
   parseRunner.errback(code, opts, callback);
 }: Function);
