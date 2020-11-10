@@ -344,7 +344,7 @@ export default class ExpressionParser extends LValParser {
     startPos: number,
     startLoc: Position,
     // FIXME: Disabling this for now since can't seem to get it to play nicely
-    // eslint-disable-next-line no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     refNeedsArrowPos?: Pos | null,
   ): N.Expression {
     if (this.eat(tt.question)) {
@@ -1572,9 +1572,9 @@ export default class ExpressionParser extends LValParser {
 
   parseParenItem(
     node: N.Expression,
-    // eslint-disable-line no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     startPos: number,
-    // eslint-disable-line no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     startLoc: Position,
   ): N.Expression {
     return node;
@@ -2246,7 +2246,6 @@ export default class ExpressionParser extends LValParser {
   checkParams(
     node: N.Function,
     allowDuplicates: boolean,
-    // eslint-disable-next-line no-unused-vars
     isArrowFunction?: boolean | null,
     strictModeChanged: boolean = true,
   ): void {

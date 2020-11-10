@@ -2039,7 +2039,7 @@ export default (superClass: {
 
     toReferencedList(
       exprList: ReadonlyArray<N.Expression | undefined | null>,
-      // eslint-disable-line no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       isInParens?: boolean,
     ): ReadonlyArray<N.Expression | undefined | null> {
       // Handles invalid scenarios like: `f(a:b)`, `(a:b);`, and `(a:b,c:d)`.
@@ -2189,13 +2189,13 @@ export default (superClass: {
     }
 
     checkReservedWord(
-      // eslint-disable-line no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       word: string,
-      // eslint-disable-line no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       startLoc: number,
-      // eslint-disable-line no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       checkKeywords: boolean,
-      // eslint-disable-next-line no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       isBinding: boolean,
     ): void {
       // Don't bother checking for TypeScript code.

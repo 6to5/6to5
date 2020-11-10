@@ -233,7 +233,7 @@ export default class LValParser extends NodeUtils {
 
   toReferencedList(
     exprList: ReadonlyArray<Expression | undefined | null>,
-    // eslint-disable-line no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     isParenthesizedExpr?: boolean,
   ): ReadonlyArray<Expression | undefined | null> {
     return exprList;
