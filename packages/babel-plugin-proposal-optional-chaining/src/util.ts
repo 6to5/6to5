@@ -1,3 +1,4 @@
+import type { NodePath } from "@babel/traverse";
 import { isTransparentExprWrapper } from "@babel/helper-skip-transparent-expression-wrappers";
 /**
  * Test if a NodePath will be cast to boolean when evaluated.
@@ -58,7 +59,7 @@ export function willPathCastToBoolean(path: NodePath): boolean {
 export function findOutermostTransparentParent(path: NodePath): NodePath {
   let maybeWrapped = path;
   path.findParent(p => {
-    if (!isTransparentExprWrapper(p)) return true;
+    if (!isTransparentExprWrapper(p.node)) return true;
     maybeWrapped = p;
   });
   return maybeWrapped;
