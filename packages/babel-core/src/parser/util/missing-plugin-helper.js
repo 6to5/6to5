@@ -292,6 +292,7 @@ export default function generateMissingPluginMessage(
   missingPluginName: string,
   loc: { line: number, column: number },
   codeFrame: string,
+  filename: string,
 ): string {
   let helpMessage =
     `Support for the experimental syntax '${missingPluginName}' isn't currently enabled ` +
@@ -316,5 +317,10 @@ If you want to leave it as-is, add ${syntaxPluginInfo} to the 'plugins' section 
       }
     }
   }
+  helpMessage +=
+    "\n\nIf you already added the plugin for this syntax to your config, it's possible that your config isn't being loaded." +
+    "\nYou can re-run Babel with the BABEL_SHOW_CONFIG_FOR=" +
+    (filename === "unknown" ? "[name of the input file]" : filename) +
+    " environment variable to show the loaded configuration.";
   return helpMessage;
 }

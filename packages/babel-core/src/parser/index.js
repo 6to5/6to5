@@ -65,7 +65,12 @@ export default function* parser(
       if (missingPlugin) {
         err.message =
           `${filename}: ` +
-          generateMissingPluginMessage(missingPlugin[0], loc, codeFrame);
+          generateMissingPluginMessage(
+            missingPlugin[0],
+            loc,
+            codeFrame,
+            filename,
+          );
       } else {
         err.message = `${filename}: ${err.message}\n\n` + codeFrame;
       }
