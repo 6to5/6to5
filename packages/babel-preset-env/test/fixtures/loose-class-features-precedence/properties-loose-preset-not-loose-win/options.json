@@ -1,5 +1,5 @@
 {
-  "os": ["darwin", "linux"],
+  "os": ["win32"],
   "validateLogs": true,
   "presets": [
     ["env", {
@@ -8,6 +8,6 @@
     }]
   ],
   "plugins": [
-    ["proposal-private-methods", { "loose": true }]
+    ["proposal-class-properties", { "loose": true }]
   ]
 }

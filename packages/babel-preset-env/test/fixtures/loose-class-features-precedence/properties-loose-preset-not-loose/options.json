@@ -1,4 +1,5 @@
 {
+  "os": ["darwin", "linux"],
   "validateLogs": true,
   "presets": [
     ["env", {
