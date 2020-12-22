@@ -585,7 +585,9 @@ class BlockScoping {
           const parentBinding = scope.parent.getOwnBinding(key);
           if (
             binding.kind === "hoisted" &&
+            // @ts-expect-error todo(flow->ts)
             !binding.path.node.async &&
+            // @ts-expect-error todo(flow->ts)
             !binding.path.node.generator &&
             (!parentBinding || isVar(parentBinding.path.parent)) &&
             !isStrict(binding.path.parentPath)
