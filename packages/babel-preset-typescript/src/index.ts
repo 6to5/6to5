@@ -22,7 +22,7 @@ export default declare((api, opts) => {
         jsxPragmaFrag,
         onlyRemoveTypeImports,
       })
-    : isTSX => ({
+    : (isTSX: boolean) => ({
         allowDeclareFields: opts.allowDeclareFields,
         allowNamespaces,
         isTSX,
