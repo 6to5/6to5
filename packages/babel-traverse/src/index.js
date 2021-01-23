@@ -10,7 +10,7 @@ export type { HubInterface } from "./hub";
 
 export { visitors };
 
-export default function traverse(
+function traverse(
   parent: Object | Array<Object>,
   opts?: Object,
   scope?: Object,
@@ -114,3 +114,6 @@ traverse.hasType = function (
 };
 
 traverse.cache = cache;
+
+export default traverse;
+export { traverse };

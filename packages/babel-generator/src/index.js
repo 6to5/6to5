@@ -113,7 +113,10 @@ export class CodeGenerator {
   }
 }
 
-export default function (ast: Object, opts: Object, code: string): Object {
+function generator(ast: Object, opts: Object, code: string): Object {
   const gen = new Generator(ast, opts, code);
   return gen.generate();
 }
+
+export default generator;
+export { generator };

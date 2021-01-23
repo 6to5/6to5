@@ -15,7 +15,7 @@ import "./tokenizer/context";
 
 import type { Expression, File } from "./types";
 
-export function parse(input: string, options?: Options): File {
+function parse(input: string, options?: Options): File {
   if (options?.sourceType === "unambiguous") {
     options = {
       ...options,
@@ -98,3 +98,6 @@ function getParserClass(pluginsFromOptions: PluginList): Class<Parser> {
   }
   return cls;
 }
+
+export default parse;
+export { parse };
