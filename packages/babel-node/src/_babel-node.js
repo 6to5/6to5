@@ -121,7 +121,7 @@ const _eval = function (code, filename) {
   code = code.trim();
   if (!code) return undefined;
 
-  code = babel.transform(code, {
+  code = babel.transformSync(code, {
     filename: filename,
     presets: program.presets,
     plugins: (program.plugins || []).concat([replPlugin]),

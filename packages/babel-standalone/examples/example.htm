@@ -1,48 +1,50 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>babel-standalone example</title>
-  </head>
-  <body>
-    Input:
-    <textarea id="input" style="width: 100%" rows="10">
+
+<head>
+  <meta charset="utf-8" />
+  <title>babel-standalone example</title>
+</head>
+
+<body>
+  Input:
+  <textarea id="input" style="width: 100%" rows="10">
 const getMessage = () => 'Hello World';
 const someDiv = <div>{getMessage()}</div>;
-</textarea
-    >
+</textarea>
 
-    Transformed code using Babel <strong id="version"></strong>:
-    <pre id="output">Loading...</pre>
+  Transformed code using Babel <strong id="version"></strong>:
+  <pre id="output">Loading...</pre>
 
-    <script src="../babel.js"></script>
-    <script>
-      console.log("Babel =", Babel);
-      document.getElementById("version").innerHTML = Babel.version;
-      var inputEl = document.getElementById("input");
-      var outputEl = document.getElementById("output");
+  <script src="../babel.js"></script>
+  <script>
+    console.log("Babel =", Babel);
+    document.getElementById("version").innerHTML = Babel.version;
+    var inputEl = document.getElementById("input");
+    var outputEl = document.getElementById("output");
 
-      function transform() {
-        try {
-          outputEl.innerHTML = Babel.transform(inputEl.value, {
-            presets: [
-              "es2015",
-              "react",
-              [
-                "stage-0",
-                {
-                  decoratorsBeforeExport: false,
-                },
-              ],
+    function transform() {
+      try {
+        outputEl.innerHTML = Babel.transformSync(inputEl.value, {
+          presets: [
+            "es2015",
+            "react",
+            [
+              "stage-0",
+              {
+                decoratorsBeforeExport: false,
+              },
             ],
-          }).code;
-        } catch (ex) {
-          outputEl.innerHTML = "ERROR: " + ex.message;
-        }
+          ],
+        }).code;
+      } catch (ex) {
+        outputEl.innerHTML = "ERROR: " + ex.message;
       }
+    }
 
-      inputEl.addEventListener("keyup", transform, false);
-      transform();
-    </script>
-  </body>
+    inputEl.addEventListener("keyup", transform, false);
+    transform();
+  </script>
+</body>
+
 </html>

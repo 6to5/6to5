@@ -3,7 +3,7 @@ const babel = require("@babel/core");
 test("Doesn't use the same object for two different nodes in the AST", function () {
   const code = 'import Foo from "bar"; Foo; Foo;';
 
-  const ast = babel.transform(code, {
+  const ast = babel.transformSync(code, {
     cwd: __dirname,
     ast: true,
     plugins: [[require("../"), { loose: true }]],

@@ -29,7 +29,7 @@ function createContext() {
   const context = vm.createContext({
     ...helpers,
     process: process,
-    transform: babel.transform,
+    transform: babel.transformSync,
     setTimeout: setTimeout,
     setImmediate: setImmediate,
     expect,
@@ -210,7 +210,7 @@ function run(task) {
   if (execCode) {
     const context = createContext();
     const execOpts = getOpts(exec);
-    result = babel.transform(execCode, execOpts);
+    result = babel.transformSync(execCode, execOpts);
     checkDuplicatedNodes(babel, result.ast);
     execCode = result.code;
 
@@ -242,7 +242,7 @@ function run(task) {
       };
     }
 
-    result = babel.transform(inputCode, getOpts(actual));
+    result = babel.transformSync(inputCode, getOpts(actual));
 
     if (restoreSpies) restoreSpies();
 

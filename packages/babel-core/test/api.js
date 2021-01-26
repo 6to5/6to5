@@ -13,7 +13,7 @@ function assertNotIgnored(result) {
 }
 
 function parse(code, opts) {
-  return babel.parse(code, {
+  return babel.parseSync(code, {
     cwd: __dirname,
     configFile: false,
     ...opts,
@@ -21,7 +21,7 @@ function parse(code, opts) {
 }
 
 function transform(code, opts) {
-  return babel.transform(code, {
+  return babel.transformSync(code, {
     cwd: __dirname,
     configFile: false,
     ...opts,
@@ -56,7 +56,7 @@ function transformAsync(code, opts) {
 }
 
 function transformFromAst(ast, code, opts) {
-  return babel.transformFromAst(ast, code, {
+  return babel.transformFromAstSync(ast, code, {
     cwd: __dirname,
     configFile: false,
     ...opts,

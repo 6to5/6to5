@@ -18,7 +18,7 @@ test("Re-export doesn't overwrite __esModule flag", function () {
   };
   context.exports = context.module.exports;
 
-  code = babel.transform(code, {
+  code = babel.transformSync(code, {
     cwd: __dirname,
     plugins: [[require("../"), { loose: true }]],
     ast: false,

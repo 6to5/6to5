@@ -11,7 +11,7 @@ describe("plugin ordering", () => {
 }
 `;
     expect(() => {
-      babel.transform(source, {
+      babel.transformSync(source, {
         filename: "example.js",
         highlightCode: false,
         configFile: false,

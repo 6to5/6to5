@@ -14,7 +14,7 @@ function test(sourceType, opts, initializer, inputCode, expectedCode) {
     inputCode = "";
   }
 
-  const result = babel.transform(inputCode, {
+  const result = babel.transformSync(inputCode, {
     cwd: __dirname,
     sourceType,
     filename: "example" + (sourceType === "module" ? ".mjs" : ".js"),
