@@ -48,11 +48,13 @@ export const transformFromAst: TransformFromAst = (function transformFromAst(
     opts = undefined;
   }
 
-  if (process.env.BABEL_8_BREAKING) {
-    if (callback === undefined) {
-      throw new Error(
-        "Starting from Babel 8.0.0, the 'transformFromAst' function expects a callback. If you need to call it synchronously, please use 'transformFromAstSync'.",
-      );
+  if (callback === undefined) {
+    const message =
+      "Starting from Babel 8.0.0, the 'transformFromAst' function expects a callback. If you need to call it synchronously, please use 'transformFromAstSync'.";
+    if (process.env.BABEL_8_BREAKING) {
+      throw new Error(message);
+    } else {
+      console.warn(message);
     }
   }
 
