@@ -39,10 +39,12 @@ export const parse: Parse = (function parse(code, opts, callback) {
     opts = undefined;
   }
 
-  if (callback === undefined) {
-    throw new Error(
-      "Starting from Babel 8.0.0, the 'parse' function expects a callback. If you need to call it synchronously, please use 'parseSync",
-    );
+  if (process.env.BABEL_8_BREAKING) {
+    if (callback === undefined) {
+      throw new Error(
+        "Starting from Babel 8.0.0, the 'parse' function expects a callback. If you need to call it synchronously, please use 'parseSync'.",
+      );
+    }
   }
 
   parseRunner.errback(code, opts, callback);
