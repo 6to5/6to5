@@ -234,7 +234,7 @@ function buildHelper(
   );
   tree.body.push(...helper.nodes);
 
-  return babel.transformFromAst(tree, null, {
+  return babel.transformFromAstSync(tree, null, {
     filename: helperFilename,
     presets: [
       [
