@@ -40,12 +40,14 @@ export const parse: Parse = (function parse(code, opts, callback) {
   }
 
   if (callback === undefined) {
-    const message =
-      "Starting from Babel 8.0.0, the 'parse' function expects a callback. If you need to call it synchronously, please use 'parseSync'.";
     if (process.env.BABEL_8_BREAKING) {
-      throw new Error(message);
+      throw new Error(
+        "Starting from Babel 8.0.0, the 'parse' function expects a callback. If you need to call it synchronously, please use 'parseSync'.",
+      );
     } else {
-      console.warn(message);
+      console.warn(
+        "Starting from Babel 8.0.0, the 'parse' function will expect a callback. If you need to call it synchronously, please use 'parseSync'.",
+      );
       return parseRunner.sync(code, opts);
     }
   }

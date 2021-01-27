@@ -34,12 +34,14 @@ export const transform: Transform = (function transform(code, opts, callback) {
   }
 
   if (callback === undefined) {
-    const message =
-      "Starting from Babel 8.0.0, the 'transform' function expects a callback. If you need to call it synchronously, please use 'transformSync'.";
     if (process.env.BABEL_8_BREAKING) {
-      throw new Error(message);
+      throw new Error(
+        "Starting from Babel 8.0.0, the 'transform' function expects a callback. If you need to call it synchronously, please use 'transformSync'.",
+      );
     } else {
-      console.warn(message);
+      console.warn(
+        "Starting from Babel 8.0.0, the 'transform' function will expect a callback. If you need to call it synchronously, please use 'transformSync'.",
+      );
       return transformRunner.sync(code, opts);
     }
   }
