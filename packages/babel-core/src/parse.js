@@ -46,6 +46,7 @@ export const parse: Parse = (function parse(code, opts, callback) {
       throw new Error(message);
     } else {
       console.warn(message);
+      return parseRunner.sync(code, opts);
     }
   }
 

@@ -51,6 +51,7 @@ export const transformFile: TransformFile = (function transform(
       throw new Error(message);
     } else {
       console.warn(message);
+      return transformFileRunner.sync(code, opts);
     }
   }
 

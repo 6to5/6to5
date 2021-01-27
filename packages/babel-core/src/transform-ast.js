@@ -55,6 +55,7 @@ export const transformFromAst: TransformFromAst = (function transformFromAst(
       throw new Error(message);
     } else {
       console.warn(message);
+      return transformFromAstRunner.sync(ast, code, opts);
     }
   }
 

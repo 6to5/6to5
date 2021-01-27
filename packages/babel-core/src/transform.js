@@ -40,6 +40,7 @@ export const transform: Transform = (function transform(code, opts, callback) {
       throw new Error(message);
     } else {
       console.warn(message);
+      return transformRunner.sync(code, opts);
     }
   }
 
