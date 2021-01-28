@@ -202,19 +202,23 @@ export default declare((api, opts) => {
           if (pragmaImportName) {
             [pragmaImportName] = pragmaImportName.split(".");
           }
+          state.pragmaImportName = pragmaImportName;
 
           let pragmaFragImportName = fileJsxPragmaFrag || jsxPragmaFrag;
           if (pragmaFragImportName) {
             [pragmaFragImportName] = pragmaFragImportName.split(".");
           }
+          state.pragmaFragImportName = pragmaFragImportName;
 
           for (let stmt of path.get("body")) {
-            if (t.isImportDeclaration(stmt)) {
-              removeTypeImport(stmt, path, {
-                onlyRemoveTypeImports,
-                pragmaImportName,
-                pragmaFragImportName,
-              });
+            if (!process.env.BABEL_8_BREAKING) {
+              if (t.isImportDeclaration(stmt)) {
+                removeTypeImport(stmt, path, {
+                  onlyRemoveTypeImports,
+                  pragmaImportName,
+                  pragmaFragImportName,
+                });
+              }
             }
 
             if (stmt.isExportDeclaration()) {
@@ -235,6 +239,19 @@ export default declare((api, opts) => {
                 stmt.get("id").isIdentifier())
             ) {
               registerGlobalType(path.scope, stmt.node.id.name);
+            }
+          }
+        },
+        exit(path, state) {
+          if (process.env.BABEL_8_BREAKING) {
+            for (const stmt of path.get("body")) {
+              if (t.isImportDeclaration(stmt)) {
+                removeTypeImport(stmt, path, {
+                  onlyRemoveTypeImports,
+                  pragmaImportName: state.pragmaImportName,
+                  pragmaFragImportName: state.pragmaFragImportName,
+                });
+              }
             }
           }
         },
