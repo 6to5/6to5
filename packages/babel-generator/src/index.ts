@@ -54,7 +54,6 @@ function normalizeOptions(code, opts): Format {
       style: "  ",
       base: 0,
     },
-    decoratorsBeforeExport: !!opts.decoratorsBeforeExport,
     jsescOption: {
       quotes: "double",
       wrap: true,
@@ -66,6 +65,7 @@ function normalizeOptions(code, opts): Format {
 
   if (!process.env.BABEL_8_BREAKING) {
     format.jsonCompatibleStrings = opts.jsonCompatibleStrings;
+    (format as any).decoratorsBeforeExport = !!opts.decoratorsBeforeExport;
   }
 
   if (format.minified) {
@@ -175,12 +175,6 @@ export interface GeneratorOptions {
    * Set to true to run jsesc with "json": true to print "\u00A9" vs. "©";
    */
   jsonCompatibleStrings?: boolean;
-
-  /**
-   * Set to true to enable support for experimental decorators syntax before module exports.
-   * Defaults to `false`.
-   */
-  decoratorsBeforeExport?: boolean;
 
   /**
    * Options for outputting jsesc representation.

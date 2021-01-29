@@ -12,7 +12,6 @@ var obj = {
 
   @bar
   set bar(foo) {}
-
 };
 
 class Foo {
@@ -29,7 +28,6 @@ class Foo {
 
   @bar
   set bar(foo) {}
-
 }
 
 @foo
@@ -37,12 +35,11 @@ export default class Foo2 {
   bar() {
     class Baz {}
   }
-
 }
+
 @foo
 export class Foo3 {
   bar() {
     class Baz {}
   }
-
 }
