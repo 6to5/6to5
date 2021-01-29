@@ -3,5 +3,5 @@
     ["proposal-class-properties", { "loose": true }],
     ["proposal-decorators", { "legacy": true }]
   ],
-  "throws": "Decorators are not enabled."
+  "throws": "If you are using [\"@babel/plugin-proposal-decorators\", { \"legacy\": true }], make sure it comes *before* \"@babel/plugin-proposal-class-properties\" and enable loose mode"
 }

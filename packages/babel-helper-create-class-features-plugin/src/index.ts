@@ -98,7 +98,10 @@ export function createClassFeaturePlugin({
         const loose = isLoose(this.file, feature);
 
         let constructor;
-        let isDecorated = hasOwnDecorators(path.node);
+        if (!process.env.BABEL_8_BREAKING) {
+          // eslint-disable-next-line no-var
+          var isDecorated = hasOwnDecorators(path.node);
+        }
         const props = [];
         const elements = [];
         const computedPaths = [];
@@ -163,10 +166,18 @@ export function createClassFeaturePlugin({
             }
           }
 
-          if (!isDecorated) isDecorated = hasOwnDecorators(path.node);
+          if (!process.env.BABEL_8_BREAKING) {
+            if (!isDecorated) isDecorated = hasOwnDecorators(path.node);
+          }
         }
 
-        if (!props.length && !isDecorated) return;
+        if (
+          process.env.BABEL_8_BREAKING
+            ? !props.length
+            : !props.length && !isDecorated
+        ) {
+          return;
+        }
 
         const innerBinding = path.node.id;
         let ref;
@@ -177,9 +188,6 @@ export function createClassFeaturePlugin({
           ref = t.cloneNode(path.node.id);
         }
 
-        // NODE: These three functions don't support decorators yet,
-        //       but verifyUsedFeatures throws if there are both
-        //       decorators and private fields.
         const privateNamesMap = buildPrivateNamesMap(props);
         const privateNamesNodes = buildPrivateNamesNodes(
           privateNamesMap,
@@ -200,15 +208,7 @@ export function createClassFeaturePlugin({
 
         let keysNodes, staticNodes, pureStaticNodes, instanceNodes, wrapClass;
 
-        if (isDecorated) {
-          staticNodes = pureStaticNodes = keysNodes = [];
-          ({ instanceNodes, wrapClass } = buildDecoratedClass(
-            ref,
-            path,
-            elements,
-            this.file,
-          ));
-        } else {
+        if (process.env.BABEL_8_BREAKING) {
           keysNodes = extractComputedKeys(ref, path, computedPaths, this.file);
           ({ staticNodes, pureStaticNodes, instanceNodes, wrapClass } =
             buildFieldsInitNodes(
@@ -222,6 +222,35 @@ export function createClassFeaturePlugin({
               constantSuper ?? loose,
               innerBinding,
             ));
+        } else {
+          if (isDecorated) {
+            pureStaticNodes = staticNodes = keysNodes = [];
+            ({ instanceNodes, wrapClass } = buildDecoratedClass(
+              ref,
+              path,
+              elements,
+              this.file,
+            ));
+          } else {
+            keysNodes = extractComputedKeys(
+              ref,
+              path,
+              computedPaths,
+              this.file,
+            );
+            ({ staticNodes, pureStaticNodes, instanceNodes, wrapClass } =
+              buildFieldsInitNodes(
+                ref,
+                path.node.superClass,
+                props,
+                privateNamesMap,
+                state,
+                setPublicClassFields ?? loose,
+                privateFieldsAsProperties ?? loose,
+                constantSuper ?? loose,
+                innerBinding,
+              ));
+          }
         }
 
         if (instanceNodes.length > 0) {
@@ -230,7 +259,9 @@ export function createClassFeaturePlugin({
             constructor,
             instanceNodes,
             (referenceVisitor, state) => {
-              if (isDecorated) return;
+              if (!process.env.BABEL_8_BREAKING) {
+                if (isDecorated) return;
+              }
               for (const prop of props) {
                 if (prop.node.static) continue;
                 prop.traverse(referenceVisitor, state);
@@ -263,20 +294,22 @@ export function createClassFeaturePlugin({
       },
 
       ExportDefaultDeclaration(path) {
-        if (this.file.get(versionKey) !== version) return;
+        if (!process.env.BABEL_8_BREAKING) {
+          if (this.file.get(versionKey) !== version) return;
 
-        const decl = path.get("declaration");
+          const decl = path.get("declaration");
 
-        if (decl.isClassDeclaration() && hasDecorators(decl.node)) {
-          if (decl.node.id) {
-            // export default class Foo {}
-            //   -->
-            // class Foo {} export { Foo as default }
-            splitExportDeclaration(path);
-          } else {
-            // Annyms class declarations can be
-            // transformed as if they were expressions
-            decl.node.type = "ClassExpression";
+          if (decl.isClassDeclaration() && hasDecorators(decl.node)) {
+            if (decl.node.id) {
+              // export default class Foo {}
+              //   -->
+              // class Foo {} export { Foo as default }
+              splitExportDeclaration(path);
+            } else {
+              // Annyms class declarations can be
+              // transformed as if they were expressions
+              decl.node.type = "ClassExpression";
+            }
           }
         }
       },

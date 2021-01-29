@@ -1332,7 +1332,8 @@ helpers.classCheckPrivateStaticFieldDescriptor = helper("7.13.10")`
   }
 `;
 
-helpers.decorate = helper("7.1.5")`
+if (!process.env.BABEL_8_BREAKING) {
+  helpers.decorate = helper("7.1.5")`
   import toArray from "toArray";
   import toPropertyKey from "toPropertyKey";
 
@@ -2005,6 +2006,7 @@ helpers.decorate = helper("7.1.5")`
   }
 
 `;
+}
 
 helpers.classPrivateMethodGet = helper("7.1.6")`
   export default function _classPrivateMethodGet(receiver, privateSet, fn) {

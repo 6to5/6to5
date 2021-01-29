@@ -1,10 +1,12 @@
+export function hasOwnDecorators(node) {
+  return !!node.decorators?.length;
+}
+
+// TODO(Babel 8): Remove everything after this comment.
+
 import { types as t, template } from "@babel/core";
 import ReplaceSupers from "@babel/helper-replace-supers";
 import nameFunction from "@babel/helper-function-name";
-
-export function hasOwnDecorators(node) {
-  return !!(node.decorators && node.decorators.length);
-}
 
 export function hasDecorators(node) {
   return hasOwnDecorators(node) || node.body.body.some(hasOwnDecorators);

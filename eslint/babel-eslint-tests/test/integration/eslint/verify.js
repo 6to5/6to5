@@ -1072,34 +1072,8 @@ describe("verify", () => {
   });
 
   describe("decorators #72 (legacy)", () => {
-    function verifyDecoratorsLegacyAndAssertMessages(
-      code,
-      rules,
-      expectedMessages,
-      sourceType,
-    ) {
-      const overrideConfig = {
-        parserOptions: {
-          sourceType,
-          babelOptions: {
-            configFile: path.resolve(
-              path.dirname(fileURLToPath(import.meta.url)),
-              "../../../../babel-eslint-shared-fixtures/config/babel.config.decorators-legacy.js",
-            ),
-          },
-        },
-      };
-      return verifyAndAssertMessages(
-        code,
-        rules,
-        expectedMessages,
-        sourceType,
-        overrideConfig,
-      );
-    }
-
     it("class declaration", () => {
-      verifyDecoratorsLegacyAndAssertMessages(
+      verifyAndAssertMessages(
         `
           import classDeclaration from 'decorator';
           import decoratorParameter from 'decorator';
@@ -1113,7 +1087,7 @@ describe("verify", () => {
     });
 
     it("method definition", () => {
-      verifyDecoratorsLegacyAndAssertMessages(
+      verifyAndAssertMessages(
         `
           import classMethodDeclarationA from 'decorator';
           import decoratorParameter from 'decorator';
@@ -1131,7 +1105,7 @@ describe("verify", () => {
     });
 
     it("method definition get/set", () => {
-      verifyDecoratorsLegacyAndAssertMessages(
+      verifyAndAssertMessages(
         `
           import classMethodDeclarationA from 'decorator';
           import decoratorParameter from 'decorator';
@@ -1151,7 +1125,7 @@ describe("verify", () => {
     });
 
     it("object property", () => {
-      verifyDecoratorsLegacyAndAssertMessages(
+      verifyAndAssertMessages(
         `
           import classMethodDeclarationA from 'decorator';
           import decoratorParameter from 'decorator';
@@ -1170,7 +1144,7 @@ describe("verify", () => {
     });
 
     it("object property get/set", () => {
-      verifyDecoratorsLegacyAndAssertMessages(
+      verifyAndAssertMessages(
         `
           import classMethodDeclarationA from 'decorator';
           import decoratorParameter from 'decorator';
@@ -1191,10 +1165,37 @@ describe("verify", () => {
     });
   });
 
-  describe("decorators #72", () => {
-    it("class declaration", () => {
-      verifyAndAssertMessages(
-        `
+  if (!process.env.BABEL_8_BREAKING) {
+    describe("decorators #72 (non-legacy)", () => {
+      function verifyDecoratorsNonLegacyAndAssertMessages(
+        code,
+        rules,
+        expectedMessages,
+        sourceType,
+      ) {
+        const overrideConfig = {
+          parserOptions: {
+            sourceType,
+            babelOptions: {
+              configFile: path.resolve(
+                path.dirname(fileURLToPath(import.meta.url)),
+                "../../../../babel-eslint-shared-fixtures/config/babel.config.decorators-non-legacy.js",
+              ),
+            },
+          },
+        };
+        return verifyAndAssertMessages(
+          code,
+          rules,
+          expectedMessages,
+          sourceType,
+          overrideConfig,
+        );
+      }
+
+      it("class declaration", () => {
+        verifyDecoratorsNonLegacyAndAssertMessages(
+          `
           import classDeclaration from 'decorator';
           import decoratorParameter from 'decorator';
           export
@@ -1203,13 +1204,13 @@ describe("verify", () => {
           @classDeclaration
           class TextareaAutosize {}
         `,
-        { "no-unused-vars": 1 },
-      );
-    });
+          { "no-unused-vars": 1 },
+        );
+      });
 
-    it("method definition", () => {
-      verifyAndAssertMessages(
-        `
+      it("method definition", () => {
+        verifyDecoratorsNonLegacyAndAssertMessages(
+          `
           import classMethodDeclarationA from 'decorator';
           import decoratorParameter from 'decorator';
           export class TextareaAutosize {
@@ -1221,13 +1222,13 @@ describe("verify", () => {
           }
           }
         `,
-        { "no-unused-vars": 1 },
-      );
-    });
+          { "no-unused-vars": 1 },
+        );
+      });
 
-    it("method definition get/set", () => {
-      verifyAndAssertMessages(
-        `
+      it("method definition get/set", () => {
+        verifyDecoratorsNonLegacyAndAssertMessages(
+          `
           import classMethodDeclarationA from 'decorator';
           import decoratorParameter from 'decorator';
           export class TextareaAutosize {
@@ -1241,10 +1242,11 @@ describe("verify", () => {
           set bar(val) { val; }
           }
         `,
-        { "no-unused-vars": 1 },
-      );
+          { "no-unused-vars": 1 },
+        );
+      });
     });
-  });
+  }
 
   it("detects minimal no-unused-vars case #120", () => {
     verifyAndAssertMessages("var unused;", { "no-unused-vars": 1 }, [

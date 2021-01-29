@@ -16,47 +16,56 @@ export default declare((api, options) => {
     throw new Error("'legacy' must be a boolean.");
   }
 
-  const { decoratorsBeforeExport } = options;
-  if (decoratorsBeforeExport === undefined) {
+  if (process.env.BABEL_8_BREAKING) {
     if (!legacy) {
       throw new Error(
-        "The decorators plugin requires a 'decoratorsBeforeExport' option," +
-          " whose value must be a boolean. If you want to use the legacy" +
-          " decorators semantics, you can set the 'legacy: true' option.",
+        "Babel 8 only supports legacy decorators. Please pass the" +
+          ' `"legacy": true` option to `@babel/plugin-proposal-decorators`',
       );
     }
   } else {
-    if (legacy) {
-      throw new Error(
-        "'decoratorsBeforeExport' can't be used with legacy decorators.",
-      );
-    }
-    if (typeof decoratorsBeforeExport !== "boolean") {
-      throw new Error("'decoratorsBeforeExport' must be a boolean.");
+    // eslint-disable-next-line no-var
+    var { decoratorsBeforeExport } = options;
+    if (decoratorsBeforeExport === undefined) {
+      if (!legacy) {
+        throw new Error(
+          "The decorators plugin requires a 'decoratorsBeforeExport' option," +
+            " whose value must be a boolean. If you want to use the legacy" +
+            " decorators semantics, you can set the 'legacy: true' option.",
+        );
+      }
+    } else {
+      if (legacy) {
+        throw new Error(
+          "'decoratorsBeforeExport' can't be used with legacy decorators.",
+        );
+      }
+      if (typeof decoratorsBeforeExport !== "boolean") {
+        throw new Error("'decoratorsBeforeExport' must be a boolean.");
+      }
     }
   }
 
-  if (legacy) {
-    return {
-      name: "proposal-decorators",
-      inherits: syntaxDecorators,
-      manipulateOptions({ generatorOpts }) {
-        generatorOpts.decoratorsBeforeExport = decoratorsBeforeExport;
-      },
-      visitor: legacyVisitor,
-    };
+  if (!process.env.BABEL_8_BREAKING) {
+    if (!legacy) {
+      return createClassFeaturePlugin({
+        name: "proposal-decorators",
+
+        api,
+        feature: FEATURES.decorators,
+        // loose: options.loose, Not supported
+
+        manipulateOptions({ generatorOpts, parserOpts }) {
+          parserOpts.plugins.push(["decorators", { decoratorsBeforeExport }]);
+          generatorOpts.decoratorsBeforeExport = decoratorsBeforeExport;
+        },
+      });
+    }
   }
 
-  return createClassFeaturePlugin({
+  return {
     name: "proposal-decorators",
-
-    api,
-    feature: FEATURES.decorators,
-    // loose: options.loose, Not supported
-
-    manipulateOptions({ generatorOpts, parserOpts }) {
-      parserOpts.plugins.push(["decorators", { decoratorsBeforeExport }]);
-      generatorOpts.decoratorsBeforeExport = decoratorsBeforeExport;
-    },
-  });
+    inherits: syntaxDecorators,
+    visitor: legacyVisitor,
+  };
 });
