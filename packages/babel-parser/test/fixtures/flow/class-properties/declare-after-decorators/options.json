@@ -1,4 +1,4 @@
 {
   "sourceType": "module",
-  "plugins": ["flow", ["decorators", { "decoratorsBeforeExport": false }]]
+  "plugins": ["flow", "decorators-legacy"]
 }

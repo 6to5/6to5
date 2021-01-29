@@ -408,11 +408,13 @@ export default class StatementParser extends ExpressionParser {
         this.unexpected();
       }
 
-      if (
-        this.hasPlugin("decorators") &&
-        !this.getPluginOption("decorators", "decoratorsBeforeExport")
-      ) {
-        this.raise(this.state.start, Errors.DecoratorExportClass);
+      if (!process.env.BABEL_8_BREAKING) {
+        if (
+          this.hasPlugin("decorators") &&
+          !this.getPluginOption("decorators", "decoratorsBeforeExport")
+        ) {
+          this.raise(this.state.start, Errors.DecoratorExportClass);
+        }
       }
     } else if (!this.canHaveLeadingDecorator()) {
       throw this.raise(this.state.start, Errors.UnexpectedLeadingDecorator);
@@ -420,40 +422,48 @@ export default class StatementParser extends ExpressionParser {
   }
 
   parseDecorator(): N.Decorator {
-    this.expectOnePlugin(["decorators-legacy", "decorators"]);
+    if (process.env.BABEL_8_BREAKING) {
+      this.expectPlugin("decorators-legacy");
+    } else {
+      this.expectOnePlugin(["decorators-legacy", "decorators"]);
+    }
 
     const node = this.startNode();
     this.next();
 
-    if (this.hasPlugin("decorators")) {
-      // Every time a decorator class expression is evaluated, a new empty array is pushed onto the stack
-      // So that the decorators of any nested class expressions will be dealt with separately
-      this.state.decoratorStack.push([]);
+    if (!process.env.BABEL_8_BREAKING) {
+      if (this.hasPlugin("decorators")) {
+        // Every time a decorator class expression is evaluated, a new empty array is pushed onto the stack
+        // So that the decorators of any nested class expressions will be dealt with separately
+        this.state.decoratorStack.push([]);
 
-      const startPos = this.state.start;
-      const startLoc = this.state.startLoc;
-      let expr: N.Expression;
+        const startPos = this.state.start;
+        const startLoc = this.state.startLoc;
+        let expr: N.Expression;
 
-      if (this.eat(tt.parenL)) {
-        expr = this.parseExpression();
-        this.expect(tt.parenR);
-      } else {
-        expr = this.parseIdentifier(false);
+        if (this.eat(tt.parenL)) {
+          expr = this.parseExpression();
+          this.expect(tt.parenR);
+        } else {
+          expr = this.parseIdentifier(false);
 
-        while (this.eat(tt.dot)) {
-          const node = this.startNodeAt(startPos, startLoc);
-          node.object = expr;
-          node.property = this.parseIdentifier(true);
-          node.computed = false;
-          expr = this.finishNode(node, "MemberExpression");
+          while (this.eat(tt.dot)) {
+            const node = this.startNodeAt(startPos, startLoc);
+            node.object = expr;
+            node.property = this.parseIdentifier(true);
+            node.computed = false;
+            expr = this.finishNode(node, "MemberExpression");
+          }
         }
-      }
 
-      node.expression = this.parseMaybeDecoratorArguments(expr);
-      this.state.decoratorStack.pop();
-    } else {
-      node.expression = this.parseExprSubscripts();
+        node.expression = this.parseMaybeDecoratorArguments(expr);
+        this.state.decoratorStack.pop();
+
+        return this.finishNode(node, "Decorator");
+      }
     }
+
+    node.expression = this.parseExprSubscripts();
     return this.finishNode(node, "Decorator");
   }
 
@@ -1897,11 +1907,13 @@ export default class StatementParser extends ExpressionParser {
     } else if (this.match(tt._class)) {
       return this.parseClass(expr, true, true);
     } else if (this.match(tt.at)) {
-      if (
-        this.hasPlugin("decorators") &&
-        this.getPluginOption("decorators", "decoratorsBeforeExport")
-      ) {
-        this.raise(this.state.start, Errors.DecoratorBeforeExport);
+      if (!process.env.BABEL_8_BREAKING) {
+        if (
+          this.hasPlugin("decorators") &&
+          this.getPluginOption("decorators", "decoratorsBeforeExport")
+        ) {
+          this.raise(this.state.start, Errors.DecoratorBeforeExport);
+        }
       }
       this.parseDecorators(false);
       return this.parseClass(expr, true, true);
@@ -1988,12 +2000,16 @@ export default class StatementParser extends ExpressionParser {
 
   shouldParseExportDeclaration(): boolean {
     if (this.match(tt.at)) {
-      this.expectOnePlugin(["decorators", "decorators-legacy"]);
-      if (this.hasPlugin("decorators")) {
-        if (this.getPluginOption("decorators", "decoratorsBeforeExport")) {
-          this.unexpected(this.state.start, Errors.DecoratorBeforeExport);
-        } else {
-          return true;
+      if (process.env.BABEL_8_BREAKING) {
+        this.expectPlugin("decorators-legacy");
+      } else {
+        this.expectOnePlugin(["decorators", "decorators-legacy"]);
+        if (this.hasPlugin("decorators")) {
+          if (this.getPluginOption("decorators", "decoratorsBeforeExport")) {
+            this.unexpected(this.state.start, Errors.DecoratorBeforeExport);
+          } else {
+            return true;
+          }
         }
       }
     }

@@ -1,6 +1,6 @@
 {
   "plugins": [
     "classStaticBlock",
-    ["decorators", { "decoratorsBeforeExport": true }]
+    "decorators-legacy"
   ]
 }

@@ -1,4 +1,4 @@
 {
-  "plugins": ["typescript", ["decorators", { "decoratorsBeforeExport": true }]],
-  "throws": "Unexpected token, expected \"(\" (2:0)"
+  "plugins": ["typescript", "decorators-legacy"],
+  "throws": "Leading decorators must be attached to a class declaration. (1:10)"
 }

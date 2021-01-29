@@ -53,11 +53,11 @@ describe("plugin options", function () {
     });
 
     it("when they are specified", function () {
-      const NAME = "decorators";
-      const OPT_1 = [NAME, { decoratorsBeforeExport: true }];
-      const OPT_2 = [NAME, { decoratorsBeforeExport: false }];
-      const SYNTAX_1 = "@dec export class C {}";
-      const SYNTAX_2 = "export @dec class C {}";
+      const NAME = "pipelineOperator";
+      const OPT_1 = [NAME, { proposal: "smart" }];
+      const OPT_2 = [NAME, { proposal: "fsharp" }];
+      const SYNTAX_1 = "a |> #()";
+      const SYNTAX_2 = "a |> b()";
 
       expect(getParser(SYNTAX_1, [OPT_1, OPT_2])).not.toThrow();
       expect(getParser(SYNTAX_2, [OPT_2, OPT_1])).not.toThrow();

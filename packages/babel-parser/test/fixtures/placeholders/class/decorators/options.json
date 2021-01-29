@@ -1,6 +1,6 @@
 {
   "plugins": [
     "placeholders",
-    ["decorators", { "decoratorsBeforeExport": true }]
+    "decorators-legacy"
   ]
 }

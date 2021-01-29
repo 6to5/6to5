@@ -42,27 +42,29 @@ const PIPELINE_PROPOSALS = ["minimal", "smart", "fsharp"];
 const RECORD_AND_TUPLE_SYNTAX_TYPES = ["hash", "bar"];
 
 export function validatePlugins(plugins: PluginList) {
-  if (hasPlugin(plugins, "decorators")) {
-    if (hasPlugin(plugins, "decorators-legacy")) {
-      throw new Error(
-        "Cannot use the decorators and decorators-legacy plugin together",
-      );
-    }
+  if (!process.env.BABEL_8_BREAKING) {
+    if (hasPlugin(plugins, "decorators")) {
+      if (hasPlugin(plugins, "decorators-legacy")) {
+        throw new Error(
+          "Cannot use the decorators and decorators-legacy plugin together",
+        );
+      }
 
-    const decoratorsBeforeExport = getPluginOption(
-      plugins,
-      "decorators",
-      "decoratorsBeforeExport",
-    );
-    if (decoratorsBeforeExport == null) {
-      throw new Error(
-        "The 'decorators' plugin requires a 'decoratorsBeforeExport' option," +
-          " whose value must be a boolean. If you are migrating from" +
-          " Babylon/Babel 6 or want to use the old decorators proposal, you" +
-          " should use the 'decorators-legacy' plugin instead of 'decorators'.",
+      const decoratorsBeforeExport = getPluginOption(
+        plugins,
+        "decorators",
+        "decoratorsBeforeExport",
       );
-    } else if (typeof decoratorsBeforeExport !== "boolean") {
-      throw new Error("'decoratorsBeforeExport' must be a boolean.");
+      if (decoratorsBeforeExport == null) {
+        throw new Error(
+          "The 'decorators' plugin requires a 'decoratorsBeforeExport' option," +
+            " whose value must be a boolean. If you are migrating from" +
+            " Babylon/Babel 6 or want to use the old decorators proposal, you" +
+            " should use the 'decorators-legacy' plugin instead of 'decorators'.",
+        );
+      } else if (typeof decoratorsBeforeExport !== "boolean") {
+        throw new Error("'decoratorsBeforeExport' must be a boolean.");
+      }
     }
   }
 
