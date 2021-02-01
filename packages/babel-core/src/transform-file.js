@@ -34,31 +34,7 @@ const transformFileRunner = gensync<[string, ?InputOptions], FileResult | null>(
     return yield* run(config, code);
   },
 );
-export const transformFile: TransformFile = (function transform(
-  code,
-  opts,
-  callback,
-) {
-  if (typeof opts === "function") {
-    callback = opts;
-    opts = undefined;
-  }
 
-  if (callback === undefined) {
-    if (process.env.BABEL_8_BREAKING) {
-      throw new Error(
-        "Starting from Babel 8.0.0, the 'transformFile' function expects a callback. If you need to call it synchronously, please use 'transformFileSync'.",
-      );
-    } else {
-      console.warn(
-        "Starting from Babel 8.0.0, the 'transformFile' function will expect a callback. If you need to call it synchronously, please use 'transformFileSync'.",
-      );
-      return transformFileRunner.sync(code, opts);
-    }
-  }
-
-  transformFileRunner.errback(code, opts, callback);
-}: Function);
-
+export const transformFile: TransformFile = transformFileRunner.errback;
 export const transformFileSync = transformFileRunner.sync;
 export const transformFileAsync = transformFileRunner.async;

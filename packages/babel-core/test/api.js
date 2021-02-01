@@ -227,19 +227,16 @@ describe("api", function () {
       },
     );
   });
-  (process.env.BABEL_8_BREAKING ? it : it.skip)(
-    "transformFile throws on undefined callback",
-    () => {
-      const options = {
-        babelrc: false,
-      };
-      expect(() =>
-        transformFile(__dirname + "/fixtures/api/file.js", options),
-      ).toThrowErrorMatchingInlineSnapshot(
-        `"Starting from Babel 8.0.0, the 'transformFile' function expects a callback. If you need to call it synchronously, please use 'transformFileSync'."`,
-      );
-    },
-  );
+  it("transformFile throws on undefined callback", () => {
+    const options = {
+      babelrc: false,
+    };
+    expect(() =>
+      transformFile(__dirname + "/fixtures/api/file.js", options),
+    ).toThrowErrorMatchingInlineSnapshot(
+      `"Asynchronous function called without callback"`,
+    );
+  });
 
   it("transformFileSync", function () {
     const options = {
