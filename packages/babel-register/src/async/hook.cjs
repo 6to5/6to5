@@ -1,13 +1,14 @@
-import deepClone from "lodash/cloneDeep";
-import sourceMapSupport from "source-map-support";
-import * as registerCache from "./cache";
-import * as babel from "@babel/core";
-import { OptionManager, DEFAULT_EXTENSIONS } from "@babel/core";
-import { addHook } from "pirates";
-import fs from "fs";
-import path from "path";
-import Module from "module";
-import escapeRegExp from "./escape-regexp.cjs";
+"use strict";
+
+const sourceMapSupport = require("source-map-support");
+const { addHook } = require("pirates");
+const fs = require("fs");
+const path = require("path");
+const { DEFAULT_EXTENSIONS } = require("@babel/core");
+
+const escapeRegExp = require("../escape-regexp.cjs");
+const registerCache = require("../cache");
+const worker = require("./worker-interface.cjs");
 
 const maps = {};
 let transformOpts = {};
@@ -39,32 +40,18 @@ function mtime(filename) {
 
 function compile(code, filename) {
   // merge in base options and resolve all the plugins and presets relative to this file
-  const opts = new OptionManager().init(
-    // sourceRoot can be overwritten
-    {
-      sourceRoot: path.dirname(filename) + path.sep,
-      ...deepClone(transformOpts),
-      filename,
-    },
-  );
+
+  const ref = worker.loadOptions(filename, transformOpts);
 
   // Bail out ASAP if the file has been ignored.
-  if (opts === null) return code;
+  if (!ref) return code;
 
-  let cacheKey = `${JSON.stringify(opts)}:${babel.version}`;
-
-  const env = babel.getEnv(false);
-
-  if (env) cacheKey += `:${env}`;
+  const { cacheKey, optionsId } = ref;
 
   let cached = cache && cache[cacheKey];
 
   if (!cached || cached.mtime !== mtime(filename)) {
-    cached = babel.transform(code, {
-      ...opts,
-      sourceMaps: opts.sourceMaps === undefined ? "both" : opts.sourceMaps,
-      ast: false,
-    });
+    cached = worker.compile(code, optionsId);
 
     if (cache) {
       cache[cacheKey] = cached;
@@ -83,33 +70,16 @@ function compile(code, filename) {
   return cached.code;
 }
 
-let compiling = false;
-const internalModuleCache = Module._cache;
-
-function compileHook(code, filename) {
-  if (compiling) return code;
-
-  const globalModuleCache = Module._cache;
-  try {
-    compiling = true;
-    Module._cache = internalModuleCache;
-    return compile(code, filename);
-  } finally {
-    compiling = false;
-    Module._cache = globalModuleCache;
-  }
-}
-
 function hookExtensions(exts) {
   if (piratesRevert) piratesRevert();
-  piratesRevert = addHook(compileHook, { exts, ignoreNodeModules: false });
+  piratesRevert = addHook(compile, { exts, ignoreNodeModules: false });
 }
 
-export function revert() {
+exports.revert = function revert() {
   if (piratesRevert) piratesRevert();
-}
+};
 
-export default function register(opts?: Object = {}) {
+exports.register = function register(opts?: Object = {}) {
   // Clone to avoid mutating the arguments object with the 'delete's below.
   opts = {
     ...opts,
@@ -158,8 +128,8 @@ export default function register(opts?: Object = {}) {
           ".*)?" +
           // $FlowIgnore
           escapeRegExp(path.sep + "node_modules" + path.sep),
-        "i",
+        "i"
       ),
     ];
   }
-}
+};

@@ -16,7 +16,7 @@ import vm from "vm";
 import checkDuplicatedNodes from "babel-check-duplicated-nodes";
 import QuickLRU from "quick-lru";
 import diff from "jest-diff";
-import escapeRegExp from "./escape-regexp";
+import escapeRegExp from "./escape-regexp.cjs";
 
 const cachedScripts = new QuickLRU({ maxSize: 10 });
 const contextModuleCache = new WeakMap();

@@ -86,8 +86,9 @@ jobs:
             yarn-
       - name: Build babel artifacts
         run: |
-          BABEL_ENV=test-legacy make -j build-standalone-ci
+          make -j build-standalone-ci
         env:
+          BABEL_ENV: test-ci
           BABEL_8_BREAKING: false
           STRIP_BABEL_8_FLAG: true
       - uses: actions/upload-artifact@v2
@@ -130,7 +131,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14, 12, 10, 8, 6]
+        node-version: [14, 12.18, 10, 8, 6]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -181,10 +182,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Use Node.js 12
+      - name: Use Node.js latest
         uses: actions/setup-node@v2-beta
         with:
-          node-version: 12 # Node.js 12 is the first LTS supported by Babel 8
+          node-version: "*"
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
@@ -193,11 +194,15 @@ jobs:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: yarn-${{ hashFiles('yarn.lock') }}
       - name: Install and build
-        run: make -j bootstrap
+        run:  make -j bootstrap
         env:
-          BABEL_ENV: test
+          BABEL_ENV: test-ci
           BABEL_8_BREAKING: true
           STRIP_BABEL_8_FLAG: true
+      - name: Use Node.js 12
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 12.17 # Node.js 12 is the first LTS supported by Babel 8
       - name: Test
         # Hack: --color has supports-color@5 returned true for GitHub CI
         # Remove once `chalk` is bumped to 4.0.

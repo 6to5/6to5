@@ -2,7 +2,7 @@
 import path from "path";
 
 // $FlowIgnore
-import escapeRegExp from "./helpers/escape-regexp";
+import escapeRegExp from "./helpers/escape-regexp.cjs";
 
 const sep = `\\${path.sep}`;
 const endSep = `(?:${sep}|$)`;

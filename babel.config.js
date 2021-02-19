@@ -26,7 +26,7 @@ module.exports = function (api) {
 
   let transformRuntimeOptions;
 
-  const nodeVersion = "6.9";
+  const nodeVersion = bool(process.env.BABEL_8_BREAKING) ? "12.17" : "6.9";
   // The vast majority of our src files are modules, but we use
   // unambiguous to keep things simple until we get around to renaming
   // the modules to be more easily distinguished from CommonJS
@@ -57,7 +57,7 @@ module.exports = function (api) {
       if (env === "rollup") envOpts.targets = { node: nodeVersion };
       needsPolyfillsForOldNode = true;
       break;
-    case "test-legacy": // In test-legacy environment, we build babel on latest node but test on minimum supported legacy versions
+    case "test-ci": // In test-ci environment, we build babel on latest node but test on minimum supported legacy versions
     case "production":
       // Config during builds before publish.
       envOpts.targets = {

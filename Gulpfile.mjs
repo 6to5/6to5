@@ -11,6 +11,7 @@ import babel from "gulp-babel";
 import camelCase from "lodash/camelCase.js";
 import fancyLog from "fancy-log";
 import filter from "gulp-filter";
+import revertPath from "gulp-revert-path";
 import gulp from "gulp";
 import { rollup } from "rollup";
 import { babel as rollupBabel } from "@rollup/plugin-babel";
@@ -228,6 +229,10 @@ function buildBabel(exclude) {
           supportsDynamicImport: true,
         },
       })
+    )
+    .pipe(
+      // gulp-babel always converts the extension to .js, but we want to keep the original one
+      revertPath()
     )
     .pipe(
       // Passing 'file.relative' because newer() above uses a relative
