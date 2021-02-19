@@ -24,7 +24,9 @@ export default async function ({
   cliOptions,
   babelOptions,
 }: CmdOptions): Promise<void> {
-  const filenames = cliOptions.filenames;
+  const absoluteFilePaths = cliOptions.filenames.map(name =>
+    path.resolve(name),
+  );
 
   async function write(
     src: string,
@@ -157,6 +159,9 @@ export default async function ({
     { trailing: true },
   );
 
+  // Look at corresponding comment in file.js
+  if (cliOptions.watch) util.watchMode();
+
   if (!cliOptions.skipInitialBuild) {
     if (cliOptions.deleteDirOnStart) {
       util.deleteDir(cliOptions.outDir);
@@ -180,44 +185,55 @@ export default async function ({
   }
 
   if (cliOptions.watch) {
-    const chokidar = util.requireChokidar();
+    let processing = 0;
 
-    filenames.forEach(function (filenameOrDir: string): void {
-      const watcher = chokidar.watch(filenameOrDir, {
-        persistent: true,
-        ignoreInitial: true,
-        awaitWriteFinish: {
-          stabilityThreshold: 50,
-          pollInterval: 10,
-        },
-      });
+    util.onDependencyFileChanged(async (changedFilePath: string) => {
+      if (
+        !util.isCompilableExtension(changedFilePath, cliOptions.extensions) &&
+        // See comment on corresponding code in file.js
+        !absoluteFilePaths.includes(changedFilePath)
+      ) {
+        return;
+      }
+      processing++;
+      if (startTime === null) startTime = process.hrtime();
 
-      // This, alongside with debounce, allows us to only log
-      // when we are sure that all the files have been compiled.
-      let processing = 0;
+      /**
+       * The relative path from @var base to @var changedFilePath
+       * will be path of @var changedFilePath in the output directory.
+       */
+      let base = null;
+      for (const filePath of absoluteFilePaths) {
+        if (changedFilePath === filePath) {
+          // Case: "babel --watch src/bar/foo.js --out-dir dist"
+          // We want src/bar/foo.js --> dist/foo.js
+          base = path.dirname(changedFilePath);
+          break;
+        } else if (util.isChildPath(changedFilePath, filePath)) {
+          // Case: "babel --watch src/ --out-dir dist"
+          // src/foo/bar.js changes
+          // We want src/foo/bar.js --> dist/foo/bar.js
+          base = filePath;
+          break;
+        }
+      }
 
-      ["add", "change"].forEach(function (type: string): void {
-        watcher.on(type, async function (filename: string) {
-          processing++;
-          if (startTime === null) startTime = process.hrtime();
+      if (base === null) {
+        throw new Error(
+          `path: ${changedFilePath} was not equal to/a child path of any of these paths: ${absoluteFilePaths}`,
+        );
+      }
 
-          try {
-            await handleFile(
-              filename,
-              filename === filenameOrDir
-                ? path.dirname(filenameOrDir)
-                : filenameOrDir,
-            );
+      try {
+        await handleFile(changedFilePath, base);
+        compiledFiles++;
+      } catch (err) {
+        console.error(err);
+      }
 
-            compiledFiles++;
-          } catch (err) {
-            console.error(err);
-          }
-
-          processing--;
-          if (processing === 0 && !cliOptions.quiet) logSuccess();
-        });
-      });
-    });
+      processing--;
+      if (processing === 0 && !cliOptions.quiet) logSuccess();
+    }, false);
+    util.watchFiles(absoluteFilePaths);
   }
 }

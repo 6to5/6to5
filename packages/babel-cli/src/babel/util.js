@@ -5,6 +5,10 @@ import * as babel from "@babel/core";
 import path from "path";
 import fs from "fs";
 
+/**
+ * Set the file permissions of dest to the file permissions
+ * of src.
+ */
 export function chmod(src: string, dest: string): void {
   fs.chmodSync(dest, fs.statSync(src).mode);
 }
@@ -57,7 +61,7 @@ const CALLER = {
   name: "@babel/cli",
 };
 
-export function transform(
+export async function transform(
   filename: string,
   code: string,
   opts: Object,
@@ -68,15 +72,12 @@ export function transform(
     filename,
   };
 
-  return new Promise((resolve, reject) => {
-    babel.transform(code, opts, (err, result) => {
-      if (err) reject(err);
-      else resolve(result);
-    });
-  });
+  const result = await babel.transformAsync(code, opts);
+  if (isWatchMode) watchNewExternalDependencies(filename);
+  return result;
 }
 
-export function compile(
+export async function compile(
   filename: string,
   opts: Object | Function,
 ): Promise<Object> {
@@ -85,12 +86,118 @@ export function compile(
     caller: CALLER,
   };
 
-  return new Promise((resolve, reject) => {
-    babel.transformFile(filename, opts, (err, result) => {
-      if (err) reject(err);
-      else resolve(result);
+  const result = await babel.transformFileAsync(filename, opts);
+  if (isWatchMode) watchNewExternalDependencies(filename);
+  return result;
+}
+
+let isWatchMode = false;
+
+export function watchMode() {
+  isWatchMode = true;
+}
+
+/**
+ * Check if @param child is a child of @param parent
+ * Both paths must be absolute/resolved. (No "..")
+ */
+export function isChildPath(child: string, parent: string): boolean {
+  return (
+    child.length > parent.length + 1 && child.startsWith(parent + path.sep)
+  );
+}
+
+function subtract(minuend: Set<string>, subtrahend: Set<string>): string[] {
+  const diff = [];
+  for (const e of minuend) {
+    if (!subtrahend.has(e)) diff.push(e);
+  }
+  return diff;
+}
+
+/**
+ * Register new external dependencies with the file system
+ * watcher (chokidar).
+ */
+const watchNewExternalDependencies = (() => {
+  let prevDeps = null;
+  return (filePath: string) => {
+    // make the file path absolute because
+    // dependencies are registered with absolute file paths
+    filePath = path.resolve(filePath);
+    const prevDepsForFile =
+      prevDeps === null ? new Set() : prevDeps.get(filePath) || new Set();
+    const newDeps = babel.getDependencies();
+    const newDepsForFile = newDeps.get(filePath) || new Set();
+    const unwatchedDepsForFile = subtract(newDepsForFile, prevDepsForFile);
+    for (const dep of unwatchedDepsForFile) {
+      watchFiles(dep);
+    }
+    prevDeps = newDeps;
+  };
+})();
+
+const getWatcher = (() => {
+  // Use a closure to ensure the file watcher is only created once
+  // and never re-assigned. A const global variable isn't sufficient
+  // because we only want to create the file watcher if the user passes
+  // the --watch option, and a const variable must always be initialized.
+  let watcher = undefined;
+  return () => {
+    if (watcher) return watcher;
+    const { FSWatcher } = requireChokidar();
+    watcher = new FSWatcher({
+      disableGlobbing: true,
+      persistent: true,
+      ignoreInitial: true,
+      awaitWriteFinish: {
+        stabilityThreshold: 50,
+        pollInterval: 10,
+      },
     });
-  });
+    return watcher;
+  };
+})();
+
+/**
+ * Call @param callback whenever a dependency (source file)/
+ * external dependency (non-source file) changes.
+ *
+ * Handles mapping external dependencies to their corresponding
+ * dependencies.
+ */
+export function onDependencyFileChanged(
+  callback: (filename_: string | null) => Promise<void>,
+  sourceFilesAreCompiledIntoASingleFile: boolean,
+): void {
+  /**
+   *
+   * @param filePath The path of a file that has changed.
+   * It will never be a path to a directory.
+   * */
+  async function onFileChanged(filePath: string) {
+    // see corresponding line in registerNewExternalDependencies
+    filePath = path.resolve(filePath);
+    const externalFileDeps = babel.getExternalDependencies();
+    if (externalFileDeps.has(filePath)) {
+      if (sourceFilesAreCompiledIntoASingleFile) {
+        // When using --out-file, Babel traverses all the files every time
+        // so there's no point in calling the callback multiple times. The callback
+        // for --out-file knows to recompile no matter what if it receives null.
+        return await callback(null);
+      } else {
+        for (const dependent of externalFileDeps.get(filePath)) {
+          await callback(dependent);
+        }
+      }
+    }
+    return await callback(filePath);
+  }
+  ["add", "change"].forEach(type => getWatcher().on(type, onFileChanged));
+}
+
+export function watchFiles(filenameOrFilenames: string | string[]): void {
+  getWatcher().add(filenameOrFilenames);
 }
 
 export function deleteDir(path: string): void {

@@ -195,40 +195,37 @@ export default async function ({
   }
 
   async function files(filenames: Array<string>): Promise<void> {
+    // We need to set watch mode before the initial compilation
+    // so external dependencies are registered during the first compilation pass.
+    if (cliOptions.watch) util.watchMode();
     if (!cliOptions.skipInitialBuild) {
       await walk(filenames);
     }
 
     if (cliOptions.watch) {
-      const chokidar = util.requireChokidar();
-      chokidar
-        .watch(filenames, {
-          disableGlobbing: true,
-          persistent: true,
-          ignoreInitial: true,
-          awaitWriteFinish: {
-            stabilityThreshold: 50,
-            pollInterval: 10,
-          },
-        })
-        .on("all", function (type: string, filename: string): void {
-          if (
-            !util.isCompilableExtension(filename, cliOptions.extensions) &&
-            !filenames.includes(filename)
-          ) {
-            return;
-          }
+      util.onDependencyFileChanged((filename: string | null) => {
+        if (
+          filename !== null &&
+          !util.isCompilableExtension(filename, cliOptions.extensions) &&
+          // Used in the case: babel --watch foo.ts --out-file compiled.js
+          // In this, case ".ts" is not a compilable extension (since the user didn't pass
+          // the --extensions flag), but, we still want to watch "foo.ts" anyway.
+          !filenames.includes(filename)
+        ) {
+          return;
+        }
 
-          if (type === "add" || type === "change") {
-            if (cliOptions.verbose) {
-              console.log(type + " " + filename);
-            }
+        if (cliOptions.verbose) {
+          if (filename === null) {
+            console.log(`recompiling: external dependency changed`);
+          } else console.log(`compiling: ${filename}`);
+        }
 
-            walk(filenames).catch(err => {
-              console.error(err);
-            });
-          }
+        walk(filenames).catch(err => {
+          console.error(err);
         });
+      }, true);
+      util.watchFiles(filenames);
     }
   }
 
