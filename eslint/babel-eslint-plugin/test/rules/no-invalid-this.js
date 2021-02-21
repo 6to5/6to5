@@ -3,10 +3,20 @@ import rule from "../../src/rules/no-invalid-this";
 import RuleTester from "../../../babel-eslint-shared-fixtures/utils/RuleTester";
 
 /**
+ * A constant value for modules environment.
+ * This modifies pattern object to make modules.
+ * @param {Object} pattern - A pattern object to modify.
+ * @returns {void}
+ */
+function MODULE(pattern) {
+  pattern.parserOptions.sourceType = "module";
+}
+
+/**
  * A constant value for non strict mode environment.
  * @returns {void}
  */
-function NORMAL(pattern) {
+function SCRIPT(pattern) {
   pattern.parserOptions.sourceType = "script";
 }
 
@@ -27,19 +37,8 @@ function USE_STRICT(pattern) {
  * @returns {void}
  */
 function IMPLIED_STRICT(pattern) {
-  pattern.code = "/* implied strict mode */ " + pattern.code;
   pattern.parserOptions.ecmaFeatures = pattern.parserOptions.ecmaFeatures || {};
   pattern.parserOptions.ecmaFeatures.impliedStrict = true;
-}
-
-/**
- * A constant value for modules environment.
- * This modifies pattern object to make modules.
- * @param {Object} pattern - A pattern object to modify.
- * @returns {void}
- */
-function MODULES(pattern) {
-  pattern.code = "/* modules */ " + pattern.code;
 }
 
 /**
@@ -50,24 +49,36 @@ function MODULES(pattern) {
  */
 function extractPatterns(patterns, type) {
   // Clone and apply the pattern environment.
-  const patternsList = patterns.map(function (pattern) {
-    return pattern[type].map(function (applyCondition) {
+  const patternsList = patterns.map(pattern =>
+    pattern[type].map(applyCondition => {
       const thisPattern = cloneDeep(pattern);
 
-      applyCondition(thisPattern);
-
-      if (type === "valid") {
-        thisPattern.errors = [];
-      } else {
-        thisPattern.code += " /* should error */";
+      if (type === "valid" && Array.isArray(applyCondition)) {
+        throw new Error(
+          "The apply condition can only be an array for invalid cases.",
+        );
       }
+
+      if (type === "invalid") {
+        let numErrors = 1;
+
+        if (Array.isArray(applyCondition)) {
+          [applyCondition, numErrors] = applyCondition;
+        }
+
+        thisPattern.errors = Array(numErrors).fill({
+          messageId: "unexpectedThis",
+        });
+      }
+
+      applyCondition(thisPattern);
 
       delete thisPattern.invalid;
       delete thisPattern.valid;
 
       return thisPattern;
-    });
-  });
+    }),
+  );
 
   // Flatten.
   return Array.prototype.concat.apply([], patternsList);
@@ -78,40 +89,94 @@ function extractPatterns(patterns, type) {
 //------------------------------------------------------------------------------
 
 const patterns = [
-  // Class private fields
   {
-    code: "class A {a = this.b;};",
-    parserOptions: { ecmaVersion: 6 },
-    valid: [NORMAL, USE_STRICT, IMPLIED_STRICT, MODULES],
+    code: "class A { a = this.b; }",
+    parserOptions: { ecmaVersion: 2020 },
+    valid: [MODULE, SCRIPT, USE_STRICT, IMPLIED_STRICT],
     invalid: [],
+  },
+  {
+    code: "class A { a = () => { return this.b; }; }",
+    parserOptions: { ecmaVersion: 2020 },
+    valid: [MODULE, SCRIPT, USE_STRICT, IMPLIED_STRICT],
+    invalid: [],
+  },
+  {
+    code: "class A { a = () => this.b; }",
+    parserOptions: { ecmaVersion: 2020 },
+    valid: [MODULE, SCRIPT, USE_STRICT, IMPLIED_STRICT],
+    invalid: [],
+  },
+  {
+    code: "class A { [this] = b; }",
+    parserOptions: { ecmaVersion: 2020 },
+    valid: [],
+    invalid: [MODULE, SCRIPT, USE_STRICT, IMPLIED_STRICT],
+  },
+  {
+    code: "class A { [this.a] = b; }",
+    parserOptions: { ecmaVersion: 2020 },
+    valid: [],
+    invalid: [MODULE, SCRIPT, USE_STRICT, IMPLIED_STRICT],
+  },
+  {
+    code: "class A { [`${this.a}b`] = c; }",
+    parserOptions: { ecmaVersion: 2020 },
+    valid: [],
+    invalid: [MODULE, SCRIPT, USE_STRICT, IMPLIED_STRICT],
+  },
+  {
+    code: "class A { [this.a] = () => { return b; }; }",
+    parserOptions: { ecmaVersion: 2020 },
+    valid: [],
+    invalid: [MODULE, SCRIPT, USE_STRICT, IMPLIED_STRICT],
+  },
+  {
+    code: "class A { [this.a] = () => b; }",
+    parserOptions: { ecmaVersion: 2020 },
+    valid: [],
+    invalid: [MODULE, SCRIPT, USE_STRICT, IMPLIED_STRICT],
+  },
+  {
+    code: "class A { bFactory = () => class B { [this.b] = () => c; }; }",
+    parserOptions: { ecmaVersion: 2020 },
+    valid: [],
+    invalid: [MODULE, SCRIPT, USE_STRICT, IMPLIED_STRICT],
   },
 
   {
-    code: "class A {a = () => {return this.b;};};",
-    parserOptions: { ecmaVersion: 6 },
-    valid: [NORMAL, USE_STRICT, IMPLIED_STRICT, MODULES],
+    code: "class A { [this.a] = () => class B { [this.b] = () => c; }; }",
+    parserOptions: { ecmaVersion: 2020 },
+    valid: [],
+    invalid: [
+      [MODULE, 2],
+      [SCRIPT, 2],
+      [USE_STRICT, 2],
+      [IMPLIED_STRICT, 2],
+    ],
+  },
+  {
+    code: "class A { #a = this.b; }",
+    parserOptions: { ecmaVersion: 2020 },
+    valid: [MODULE, SCRIPT, USE_STRICT, IMPLIED_STRICT],
     invalid: [],
   },
-
-  // Class Private methods
   {
-    code: "class A {#a = this.b;};",
-    parserOptions: { ecmaVersion: 6 },
-    valid: [NORMAL, USE_STRICT, IMPLIED_STRICT, MODULES],
+    code: "class A { #a() { return this.b; }; }",
+    parserOptions: { ecmaVersion: 2020 },
+    valid: [MODULE, SCRIPT, USE_STRICT, IMPLIED_STRICT],
     invalid: [],
   },
-
   {
-    code: "class A {#a = () => {return this.b;};};",
-    parserOptions: { ecmaVersion: 6 },
-    valid: [NORMAL, USE_STRICT, IMPLIED_STRICT, MODULES],
+    code: "class A { #a = () => { return this.b; }; }",
+    parserOptions: { ecmaVersion: 2020 },
+    valid: [MODULE, SCRIPT, USE_STRICT, IMPLIED_STRICT],
     invalid: [],
   },
-
   {
-    code: "class A {#a() {return this.b;};};",
-    parserOptions: { ecmaVersion: 6 },
-    valid: [NORMAL, USE_STRICT, IMPLIED_STRICT, MODULES],
+    code: "class A { #a = () => this.b; }",
+    parserOptions: { ecmaVersion: 2020 },
+    valid: [MODULE, SCRIPT, USE_STRICT, IMPLIED_STRICT],
     invalid: [],
   },
 ];
