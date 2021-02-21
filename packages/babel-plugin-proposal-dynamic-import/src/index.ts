@@ -16,6 +16,8 @@ the @babel/plugin-syntax-dynamic-import plugin and let your
 bundler handle dynamic imports.
 `;
 
+declare const PACKAGE_JSON: { name: string; version: string };
+
 export default declare(api => {
   api.assertVersion(7);
 
