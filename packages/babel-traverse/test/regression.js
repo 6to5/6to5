@@ -2,7 +2,7 @@ import traverse from "../lib";
 import { parse } from "@babel/parser";
 
 describe("regression #12570", () => {
-  it("nested #traverse", () => {
+  it("should set the correct context when accessing `parentPath` from a nested traversal", () => {
     const ast = parse(
       `import { Foo } from './Foo'; import { Bar } from './Bar'`,
       { sourceType: "module" },
