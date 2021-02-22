@@ -84,8 +84,8 @@ export default declare((api, options) => {
     private nodes: any;
     private scope: Scope;
     private kind: any;
-    private arrayOnlySpread: any;
-    private allowArrayLike: any;
+    private iterableIsArray: any;
+    private arrayLikeIsIterable: any;
     private addHelper: any;
     constructor(opts) {
       this.blockHoist = opts.blockHoist;
