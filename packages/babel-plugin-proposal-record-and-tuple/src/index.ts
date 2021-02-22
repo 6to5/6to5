@@ -20,6 +20,7 @@ import { types as t } from "@babel/core";
 import { addNamed, isModule } from "@babel/helper-module-imports";
 import { OptionValidator } from "@babel/helper-validator-option";
 
+declare const PACKAGE_JSON: { name: string; version: string };
 const v = new OptionValidator(PACKAGE_JSON.name);
 
 export default declare((api, options) => {
