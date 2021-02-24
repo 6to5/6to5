@@ -1,6 +1,6 @@
 // This file contains methods responsible for dealing with/retrieving children or siblings.
 
-import type TraversalContext from "../context";
+import TraversalContext from "../context";
 import NodePath from "./index";
 import * as t from "@babel/types";
 
@@ -190,7 +190,6 @@ function get<T extends t.Node>(
   key: string,
   context: true | TraversalContext = true,
 ): NodePath | NodePath[] {
-  if (context === true) context = this.context;
   const parts = key.split(".");
   if (parts.length === 1) {
     // "foo"
@@ -206,8 +205,9 @@ export { get };
 export function _getKey<T extends t.Node>(
   this: NodePath<T>,
   key: string,
-  context?: TraversalContext,
+  context?: true | TraversalContext,
 ): NodePath | NodePath[] {
+  const isValidContext = context instanceof TraversalContext;
   const node = this.node;
   const container = node[key];
 
@@ -220,7 +220,7 @@ export function _getKey<T extends t.Node>(
         parent: node,
         container: container,
         key: i,
-      }).setContext(v.context);
+      }).setContext(isValidContext ? context : v.context);
     });
   } else {
     return NodePath.get({
@@ -228,14 +228,16 @@ export function _getKey<T extends t.Node>(
       parent: node,
       container: node,
       key: key,
-    }).setContext(context);
+    }).setContext(
+      isValidContext ? (context as TraversalContext) : this.context,
+    );
   }
 }
 
 export function _getPattern(
   this: NodePath,
   parts: string[],
-  context?: TraversalContext,
+  context?: true | TraversalContext,
 ): NodePath | NodePath[] {
   let path: NodePath | NodePath[] = this;
   for (const part of parts) {
