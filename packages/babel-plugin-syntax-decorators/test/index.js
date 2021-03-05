@@ -1,9 +1,9 @@
-import { parse } from "@babel/core";
+import { parseSync } from "@babel/core";
 import syntaxDecorators from "../lib";
 
 function makeParser(code, options) {
   return () =>
-    parse(code, {
+    parseSync(code, {
       babelrc: false,
       configFile: false,
       plugins: [[syntaxDecorators, options]],

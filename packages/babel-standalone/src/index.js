@@ -14,8 +14,8 @@
 import "./dynamic-require-entrypoint.cjs";
 
 import {
-  transformFromAst as babelTransformFromAst,
-  transform as babelTransform,
+  transformFromAstSync as babelTransformFromAstSync,
+  transformSync as babelTransformSync,
   buildExternalHelpers as babelBuildExternalHelpers,
 } from "@babel/core";
 import { all } from "./generated/plugins";
@@ -103,11 +103,11 @@ function processOptions(options) {
 }
 
 export function transform(code: string, options: Object) {
-  return babelTransform(code, processOptions(options));
+  return babelTransformSync(code, processOptions(options));
 }
 
 export function transformFromAst(ast: Object, code: string, options: Object) {
-  return babelTransformFromAst(ast, code, processOptions(options));
+  return babelTransformFromAstSync(ast, code, processOptions(options));
 }
 export const availablePlugins = {};
 export const availablePresets = {};

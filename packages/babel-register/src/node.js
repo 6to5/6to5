@@ -60,7 +60,7 @@ function compile(code, filename) {
   let cached = cache && cache[cacheKey];
 
   if (!cached || cached.mtime !== mtime(filename)) {
-    cached = babel.transform(code, {
+    cached = babel.transformSync(code, {
       ...opts,
       sourceMaps: opts.sourceMaps === undefined ? "both" : opts.sourceMaps,
       ast: false,
