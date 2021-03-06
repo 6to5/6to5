@@ -1,5 +1,7 @@
+var _Counter;
+
 function Component({
   value
 }) {
-  return () => <Counter onClick={value => value + 1} />;
+  return () => _Counter || (_Counter = <Counter onClick={value => value + 1} />);
 }
