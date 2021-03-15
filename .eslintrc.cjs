@@ -83,7 +83,7 @@ module.exports = {
       ],
       excludedFiles: [
         // @babel/register is the require() hook, so it will always be CJS-based
-        "packages/babel-register/**/*.js",
+        "packages/babel-register/**/*.{js,ts}",
       ],
       rules: {
         "no-restricted-globals": ["error", ...cjsGlobals],
