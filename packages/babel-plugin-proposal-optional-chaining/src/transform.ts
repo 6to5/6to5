@@ -1,4 +1,5 @@
 import { types as t, template } from "@babel/core";
+import type { NodePath } from "@babel/traverse";
 import {
   isTransparentExprWrapper,
   skipTransparentExprWrappers,
@@ -72,7 +73,7 @@ export function transform(
   // Replace `function (a, x = a.b?.c) {}` to `function (a, x = (() => a.b?.c)() ){}`
   // so the temporary variable can be injected in correct scope
   if (scope.path.isPattern() && needsMemoize(optionalPath)) {
-    path.replaceWith(template.ast`(() => ${path.node})()`);
+    path.replaceWith(template.ast`(() => ${path.node})()` as t.Statement);
     // The injected optional chain will be queued and eventually transformed when visited
     return;
   }
@@ -86,15 +87,19 @@ export function transform(
     }
 
     if (optionalPath.isOptionalMemberExpression()) {
+      // @ts-expect-error todo(flow->ts) avoid changing more type
       optionalPath.node.type = "MemberExpression";
+      // @ts-expect-error todo(flow->ts)
       optionalPath = skipTransparentExprWrappers(optionalPath.get("object"));
     } else if (optionalPath.isOptionalCallExpression()) {
+      // @ts-expect-error todo(flow->ts) avoid changing more type
       optionalPath.node.type = "CallExpression";
+      // @ts-expect-error todo(flow->ts)
       optionalPath = skipTransparentExprWrappers(optionalPath.get("callee"));
     }
   }
 
-  let replacementPath = path;
+  let replacementPath: NodePath<any> = path;
   if (parentPath.isUnaryExpression({ operator: "delete" })) {
     replacementPath = parentPath;
     isDeleteOperation = true;
@@ -152,7 +157,7 @@ export function transform(
         // Otherwise, we need to memoize the context object, and change the call into a Function#call.
         // `a.?b.?()` translates roughly to `(_b = _a.b) != null && _b.call(_a)`
         const { object } = chain;
-        let context = scope.maybeGenerateMemoised(object);
+        let context: t.Expression = scope.maybeGenerateMemoised(object);
         if (context) {
           chain.object = t.assignmentExpression("=", context, object);
         } else if (t.isSuper(object)) {
@@ -173,6 +178,7 @@ export function transform(
     if (i === 0 && parentIsCall) {
       // `(a?.b)()` to `(a == null ? undefined : a.b.bind(a))()`
       const object = skipTransparentExprWrappers(
+        // @ts-expect-error todo(flow->ts)
         replacementPath.get("object"),
       ).node;
       let baseRef;
@@ -182,6 +188,7 @@ export function transform(
         // `(a?.b.c)()` to `(a == null ? undefined : (_a$b = a.b).c.bind(_a$b))()`
         baseRef = scope.maybeGenerateMemoised(object);
         if (baseRef) {
+          // @ts-expect-error todo(flow->ts)
           replacement.object = t.assignmentExpression("=", baseRef, object);
         }
       }
@@ -203,6 +210,7 @@ export function transform(
         t.logicalExpression("&&", nonNullishCheck, replacement),
       );
       replacementPath = skipTransparentExprWrappers(
+        // @ts-expect-error todo(flow->ts)
         replacementPath.get("right"),
       );
     } else {
@@ -216,6 +224,7 @@ export function transform(
         t.conditionalExpression(nullishCheck, returnValue, replacement),
       );
       replacementPath = skipTransparentExprWrappers(
+        // @ts-expect-error todo(flow->ts)
         replacementPath.get("alternate"),
       );
     }
