@@ -1,0 +1,9 @@
+{
+  "plugins": [
+    [
+      "transform-react-constant-elements",
+      { "allowMutablePropsOnTags": ["Counter"] }
+    ],
+    "syntax-jsx"
+  ]
+}
