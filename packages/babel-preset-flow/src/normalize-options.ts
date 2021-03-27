@@ -1,7 +1,7 @@
 import { OptionValidator } from "@babel/helper-validator-option";
 const v = new OptionValidator("@babel/preset-flow");
 
-export default function normalizeOptions(options = {}) {
+export default function normalizeOptions(options: any = {}) {
   let { all } = options;
   const { allowDeclareFields } = options;
 
