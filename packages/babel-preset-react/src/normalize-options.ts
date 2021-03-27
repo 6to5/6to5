@@ -4,7 +4,7 @@ import {
 } from "@babel/helper-validator-option";
 const v = new OptionValidator("@babel/preset-react");
 
-export default function normalizeOptions(options = {}) {
+export default function normalizeOptions(options: any = {}) {
   if (process.env.BABEL_8_BREAKING) {
     if ("useSpread" in options) {
       throw new Error(
