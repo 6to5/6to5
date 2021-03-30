@@ -2,4 +2,4 @@ Though the "loose" option was set to "true" in your @babel/preset-env config, it
 The "loose" option must be the same for @babel/plugin-proposal-class-properties, @babel/plugin-proposal-private-methods and @babel/plugin-proposal-private-property-in-object (when they are enabled): you can silence this warning by explicitly adding
 	["@babel/plugin-proposal-private-methods", { "loose": false }]
 to the "plugins" section of your Babel config.
-You can re-run Babel with the BABEL_SHOW_CONFIG_FOR=<CWD>/packages/babel-preset-env/test/fixtures/loose-class-features-precedence/properties-not-loose-preset-loose/input.js environment variable to show the loaded configuration.
+You can re-run Babel with the BABEL_SHOW_CONFIG_FOR=<CWD>\packages\babel-preset-env\test\fixtures\loose-class-features-precedence\properties-not-loose-preset-loose\input.js environment variable to show the loaded configuration.

@@ -75,10 +75,19 @@ export function enableFeature(file, feature, loose) {
     if (canIgnoreLoose(file, mask)) {
       continue;
     } else if (resolvedLoose === !loose) {
+      let { filename } = file.opts;
+      if (!filename || filename === "unknown") {
+        filename = "[name of the input file]";
+      }
+
       throw new Error(
         "'loose' mode configuration must be the same for @babel/plugin-proposal-class-properties, " +
           "@babel/plugin-proposal-private-methods and " +
-          "@babel/plugin-proposal-private-property-in-object (when they are enabled).",
+          "@babel/plugin-proposal-private-property-in-object (when they are enabled)." +
+          "\n\nIf you already set the same 'loose' mode for these plugins in your config, " +
+          "it's possible that they are enabled multiple times with different options." +
+          `\nYou can re-run Babel with the BABEL_SHOW_CONFIG_FOR=${filename}` +
+          " environment variable to show the loaded configuration.",
       );
     } else {
       resolvedLoose = loose;
@@ -90,6 +99,11 @@ export function enableFeature(file, feature, loose) {
     for (const [mask, name] of featuresSameLoose) {
       if (hasFeature(file, mask) && isLoose(file, mask) !== resolvedLoose) {
         setLoose(file, mask, resolvedLoose);
+
+        let { filename } = file.opts;
+        if (!filename || filename === "unknown") {
+          filename = "[name of the input file]";
+        }
         console.warn(
           `Though the "loose" option was set to "${!resolvedLoose}" in your @babel/preset-env ` +
             `config, it will not be used for ${name} since the "loose" mode option was set to ` +
@@ -98,7 +112,9 @@ export function enableFeature(file, feature, loose) {
             `and @babel/plugin-proposal-private-property-in-object (when they are enabled): you can ` +
             `silence this warning by explicitly adding\n` +
             `\t["${name}", { "loose": ${resolvedLoose} }]\n` +
-            `to the "plugins" section of your Babel config.`,
+            `to the "plugins" section of your Babel config.` +
+            `\nYou can re-run Babel with the BABEL_SHOW_CONFIG_FOR=${filename}` +
+            ` environment variable to show the loaded configuration.`,
         );
       }
     }
