@@ -24,6 +24,7 @@ function escapeRegExp(string) {
 export default function pathToPattern(
   pattern: string,
   dirname: string,
+  matchPrefix: boolean = true,
 ): RegExp {
   const parts = path.resolve(dirname, pattern).split(path.sep);
 
@@ -49,6 +50,7 @@ export default function pathToPattern(
         // Otherwise match the pattern text.
         return escapeRegExp(part) + (last ? endSep : sep);
       }),
+      matchPrefix ? "" : "$",
     ].join(""),
   );
 }

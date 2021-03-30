@@ -317,7 +317,7 @@ function babelrcLoadEnabled(
 
   return babelrcPatterns.some(pat => {
     if (typeof pat === "string") {
-      pat = pathPatternToRegex(pat, babelrcRootsDirectory);
+      pat = pathPatternToRegex(pat, babelrcRootsDirectory, false);
     }
 
     return pkgData.directories.some(directory => {
