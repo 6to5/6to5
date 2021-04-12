@@ -330,7 +330,7 @@ jobs:
         with:
           node-version: 10
       - name: Test Node.js 10
-        run: yarn test:runtime:node
+        run: node test/runtime-integration/node.cjs
       - name: Use Node.js 12.0
         uses: actions/setup-node@v2-beta
         with:
