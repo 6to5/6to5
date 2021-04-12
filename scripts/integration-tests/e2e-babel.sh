@@ -32,6 +32,6 @@ startLocalRegistry "$PWD"/scripts/integration-tests/verdaccio-config.yml
 node "$PWD"/scripts/integration-tests/utils/bump-babel-dependencies.js
 
 # Update deps, build and test
-make -j test-ci
+YARN_ENABLE_IMMUTABLE_INSTALLS=false make -j test-ci
 
 cleanup
