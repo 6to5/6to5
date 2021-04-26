@@ -149,7 +149,7 @@ async function generateRuntimeHelpers() {
   return generateHelpers(
     `./packages/babel-helpers/scripts/generate-helpers.js`,
     `./packages/babel-helpers/src/`,
-    "helpers-generated.js",
+    "helpers-generated.ts",
     "@babel/helpers"
   );
 }

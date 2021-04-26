@@ -2,7 +2,7 @@ import template from "@babel/template";
 
 import * as generated from "./helpers-generated";
 
-const helpers = { __proto__: null, ...generated };
+const helpers: any = { __proto__: null, ...generated };
 export default helpers;
 
 const helper = (minVersion: string) => tpl => ({
