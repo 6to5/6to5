@@ -10,6 +10,7 @@ import type { Comment, Node as NodeType, NodeBase } from "../types";
 class Node implements NodeBase {
   constructor(parser: Parser, pos: number, loc: Position) {
     this.start = pos;
+    this.end = 0;
     this.loc = new SourceLocation(loc);
     if (parser?.options.ranges) this.range = [pos, 0];
     if (parser?.filename) this.loc.filename = parser.filename;
@@ -17,13 +18,13 @@ class Node implements NodeBase {
 
   type: string = "";
   declare start: number;
-  end: number = 0;
-  loc: SourceLocation;
+  declare end: number;
+  declare loc: SourceLocation;
   declare range: [number, number];
   declare leadingComments: Array<Comment>;
   declare trailingComments: Array<Comment>;
   declare innerComments: Array<Comment>;
-  extra: { [key: string]: any };
+  declare extra: { [key: string]: any };
 
   __clone(): this {
     // $FlowIgnore

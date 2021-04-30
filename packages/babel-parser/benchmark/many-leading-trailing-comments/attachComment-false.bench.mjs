@@ -1,5 +1,5 @@
 import Benchmark from "benchmark";
-import baseline from "../../lib/index-v1.js";
+import baseline from "@babel-baseline/parser";
 import current from "../../lib/index.js";
 import { report } from "../util.mjs";
 
