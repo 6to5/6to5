@@ -419,32 +419,37 @@ class BlockScoping {
   }
 
   checkConstants() {
-    const scope = this.scope;
     const state = this.state;
 
-    for (const name of Object.keys(scope.bindings)) {
-      const binding = scope.bindings[name];
-      if (binding.kind !== "const") continue;
+    const blockScope = this.blockPath.scope;
+    const letRefs = this.letReferences;
 
-      for (const violation of (binding.constantViolations: Array)) {
-        const readOnlyError = state.addHelper("readOnlyError");
-        const throwNode = t.callExpression(readOnlyError, [
-          t.stringLiteral(name),
-        ]);
+    for (const name of Object.keys(letRefs)) {
+      const ref = letRefs[name];
+      const binding = blockScope.getBinding(ref.name);
+      if (binding !== undefined) {
+        if (binding.kind !== "const") continue;
 
-        if (violation.isAssignmentExpression()) {
-          violation
-            .get("right")
-            .replaceWith(
-              t.sequenceExpression([throwNode, violation.get("right").node]),
+        for (const violation of (binding.constantViolations: Array)) {
+          const readOnlyError = state.addHelper("readOnlyError");
+          const throwNode = t.callExpression(readOnlyError, [
+            t.stringLiteral(name),
+          ]);
+
+          if (violation.isAssignmentExpression()) {
+            violation
+              .get("right")
+              .replaceWith(
+                t.sequenceExpression([throwNode, violation.get("right").node]),
+              );
+          } else if (violation.isUpdateExpression()) {
+            violation.replaceWith(
+              t.sequenceExpression([throwNode, violation.node]),
             );
-        } else if (violation.isUpdateExpression()) {
-          violation.replaceWith(
-            t.sequenceExpression([throwNode, violation.node]),
-          );
-        } else if (violation.isForXStatement()) {
-          violation.ensureBlock();
-          violation.node.body.body.unshift(t.expressionStatement(throwNode));
+          } else if (violation.isForXStatement()) {
+            violation.ensureBlock();
+            violation.node.body.body.unshift(t.expressionStatement(throwNode));
+          }
         }
       }
     }
