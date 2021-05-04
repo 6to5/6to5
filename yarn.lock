@@ -155,7 +155,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/compat-data@workspace:*, @babel/compat-data@workspace:^7.14.5, @babel/compat-data@workspace:packages/babel-compat-data":
+"@babel/compat-data@workspace:*, @babel/compat-data@workspace:^7.13.8, @babel/compat-data@workspace:^7.14.5, @babel/compat-data@workspace:packages/babel-compat-data":
   version: 0.0.0-use.local
   resolution: "@babel/compat-data@workspace:packages/babel-compat-data"
   dependencies:
@@ -365,7 +365,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-annotate-as-pure@workspace:^7.14.5, @babel/helper-annotate-as-pure@workspace:packages/babel-helper-annotate-as-pure":
+"@babel/helper-annotate-as-pure@workspace:^7.12.13, @babel/helper-annotate-as-pure@workspace:^7.14.5, @babel/helper-annotate-as-pure@workspace:packages/babel-helper-annotate-as-pure":
   version: 0.0.0-use.local
   resolution: "@babel/helper-annotate-as-pure@workspace:packages/babel-helper-annotate-as-pure"
   dependencies:
@@ -415,7 +415,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-compilation-targets@workspace:^7.14.5, @babel/helper-compilation-targets@workspace:packages/babel-helper-compilation-targets":
+"@babel/helper-compilation-targets@workspace:^7.13.10, @babel/helper-compilation-targets@workspace:^7.14.5, @babel/helper-compilation-targets@workspace:packages/babel-helper-compilation-targets":
   version: 0.0.0-use.local
   resolution: "@babel/helper-compilation-targets@workspace:packages/babel-helper-compilation-targets"
   dependencies:
@@ -609,7 +609,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-member-expression-to-functions@workspace:^7.14.5, @babel/helper-member-expression-to-functions@workspace:packages/babel-helper-member-expression-to-functions":
+"@babel/helper-member-expression-to-functions@workspace:^7.13.0, @babel/helper-member-expression-to-functions@workspace:^7.14.5, @babel/helper-member-expression-to-functions@workspace:packages/babel-helper-member-expression-to-functions":
   version: 0.0.0-use.local
   resolution: "@babel/helper-member-expression-to-functions@workspace:packages/babel-helper-member-expression-to-functions"
   dependencies:
@@ -686,7 +686,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-optimise-call-expression@workspace:^7.14.5, @babel/helper-optimise-call-expression@workspace:packages/babel-helper-optimise-call-expression":
+"@babel/helper-optimise-call-expression@workspace:^7.12.13, @babel/helper-optimise-call-expression@workspace:^7.14.5, @babel/helper-optimise-call-expression@workspace:packages/babel-helper-optimise-call-expression":
   version: 0.0.0-use.local
   resolution: "@babel/helper-optimise-call-expression@workspace:packages/babel-helper-optimise-call-expression"
   dependencies:
@@ -711,7 +711,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-plugin-utils@workspace:^7.14.5, @babel/helper-plugin-utils@workspace:packages/babel-helper-plugin-utils":
+"@babel/helper-plugin-utils@workspace:^7.13.0, @babel/helper-plugin-utils@workspace:^7.14.5, @babel/helper-plugin-utils@workspace:packages/babel-helper-plugin-utils":
   version: 0.0.0-use.local
   resolution: "@babel/helper-plugin-utils@workspace:packages/babel-helper-plugin-utils"
   languageName: unknown
@@ -751,7 +751,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-replace-supers@workspace:^7.14.5, @babel/helper-replace-supers@workspace:packages/babel-helper-replace-supers":
+"@babel/helper-replace-supers@workspace:^7.13.0, @babel/helper-replace-supers@workspace:^7.14.5, @babel/helper-replace-supers@workspace:packages/babel-helper-replace-supers":
   version: 0.0.0-use.local
   resolution: "@babel/helper-replace-supers@workspace:packages/babel-helper-replace-supers"
   dependencies:
@@ -1087,6 +1087,24 @@ __metadata:
     "@babel/plugin-syntax-async-generators": ^7.8.4
     babel-plugin-polyfill-corejs3: ^0.2.2
     core-js-pure: ^3.14.0
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  languageName: unknown
+  linkType: soft
+
+"@babel/plugin-proposal-class-elements@workspace:packages/babel-plugin-proposal-class-elements":
+  version: 0.0.0-use.local
+  resolution: "@babel/plugin-proposal-class-elements@workspace:packages/babel-plugin-proposal-class-elements"
+  dependencies:
+    "@babel/compat-data": "workspace:^7.13.8"
+    "@babel/core": "workspace:*"
+    "@babel/helper-annotate-as-pure": "workspace:^7.12.13"
+    "@babel/helper-compilation-targets": "workspace:^7.13.10"
+    "@babel/helper-member-expression-to-functions": "workspace:^7.13.0"
+    "@babel/helper-optimise-call-expression": "workspace:^7.12.13"
+    "@babel/helper-plugin-test-runner": "workspace:*"
+    "@babel/helper-plugin-utils": "workspace:^7.13.0"
+    "@babel/helper-replace-supers": "workspace:^7.13.0"
   peerDependencies:
     "@babel/core": ^7.0.0-0
   languageName: unknown

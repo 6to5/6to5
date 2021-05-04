@@ -13,6 +13,7 @@
     "access": "public"
   },
   "exports": {
+    "./es": "./es.js",
     "./plugins": "./plugins.js",
     "./native-modules": "./native-modules.js",
     "./corejs2-built-ins": "./corejs2-built-ins.js",

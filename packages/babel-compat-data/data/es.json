@@ -1,0 +1,36 @@
+{
+  "public-class-fields": {
+    "chrome": "73",
+    "opera": "60",
+    "edge": "79",
+    "firefox": "75",
+    "safari": "14.1",
+    "node": "12",
+    "samsung": "11",
+    "electron": "5.0"
+  },
+  "private-class-fields": {
+    "chrome": "74",
+    "opera": "62",
+    "edge": "79",
+    "safari": "14.1",
+    "node": "12",
+    "samsung": "11",
+    "electron": "6.0"
+  },
+  "private-class-fields-optional-chaining": {
+    "chrome": "84",
+    "opera": "70",
+    "edge": "84",
+    "safari": "14.1",
+    "node": "14.6",
+    "electron": "10.0"
+  },
+  "private-class-methods": {
+    "chrome": "84",
+    "opera": "70",
+    "edge": "84",
+    "node": "14.6",
+    "electron": "10.0"
+  }
+}

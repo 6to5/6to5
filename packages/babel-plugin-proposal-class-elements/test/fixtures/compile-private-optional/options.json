@@ -1,0 +1,9 @@
+{
+  "minNodeVersion": "12.0.0",
+  "plugins": [
+    [
+      "proposal-class-elements",
+      { "targetSyntax": "privateFields", "compilePrivateOptional": true }
+    ]
+  ]
+}
