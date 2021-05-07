@@ -495,6 +495,7 @@ class BlockScoping {
           } else if (["&&=", "||=", "??="].includes(operator)) {
             violation.replaceWith(
               t.logicalExpression(
+                // @ts-expect-error todo(flow->ts)
                 operator.slice(0, -1),
                 violation.get("left").node,
                 t.sequenceExpression([violation.get("right").node, throwNode]),
@@ -504,6 +505,7 @@ class BlockScoping {
             violation.replaceWith(
               t.sequenceExpression([
                 t.binaryExpression(
+                  // @ts-expect-error todo(flow->ts)
                   operator.slice(0, -1),
                   violation.get("left").node,
                   violation.get("right").node,
