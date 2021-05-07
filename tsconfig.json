@@ -6,9 +6,12 @@
     "./packages/babel-core/src/**/*.ts",
     "./packages/babel-generator/src/**/*.ts",
     "./packages/babel-helper-annotate-as-pure/src/**/*.ts",
+    "./packages/babel-helper-builder-binary-assignment-operator-visitor/src/**/*.ts",
+    "./packages/babel-helper-builder-react-jsx/src/**/*.ts",
     "./packages/babel-helper-compilation-targets/src/**/*.ts",
     "./packages/babel-helper-create-class-features-plugin/src/**/*.ts",
     "./packages/babel-helper-create-regexp-features-plugin/src/**/*.ts",
+    "./packages/babel-helper-define-map/src/**/*.ts",
     "./packages/babel-helper-explode-assignable-expression/src/**/*.ts",
     "./packages/babel-helper-fixtures/src/**/*.ts",
     "./packages/babel-helper-function-name/src/**/*.ts",
@@ -18,25 +21,131 @@
     "./packages/babel-helper-module-imports/src/**/*.ts",
     "./packages/babel-helper-module-transforms/src/**/*.ts",
     "./packages/babel-helper-optimise-call-expression/src/**/*.ts",
+    "./packages/babel-helper-plugin-test-runner/src/**/*.ts",
+    "./packages/babel-helper-plugin-utils/src/**/*.ts",
+    "./packages/babel-helper-remap-async-to-generator/src/**/*.ts",
     "./packages/babel-helper-replace-supers/src/**/*.ts",
     "./packages/babel-helper-simple-access/src/**/*.ts",
+    "./packages/babel-helper-skip-transparent-expression-wrappers/src/**/*.ts",
     "./packages/babel-helper-split-export-declaration/src/**/*.ts",
     "./packages/babel-helper-transform-fixture-test-runner/src/**/*.ts",
     "./packages/babel-helper-validator-identifier/src/**/*.ts",
     "./packages/babel-helper-validator-option/src/**/*.ts",
+    "./packages/babel-helper-wrap-function/src/**/*.ts",
+    "./packages/babel-helpers/src/**/*.ts",
     "./packages/babel-highlight/src/**/*.ts",
     "./packages/babel-plugin-bugfix-v8-spread-parameters-in-optional-chaining/src/**/*.ts",
+    "./packages/babel-plugin-external-helpers/src/**/*.ts",
     "./packages/babel-plugin-proposal-async-do-expressions/src/**/*.ts",
+    "./packages/babel-plugin-proposal-async-generator-functions/src/**/*.ts",
+    "./packages/babel-plugin-proposal-class-properties/src/**/*.ts",
+    "./packages/babel-plugin-proposal-class-static-block/src/**/*.ts",
+    "./packages/babel-plugin-proposal-decorators/src/**/*.ts",
+    "./packages/babel-plugin-proposal-do-expressions/src/**/*.ts",
+    "./packages/babel-plugin-proposal-dynamic-import/src/**/*.ts",
+    "./packages/babel-plugin-proposal-export-default-from/src/**/*.ts",
+    "./packages/babel-plugin-proposal-export-namespace-from/src/**/*.ts",
+    "./packages/babel-plugin-proposal-function-bind/src/**/*.ts",
+    "./packages/babel-plugin-proposal-function-sent/src/**/*.ts",
+    "./packages/babel-plugin-proposal-json-strings/src/**/*.ts",
+    "./packages/babel-plugin-proposal-logical-assignment-operators/src/**/*.ts",
+    "./packages/babel-plugin-proposal-nullish-coalescing-operator/src/**/*.ts",
+    "./packages/babel-plugin-proposal-numeric-separator/src/**/*.ts",
+    "./packages/babel-plugin-proposal-object-rest-spread/src/**/*.ts",
+    "./packages/babel-plugin-proposal-optional-catch-binding/src/**/*.ts",
+    "./packages/babel-plugin-proposal-optional-chaining/src/**/*.ts",
+    "./packages/babel-plugin-proposal-partial-application/src/**/*.ts",
+    "./packages/babel-plugin-proposal-pipeline-operator/src/**/*.ts",
+    "./packages/babel-plugin-proposal-private-methods/src/**/*.ts",
+    "./packages/babel-plugin-proposal-private-property-in-object/src/**/*.ts",
+    "./packages/babel-plugin-proposal-record-and-tuple/src/**/*.ts",
+    "./packages/babel-plugin-proposal-throw-expressions/src/**/*.ts",
+    "./packages/babel-plugin-proposal-unicode-property-regex/src/**/*.ts",
     "./packages/babel-plugin-syntax-async-do-expressions/src/**/*.ts",
+    "./packages/babel-plugin-syntax-class-static-block/src/**/*.ts",
+    "./packages/babel-plugin-syntax-decimal/src/**/*.ts",
+    "./packages/babel-plugin-syntax-decorators/src/**/*.ts",
+    "./packages/babel-plugin-syntax-do-expressions/src/**/*.ts",
+    "./packages/babel-plugin-syntax-export-default-from/src/**/*.ts",
+    "./packages/babel-plugin-syntax-flow/src/**/*.ts",
+    "./packages/babel-plugin-syntax-function-bind/src/**/*.ts",
+    "./packages/babel-plugin-syntax-function-sent/src/**/*.ts",
+    "./packages/babel-plugin-syntax-import-assertions/src/**/*.ts",
+    "./packages/babel-plugin-syntax-jsx/src/**/*.ts",
+    "./packages/babel-plugin-syntax-module-blocks/src/**/*.ts",
+    "./packages/babel-plugin-syntax-partial-application/src/**/*.ts",
+    "./packages/babel-plugin-syntax-pipeline-operator/src/**/*.ts",
+    "./packages/babel-plugin-syntax-private-property-in-object/src/**/*.ts",
+    "./packages/babel-plugin-syntax-record-and-tuple/src/**/*.ts",
+    "./packages/babel-plugin-syntax-throw-expressions/src/**/*.ts",
+    "./packages/babel-plugin-syntax-top-level-await/src/**/*.ts",
+    "./packages/babel-plugin-syntax-typescript/src/**/*.ts",
+    "./packages/babel-plugin-transform-arrow-functions/src/**/*.ts",
+    "./packages/babel-plugin-transform-async-to-generator/src/**/*.ts",
+    "./packages/babel-plugin-transform-block-scoped-functions/src/**/*.ts",
+    "./packages/babel-plugin-transform-block-scoping/src/**/*.ts",
     "./packages/babel-plugin-transform-classes/src/**/*.ts",
+    "./packages/babel-plugin-transform-computed-properties/src/**/*.ts",
+    "./packages/babel-plugin-transform-destructuring/src/**/*.ts",
+    "./packages/babel-plugin-transform-dotall-regex/src/**/*.ts",
+    "./packages/babel-plugin-transform-duplicate-keys/src/**/*.ts",
+    "./packages/babel-plugin-transform-exponentiation-operator/src/**/*.ts",
+    "./packages/babel-plugin-transform-flow-comments/src/**/*.ts",
+    "./packages/babel-plugin-transform-flow-strip-types/src/**/*.ts",
+    "./packages/babel-plugin-transform-for-of/src/**/*.ts",
+    "./packages/babel-plugin-transform-function-name/src/**/*.ts",
+    "./packages/babel-plugin-transform-instanceof/src/**/*.ts",
+    "./packages/babel-plugin-transform-jscript/src/**/*.ts",
+    "./packages/babel-plugin-transform-literals/src/**/*.ts",
+    "./packages/babel-plugin-transform-member-expression-literals/src/**/*.ts",
+    "./packages/babel-plugin-transform-modules-amd/src/**/*.ts",
+    "./packages/babel-plugin-transform-modules-commonjs/src/**/*.ts",
+    "./packages/babel-plugin-transform-modules-systemjs/src/**/*.ts",
+    "./packages/babel-plugin-transform-modules-umd/src/**/*.ts",
+    "./packages/babel-plugin-transform-named-capturing-groups-regex/src/**/*.ts",
+    "./packages/babel-plugin-transform-new-target/src/**/*.ts",
+    "./packages/babel-plugin-transform-object-assign/src/**/*.ts",
+    "./packages/babel-plugin-transform-object-set-prototype-of-to-assign/src/**/*.ts",
+    "./packages/babel-plugin-transform-object-super/src/**/*.ts",
+    "./packages/babel-plugin-transform-parameters/src/**/*.ts",
+    "./packages/babel-plugin-transform-property-literals/src/**/*.ts",
+    "./packages/babel-plugin-transform-property-mutators/src/**/*.ts",
+    "./packages/babel-plugin-transform-proto-to-assign/src/**/*.ts",
+    "./packages/babel-plugin-transform-react-constant-elements/src/**/*.ts",
+    "./packages/babel-plugin-transform-react-display-name/src/**/*.ts",
+    "./packages/babel-plugin-transform-react-inline-elements/src/**/*.ts",
     "./packages/babel-plugin-transform-react-jsx/src/**/*.ts",
+    "./packages/babel-plugin-transform-react-jsx-compat/src/**/*.ts",
+    "./packages/babel-plugin-transform-react-jsx-development/src/**/*.ts",
+    "./packages/babel-plugin-transform-react-jsx-self/src/**/*.ts",
+    "./packages/babel-plugin-transform-react-jsx-source/src/**/*.ts",
+    "./packages/babel-plugin-transform-react-pure-annotations/src/**/*.ts",
+    "./packages/babel-plugin-transform-regenerator/src/**/*.ts",
+    "./packages/babel-plugin-transform-reserved-words/src/**/*.ts",
     "./packages/babel-plugin-transform-runtime/src/**/*.ts",
+    "./packages/babel-plugin-transform-shorthand-properties/src/**/*.ts",
+    "./packages/babel-plugin-transform-spread/src/**/*.ts",
+    "./packages/babel-plugin-transform-sticky-regex/src/**/*.ts",
+    "./packages/babel-plugin-transform-strict-mode/src/**/*.ts",
+    "./packages/babel-plugin-transform-template-literals/src/**/*.ts",
+    "./packages/babel-plugin-transform-typeof-symbol/src/**/*.ts",
     "./packages/babel-plugin-transform-typescript/src/**/*.ts",
+    "./packages/babel-plugin-transform-unicode-escapes/src/**/*.ts",
+    "./packages/babel-plugin-transform-unicode-regex/src/**/*.ts",
     "./packages/babel-preset-env/src/**/*.ts",
+    "./packages/babel-preset-flow/src/**/*.ts",
+    "./packages/babel-preset-react/src/**/*.ts",
+    "./packages/babel-preset-typescript/src/**/*.ts",
+    "./packages/babel-register/src/**/*.ts",
     "./packages/babel-standalone/src/**/*.ts",
     "./packages/babel-template/src/**/*.ts",
     "./packages/babel-traverse/src/**/*.ts",
-    "./packages/babel-types/src/**/*.ts"
+    "./packages/babel-types/src/**/*.ts",
+    "./eslint/babel-eslint-plugin/src/**/*.ts",
+    "./eslint/babel-eslint-plugin-development/src/**/*.ts",
+    "./eslint/babel-eslint-plugin-development-internal/src/**/*.ts",
+    "./codemods/babel-plugin-codemod-object-assign-to-object-spread/src/**/*.ts",
+    "./codemods/babel-plugin-codemod-optional-catch-binding/src/**/*.ts"
   ],
   "compilerOptions": {
     "paths": {
@@ -52,6 +161,12 @@
       "@babel/helper-annotate-as-pure": [
         "./packages/babel-helper-annotate-as-pure/src"
       ],
+      "@babel/helper-builder-binary-assignment-operator-visitor": [
+        "./packages/babel-helper-builder-binary-assignment-operator-visitor/src"
+      ],
+      "@babel/helper-builder-react-jsx": [
+        "./packages/babel-helper-builder-react-jsx/src"
+      ],
       "@babel/helper-compilation-targets": [
         "./packages/babel-helper-compilation-targets/src"
       ],
@@ -60,6 +175,9 @@
       ],
       "@babel/helper-create-regexp-features-plugin": [
         "./packages/babel-helper-create-regexp-features-plugin/src"
+      ],
+      "@babel/helper-define-map": [
+        "./packages/babel-helper-define-map/src"
       ],
       "@babel/helper-explode-assignable-expression": [
         "./packages/babel-helper-explode-assignable-expression/src"
@@ -88,11 +206,23 @@
       "@babel/helper-optimise-call-expression": [
         "./packages/babel-helper-optimise-call-expression/src"
       ],
+      "@babel/helper-plugin-test-runner": [
+        "./packages/babel-helper-plugin-test-runner/src"
+      ],
+      "@babel/helper-plugin-utils": [
+        "./packages/babel-helper-plugin-utils/src"
+      ],
+      "@babel/helper-remap-async-to-generator": [
+        "./packages/babel-helper-remap-async-to-generator/src"
+      ],
       "@babel/helper-replace-supers": [
         "./packages/babel-helper-replace-supers/src"
       ],
       "@babel/helper-simple-access": [
         "./packages/babel-helper-simple-access/src"
+      ],
+      "@babel/helper-skip-transparent-expression-wrappers": [
+        "./packages/babel-helper-skip-transparent-expression-wrappers/src"
       ],
       "@babel/helper-split-export-declaration": [
         "./packages/babel-helper-split-export-declaration/src"
@@ -106,32 +236,323 @@
       "@babel/helper-validator-option": [
         "./packages/babel-helper-validator-option/src"
       ],
+      "@babel/helper-wrap-function": [
+        "./packages/babel-helper-wrap-function/src"
+      ],
+      "@babel/helpers": [
+        "./packages/babel-helpers/src"
+      ],
       "@babel/highlight": [
         "./packages/babel-highlight/src"
       ],
       "@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining": [
         "./packages/babel-plugin-bugfix-v8-spread-parameters-in-optional-chaining/src"
       ],
+      "@babel/plugin-external-helpers": [
+        "./packages/babel-plugin-external-helpers/src"
+      ],
       "@babel/plugin-proposal-async-do-expressions": [
         "./packages/babel-plugin-proposal-async-do-expressions/src"
+      ],
+      "@babel/plugin-proposal-async-generator-functions": [
+        "./packages/babel-plugin-proposal-async-generator-functions/src"
+      ],
+      "@babel/plugin-proposal-class-properties": [
+        "./packages/babel-plugin-proposal-class-properties/src"
+      ],
+      "@babel/plugin-proposal-class-static-block": [
+        "./packages/babel-plugin-proposal-class-static-block/src"
+      ],
+      "@babel/plugin-proposal-decorators": [
+        "./packages/babel-plugin-proposal-decorators/src"
+      ],
+      "@babel/plugin-proposal-do-expressions": [
+        "./packages/babel-plugin-proposal-do-expressions/src"
+      ],
+      "@babel/plugin-proposal-dynamic-import": [
+        "./packages/babel-plugin-proposal-dynamic-import/src"
+      ],
+      "@babel/plugin-proposal-export-default-from": [
+        "./packages/babel-plugin-proposal-export-default-from/src"
+      ],
+      "@babel/plugin-proposal-export-namespace-from": [
+        "./packages/babel-plugin-proposal-export-namespace-from/src"
+      ],
+      "@babel/plugin-proposal-function-bind": [
+        "./packages/babel-plugin-proposal-function-bind/src"
+      ],
+      "@babel/plugin-proposal-function-sent": [
+        "./packages/babel-plugin-proposal-function-sent/src"
+      ],
+      "@babel/plugin-proposal-json-strings": [
+        "./packages/babel-plugin-proposal-json-strings/src"
+      ],
+      "@babel/plugin-proposal-logical-assignment-operators": [
+        "./packages/babel-plugin-proposal-logical-assignment-operators/src"
+      ],
+      "@babel/plugin-proposal-nullish-coalescing-operator": [
+        "./packages/babel-plugin-proposal-nullish-coalescing-operator/src"
+      ],
+      "@babel/plugin-proposal-numeric-separator": [
+        "./packages/babel-plugin-proposal-numeric-separator/src"
+      ],
+      "@babel/plugin-proposal-object-rest-spread": [
+        "./packages/babel-plugin-proposal-object-rest-spread/src"
+      ],
+      "@babel/plugin-proposal-optional-catch-binding": [
+        "./packages/babel-plugin-proposal-optional-catch-binding/src"
+      ],
+      "@babel/plugin-proposal-optional-chaining": [
+        "./packages/babel-plugin-proposal-optional-chaining/src"
+      ],
+      "@babel/plugin-proposal-partial-application": [
+        "./packages/babel-plugin-proposal-partial-application/src"
+      ],
+      "@babel/plugin-proposal-pipeline-operator": [
+        "./packages/babel-plugin-proposal-pipeline-operator/src"
+      ],
+      "@babel/plugin-proposal-private-methods": [
+        "./packages/babel-plugin-proposal-private-methods/src"
+      ],
+      "@babel/plugin-proposal-private-property-in-object": [
+        "./packages/babel-plugin-proposal-private-property-in-object/src"
+      ],
+      "@babel/plugin-proposal-record-and-tuple": [
+        "./packages/babel-plugin-proposal-record-and-tuple/src"
+      ],
+      "@babel/plugin-proposal-throw-expressions": [
+        "./packages/babel-plugin-proposal-throw-expressions/src"
+      ],
+      "@babel/plugin-proposal-unicode-property-regex": [
+        "./packages/babel-plugin-proposal-unicode-property-regex/src"
       ],
       "@babel/plugin-syntax-async-do-expressions": [
         "./packages/babel-plugin-syntax-async-do-expressions/src"
       ],
+      "@babel/plugin-syntax-class-static-block": [
+        "./packages/babel-plugin-syntax-class-static-block/src"
+      ],
+      "@babel/plugin-syntax-decimal": [
+        "./packages/babel-plugin-syntax-decimal/src"
+      ],
+      "@babel/plugin-syntax-decorators": [
+        "./packages/babel-plugin-syntax-decorators/src"
+      ],
+      "@babel/plugin-syntax-do-expressions": [
+        "./packages/babel-plugin-syntax-do-expressions/src"
+      ],
+      "@babel/plugin-syntax-export-default-from": [
+        "./packages/babel-plugin-syntax-export-default-from/src"
+      ],
+      "@babel/plugin-syntax-flow": [
+        "./packages/babel-plugin-syntax-flow/src"
+      ],
+      "@babel/plugin-syntax-function-bind": [
+        "./packages/babel-plugin-syntax-function-bind/src"
+      ],
+      "@babel/plugin-syntax-function-sent": [
+        "./packages/babel-plugin-syntax-function-sent/src"
+      ],
+      "@babel/plugin-syntax-import-assertions": [
+        "./packages/babel-plugin-syntax-import-assertions/src"
+      ],
+      "@babel/plugin-syntax-jsx": [
+        "./packages/babel-plugin-syntax-jsx/src"
+      ],
+      "@babel/plugin-syntax-module-blocks": [
+        "./packages/babel-plugin-syntax-module-blocks/src"
+      ],
+      "@babel/plugin-syntax-partial-application": [
+        "./packages/babel-plugin-syntax-partial-application/src"
+      ],
+      "@babel/plugin-syntax-pipeline-operator": [
+        "./packages/babel-plugin-syntax-pipeline-operator/src"
+      ],
+      "@babel/plugin-syntax-private-property-in-object": [
+        "./packages/babel-plugin-syntax-private-property-in-object/src"
+      ],
+      "@babel/plugin-syntax-record-and-tuple": [
+        "./packages/babel-plugin-syntax-record-and-tuple/src"
+      ],
+      "@babel/plugin-syntax-throw-expressions": [
+        "./packages/babel-plugin-syntax-throw-expressions/src"
+      ],
+      "@babel/plugin-syntax-top-level-await": [
+        "./packages/babel-plugin-syntax-top-level-await/src"
+      ],
+      "@babel/plugin-syntax-typescript": [
+        "./packages/babel-plugin-syntax-typescript/src"
+      ],
+      "@babel/plugin-transform-arrow-functions": [
+        "./packages/babel-plugin-transform-arrow-functions/src"
+      ],
+      "@babel/plugin-transform-async-to-generator": [
+        "./packages/babel-plugin-transform-async-to-generator/src"
+      ],
+      "@babel/plugin-transform-block-scoped-functions": [
+        "./packages/babel-plugin-transform-block-scoped-functions/src"
+      ],
+      "@babel/plugin-transform-block-scoping": [
+        "./packages/babel-plugin-transform-block-scoping/src"
+      ],
       "@babel/plugin-transform-classes": [
         "./packages/babel-plugin-transform-classes/src"
+      ],
+      "@babel/plugin-transform-computed-properties": [
+        "./packages/babel-plugin-transform-computed-properties/src"
+      ],
+      "@babel/plugin-transform-destructuring": [
+        "./packages/babel-plugin-transform-destructuring/src"
+      ],
+      "@babel/plugin-transform-dotall-regex": [
+        "./packages/babel-plugin-transform-dotall-regex/src"
+      ],
+      "@babel/plugin-transform-duplicate-keys": [
+        "./packages/babel-plugin-transform-duplicate-keys/src"
+      ],
+      "@babel/plugin-transform-exponentiation-operator": [
+        "./packages/babel-plugin-transform-exponentiation-operator/src"
+      ],
+      "@babel/plugin-transform-flow-comments": [
+        "./packages/babel-plugin-transform-flow-comments/src"
+      ],
+      "@babel/plugin-transform-flow-strip-types": [
+        "./packages/babel-plugin-transform-flow-strip-types/src"
+      ],
+      "@babel/plugin-transform-for-of": [
+        "./packages/babel-plugin-transform-for-of/src"
+      ],
+      "@babel/plugin-transform-function-name": [
+        "./packages/babel-plugin-transform-function-name/src"
+      ],
+      "@babel/plugin-transform-instanceof": [
+        "./packages/babel-plugin-transform-instanceof/src"
+      ],
+      "@babel/plugin-transform-jscript": [
+        "./packages/babel-plugin-transform-jscript/src"
+      ],
+      "@babel/plugin-transform-literals": [
+        "./packages/babel-plugin-transform-literals/src"
+      ],
+      "@babel/plugin-transform-member-expression-literals": [
+        "./packages/babel-plugin-transform-member-expression-literals/src"
+      ],
+      "@babel/plugin-transform-modules-amd": [
+        "./packages/babel-plugin-transform-modules-amd/src"
+      ],
+      "@babel/plugin-transform-modules-commonjs": [
+        "./packages/babel-plugin-transform-modules-commonjs/src"
+      ],
+      "@babel/plugin-transform-modules-systemjs": [
+        "./packages/babel-plugin-transform-modules-systemjs/src"
+      ],
+      "@babel/plugin-transform-modules-umd": [
+        "./packages/babel-plugin-transform-modules-umd/src"
+      ],
+      "@babel/plugin-transform-named-capturing-groups-regex": [
+        "./packages/babel-plugin-transform-named-capturing-groups-regex/src"
+      ],
+      "@babel/plugin-transform-new-target": [
+        "./packages/babel-plugin-transform-new-target/src"
+      ],
+      "@babel/plugin-transform-object-assign": [
+        "./packages/babel-plugin-transform-object-assign/src"
+      ],
+      "@babel/plugin-transform-object-set-prototype-of-to-assign": [
+        "./packages/babel-plugin-transform-object-set-prototype-of-to-assign/src"
+      ],
+      "@babel/plugin-transform-object-super": [
+        "./packages/babel-plugin-transform-object-super/src"
+      ],
+      "@babel/plugin-transform-parameters": [
+        "./packages/babel-plugin-transform-parameters/src"
+      ],
+      "@babel/plugin-transform-property-literals": [
+        "./packages/babel-plugin-transform-property-literals/src"
+      ],
+      "@babel/plugin-transform-property-mutators": [
+        "./packages/babel-plugin-transform-property-mutators/src"
+      ],
+      "@babel/plugin-transform-proto-to-assign": [
+        "./packages/babel-plugin-transform-proto-to-assign/src"
+      ],
+      "@babel/plugin-transform-react-constant-elements": [
+        "./packages/babel-plugin-transform-react-constant-elements/src"
+      ],
+      "@babel/plugin-transform-react-display-name": [
+        "./packages/babel-plugin-transform-react-display-name/src"
+      ],
+      "@babel/plugin-transform-react-inline-elements": [
+        "./packages/babel-plugin-transform-react-inline-elements/src"
       ],
       "@babel/plugin-transform-react-jsx": [
         "./packages/babel-plugin-transform-react-jsx/src"
       ],
+      "@babel/plugin-transform-react-jsx-compat": [
+        "./packages/babel-plugin-transform-react-jsx-compat/src"
+      ],
+      "@babel/plugin-transform-react-jsx-development": [
+        "./packages/babel-plugin-transform-react-jsx-development/src"
+      ],
+      "@babel/plugin-transform-react-jsx-self": [
+        "./packages/babel-plugin-transform-react-jsx-self/src"
+      ],
+      "@babel/plugin-transform-react-jsx-source": [
+        "./packages/babel-plugin-transform-react-jsx-source/src"
+      ],
+      "@babel/plugin-transform-react-pure-annotations": [
+        "./packages/babel-plugin-transform-react-pure-annotations/src"
+      ],
+      "@babel/plugin-transform-regenerator": [
+        "./packages/babel-plugin-transform-regenerator/src"
+      ],
+      "@babel/plugin-transform-reserved-words": [
+        "./packages/babel-plugin-transform-reserved-words/src"
+      ],
       "@babel/plugin-transform-runtime": [
         "./packages/babel-plugin-transform-runtime/src"
+      ],
+      "@babel/plugin-transform-shorthand-properties": [
+        "./packages/babel-plugin-transform-shorthand-properties/src"
+      ],
+      "@babel/plugin-transform-spread": [
+        "./packages/babel-plugin-transform-spread/src"
+      ],
+      "@babel/plugin-transform-sticky-regex": [
+        "./packages/babel-plugin-transform-sticky-regex/src"
+      ],
+      "@babel/plugin-transform-strict-mode": [
+        "./packages/babel-plugin-transform-strict-mode/src"
+      ],
+      "@babel/plugin-transform-template-literals": [
+        "./packages/babel-plugin-transform-template-literals/src"
+      ],
+      "@babel/plugin-transform-typeof-symbol": [
+        "./packages/babel-plugin-transform-typeof-symbol/src"
       ],
       "@babel/plugin-transform-typescript": [
         "./packages/babel-plugin-transform-typescript/src"
       ],
+      "@babel/plugin-transform-unicode-escapes": [
+        "./packages/babel-plugin-transform-unicode-escapes/src"
+      ],
+      "@babel/plugin-transform-unicode-regex": [
+        "./packages/babel-plugin-transform-unicode-regex/src"
+      ],
       "@babel/preset-env": [
         "./packages/babel-preset-env/src"
+      ],
+      "@babel/preset-flow": [
+        "./packages/babel-preset-flow/src"
+      ],
+      "@babel/preset-react": [
+        "./packages/babel-preset-react/src"
+      ],
+      "@babel/preset-typescript": [
+        "./packages/babel-preset-typescript/src"
+      ],
+      "@babel/register": [
+        "./packages/babel-register/src"
       ],
       "@babel/standalone": [
         "./packages/babel-standalone/src"
@@ -144,6 +565,21 @@
       ],
       "@babel/types": [
         "./packages/babel-types/src"
+      ],
+      "@babel/eslint-plugin": [
+        "./eslint/babel-eslint-plugin/src"
+      ],
+      "@babel/eslint-plugin-development": [
+        "./eslint/babel-eslint-plugin-development/src"
+      ],
+      "@babel/eslint-plugin-development-internal": [
+        "./eslint/babel-eslint-plugin-development-internal/src"
+      ],
+      "@babel/plugin-codemod-object-assign-to-object-spread": [
+        "./codemods/babel-plugin-codemod-object-assign-to-object-spread/src"
+      ],
+      "@babel/plugin-codemod-optional-catch-binding": [
+        "./codemods/babel-plugin-codemod-optional-catch-binding/src"
       ]
     }
   }
