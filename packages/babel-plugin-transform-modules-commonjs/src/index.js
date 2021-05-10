@@ -40,6 +40,8 @@ export default declare((api, options) => {
     api.assumption("constantReexports") ?? options.loose;
   const enumerableModuleMeta =
     api.assumption("enumerableModuleMeta") ?? options.loose;
+  const noIncompleteNsImportDetection =
+    api.assumption("noIncompleteNsImportDetection") ?? false;
 
   if (
     typeof lazy !== "boolean" &&
@@ -186,6 +188,7 @@ export default declare((api, options) => {
                 /\.mjs$/.test(state.filename)
                   ? mjsStrictNamespace
                   : strictNamespace,
+              noIncompleteNsImportDetection,
             },
           );
 
