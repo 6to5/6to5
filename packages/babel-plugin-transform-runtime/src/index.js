@@ -233,7 +233,7 @@ export default declare((api, options, dirname) => {
             : "helpers";
 
         return addDefaultImport(
-          `${modulePath}/${helpersDir}/${name}`,
+          `${modulePath}/${helpersDir}/${name}${absoluteRuntime ? ".js" : ""}`,
           name,
           blockHoist,
           true,

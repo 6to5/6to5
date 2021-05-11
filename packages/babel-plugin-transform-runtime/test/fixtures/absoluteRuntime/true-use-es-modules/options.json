@@ -1,0 +1,6 @@
+{
+  "plugins": [
+    "transform-classes",
+    ["transform-runtime", { "absoluteRuntime": true, "useESModules": true }]
+  ]
+}

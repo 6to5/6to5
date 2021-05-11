@@ -1,4 +1,4 @@
-var _regeneratorRuntime = require("<CWD>/packages/babel-runtime-corejs3/regenerator");
+var _regeneratorRuntime = require("<CWD>/packages/babel-runtime-corejs3/regenerator/index.js");
 
 var _mapInstanceProperty = require("<CWD>/packages/babel-runtime-corejs3/core-js/instance/map.js");
 
