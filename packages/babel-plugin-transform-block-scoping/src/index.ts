@@ -674,10 +674,8 @@ class BlockScoping {
     // continuation
     this.addContinuations(fn);
 
-    let call:
-      | t.CallExpression
-      | t.YieldExpression
-      | t.AwaitExpression = t.callExpression(t.nullLiteral(), args);
+    let call: t.CallExpression | t.YieldExpression | t.AwaitExpression =
+      t.callExpression(t.nullLiteral(), args);
     let basePath = ".callee";
 
     // handle generators
