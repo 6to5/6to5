@@ -55,9 +55,9 @@ function classOrObjectMethod(
   node.generator = false;
 
   // Unwrap the wrapper IIFE's environment so super and this and such still work.
-  (path.get(
-    "body.body.0.argument.callee.arguments.0",
-  ) as NodePath).unwrapFunctionEnvironment();
+  (
+    path.get("body.body.0.argument.callee.arguments.0") as NodePath
+  ).unwrapFunctionEnvironment();
 }
 
 function plainFunction(path: NodePath<any>, callId: any, noNewArrows: boolean) {
