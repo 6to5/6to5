@@ -256,7 +256,7 @@ export function VariableDeclaration(
   let hasInits = false;
   // don't add whitespace to loop heads
   if (!t.isFor(parent)) {
-    for (const declar of node.declarations as Array<any>) {
+    for (const declar of node.declarations) {
       if (declar.init) {
         // has an init so let's split it up over multiple lines
         hasInits = true;
