@@ -123,7 +123,7 @@ export default declare((api, options) => {
         exit(path, state) {
           const { node, parent, scope } = path;
           let hasComputed = false;
-          for (const prop of node.properties as Array<any>) {
+          for (const prop of node.properties) {
             hasComputed = prop.computed === true;
             if (hasComputed) break;
           }
