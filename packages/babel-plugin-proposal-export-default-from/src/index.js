@@ -33,8 +33,12 @@ export default declare(api => {
           nodes.push(node);
         }
 
-        const [importDeclaration] = path.replaceWithMultiple(nodes);
-        path.scope.registerDeclaration(importDeclaration);
+        const [
+          importDeclaration,
+          exportNamedDeclaration,
+        ] = path.replaceWithMultiple(nodes);
+        scope.registerDeclaration(importDeclaration);
+        scope.getBinding(uid.name).reference(exportNamedDeclaration);
       },
     },
   };

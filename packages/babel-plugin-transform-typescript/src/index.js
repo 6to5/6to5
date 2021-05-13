@@ -174,115 +174,87 @@ export default declare((api, opts) => {
       Identifier: visitPattern,
       RestElement: visitPattern,
 
-      Program(path, state) {
-        const { file } = state;
-        let fileJsxPragma = null;
-        let fileJsxPragmaFrag = null;
+      Program: {
+        enter(path, state) {
+          const { file } = state;
+          let fileJsxPragma = null;
+          let fileJsxPragmaFrag = null;
 
-        if (!GLOBAL_TYPES.has(path.node)) {
-          GLOBAL_TYPES.set(path.node, new Set());
-        }
-
-        if (file.ast.comments) {
-          for (const comment of (file.ast.comments: Array<Object>)) {
-            const jsxMatches = JSX_PRAGMA_REGEX.exec(comment.value);
-            if (jsxMatches) {
-              if (jsxMatches[1]) {
-                // isFragment
-                fileJsxPragmaFrag = jsxMatches[2];
-              } else {
-                fileJsxPragma = jsxMatches[2];
-              }
-            }
+          if (!GLOBAL_TYPES.has(path.node)) {
+            GLOBAL_TYPES.set(path.node, new Set());
           }
-        }
 
-        let pragmaImportName = fileJsxPragma || jsxPragma;
-        if (pragmaImportName) {
-          [pragmaImportName] = pragmaImportName.split(".");
-        }
-
-        let pragmaFragImportName = fileJsxPragmaFrag || jsxPragmaFrag;
-        if (pragmaFragImportName) {
-          [pragmaFragImportName] = pragmaFragImportName.split(".");
-        }
-
-        // remove type imports
-        for (let stmt of path.get("body")) {
-          if (t.isImportDeclaration(stmt)) {
-            if (stmt.node.importKind === "type") {
-              stmt.remove();
-              continue;
-            }
-
-            // If onlyRemoveTypeImports is `true`, only remove type-only imports
-            // and exports introduced in TypeScript 3.8.
-            if (!onlyRemoveTypeImports) {
-              // Note: this will allow both `import { } from "m"` and `import "m";`.
-              // In TypeScript, the former would be elided.
-              if (stmt.node.specifiers.length === 0) {
-                continue;
-              }
-
-              let allElided = true;
-              const importsToRemove: Path<Node>[] = [];
-
-              for (const specifier of stmt.node.specifiers) {
-                const binding = stmt.scope.getBinding(specifier.local.name);
-
-                // The binding may not exist if the import node was explicitly
-                // injected by another plugin. Currently core does not do a good job
-                // of keeping scope bindings synchronized with the AST. For now we
-                // just bail if there is no binding, since chances are good that if
-                // the import statement was injected then it wasn't a typescript type
-                // import anyway.
-                if (
-                  binding &&
-                  isImportTypeOnly({
-                    binding,
-                    programPath: path,
-                    pragmaImportName,
-                    pragmaFragImportName,
-                  })
-                ) {
-                  importsToRemove.push(binding.path);
+          if (file.ast.comments) {
+            for (const comment of (file.ast.comments: Array<Object>)) {
+              const jsxMatches = JSX_PRAGMA_REGEX.exec(comment.value);
+              if (jsxMatches) {
+                if (jsxMatches[1]) {
+                  // isFragment
+                  fileJsxPragmaFrag = jsxMatches[2];
                 } else {
-                  allElided = false;
-                }
-              }
-
-              if (allElided) {
-                stmt.remove();
-              } else {
-                for (const importPath of importsToRemove) {
-                  importPath.remove();
+                  fileJsxPragma = jsxMatches[2];
                 }
               }
             }
-
-            continue;
           }
 
-          if (stmt.isExportDeclaration()) {
-            stmt = stmt.get("declaration");
+          let pragmaImportName = fileJsxPragma || jsxPragma;
+          if (pragmaImportName) {
+            [pragmaImportName] = pragmaImportName.split(".");
           }
+          state.pragmaImportName = pragmaImportName;
 
-          if (stmt.isVariableDeclaration({ declare: true })) {
-            for (const name of Object.keys(stmt.getBindingIdentifiers())) {
-              registerGlobalType(path.scope, name);
+          let pragmaFragImportName = fileJsxPragmaFrag || jsxPragmaFrag;
+          if (pragmaFragImportName) {
+            [pragmaFragImportName] = pragmaFragImportName.split(".");
+          }
+          state.pragmaFragImportName = pragmaFragImportName;
+
+          for (let stmt of path.get("body")) {
+            if (!process.env.BABEL_8_BREAKING) {
+              if (t.isImportDeclaration(stmt)) {
+                removeTypeImport(stmt, path, {
+                  onlyRemoveTypeImports,
+                  pragmaImportName,
+                  pragmaFragImportName,
+                });
+              }
             }
-          } else if (
-            stmt.isTSTypeAliasDeclaration() ||
-            stmt.isTSDeclareFunction() ||
-            stmt.isTSInterfaceDeclaration() ||
-            stmt.isClassDeclaration({ declare: true }) ||
-            stmt.isTSEnumDeclaration({ declare: true }) ||
-            (stmt.isTSModuleDeclaration({ declare: true }) &&
-              stmt.get("id").isIdentifier())
-          ) {
-            registerGlobalType(path.scope, stmt.node.id.name);
+
+            if (stmt.isExportDeclaration()) {
+              stmt = stmt.get("declaration");
+            }
+
+            if (stmt.isVariableDeclaration({ declare: true })) {
+              for (const name of Object.keys(stmt.getBindingIdentifiers())) {
+                registerGlobalType(path.scope, name);
+              }
+            } else if (
+              stmt.isTSTypeAliasDeclaration() ||
+              stmt.isTSDeclareFunction() ||
+              stmt.isTSInterfaceDeclaration() ||
+              stmt.isClassDeclaration({ declare: true }) ||
+              stmt.isTSEnumDeclaration({ declare: true }) ||
+              (stmt.isTSModuleDeclaration({ declare: true }) &&
+                stmt.get("id").isIdentifier())
+            ) {
+              registerGlobalType(path.scope, stmt.node.id.name);
+            }
           }
-        }
+        },
+        exit(path, state) {
+          if (process.env.BABEL_8_BREAKING) {
+            for (const stmt of path.get("body")) {
+              if (t.isImportDeclaration(stmt)) {
+                removeTypeImport(stmt, path, {
+                  onlyRemoveTypeImports,
+                  pragmaImportName: state.pragmaImportName,
+                  pragmaFragImportName: state.pragmaFragImportName,
+                });
+              }
+            }
+          }
+        },
       },
 
       ExportNamedDeclaration(path) {
@@ -481,34 +453,117 @@ export default declare((api, opts) => {
     if (t.isIdentifier(node) && node.optional) node.optional = null;
     // 'access' and 'readonly' are only for parameter properties, so constructor visitor will handle them.
   }
+});
 
-  function isImportTypeOnly({
-    binding,
-    programPath,
+function isImportTypeOnly({
+  binding,
+  programPath,
+  pragmaImportName,
+  pragmaFragImportName,
+}) {
+  for (const path of binding.referencePaths) {
+    if (!isInType(path)) {
+      return false;
+    }
+  }
+
+  if (
+    binding.identifier.name !== pragmaImportName &&
+    binding.identifier.name !== pragmaFragImportName
+  ) {
+    return true;
+  }
+
+  // "React" or the JSX pragma is referenced as a value if there are any JSX elements/fragments in the code.
+  let sourceFileHasJsx = false;
+  programPath.traverse({
+    "JSXElement|JSXFragment"(path) {
+      sourceFileHasJsx = true;
+      path.stop();
+    },
+  });
+  return !sourceFileHasJsx;
+}
+
+/**
+ * Remove given path if it is type imports.
+ * The following import declarations are type imports
+ * import type Person from "./person"
+ * import Puppy from "./puppy"; function feed(puppy: Puppy) {}
+ *
+ * @param {NodePath<t.ImportDeclaration>} path
+ * @param {NodePath<t.Program>} programPath
+ * @param {{
+ *     onlyRemoveTypeImports: boolean,
+ *     pragmaImportName: string,
+ *     pragmaFragImportName: string,
+ *   }} {
+ *     onlyRemoveTypeImports, // only remove `import type` imports available since TS 3.8
+ *     pragmaImportName, // the JSX pragma import name, e.g. React. It should not be removed when the `programPath` contains JSX elements
+ *     pragmaFragImportName, // the JSX Fragment pragma import name, e.g. React.fragment. It should not be removed when the `programPath` contains JSX elements
+ *   }
+ */
+function removeTypeImport(
+  path: NodePath<t.ImportDeclaration>,
+  programPath: NodePath<t.Program>,
+  {
+    onlyRemoveTypeImports,
     pragmaImportName,
     pragmaFragImportName,
-  }) {
-    for (const path of binding.referencePaths) {
-      if (!isInType(path)) {
-        return false;
+  }: {
+    onlyRemoveTypeImports: boolean,
+    pragmaImportName: string,
+    pragmaFragImportName: string,
+  },
+): void {
+  // remove type imports
+  if (path.node.importKind === "type") {
+    path.remove();
+    return;
+  }
+
+  // If onlyRemoveTypeImports is `true`, only remove type-only imports
+  // and exports introduced in TypeScript 3.8.
+  if (!onlyRemoveTypeImports) {
+    // Note: this will allow both `import { } from "m"` and `import "m";`.
+    // In TypeScript, the former would be elided.
+    if (path.node.specifiers.length === 0) {
+      return;
+    }
+
+    let allElided = true;
+    const importsToRemove: Path<Node>[] = [];
+
+    for (const specifier of path.node.specifiers) {
+      const binding = path.scope.getBinding(specifier.local.name);
+
+      // The binding may not exist if the import node was explicitly
+      // injected by another plugin. Currently core does not do a good job
+      // of keeping scope bindings synchronized with the AST. For now we
+      // just bail if there is no binding, since chances are good that if
+      // the import statement was injected then it wasn't a typescript type
+      // import anyway.
+      if (
+        binding &&
+        isImportTypeOnly({
+          binding,
+          programPath,
+          pragmaImportName,
+          pragmaFragImportName,
+        })
+      ) {
+        importsToRemove.push(binding.path);
+      } else {
+        allElided = false;
       }
     }
 
-    if (
-      binding.identifier.name !== pragmaImportName &&
-      binding.identifier.name !== pragmaFragImportName
-    ) {
-      return true;
+    if (allElided) {
+      path.remove();
+    } else {
+      for (const importPath of importsToRemove) {
+        importPath.remove();
+      }
     }
-
-    // "React" or the JSX pragma is referenced as a value if there are any JSX elements/fragments in the code.
-    let sourceFileHasJsx = false;
-    programPath.traverse({
-      "JSXElement|JSXFragment"(path) {
-        sourceFileHasJsx = true;
-        path.stop();
-      },
-    });
-    return !sourceFileHasJsx;
   }
-});
+}
