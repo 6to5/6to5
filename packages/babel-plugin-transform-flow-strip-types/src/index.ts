@@ -33,7 +33,7 @@ export default declare((api, opts) => {
         let directiveFound = false;
 
         if (comments) {
-          for (const comment of comments as Array<any>) {
+          for (const comment of comments) {
             if (FLOW_DIRECTIVE.test(comment.value)) {
               directiveFound = true;
 
