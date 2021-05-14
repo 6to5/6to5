@@ -90,9 +90,6 @@ export default function privateToFields(api) {
         const meta = el.node.static ? staticMeta : instanceMeta;
 
         if (el.isClassPrivateProperty()) {
-          if (!el.node) {
-            throw new Error("NO NODE");
-          }
           meta.privFields.push(el.node);
           eltsToRemove.push(el);
           continue;

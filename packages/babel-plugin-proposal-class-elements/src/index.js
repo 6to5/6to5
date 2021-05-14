@@ -5,6 +5,7 @@ import { traverse } from "@babel/core";
 import { isRequired } from "@babel/helper-compilation-targets";
 import compatData from "@babel/compat-data/es";
 
+import toES6Classes from "./transforms/target-es6-classes";
 import toPublicFields from "./transforms/target-public-fields";
 import toPrivateFields from "./transforms/target-private-fields";
 import privateOptionalChain from "./transforms/private-optional-chain";
@@ -20,7 +21,7 @@ export default declare((api, options) => {
         ".compilePrivateOptional can only be enabled when .targetSyntax is 'privateFields'",
       );
     }
-    // TODO
+    visitor = toES6Classes(api);
   } else if (options.targetSyntax === "publicFields") {
     if (options.compilePrivateOptional) {
       throw new Error(

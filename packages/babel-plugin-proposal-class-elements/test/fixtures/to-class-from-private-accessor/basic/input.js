@@ -21,10 +21,3 @@ class Cl {
     this.#privateFieldValue = newValue;
   }
 }
-
-const cl = new Cl();
-
-expect(cl.publicGetPrivateField()).toEqual("top secret string");
-
-cl.publicSetPrivateField("new secret string");
-expect(cl.publicGetPrivateField()).toEqual("new secret string");
