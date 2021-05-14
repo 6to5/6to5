@@ -3,7 +3,7 @@
 import fs from "fs";
 
 import commander from "commander";
-import { version } from "@babel/core";
+import { loadOptions, version } from "@babel/core";
 import glob from "glob";
 
 // Standard Babel input configs.
@@ -307,7 +307,7 @@ export default function parseArgv(args: Array<string>): CmdOptions | null {
     }
   }
 
-  return {
+  var opts = {
     babelOptions,
     cliOptions: {
       filename: opts.filename,
@@ -329,6 +329,12 @@ export default function parseArgv(args: Array<string>): CmdOptions | null {
       sourceMapTarget: opts.sourceMapTarget,
     },
   };
+
+  if (babelOptions.sourceMaps === undefined) {
+    babelOptions.sourceMaps = loadOptions({filename: ""}).sourceMaps;
+  }
+  
+  return opts;
 }
 
 function booleanify(val: any): boolean | any {
