@@ -63,9 +63,8 @@ jobs:
     name: Build Babel Artifacts
     needs: prepare-yarn-cache
     runs-on: ubuntu-latest
-    # Yarn PnP does not support native ESM yet (https://github.com/yarnpkg/berry/issues/638)
-    # env:
-    #    YARN_NODE_LINKER: pnp # use pnp linker for better linking performance and stricter checks
+    env:
+      YARN_NODE_LINKER: pnp # use pnp linker for better linking performance and stricter checks
     steps:
       - name: Checkout code
         uses: actions/checkout@v2

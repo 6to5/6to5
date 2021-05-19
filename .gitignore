@@ -5,6 +5,8 @@
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.js
+.pnp.cjs
+.pnp-loader.mjs
 
 .DS_Store
 **/node_modules
