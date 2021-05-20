@@ -64,6 +64,6 @@ node -e "
 
 # Update deps, build and test
 rm yarn.lock
-make -j test-ci
+YARN_ENABLE_IMMUTABLE_INSTALLS=false make -j test-ci
 
 cleanup

@@ -32,7 +32,7 @@ jobs:
           YARN_ENABLE_SCRIPTS: false # disable post-install scripts
           YARN_NODE_LINKER: pnp # use pnp linker for better linking performance: it's meant to update yarn cache only
         run: |
-          yarn install --immutable --skip-builds
+          yarn install --skip-builds
 
   test-coverage:
     name: Test on Node.js Latest
@@ -63,9 +63,8 @@ jobs:
     name: Build Babel Artifacts
     needs: prepare-yarn-cache
     runs-on: ubuntu-latest
-    # Yarn PnP does not support native ESM yet (https://github.com/yarnpkg/berry/issues/638)
-    # env:
-    #    YARN_NODE_LINKER: pnp # use pnp linker for better linking performance and stricter checks
+    env:
+      YARN_NODE_LINKER: pnp # use pnp linker for better linking performance and stricter checks
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -309,6 +308,10 @@ jobs:
           "
       - name: Install
         run: yarn install
+        env:
+          # The "Support self-references on old Node.js" step mutates the
+          # package.json file, causing a yarn.lock update.
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
       - uses: actions/download-artifact@v2
         with:
           name: babel-artifact
@@ -326,7 +329,7 @@ jobs:
         with:
           node-version: 10
       - name: Test Node.js 10
-        run: yarn test:runtime:node
+        run: node test/runtime-integration/node.cjs
       - name: Use Node.js 12.0
         uses: actions/setup-node@v2-beta
         with:

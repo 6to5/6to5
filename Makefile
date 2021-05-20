@@ -181,7 +181,6 @@ prepublish-prepare-dts:
 	$(MAKE) build-typescript-legacy-typings
 
 prepublish:
-	$(MAKE) check-yarn-bug-1882
 	$(MAKE) bootstrap-only
 	$(MAKE) prepublish-build
 	IS_PUBLISH=true $(MAKE) test
@@ -213,19 +212,11 @@ publish:
 	$(YARN) release-tool publish
 	$(MAKE) clean
 
-check-yarn-bug-1882:
-ifneq ("$(shell grep 3155328e5 .yarn/releases/yarn-*.cjs -c)", "0")
-	@echo "Your version of yarn is affected by https://github.com/yarnpkg/berry/issues/1882"
-	@echo "Please run \`sed -i -e "s/3155328e5/4567890e5/g" .yarn/releases/yarn-*.cjs\`"
-	@exit 1
-endif
-
 publish-test:
 ifneq ("$(I_AM_USING_VERDACCIO)", "I_AM_SURE")
 	echo "You probably don't know what you are doing"
 	exit 1
 endif
-	$(MAKE) check-yarn-bug-1882
 	$(YARN) release-tool version $(VERSION) --all --yes --tag-version-prefix="version-e2e-test-"
 	$(MAKE) prepublish-build
 	YARN_NPM_PUBLISH_REGISTRY=http://localhost:4873 $(YARN) release-tool publish --yes --tag-version-prefix="version-e2e-test-"

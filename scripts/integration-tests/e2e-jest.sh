@@ -47,6 +47,13 @@ if [ "$BABEL_8_BREAKING" = true ] ; then
 
   # Jest depends on @types/babel__traverse for Babel 7, and they contain the removed Noop node
   sed -i 's/t.Noop/any/g' node_modules/@types/babel__traverse/index.d.ts
+
+  node -e "
+    var pkg = require('./package.json');
+    pkg.resolutions || (pkg.resolutions = {});
+    pkg.resolutions['@types/babel__traverse/@babel/types'] = 'latest';
+    fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2));
+  "
 fi
 
 yarn build
