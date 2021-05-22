@@ -100,7 +100,7 @@ export default class State {
     trailingComments: Array<N.Comment> | undefined | null;
     type: string;
   }> = [];
-  // $FlowIgnore this is initialized when the parser starts.
+  // @ts-ignore todo($FlowIgnore) this is initialized when the parser starts.
   commentPreviousNode: N.Node = null;
 
   // The current position of the tokenizer in the input.
@@ -119,9 +119,9 @@ export default class State {
   end: number = 0;
 
   // Position information for the previous token
-  // $FlowIgnore this is initialized when generating the second token.
+  // @ts-ignore todo($FlowIgnore) this is initialized when generating the second token.
   lastTokEndLoc: Position = null;
-  // $FlowIgnore this is initialized when generating the second token.
+  // @ts-ignore todo($FlowIgnore) this is initialized when generating the second token.
   lastTokStartLoc: Position = null;
   lastTokStart: number = 0;
   lastTokEnd: number = 0;
@@ -163,14 +163,14 @@ export default class State {
     const keys = Object.keys(this);
     for (let i = 0, length = keys.length; i < length; i++) {
       const key = keys[i];
-      // $FlowIgnore
+      // @ts-ignore todo($FlowIgnore)
       let val = this[key];
 
       if (!skipArrays && Array.isArray(val)) {
         val = val.slice();
       }
 
-      // $FlowIgnore
+      // @ts-ignore todo($FlowIgnore)
       state[key] = val;
     }
 

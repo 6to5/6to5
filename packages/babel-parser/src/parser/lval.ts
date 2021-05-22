@@ -316,7 +316,7 @@ export default class LValParser extends NodeUtils {
         this.expect(tt.comma);
       }
       if (allowEmpty && this.match(tt.comma)) {
-        // $FlowFixMe This method returns `$ReadOnlyArray<?Pattern>` if `allowEmpty` is set.
+        // @ts-expect-error todo($FlowFixMe) This method returns `$ReadOnlyArray<?Pattern>` if `allowEmpty` is set.
         elts.push(null);
       } else if (this.eat(close)) {
         break;
@@ -367,7 +367,7 @@ export default class LValParser extends NodeUtils {
   ): Pattern {
     startLoc = startLoc ?? this.state.startLoc;
     startPos = startPos ?? this.state.start;
-    // $FlowIgnore
+    // @ts-ignore todo($FlowIgnore)
     left = left ?? this.parseBindingAtom();
     if (!this.eat(tt.eq)) return left;
 

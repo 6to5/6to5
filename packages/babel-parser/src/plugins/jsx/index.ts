@@ -497,25 +497,25 @@ export default (superClass: {
 
         if (isFragment(openingElement) && !isFragment(closingElement)) {
           this.raise(
-            // $FlowIgnore
+            // @ts-ignore todo($FlowIgnore)
             closingElement.start,
             JsxErrors.MissingClosingTagFragment,
           );
         } else if (!isFragment(openingElement) && isFragment(closingElement)) {
           this.raise(
-            // $FlowIgnore
+            // @ts-ignore todo($FlowIgnore)
             closingElement.start,
             JsxErrors.MissingClosingTagElement,
             getQualifiedJSXName(openingElement.name),
           );
         } else if (!isFragment(openingElement) && !isFragment(closingElement)) {
           if (
-            // $FlowIgnore
+            // @ts-ignore todo($FlowIgnore)
             getQualifiedJSXName(closingElement.name) !==
             getQualifiedJSXName(openingElement.name)
           ) {
             this.raise(
-              // $FlowIgnore
+              // @ts-ignore todo($FlowIgnore)
               closingElement.start,
               JsxErrors.MissingClosingTagElement,
               getQualifiedJSXName(openingElement.name),

@@ -198,7 +198,7 @@ export default class Tokenizer extends ParserErrors {
   nextTokenStartSince(pos: number): number {
     skipWhiteSpace.lastIndex = pos;
     const skip = skipWhiteSpace.exec(this.input);
-    // $FlowIgnore: The skipWhiteSpace ensures to match any string
+    // @ts-ignore todo($FlowIgnore): The skipWhiteSpace ensures to match any string
     return pos + skip[0].length;
   }
 
@@ -1257,7 +1257,7 @@ export default class Tokenizer extends ParserErrors {
       if (ch === quote) break;
       if (ch === charCodes.backslash) {
         out += this.input.slice(chunkStart, this.state.pos);
-        // $FlowFixMe
+        // @ts-expect-error todo($FlowFixMe)
         out += this.readEscapedChar(false);
         chunkStart = this.state.pos;
       } else if (

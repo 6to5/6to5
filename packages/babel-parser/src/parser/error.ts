@@ -136,7 +136,7 @@ export default class ParserError extends CommentsParser {
   }
 
   _raise(errorContext: ErrorContext, message: string): Error | never {
-    // $FlowIgnore
+    // @ts-ignore todo($FlowIgnore)
     const err: SyntaxError & ErrorContext = new SyntaxError(message);
     Object.assign(err, errorContext);
     if (this.options.errorRecovery) {

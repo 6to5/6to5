@@ -29,7 +29,7 @@ class Node implements NodeBase {
   };
 
   __clone(): this {
-    // $FlowIgnore
+    // @ts-ignore todo($FlowIgnore)
     const newNode: any = new Node();
     const keys = Object.keys(this);
     for (let i = 0, length = keys.length; i < length; i++) {
@@ -40,7 +40,7 @@ class Node implements NodeBase {
         key !== "trailingComments" &&
         key !== "innerComments"
       ) {
-        // $FlowIgnore
+        // @ts-ignore todo($FlowIgnore)
         newNode[key] = this[key];
       }
     }
@@ -51,12 +51,12 @@ class Node implements NodeBase {
 
 export class NodeUtils extends UtilParser {
   startNode<T extends NodeType>(): T {
-    // $FlowIgnore
+    // @ts-ignore todo($FlowIgnore)
     return new Node(this, this.state.start, this.state.startLoc);
   }
 
   startNodeAt<T extends NodeType>(pos: number, loc: Position): T {
-    // $FlowIgnore
+    // @ts-ignore todo($FlowIgnore)
     return new Node(this, pos, loc);
   }
 

@@ -31,7 +31,6 @@ export default class BaseParser {
   }
 
   getPluginOption(plugin: string, name: string) {
-    // $FlowIssue
     if (this.hasPlugin(plugin)) return this.plugins.get(plugin)[name];
   }
 }

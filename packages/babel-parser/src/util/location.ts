@@ -25,7 +25,7 @@ export class SourceLocation {
 
   constructor(start: Position, end?: Position) {
     this.start = start;
-    // $FlowIgnore (may start as null, but initialized later)
+    // @ts-ignore todo($FlowIgnore) (may start as null, but initialized later)
     this.end = end;
   }
 }
