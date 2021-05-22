@@ -54,7 +54,11 @@ export {
   SourceTypeModuleErrorMessages as SourceTypeModuleErrors,
 } from "./error-message";
 
-export type raiseFunction = (b: number, a: ErrorTemplate) => void;
+export type raiseFunction = (
+  pos: number,
+  a: ErrorTemplate,
+  ...params: any
+) => void;
 
 export default abstract class ParserError extends CommentsParser {
   // Forward-declaration: defined in tokenizer/index.js
