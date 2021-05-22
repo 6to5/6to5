@@ -433,7 +433,7 @@ export type ObjectMember = ObjectProperty | ObjectMethod;
 export interface ObjectMemberBase extends NodeBase {
   key: Expression;
   computed: boolean;
-  value: Expression;
+  value: Expression | Pattern;
   decorators?: Array<Decorator>;
   kind?: "get" | "set" | "method";
   method: boolean; // TODO: Not in spec,
@@ -444,6 +444,7 @@ export interface ObjectMemberBase extends NodeBase {
 export interface ObjectProperty extends ObjectMemberBase {
   type: "ObjectProperty";
   shorthand: boolean;
+  value: Expression | Pattern;
 }
 
 export interface ObjectMethod extends ObjectMemberBase, FunctionBase {
