@@ -352,13 +352,13 @@ function isStrict(path) {
 
 class BlockScoping {
   constructor(
-    loopPath?: NodePath,
+    loopPath: NodePath | undefined | null,
     blockPath: NodePath,
-    parent: Object,
+    parent: any,
     scope: Scope,
     throwIfClosureRequired: boolean,
     tdzEnabled: boolean,
-    state: Object,
+    state: any,
   ) {
     this.parent = parent;
     this.scope = scope;
@@ -426,7 +426,7 @@ class BlockScoping {
       const binding = scope.bindings[name];
       if (binding.kind !== "const") continue;
 
-      for (const violation of (binding.constantViolations: Array)) {
+      for (const violation of binding.constantViolations as Array) {
         const readOnlyError = state.addHelper("readOnlyError");
         const throwNode = t.callExpression(readOnlyError, [
           t.stringLiteral(name),
@@ -849,7 +849,7 @@ class BlockScoping {
    * later on.
    */
 
-  checkLoop(): Object {
+  checkLoop(): any {
     const state = {
       hasBreakContinue: false,
       ignoreLabeless: false,
@@ -881,7 +881,7 @@ class BlockScoping {
    * their declarations hoisted to before the closure wrapper.
    */
 
-  pushDeclar(node: { type: "VariableDeclaration" }): Array<Object> {
+  pushDeclar(node: { type: "VariableDeclaration" }): Array<any> {
     const declars = [];
     const names = t.getBindingIdentifiers(node);
     for (const name of Object.keys(names)) {
