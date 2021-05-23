@@ -1,24 +1,23 @@
-// @flow
-
 import type { Options } from "../options";
 import * as N from "../types";
 import { Position } from "../util/location";
 
-import { types as ct, type TokContext } from "./context";
-import { types as tt, type TokenType } from "./types";
+import { types as ct } from "./context";
+import type { TokContext } from "./context";
+import { types as tt } from "./types";
+import type { TokenType } from "./types";
 import type { ParsingError, ErrorTemplate } from "../parser/error";
 
 type TopicContextState = {
   // When a topic binding has been currently established,
   // then this is 1. Otherwise, it is 0. This is forwards compatible
   // with a future plugin for multiple lexical topics.
-  maxNumOfResolvableTopics: number,
-
+  maxNumOfResolvableTopics: number;
   // When a topic binding has been currently established, and if that binding
   // has been used as a topic reference `#`, then this is 0. Otherwise, it is
   // `null`. This is forwards compatible with a future plugin for multiple
   // lexical topics.
-  maxTopicIndex: null | 0,
+  maxTopicIndex: null | 0;
 };
 
 export default class State {
@@ -79,9 +78,9 @@ export default class State {
 
   // Labels in scope.
   labels: Array<{
-    kind: ?("loop" | "switch"),
-    name?: ?string,
-    statementStart?: number,
+    kind: "loop" | "switch" | undefined | null;
+    name?: string | null;
+    statementStart?: number;
   }> = [];
 
   // Leading decorators. Last element of the stack represents the decorators in current context.
@@ -96,10 +95,10 @@ export default class State {
   trailingComments: Array<N.Comment> = [];
   leadingComments: Array<N.Comment> = [];
   commentStack: Array<{
-    start: number,
-    leadingComments: ?Array<N.Comment>,
-    trailingComments: ?Array<N.Comment>,
-    type: string,
+    start: number;
+    leadingComments: Array<N.Comment> | undefined | null;
+    trailingComments: Array<N.Comment> | undefined | null;
+    type: string;
   }> = [];
   // $FlowIgnore this is initialized when the parser starts.
   commentPreviousNode: N.Node = null;

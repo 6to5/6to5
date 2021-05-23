@@ -1,8 +1,11 @@
-// @flow
-export const PARAM = 0b0000, // Initial Parameter flags
-  PARAM_YIELD = 0b0001, // track [Yield] production parameter
-  PARAM_AWAIT = 0b0010, // track [Await] production parameter
-  PARAM_RETURN = 0b0100, // track [Return] production parameter
+export const // Initial Parameter flags
+  PARAM = 0b0000,
+  // track [Yield] production parameter
+  PARAM_YIELD = 0b0001,
+  // track [Await] production parameter
+  PARAM_AWAIT = 0b0010,
+  // track [Return] production parameter
+  PARAM_RETURN = 0b0100,
   PARAM_IN = 0b1000; // track [In] production parameter
 
 // ProductionParameterHandler is a stack fashioned production parameter tracker

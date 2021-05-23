@@ -1,5 +1,3 @@
-// @flow
-
 import type { PluginList } from "./plugin-utils";
 
 // A second optional argument can be given to further configure
@@ -8,20 +6,20 @@ import type { PluginList } from "./plugin-utils";
 export type SourceType = "script" | "module" | "unambiguous";
 
 export type Options = {
-  sourceType: SourceType,
-  sourceFilename?: string,
-  startLine: number,
-  allowAwaitOutsideFunction: boolean,
-  allowReturnOutsideFunction: boolean,
-  allowImportExportEverywhere: boolean,
-  allowSuperOutsideMethod: boolean,
-  allowUndeclaredExports: boolean,
-  plugins: PluginList,
-  strictMode: ?boolean,
-  ranges: boolean,
-  tokens: boolean,
-  createParenthesizedExpressions: boolean,
-  errorRecovery: boolean,
+  sourceType: SourceType;
+  sourceFilename?: string;
+  startLine: number;
+  allowAwaitOutsideFunction: boolean;
+  allowReturnOutsideFunction: boolean;
+  allowImportExportEverywhere: boolean;
+  allowSuperOutsideMethod: boolean;
+  allowUndeclaredExports: boolean;
+  plugins: PluginList;
+  strictMode: boolean | undefined | null;
+  ranges: boolean;
+  tokens: boolean;
+  createParenthesizedExpressions: boolean;
+  errorRecovery: boolean;
 };
 
 export const defaultOptions: Options = {
@@ -70,7 +68,7 @@ export const defaultOptions: Options = {
 
 // Interpret and default an options object
 
-export function getOptions(opts: ?Options): Options {
+export function getOptions(opts?: Options | null): Options {
   const options: any = {};
   for (const key of Object.keys(defaultOptions)) {
     options[key] = opts && opts[key] != null ? opts[key] : defaultOptions[key];

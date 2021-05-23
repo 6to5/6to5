@@ -1,5 +1,3 @@
-// @flow
-
 import type { ErrorTemplate, raiseFunction } from "../parser/error";
 
 /*:: declare var invariant; */

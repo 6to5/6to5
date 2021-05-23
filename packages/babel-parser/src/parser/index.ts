@@ -1,5 +1,3 @@
-// @flow
-
 import type { Options } from "../options";
 import type { File /*::, JSXOpeningElement */ } from "../types";
 import type { PluginList } from "../plugin-utils";
@@ -7,7 +5,12 @@ import { getOptions } from "../options";
 import StatementParser from "./statement";
 import ScopeHandler from "../util/scope";
 
-export type PluginsMap = Map<string, { [string]: any }>;
+export type PluginsMap = Map<
+  string,
+  {
+    [x: string]: any;
+  }
+>;
 
 export default class Parser extends StatementParser {
   // Forward-declaration so typescript plugin can override jsx plugin
@@ -17,7 +20,7 @@ export default class Parser extends StatementParser {
   ) => JSXOpeningElement;
   */
 
-  constructor(options: ?Options, input: string) {
+  constructor(options: Options | undefined | null, input: string) {
     options = getOptions(options);
     super(options, input);
 
@@ -28,7 +31,9 @@ export default class Parser extends StatementParser {
   }
 
   // This can be overwritten, for example, by the TypeScript plugin.
-  getScopeHandler(): Class<ScopeHandler<*>> {
+  getScopeHandler(): {
+    new (...args: any): ScopeHandler<any>;
+  } {
     return ScopeHandler;
   }
 

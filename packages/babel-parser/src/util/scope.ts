@@ -1,4 +1,3 @@
-// @flow
 import {
   SCOPE_ARROW,
   SCOPE_DIRECT_SUPER,
@@ -13,11 +12,12 @@ import {
   BIND_SCOPE_VAR,
   BIND_SCOPE_LEXICAL,
   BIND_KIND_VALUE,
-  type ScopeFlags,
-  type BindingTypes,
 } from "./scopeflags";
+import type { ScopeFlags, BindingTypes } from "./scopeflags";
 import * as N from "../types";
-import { Errors, type raiseFunction } from "../parser/error";
+import { Errors } from "../parser/error";
+
+import type { raiseFunction } from "../parser/error";
 
 // Start an AST node, attaching a start offset.
 export class Scope {
@@ -36,7 +36,7 @@ export class Scope {
 
 // The functions in this module keep track of declared variables in the
 // current scope in order to detect duplicate variable names.
-export default class ScopeHandler<IScope: Scope = Scope> {
+export default class ScopeHandler<IScope extends Scope = Scope> {
   scopeStack: Array<IScope> = [];
   declare raise: raiseFunction;
   declare inModule: boolean;

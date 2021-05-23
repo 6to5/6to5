@@ -1,7 +1,5 @@
 /* eslint max-len: 0 */
 
-// @flow
-
 import * as charCodes from "charcodes";
 
 export {

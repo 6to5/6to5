@@ -1,11 +1,11 @@
-// @flow
-
 import {
   CLASS_ELEMENT_KIND_ACCESSOR,
   CLASS_ELEMENT_FLAG_STATIC,
-  type ClassElementTypes,
 } from "./scopeflags";
-import { Errors, type raiseFunction } from "../parser/error";
+import type { ClassElementTypes } from "./scopeflags";
+import { Errors } from "../parser/error";
+
+import type { raiseFunction } from "../parser/error";
 
 export class ClassScope {
   // A list of private named declared in the current class

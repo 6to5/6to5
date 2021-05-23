@@ -1,5 +1,3 @@
-// @flow
-
 import { makeErrorTemplates, ErrorCodes } from "./error";
 
 /* eslint sort-keys: "error" */

@@ -1,5 +1,3 @@
-// @flow
-
 // Error messages are colocated with the plugin.
 /* eslint-disable @babel/development-internal/dry-error-messages */
 
@@ -66,7 +64,7 @@ tt.jsxTagEnd.updateContext = function (prevType) {
   }
 };
 
-function isFragment(object: ?N.JSXElement): boolean {
+function isFragment(object?: N.JSXElement | null): boolean {
   return object
     ? object.type === "JSXOpeningFragment" ||
         object.type === "JSXClosingFragment"
@@ -98,7 +96,11 @@ function getQualifiedJSXName(
   throw new Error("Node had unexpected type: " + object.type);
 }
 
-export default (superClass: Class<Parser>): Class<Parser> =>
+export default (superClass: {
+  new (...args: any): Parser;
+}): {
+  new (...args: any): Parser;
+} =>
   class extends superClass {
     // Reads inline JSX contents token.
 
@@ -555,7 +557,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
     // Overrides
     // ==================================
 
-    parseExprAtom(refExpressionErrors: ?ExpressionErrors): N.Expression {
+    parseExprAtom(refExpressionErrors?: ExpressionErrors | null): N.Expression {
       if (this.match(tt.jsxText)) {
         return this.parseLiteral(this.state.value, "JSXText");
       } else if (this.match(tt.jsxTagStart)) {

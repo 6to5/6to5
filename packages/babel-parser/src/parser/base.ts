@@ -1,5 +1,3 @@
-// @flow
-
 import type { Options } from "../options";
 import type State from "../tokenizer/state";
 import type { PluginsMap } from "./index";
@@ -12,12 +10,12 @@ export default class BaseParser {
   // Properties set by constructor in index.js
   declare options: Options;
   declare inModule: boolean;
-  declare scope: ScopeHandler<*>;
+  declare scope: ScopeHandler<any>;
   declare classScope: ClassScopeHandler;
   declare prodParam: ProductionParameterHandler;
   declare expressionScope: ExpressionScopeHandler;
   declare plugins: PluginsMap;
-  declare filename: ?string;
+  declare filename: string | undefined | null;
   sawUnambiguousESM: boolean = false;
   ambiguousScriptDifferentAst: boolean = false;
 

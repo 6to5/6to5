@@ -1,5 +1,3 @@
-// @flow
-
 import * as charCodes from "charcodes";
 
 // Matches a whole line break (where CRLF is considered a single

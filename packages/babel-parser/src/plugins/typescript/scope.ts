@@ -1,5 +1,3 @@
-// @flow
-
 import ScopeHandler, { Scope } from "../../util/scope";
 import {
   BIND_KIND_TYPE,
@@ -8,9 +6,8 @@ import {
   BIND_FLAGS_TS_EXPORT_ONLY,
   BIND_KIND_VALUE,
   BIND_FLAGS_CLASS,
-  type ScopeFlags,
-  type BindingTypes,
 } from "../../util/scopeflags";
+import type { ScopeFlags, BindingTypes } from "../../util/scopeflags";
 import * as N from "../../types";
 
 class TypeScriptScope extends Scope {

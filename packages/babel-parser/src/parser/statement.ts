@@ -1,7 +1,6 @@
-// @flow
-
 import * as N from "../types";
-import { types as tt, type TokenType } from "../tokenizer/types";
+import { types as tt } from "../tokenizer/types";
+import type { TokenType } from "../tokenizer/types";
 import ExpressionParser from "./expression";
 import { Errors, SourceTypeModuleErrors } from "./error";
 import { isIdentifierChar, isIdentifierStart } from "../util/identifier";
@@ -23,8 +22,8 @@ import {
   CLASS_ELEMENT_INSTANCE_SETTER,
   CLASS_ELEMENT_STATIC_GETTER,
   CLASS_ELEMENT_STATIC_SETTER,
-  type BindingTypes,
 } from "../util/scopeflags";
+import type { BindingTypes } from "../util/scopeflags";
 import { ExpressionErrors } from "./util";
 import { PARAM, functionFlags } from "../util/production-parameter";
 import {
@@ -163,7 +162,7 @@ export default class StatementParser extends ExpressionParser {
     return this.finishNode(node, "InterpreterDirective");
   }
 
-  isLet(context: ?string): boolean {
+  isLet(context?: string | null): boolean {
     if (!this.isContextual("let")) {
       return false;
     }
@@ -179,7 +178,7 @@ export default class StatementParser extends ExpressionParser {
    * @returns {boolean}
    * @memberof StatementParser
    */
-  isLetKeyword(context: ?string): boolean {
+  isLetKeyword(context?: string | null): boolean {
     const next = this.nextTokenStart();
     const nextCh = this.codePointAtPos(next);
     // For ambiguous cases, determine if a LexicalDeclaration (or only a
@@ -222,14 +221,17 @@ export default class StatementParser extends ExpressionParser {
   // https://tc39.es/ecma262/#prod-Statement
   // ImportDeclaration and ExportDeclaration are also handled here so we can throw recoverable errors
   // when they are not at the top level
-  parseStatement(context: ?string, topLevel?: boolean): N.Statement {
+  parseStatement(context?: string | null, topLevel?: boolean): N.Statement {
     if (this.match(tt.at)) {
       this.parseDecorators(true);
     }
     return this.parseStatementContent(context, topLevel);
   }
 
-  parseStatementContent(context: ?string, topLevel: ?boolean): N.Statement {
+  parseStatementContent(
+    context?: string | null,
+    topLevel?: boolean | null,
+  ): N.Statement {
     let starttype = this.state.type;
     const node = this.startNode();
     let kind;
@@ -837,7 +839,7 @@ export default class StatementParser extends ExpressionParser {
     node: N.LabeledStatement,
     maybeName: string,
     expr: N.Identifier,
-    context: ?string,
+    context?: string | null,
   ): N.LabeledStatement {
     for (const label of this.state.labels) {
       if (label.name === maybeName) {
@@ -892,8 +894,8 @@ export default class StatementParser extends ExpressionParser {
   // function bodies).
 
   parseBlock(
-    allowDirectives?: boolean = false,
-    createNewLexicalScope?: boolean = true,
+    allowDirectives: boolean = false,
+    createNewLexicalScope: boolean = true,
     afterBlockParse?: (hasStrictModeDirective: boolean) => void,
   ): N.BlockStatement {
     const node = this.startNode();
@@ -927,7 +929,7 @@ export default class StatementParser extends ExpressionParser {
 
   parseBlockBody(
     node: N.BlockStatementLike,
-    allowDirectives: ?boolean,
+    allowDirectives: boolean | undefined | null,
     topLevel: boolean,
     end: TokenType,
     afterBlockParse?: (hasStrictModeDirective: boolean) => void,
@@ -948,7 +950,7 @@ export default class StatementParser extends ExpressionParser {
   // https://tc39.es/ecma262/#prod-ModuleBody
   parseBlockOrModuleBlockBody(
     body: N.Statement[],
-    directives: ?(N.Directive[]),
+    directives: N.Directive[] | undefined | null,
     topLevel: boolean,
     end: TokenType,
     afterBlockParse?: (hasStrictModeDirective: boolean) => void,
@@ -999,7 +1001,7 @@ export default class StatementParser extends ExpressionParser {
 
   parseFor(
     node: N.ForStatement,
-    init: ?(N.VariableDeclaration | N.Expression),
+    init?: N.VariableDeclaration | N.Expression | null,
   ): N.ForStatement {
     node.init = init;
     this.semicolon(/* allowAsi */ false);
@@ -1141,10 +1143,10 @@ export default class StatementParser extends ExpressionParser {
   // Parse a function declaration or literal (depending on the
   // `isStatement` parameter).
 
-  parseFunction<T: N.NormalFunction>(
+  parseFunction<T extends N.NormalFunction>(
     node: T,
-    statement?: number = FUNC_NO_FLAGS,
-    isAsync?: boolean = false,
+    statement: number = FUNC_NO_FLAGS,
+    isAsync: boolean = false,
   ): T {
     const isStatement = statement & FUNC_STATEMENT;
     const isHangingStatement = statement & FUNC_HANGING_STATEMENT;
@@ -1197,7 +1199,7 @@ export default class StatementParser extends ExpressionParser {
     return node;
   }
 
-  parseFunctionId(requireId?: boolean): ?N.Identifier {
+  parseFunctionId(requireId?: boolean): N.Identifier | undefined | null {
     return requireId || this.match(tt.name) ? this.parseIdentifier() : null;
   }
 
@@ -1235,7 +1237,7 @@ export default class StatementParser extends ExpressionParser {
   // Parse a class declaration or literal (depending on the
   // `isStatement` parameter).
 
-  parseClass<T: N.Class>(
+  parseClass<T extends N.Class>(
     node: T,
     isStatement: /* T === ClassDeclaration */ boolean,
     optionalId?: boolean,
@@ -1348,7 +1350,7 @@ export default class StatementParser extends ExpressionParser {
     const key = this.parseIdentifier(true); // eats the modifier
 
     if (this.isClassMethod()) {
-      const method: N.ClassMethod = (member: any);
+      const method: N.ClassMethod = member as any;
 
       // a method named like the modifier
       method.kind = "method";
@@ -1365,7 +1367,7 @@ export default class StatementParser extends ExpressionParser {
       );
       return true;
     } else if (this.isClassProperty()) {
-      const prop: N.ClassProperty = (member: any);
+      const prop: N.ClassProperty = member as any;
 
       // a property named like the modifier
       prop.computed = false;
@@ -1390,7 +1392,7 @@ export default class StatementParser extends ExpressionParser {
         return;
       }
       if (this.eat(tt.braceL)) {
-        this.parseClassStaticBlock(classBody, ((member: any): N.StaticBlock));
+        this.parseClassStaticBlock(classBody, member as any as N.StaticBlock);
         return;
       }
     }
@@ -1594,7 +1596,9 @@ export default class StatementParser extends ExpressionParser {
 
   parseClassStaticBlock(
     classBody: N.ClassBody,
-    member: N.StaticBlock & { decorators?: Array<N.Decorator> },
+    member: N.StaticBlock & {
+      decorators?: Array<N.Decorator>;
+    },
   ) {
     this.expectPlugin("classStaticBlock", member.start);
     // Start a new lexical scope
@@ -1734,7 +1738,7 @@ export default class StatementParser extends ExpressionParser {
   parseClassId(
     node: N.Class,
     isStatement: boolean,
-    optionalId: ?boolean,
+    optionalId?: boolean | null,
     bindingType: BindingTypes = BIND_CLASS,
   ): void {
     if (this.match(tt.name)) {
@@ -1915,7 +1919,9 @@ export default class StatementParser extends ExpressionParser {
   }
 
   // eslint-disable-next-line no-unused-vars
-  parseExportDeclaration(node: N.ExportNamedDeclaration): ?N.Declaration {
+  parseExportDeclaration(
+    node: N.ExportNamedDeclaration,
+  ): N.Declaration | undefined | null {
     return this.parseStatement(null);
   }
 
@@ -2020,7 +2026,7 @@ export default class StatementParser extends ExpressionParser {
         // Default exports
         this.checkDuplicateExports(node, "default");
         if (this.hasPlugin("exportDefaultFrom")) {
-          const declaration = ((node: any): N.ExportDefaultDeclaration)
+          const declaration = (node as any as N.ExportDefaultDeclaration)
             .declaration;
           if (
             declaration.type === "Identifier" &&

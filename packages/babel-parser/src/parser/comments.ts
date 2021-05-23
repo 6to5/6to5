@@ -1,5 +1,3 @@
-// @flow
-
 /**
  * Based on the comment attachment algorithm used in espree and estraverse.
  *
@@ -27,7 +25,7 @@
 import BaseParser from "./base";
 import type { Comment, Node } from "../types";
 
-function last<T>(stack: $ReadOnlyArray<T>): T {
+function last<T>(stack: ReadonlyArray<T>): T {
   return stack[stack.length - 1];
 }
 

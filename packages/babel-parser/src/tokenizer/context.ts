@@ -1,5 +1,3 @@
-// @flow
-
 // The algorithm used to determine whether a regexp can appear at a
 // given point in the program is loosely based on sweet.js' approach.
 // See https://github.com/mozilla/sweet.js/wiki/design
@@ -11,7 +9,7 @@ export class TokContext {
     token: string,
     isExpr?: boolean,
     preserveSpace?: boolean,
-    override?: ?Function, // Takes a Tokenizer as a this-parameter, and returns void.
+    override?: Function | null, // Takes a Tokenizer as a this-parameter, and returns void.
   ) {
     this.token = token;
     this.isExpr = !!isExpr;
@@ -22,11 +20,11 @@ export class TokContext {
   token: string;
   isExpr: boolean;
   preserveSpace: boolean;
-  override: ?Function;
+  override: Function | undefined | null;
 }
 
 export const types: {
-  [key: string]: TokContext,
+  [key: string]: TokContext;
 } = {
   braceStatement: new TokContext("{", false),
   braceExpression: new TokContext("{", true),

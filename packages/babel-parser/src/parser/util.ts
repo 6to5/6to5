@@ -1,5 +1,3 @@
-// @flow
-
 import { types as tt, TokenType } from "../tokenizer/types";
 import Tokenizer from "../tokenizer";
 import State from "../tokenizer/state";
@@ -13,17 +11,19 @@ import ProductionParameterHandler, {
   PARAM_AWAIT,
   PARAM,
 } from "../util/production-parameter";
-import { Errors, type ErrorTemplate, ErrorCodes } from "./error";
+import { Errors, ErrorCodes } from "./error";
+import type { ErrorTemplate } from "./error";
+
 /*::
 import type ScopeHandler from "../util/scope";
 */
 
 type TryParse<Node, Error, Thrown, Aborted, FailState> = {
-  node: Node,
-  error: Error,
-  thrown: Thrown,
-  aborted: Aborted,
-  failState: FailState,
+  node: Node;
+  error: Error;
+  thrown: Thrown;
+  aborted: Aborted;
+  failState: FailState;
 };
 
 // ## Parser utilities
@@ -134,7 +134,7 @@ export default class UtilParser extends Tokenizer {
   // Expect a token of a given type. If found, consume it, otherwise,
   // raise an unexpected token error at given pos.
 
-  expect(type: TokenType, pos?: ?number): void {
+  expect(type: TokenType, pos?: number | null): void {
     this.eat(type) || this.unexpected(pos, type);
   }
 
@@ -155,13 +155,13 @@ export default class UtilParser extends Tokenizer {
   // instead of a message string.
 
   unexpected(
-    pos: ?number,
+    pos?: number | null,
     messageOrType: ErrorTemplate | TokenType = {
       code: ErrorCodes.SyntaxError,
       reasonCode: "UnexpectedToken",
       template: "Unexpected token",
     },
-  ): empty {
+  ): never {
     if (messageOrType instanceof TokenType) {
       messageOrType = {
         code: ErrorCodes.SyntaxError,
@@ -174,7 +174,7 @@ export default class UtilParser extends Tokenizer {
     /* eslint-enable @babel/development-internal/dry-error-messages */
   }
 
-  expectPlugin(name: string, pos?: ?number): true {
+  expectPlugin(name: string, pos?: number | null): true {
     if (!this.hasPlugin(name)) {
       throw this.raiseWithData(
         pos != null ? pos : this.state.start,
@@ -186,7 +186,7 @@ export default class UtilParser extends Tokenizer {
     return true;
   }
 
-  expectOnePlugin(names: Array<string>, pos?: ?number): void {
+  expectOnePlugin(names: Array<string>, pos?: number | null): void {
     if (!names.some(n => this.hasPlugin(n))) {
       throw this.raiseWithData(
         pos != null ? pos : this.state.start,
@@ -200,14 +200,16 @@ export default class UtilParser extends Tokenizer {
 
   // tryParse will clone parser state.
   // It is expensive and should be used with cautions
-  tryParse<T: Node | $ReadOnlyArray<Node>>(
-    fn: (abort: (node?: T) => empty) => T,
+  tryParse<T extends Node | ReadonlyArray<Node>>(
+    fn: (abort: (node?: T) => never) => T,
     oldState: State = this.state.clone(),
   ):
     | TryParse<T, null, false, false, null>
     | TryParse<T | null, SyntaxError, boolean, false, State>
     | TryParse<T | null, null, false, true, State> {
-    const abortSignal: { node: T | null } = { node: null };
+    const abortSignal: {
+      node: T | null;
+    } = { node: null };
     try {
       const node = fn((node = null) => {
         abortSignal.node = node;
@@ -222,7 +224,7 @@ export default class UtilParser extends Tokenizer {
         this.state.tokensLength = failState.tokensLength;
         return {
           node,
-          error: (failState.errors[oldState.errors.length]: SyntaxError),
+          error: failState.errors[oldState.errors.length] as SyntaxError,
           thrown: false,
           aborted: false,
           failState,
@@ -257,7 +259,7 @@ export default class UtilParser extends Tokenizer {
   }
 
   checkExpressionErrors(
-    refExpressionErrors: ?ExpressionErrors,
+    refExpressionErrors: ExpressionErrors | undefined | null,
     andThrow: boolean,
   ) {
     if (!refExpressionErrors) return false;

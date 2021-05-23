@@ -1,11 +1,16 @@
-// @flow
-
 import * as charCodes from "charcodes";
 
 import { types as tt, TokenType } from "../tokenizer/types";
 import type Parser from "../parser";
 import * as N from "../types";
 import { makeErrorTemplates, ErrorCodes } from "../parser/error";
+
+type $Call1<F extends (...args: any) => any, A> = F extends (
+  a: A,
+  ...args: any
+) => infer R
+  ? R
+  : never;
 
 tt.placeholder = new TokenType("%%", { startsExpr: true });
 
@@ -22,15 +27,13 @@ export type PlaceholderTypes =
 // $PropertyType doesn't support enums. Use a fake "switch" (GetPlaceholderNode)
 //type MaybePlaceholder<T: PlaceholderTypes> = $PropertyType<N, T> | N.Placeholder<T>;
 
-type _Switch<Value, Cases, Index> = $Call<
-  (
-    $ElementType<$ElementType<Cases, Index>, 0>,
-  ) => $ElementType<$ElementType<Cases, Index>, 1>,
-  Value,
+type _Switch<Value, Cases, Index> = $Call1<
+  (a: Cases[Index][0]) => Cases[Index][1],
+  Value
 >;
-type $Switch<Value, Cases> = _Switch<Value, Cases, *>;
 
-type NodeOf<T: PlaceholderTypes> = $Switch<
+type $Switch<Value, Cases> = _Switch<Value, Cases, any>;
+type NodeOf<T extends PlaceholderTypes> = $Switch<
   T,
   [
     ["Identifier", N.Identifier],
@@ -41,12 +44,12 @@ type NodeOf<T: PlaceholderTypes> = $Switch<
     ["BlockStatement", N.BlockStatement],
     ["ClassBody", N.ClassBody],
     ["Pattern", N.Pattern],
-  ],
+  ]
 >;
 
 // Placeholder<T> breaks everything, because its type is incompatible with
 // the substituted nodes.
-type MaybePlaceholder<T: PlaceholderTypes> = NodeOf<T>; // | Placeholder<T>
+type MaybePlaceholder<T extends PlaceholderTypes> = NodeOf<T>; // | Placeholder<T>
 
 const PlaceHolderErrors = makeErrorTemplates(
   {
@@ -55,11 +58,15 @@ const PlaceHolderErrors = makeErrorTemplates(
   /* code */ ErrorCodes.SyntaxError,
 );
 
-export default (superClass: Class<Parser>): Class<Parser> =>
+export default (superClass: {
+  new (...args: any): Parser;
+}): {
+  new (...args: any): Parser;
+} =>
   class extends superClass {
-    parsePlaceholder<T: PlaceholderTypes>(
+    parsePlaceholder<T extends PlaceholderTypes>(
       expectedNode: T,
-    ): /*?N.Placeholder<T>*/ ?MaybePlaceholder<T> {
+    ): /*?N.Placeholder<T>*/ MaybePlaceholder<T> | undefined | null {
       if (this.match(tt.placeholder)) {
         const node = this.startNode();
         this.next();
@@ -75,7 +82,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
       }
     }
 
-    finishPlaceholder<T: PlaceholderTypes>(
+    finishPlaceholder<T extends PlaceholderTypes>(
       node: N.Node,
       expectedNode: T,
     ): /*N.Placeholder<T>*/ MaybePlaceholder<T> {
@@ -158,7 +165,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
      * parser/statement.js                                          *
      * ============================================================ */
 
-    isLet(context: ?string): boolean {
+    isLet(context?: string | null): boolean {
       if (super.isLet(context)) {
         return true;
       }
@@ -217,14 +224,14 @@ export default (superClass: Class<Parser>): Class<Parser> =>
       );
     }
 
-    parseFunctionId(): ?MaybePlaceholder<"Identifier"> {
+    parseFunctionId(): MaybePlaceholder<"Identifier"> | undefined | null {
       return (
         this.parsePlaceholder("Identifier") ||
         super.parseFunctionId(...arguments)
       );
     }
 
-    parseClass<T: N.Class>(
+    parseClass<T extends N.Class>(
       node: T,
       isStatement: /* T === ClassDeclaration */ boolean,
       optionalId?: boolean,
