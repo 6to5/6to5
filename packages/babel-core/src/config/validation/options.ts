@@ -265,6 +265,7 @@ export const assumptionsNames = new Set<string>([
   "mutableTemplateObject",
   "noClassCalls",
   "noDocumentAll",
+  "noIncompleteNsImportDetection",
   "noNewArrows",
   "objectRestNoSymbols",
   "privateFieldsAsProperties",

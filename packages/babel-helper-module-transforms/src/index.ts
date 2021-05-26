@@ -45,6 +45,7 @@ export function rewriteModuleStatementsAndPrepareHeader(
 
     constantReexports = loose,
     enumerableModuleMeta = loose,
+    noIncompleteNsImportDetection,
   }: {
     exportName?;
     strict;
@@ -57,6 +58,7 @@ export function rewriteModuleStatementsAndPrepareHeader(
     esNamespaceOnly?;
     constantReexports?;
     enumerableModuleMeta?;
+    noIncompleteNsImportDetection?: boolean;
   },
 ) {
   validateImportInteropOption(importInterop);
@@ -102,7 +104,12 @@ export function rewriteModuleStatementsAndPrepareHeader(
 
   // Create all of the statically known named exports.
   headers.push(
-    ...buildExportInitializationStatements(path, meta, constantReexports),
+    ...buildExportInitializationStatements(
+      path,
+      meta,
+      constantReexports,
+      noIncompleteNsImportDetection,
+    ),
   );
 
   return { meta, headers };
@@ -388,6 +395,7 @@ function buildExportInitializationStatements(
   programPath: NodePath,
   metadata: ModuleMetadata,
   constantReexports: boolean = false,
+  noIncompleteNsImportDetection = false,
 ) {
   const initStatements = [];
 
@@ -413,15 +421,17 @@ function buildExportInitializationStatements(
     }
   }
 
-  initStatements.push(
-    ...chunk(exportNames, 100).map(members => {
-      return buildInitStatement(
-        metadata,
-        members,
-        programPath.scope.buildUndefinedNode(),
-      );
-    }),
-  );
+  if (!noIncompleteNsImportDetection) {
+    initStatements.push(
+      ...chunk(exportNames, 100).map(members => {
+        return buildInitStatement(
+          metadata,
+          members,
+          programPath.scope.buildUndefinedNode(),
+        );
+      }),
+    );
+  }
 
   return initStatements;
 }
