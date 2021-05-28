@@ -22,6 +22,8 @@ export type Options = {
   tokens: boolean,
   createParenthesizedExpressions: boolean,
   errorRecovery: boolean,
+  localizedKeywords: Object,
+  emoji: boolean,
 };
 
 export const defaultOptions: Options = {
@@ -66,6 +68,10 @@ export const defaultOptions: Options = {
   // When enabled, errors are attached to the AST instead of being directly thrown.
   // Some errors will still throw, because @babel/parser can't always recover.
   errorRecovery: false,
+  // map of localized keywords (e.g. maybe -> if)
+  localizedKeywords: {},
+  // enable emojis as valid identifiers
+  emoji: false,
 };
 
 // Interpret and default an options object

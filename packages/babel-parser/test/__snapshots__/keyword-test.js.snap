@@ -1,0 +1,650 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`keyword test change if keyword 1`] = `
+Node {
+  "comments": Array [],
+  "end": 25,
+  "errors": Array [],
+  "loc": SourceLocation {
+    "end": Position {
+      "column": 25,
+      "line": 1,
+    },
+    "start": Position {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "program": Node {
+    "body": Array [
+      Node {
+        "alternate": Node {
+          "body": Array [],
+          "directives": Array [],
+          "end": 25,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 25,
+              "line": 1,
+            },
+            "start": Position {
+              "column": 23,
+              "line": 1,
+            },
+          },
+          "start": 23,
+          "type": "BlockStatement",
+        },
+        "consequent": Node {
+          "body": Array [],
+          "directives": Array [],
+          "end": 12,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 12,
+              "line": 1,
+            },
+            "start": Position {
+              "column": 10,
+              "line": 1,
+            },
+          },
+          "start": 10,
+          "type": "BlockStatement",
+        },
+        "end": 25,
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 25,
+            "line": 1,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "start": 0,
+        "test": Node {
+          "end": 8,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 8,
+              "line": 1,
+            },
+            "start": Position {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "start": 4,
+          "type": "BooleanLiteral",
+          "value": true,
+        },
+        "type": "IfStatement",
+      },
+    ],
+    "directives": Array [],
+    "end": 25,
+    "interpreter": null,
+    "loc": SourceLocation {
+      "end": Position {
+        "column": 25,
+        "line": 1,
+      },
+      "start": Position {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "sourceType": "module",
+    "start": 0,
+    "type": "Program",
+  },
+  "start": 0,
+  "type": "File",
+}
+`;
+
+exports[`keyword test change if keyword to another language 1`] = `
+Node {
+  "comments": Array [],
+  "end": 12,
+  "errors": Array [],
+  "loc": SourceLocation {
+    "end": Position {
+      "column": 12,
+      "line": 1,
+    },
+    "start": Position {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "program": Node {
+    "body": Array [
+      Node {
+        "alternate": null,
+        "consequent": Node {
+          "body": Array [],
+          "directives": Array [],
+          "end": 12,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 12,
+              "line": 1,
+            },
+            "start": Position {
+              "column": 10,
+              "line": 1,
+            },
+          },
+          "start": 10,
+          "type": "BlockStatement",
+        },
+        "end": 12,
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 12,
+            "line": 1,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "start": 0,
+        "test": Node {
+          "end": 8,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 8,
+              "line": 1,
+            },
+            "start": Position {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "start": 4,
+          "type": "BooleanLiteral",
+          "value": true,
+        },
+        "type": "IfStatement",
+      },
+    ],
+    "directives": Array [],
+    "end": 12,
+    "interpreter": null,
+    "loc": SourceLocation {
+      "end": Position {
+        "column": 12,
+        "line": 1,
+      },
+      "start": Position {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "sourceType": "module",
+    "start": 0,
+    "type": "Program",
+  },
+  "start": 0,
+  "type": "File",
+}
+`;
+
+exports[`keyword test change with array of keywords 1`] = `
+Node {
+  "comments": Array [],
+  "end": 25,
+  "errors": Array [],
+  "loc": SourceLocation {
+    "end": Position {
+      "column": 25,
+      "line": 1,
+    },
+    "start": Position {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "program": Node {
+    "body": Array [
+      Node {
+        "alternate": null,
+        "consequent": Node {
+          "body": Array [],
+          "directives": Array [],
+          "end": 12,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 12,
+              "line": 1,
+            },
+            "start": Position {
+              "column": 10,
+              "line": 1,
+            },
+          },
+          "start": 10,
+          "type": "BlockStatement",
+        },
+        "end": 12,
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 12,
+            "line": 1,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "start": 0,
+        "test": Node {
+          "end": 8,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 8,
+              "line": 1,
+            },
+            "start": Position {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "start": 4,
+          "type": "BooleanLiteral",
+          "value": true,
+        },
+        "type": "IfStatement",
+      },
+      Node {
+        "alternate": null,
+        "consequent": Node {
+          "body": Array [],
+          "directives": Array [],
+          "end": 25,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 25,
+              "line": 1,
+            },
+            "start": Position {
+              "column": 23,
+              "line": 1,
+            },
+          },
+          "start": 23,
+          "type": "BlockStatement",
+        },
+        "end": 25,
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 25,
+            "line": 1,
+          },
+          "start": Position {
+            "column": 13,
+            "line": 1,
+          },
+        },
+        "start": 13,
+        "test": Node {
+          "end": 21,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 21,
+              "line": 1,
+            },
+            "start": Position {
+              "column": 17,
+              "line": 1,
+            },
+          },
+          "start": 17,
+          "type": "BooleanLiteral",
+          "value": true,
+        },
+        "type": "IfStatement",
+      },
+    ],
+    "directives": Array [],
+    "end": 25,
+    "interpreter": null,
+    "loc": SourceLocation {
+      "end": Position {
+        "column": 25,
+        "line": 1,
+      },
+      "start": Position {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "sourceType": "module",
+    "start": 0,
+    "type": "Program",
+  },
+  "start": 0,
+  "type": "File",
+}
+`;
+
+exports[`keyword test emoji identifier 1`] = `
+Node {
+  "comments": Array [],
+  "end": 11,
+  "errors": Array [],
+  "loc": SourceLocation {
+    "end": Position {
+      "column": 11,
+      "line": 1,
+    },
+    "start": Position {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "program": Node {
+    "body": Array [
+      Node {
+        "declarations": Array [
+          Node {
+            "end": 10,
+            "id": Node {
+              "end": 6,
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 6,
+                  "line": 1,
+                },
+                "identifierName": "😁",
+                "start": Position {
+                  "column": 4,
+                  "line": 1,
+                },
+              },
+              "name": "😁",
+              "start": 4,
+              "type": "Identifier",
+            },
+            "init": Node {
+              "end": 10,
+              "extra": Object {
+                "raw": "1",
+                "rawValue": 1,
+              },
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 10,
+                  "line": 1,
+                },
+                "start": Position {
+                  "column": 9,
+                  "line": 1,
+                },
+              },
+              "start": 9,
+              "type": "NumericLiteral",
+              "value": 1,
+            },
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 10,
+                "line": 1,
+              },
+              "start": Position {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "start": 4,
+            "type": "VariableDeclarator",
+          },
+        ],
+        "end": 11,
+        "kind": "var",
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 11,
+            "line": 1,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "start": 0,
+        "type": "VariableDeclaration",
+      },
+    ],
+    "directives": Array [],
+    "end": 11,
+    "interpreter": null,
+    "loc": SourceLocation {
+      "end": Position {
+        "column": 11,
+        "line": 1,
+      },
+      "start": Position {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "sourceType": "module",
+    "start": 0,
+    "type": "Program",
+  },
+  "start": 0,
+  "type": "File",
+}
+`;
+
+exports[`keyword test emoji keywords 1`] = `
+Node {
+  "comments": Array [],
+  "end": 36,
+  "errors": Array [],
+  "loc": SourceLocation {
+    "end": Position {
+      "column": 36,
+      "line": 1,
+    },
+    "start": Position {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "program": Node {
+    "body": Array [
+      Node {
+        "block": Node {
+          "body": Array [
+            Node {
+              "end": 24,
+              "expression": Node {
+                "argument": Node {
+                  "arguments": Array [
+                    Node {
+                      "end": 23,
+                      "extra": Object {
+                        "raw": "'/api'",
+                        "rawValue": "/api",
+                      },
+                      "loc": SourceLocation {
+                        "end": Position {
+                          "column": 23,
+                          "line": 1,
+                        },
+                        "start": Position {
+                          "column": 17,
+                          "line": 1,
+                        },
+                      },
+                      "start": 17,
+                      "type": "StringLiteral",
+                      "value": "/api",
+                    },
+                  ],
+                  "callee": Node {
+                    "end": 16,
+                    "loc": SourceLocation {
+                      "end": Position {
+                        "column": 16,
+                        "line": 1,
+                      },
+                      "identifierName": "fetch",
+                      "start": Position {
+                        "column": 11,
+                        "line": 1,
+                      },
+                    },
+                    "name": "fetch",
+                    "start": 11,
+                    "type": "Identifier",
+                  },
+                  "end": 24,
+                  "loc": SourceLocation {
+                    "end": Position {
+                      "column": 24,
+                      "line": 1,
+                    },
+                    "start": Position {
+                      "column": 11,
+                      "line": 1,
+                    },
+                  },
+                  "start": 11,
+                  "type": "CallExpression",
+                },
+                "end": 24,
+                "loc": SourceLocation {
+                  "end": Position {
+                    "column": 24,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 5,
+                    "line": 1,
+                  },
+                },
+                "start": 5,
+                "type": "AwaitExpression",
+              },
+              "loc": SourceLocation {
+                "end": Position {
+                  "column": 24,
+                  "line": 1,
+                },
+                "start": Position {
+                  "column": 5,
+                  "line": 1,
+                },
+              },
+              "start": 5,
+              "type": "ExpressionStatement",
+            },
+          ],
+          "directives": Array [],
+          "end": 26,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 26,
+              "line": 1,
+            },
+            "start": Position {
+              "column": 3,
+              "line": 1,
+            },
+          },
+          "start": 3,
+          "type": "BlockStatement",
+        },
+        "end": 36,
+        "finalizer": null,
+        "handler": Node {
+          "body": Node {
+            "body": Array [],
+            "directives": Array [],
+            "end": 36,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 36,
+                "line": 1,
+              },
+              "start": Position {
+                "column": 34,
+                "line": 1,
+              },
+            },
+            "start": 34,
+            "type": "BlockStatement",
+          },
+          "end": 36,
+          "loc": SourceLocation {
+            "end": Position {
+              "column": 36,
+              "line": 1,
+            },
+            "start": Position {
+              "column": 27,
+              "line": 1,
+            },
+          },
+          "param": Node {
+            "end": 32,
+            "loc": SourceLocation {
+              "end": Position {
+                "column": 32,
+                "line": 1,
+              },
+              "identifierName": "e",
+              "start": Position {
+                "column": 31,
+                "line": 1,
+              },
+            },
+            "name": "e",
+            "start": 31,
+            "type": "Identifier",
+          },
+          "start": 27,
+          "type": "CatchClause",
+        },
+        "loc": SourceLocation {
+          "end": Position {
+            "column": 36,
+            "line": 1,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "start": 0,
+        "type": "TryStatement",
+      },
+    ],
+    "directives": Array [],
+    "end": 36,
+    "interpreter": null,
+    "loc": SourceLocation {
+      "end": Position {
+        "column": 36,
+        "line": 1,
+      },
+      "start": Position {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "sourceType": "module",
+    "start": 0,
+    "type": "Program",
+  },
+  "start": 0,
+  "type": "File",
+}
+`;

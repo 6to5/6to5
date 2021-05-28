@@ -4,9 +4,12 @@
 
 import type { Options } from "../options";
 import * as N from "../types";
-import type { Position } from "../util/location";
+import type { Position } from "../util/charCodes";
 import * as charCodes from "charcodes";
-import { isIdentifierStart, isIdentifierChar } from "../util/identifier";
+import {
+  isIdentifierStart as oldisIdentifierStart,
+  isIdentifierChar as oldisIdentifierChar,
+} from "../util/identifier";
 import { types as tt, keywords as keywordTypes, type TokenType } from "./types";
 import { type TokContext, types as ct } from "./context";
 import ParserErrors, { Errors, type ErrorTemplate } from "../parser/error";
@@ -20,6 +23,9 @@ import {
 } from "../util/whitespace";
 import State from "./state";
 import type { LookaheadState } from "./state";
+
+let isIdentifierStart = oldisIdentifierStart;
+let isIdentifierChar = oldisIdentifierChar;
 
 const VALID_REGEX_FLAGS = new Set(["g", "m", "s", "i", "y", "u"]);
 
@@ -129,6 +135,35 @@ export default class Tokenizer extends ParserErrors {
     super();
     this.state = new State();
     this.state.init(options);
+
+    for (const key of Object.keys(options.localizedKeywords)) {
+      const value = options.localizedKeywords[key];
+      if (keywordTypes.has(key)) {
+        const keyword = keywordTypes.get(key);
+        keyword.label = value;
+        if (Array.isArray(value)) {
+          value.forEach(v => keywordTypes.set(v, keyword));
+        } else {
+          keywordTypes.set(value, keyword);
+        }
+      }
+    }
+
+    if (options.emoji) {
+      isIdentifierStart = function (code) {
+        return (
+          String.fromCodePoint(code).match(/\p{Emoji}/u) ||
+          oldisIdentifierStart(code)
+        );
+      };
+      isIdentifierChar = function (code) {
+        return (
+          String.fromCodePoint(code).match(/\p{Emoji}/u) ||
+          oldisIdentifierChar(code)
+        );
+      };
+    }
+
     this.input = input;
     this.length = input.length;
     this.isLookahead = false;
