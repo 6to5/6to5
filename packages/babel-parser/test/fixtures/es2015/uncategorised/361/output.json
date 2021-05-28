@@ -2,7 +2,7 @@
   "type": "File",
   "start":0,"end":24,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":24}},
   "errors": [
-    "SyntaxError: Unexpected reserved word 'await'. (1:8)"
+    "SyntaxError: Can not use 'await' as identifier inside an async function. (1:8)"
   ],
   "program": {
     "type": "Program",

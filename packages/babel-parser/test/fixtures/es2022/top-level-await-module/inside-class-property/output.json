@@ -1,0 +1,62 @@
+{
+  "type": "File",
+  "start":0,"end":33,"loc":{"start":{"line":1,"column":0},"end":{"line":3,"column":1}},
+  "errors": [
+    "SyntaxError: 'await' is only allowed within async functions and at the top levels of modules. (2:6)"
+  ],
+  "program": {
+    "type": "Program",
+    "start":0,"end":33,"loc":{"start":{"line":1,"column":0},"end":{"line":3,"column":1}},
+    "sourceType": "module",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExportNamedDeclaration",
+        "start":0,"end":33,"loc":{"start":{"line":1,"column":0},"end":{"line":3,"column":1}},
+        "specifiers": [],
+        "source": null,
+        "declaration": {
+          "type": "ClassDeclaration",
+          "start":7,"end":33,"loc":{"start":{"line":1,"column":7},"end":{"line":3,"column":1}},
+          "id": {
+            "type": "Identifier",
+            "start":13,"end":14,"loc":{"start":{"line":1,"column":13},"end":{"line":1,"column":14},"identifierName":"C"},
+            "name": "C"
+          },
+          "superClass": null,
+          "body": {
+            "type": "ClassBody",
+            "start":15,"end":33,"loc":{"start":{"line":1,"column":15},"end":{"line":3,"column":1}},
+            "body": [
+              {
+                "type": "ClassProperty",
+                "start":19,"end":31,"loc":{"start":{"line":2,"column":2},"end":{"line":2,"column":14}},
+                "static": false,
+                "key": {
+                  "type": "Identifier",
+                  "start":19,"end":20,"loc":{"start":{"line":2,"column":2},"end":{"line":2,"column":3},"identifierName":"p"},
+                  "name": "p"
+                },
+                "computed": false,
+                "value": {
+                  "type": "AwaitExpression",
+                  "start":23,"end":30,"loc":{"start":{"line":2,"column":6},"end":{"line":2,"column":13}},
+                  "argument": {
+                    "type": "NumericLiteral",
+                    "start":29,"end":30,"loc":{"start":{"line":2,"column":12},"end":{"line":2,"column":13}},
+                    "extra": {
+                      "rawValue": 0,
+                      "raw": "0"
+                    },
+                    "value": 0
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}

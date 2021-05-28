@@ -1,5 +1,0 @@
-{
-  "plugins": ["topLevelAwait"],
-  "sourceType": "script",
-  "throws": "Unexpected token, expected \"(\" (1:4)"
-}

@@ -1,4 +1,5 @@
 {
   "sourceType": "script",
-  "plugins": ["moduleBlocks"]
+  "plugins": ["moduleBlocks"],
+  "throws": "Unexpected token (1:14)"
 }
