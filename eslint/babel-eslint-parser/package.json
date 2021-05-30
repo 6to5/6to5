@@ -23,6 +23,7 @@
   "type": "commonjs",
   "exports": {
     ".": "./lib/index.cjs",
+    "./experimental-worker": "./lib/experimental-worker.cjs",
     "./package.json": "./package.json"
   },
   "peerDependencies": {

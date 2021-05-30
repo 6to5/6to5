@@ -4,13 +4,11 @@ const OriginalPatternVisitor = require("eslint-scope/lib/pattern-visitor");
 const OriginalReferencer = require("eslint-scope/lib/referencer");
 const { getKeys: fallback } = require("eslint-visitor-keys");
 
-const { getTypesInfo, getVisitorKeys } = require("./client.cjs");
-
 let visitorKeysMap;
-function getVisitorValues(nodeType) {
+function getVisitorValues(nodeType, client) {
   if (visitorKeysMap) return visitorKeysMap[nodeType];
 
-  const { FLOW_FLIPPED_ALIAS_KEYS, VISITOR_KEYS } = getTypesInfo();
+  const { FLOW_FLIPPED_ALIAS_KEYS, VISITOR_KEYS } = client.getTypesInfo();
 
   const flowFlippedAliasKeys = FLOW_FLIPPED_ALIAS_KEYS.concat([
     "ArrayPattern",
@@ -63,6 +61,13 @@ class PatternVisitor extends OriginalPatternVisitor {
 }
 
 class Referencer extends OriginalReferencer {
+  #client;
+
+  constructor(options, scopeManager, client) {
+    super(options, scopeManager);
+    this.#client = client;
+  }
+
   // inherits.
   visitPattern(node, options, callback) {
     if (!node) {
@@ -264,7 +269,7 @@ class Referencer extends OriginalReferencer {
     }
 
     // get property to check (params, id, etc...)
-    const visitorValues = getVisitorValues(node.type);
+    const visitorValues = getVisitorValues(node.type, this.#client);
     if (!visitorValues) {
       return;
     }
@@ -328,7 +333,7 @@ class Referencer extends OriginalReferencer {
   }
 }
 
-module.exports = function analyzeScope(ast, parserOptions) {
+module.exports = function analyzeScope(ast, parserOptions, client) {
   const options = {
     ignoreEval: true,
     optimistic: false,
@@ -343,10 +348,10 @@ module.exports = function analyzeScope(ast, parserOptions) {
     fallback,
   };
 
-  options.childVisitorKeys = getVisitorKeys();
+  options.childVisitorKeys = client.getVisitorKeys();
 
   const scopeManager = new escope.ScopeManager(options);
-  const referencer = new Referencer(options, scopeManager);
+  const referencer = new Referencer(options, scopeManager, client);
 
   referencer.visit(ast);
 
