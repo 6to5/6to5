@@ -1,4 +1,4 @@
-import sourceMap from "source-map";
+import sourceMap from "source-map-js";
 
 /**
  * Build a sourcemap.

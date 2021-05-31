@@ -21,12 +21,11 @@
   "dependencies": {
     "@babel/types": "workspace:^7.14.2",
     "jsesc": "condition: BABEL_8_BREAKING ? ^3.0.2 : ^2.5.1",
-    "source-map": "^0.5.0"
+    "source-map-js": "^0.6.2"
   },
   "devDependencies": {
     "@babel/helper-fixtures": "workspace:*",
     "@babel/parser": "workspace:*",
-    "@types/jsesc": "^2.5.0",
-    "@types/source-map": "^0.5.0"
+    "@types/jsesc": "^2.5.0"
   }
 }

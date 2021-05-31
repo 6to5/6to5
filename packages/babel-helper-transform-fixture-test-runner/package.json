@@ -21,7 +21,7 @@
     "babel-check-duplicated-nodes": "^1.0.0",
     "quick-lru": "5.1.0",
     "regenerator-runtime": "^0.13.7",
-    "source-map": "^0.5.0"
+    "source-map-js": "^0.6.2"
   },
   "devDependencies": {
     "@types/jest": "^25.2.2"

@@ -1,5 +1,5 @@
 type SourceMap = any;
-import sourceMap from "source-map";
+import sourceMap from "source-map-js";
 
 export default function mergeSourceMap(
   inputMap: SourceMap,

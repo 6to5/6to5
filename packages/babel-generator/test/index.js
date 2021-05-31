@@ -5,7 +5,7 @@ import * as t from "@babel/types";
 import fs from "fs";
 import path from "path";
 import fixtures from "@babel/helper-fixtures";
-import sourcemap from "source-map";
+import sourcemap from "source-map-js";
 import { fileURLToPath } from "url";
 
 describe("generation", function () {

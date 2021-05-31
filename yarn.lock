@@ -105,7 +105,7 @@ __metadata:
     make-dir: ^2.1.0
     rimraf: ^3.0.0
     slash: "condition:BABEL_8_BREAKING ? ^3.0.0 : ^2.0.0"
-    source-map: ^0.5.0
+    source-map-js: ^0.6.2
   peerDependencies:
     "@babel/core": ^7.0.0-0
   dependenciesMeta:
@@ -222,13 +222,12 @@ __metadata:
     "@types/debug": ^4.1.0
     "@types/resolve": ^1.3.2
     "@types/semver": ^5.4.0
-    "@types/source-map": ^0.5.0
     convert-source-map: ^1.7.0
     debug: ^4.1.0
     gensync: ^1.0.0-beta.2
     json5: ^2.1.2
     semver: "condition:BABEL_8_BREAKING ? ^7.3.4 : ^6.3.0"
-    source-map: ^0.5.0
+    source-map-js: ^0.6.2
   languageName: unknown
   linkType: soft
 
@@ -340,9 +339,8 @@ __metadata:
     "@babel/parser": "workspace:*"
     "@babel/types": "workspace:^7.14.2"
     "@types/jsesc": ^2.5.0
-    "@types/source-map": ^0.5.0
     jsesc: "condition: BABEL_8_BREAKING ? ^3.0.2 : ^2.5.1"
-    source-map: ^0.5.0
+    source-map-js: ^0.6.2
   languageName: unknown
   linkType: soft
 
@@ -817,7 +815,7 @@ __metadata:
     babel-check-duplicated-nodes: ^1.0.0
     quick-lru: 5.1.0
     regenerator-runtime: ^0.13.7
-    source-map: ^0.5.0
+    source-map-js: ^0.6.2
   languageName: unknown
   linkType: soft
 
@@ -4266,13 +4264,6 @@ __metadata:
   version: 7.3.4
   resolution: "@types/semver@npm:7.3.4"
   checksum: 7e8588aa55ecb344eda6954674b83a3c568d97d478e70e4617bd3ab22902590ac416ccf2cea48b58fb2f0fbd80f9ad1896332c9b3c3189ffd24e4350ff22094a
-  languageName: node
-  linkType: hard
-
-"@types/source-map@npm:^0.5.0":
-  version: 0.5.2
-  resolution: "@types/source-map@npm:0.5.2"
-  checksum: 228e1ef7c7f9c126cf38afdef2c3ccfb1224523c3692da6148abb9bb81095269645495773e94477e8512e1f652419b471cc8c30997f6bd222185e931f6d97acc
   languageName: node
   linkType: hard
 
@@ -13609,6 +13600,13 @@ fsevents@^1.2.7:
   version: 2.0.1
   resolution: "source-list-map@npm:2.0.1"
   checksum: d8d45f29987d00d995ccda308dcc78b710031a9958fdb5d26674d32220c952eb7a8562062638d91896628ae4eef30e1cd112a6a547563dfda0b013024c2a9bf7
+  languageName: node
+  linkType: hard
+
+"source-map-js@npm:^0.6.2":
+  version: 0.6.2
+  resolution: "source-map-js@npm:0.6.2"
+  checksum: 8e2f992cfbedb71286fa6f6e011e2fa756b7f4d944ea4b0f49e9ff6ea34ad0a17dc655f067fdddb32efa7b45000e8c59e47a2e875d91744c86a56329b5f58b32
   languageName: node
   linkType: hard
 

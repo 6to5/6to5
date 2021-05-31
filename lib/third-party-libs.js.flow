@@ -51,7 +51,7 @@ declare module "semver" {
   }
 }
 
-declare module "source-map" {
+declare module "source-map-js" {
   declare export type SourceMap = {
     version: 3,
     file: ?string,
@@ -161,7 +161,7 @@ declare module "source-map" {
 }
 
 declare module "convert-source-map" {
-  import type { SourceMap, SourceMapGenerator } from "source-map";
+  import type { SourceMap, SourceMapGenerator } from "source-map-js";
 
   declare class Converter {
     toJSON(): string;

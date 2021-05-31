@@ -1,5 +1,5 @@
 import * as babel from "../lib/index";
-import sourceMap from "source-map";
+import sourceMap from "source-map-js";
 import path from "path";
 import Plugin from "../lib/config/plugin";
 import generator from "@babel/generator";

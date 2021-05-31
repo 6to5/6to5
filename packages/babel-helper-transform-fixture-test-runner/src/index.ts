@@ -5,7 +5,7 @@ import {
   default as getFixtures,
   resolveOptionPluginOrPreset,
 } from "@babel/helper-fixtures";
-import sourceMap from "source-map";
+import sourceMap from "source-map-js";
 import { codeFrameColumns } from "@babel/code-frame";
 import * as helpers from "./helpers";
 import assert from "assert";

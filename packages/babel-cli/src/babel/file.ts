@@ -1,5 +1,5 @@
 import convertSourceMap from "convert-source-map";
-import sourceMap from "source-map";
+import sourceMap from "source-map-js";
 import slash from "slash";
 import path from "path";
 import fs from "fs";
