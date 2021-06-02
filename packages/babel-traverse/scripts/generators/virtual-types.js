@@ -1,4 +1,4 @@
-import virtualTypes from "../../lib/path/lib/virtual-types.js";
+import * as virtualTypes from "../../lib/path/lib/virtual-types.js";
 
 export default function generateValidators() {
   let output = `/*
@@ -10,7 +10,7 @@ import * as t from "@babel/types";
 export interface VirtualTypeAliases {
 `;
 
-  for (const type of Object.keys(virtualTypes)) {
+  for (const type of Object.keys(virtualTypes).sort()) {
     output += `  ${type}: ${(virtualTypes[type].types || ["Node"])
       .map(t => `t.${t}`)
       .join(" | ")};`;
