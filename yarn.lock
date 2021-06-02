@@ -210,11 +210,12 @@ __metadata:
     "@babel/code-frame": "workspace:^7.12.13"
     "@babel/generator": "workspace:^7.14.3"
     "@babel/helper-compilation-targets": "workspace:^7.13.16"
-    "@babel/helper-module-transforms": "condition:BABEL_8_BREAKING ? : workspace:^7.14.2"
+    "@babel/helper-module-transforms": "workspace:^7.14.2"
     "@babel/helper-transform-fixture-test-runner": "workspace:*"
     "@babel/helpers": "workspace:^7.14.0"
     "@babel/parser": "workspace:^7.14.3"
     "@babel/plugin-transform-modules-commonjs": "workspace:*"
+    "@babel/preset-env": "workspace:*"
     "@babel/template": "workspace:^7.12.13"
     "@babel/traverse": "workspace:^7.14.2"
     "@babel/types": "workspace:^7.14.2"
@@ -628,30 +629,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@babel/helper-module-transforms-BABEL_8_BREAKING-false@npm:@babel/helper-module-transforms@workspace:^7.14.2, @babel/helper-module-transforms@workspace:^7.13.0, @babel/helper-module-transforms@workspace:^7.14.0, @babel/helper-module-transforms@workspace:^7.14.2, @babel/helper-module-transforms@workspace:packages/babel-helper-module-transforms":
-  version: 0.0.0-use.local
-  resolution: "@babel/helper-module-transforms@workspace:packages/babel-helper-module-transforms"
-  dependencies:
-    "@babel/helper-module-imports": "workspace:^7.13.12"
-    "@babel/helper-replace-supers": "workspace:^7.13.12"
-    "@babel/helper-simple-access": "workspace:^7.13.12"
-    "@babel/helper-split-export-declaration": "workspace:^7.12.13"
-    "@babel/helper-validator-identifier": "workspace:^7.14.0"
-    "@babel/template": "workspace:^7.12.13"
-    "@babel/traverse": "workspace:^7.14.2"
-    "@babel/types": "workspace:^7.14.2"
-  languageName: unknown
-  linkType: soft
-
-"@babel/helper-module-transforms@condition:BABEL_8_BREAKING ? : workspace:^7.14.2":
-  version: 0.0.0-condition-5131c1
-  resolution: "@babel/helper-module-transforms@condition:BABEL_8_BREAKING?:workspace:^7.14.2#5131c1"
-  dependencies:
-    "@babel/helper-module-transforms-BABEL_8_BREAKING-false": "npm:@babel/helper-module-transforms@workspace:^7.14.2"
-  checksum: 99b7a76ae03cc33a6d7a2e970aa72831e096f15bc2c58be10fb297e3fa411d9ba344cd0f93590c1b802a1b4450b7ea29db9aeeb7aeb7b2f9241e751c20a5079c
-  languageName: node
-  linkType: hard
-
 "@babel/helper-module-transforms@npm:^7.12.1, @babel/helper-module-transforms@npm:^7.13.0, @babel/helper-module-transforms@npm:^7.14.0, @babel/helper-module-transforms@npm:^7.14.2":
   version: 7.14.2
   resolution: "@babel/helper-module-transforms@npm:7.14.2"
@@ -667,6 +644,21 @@ __metadata:
   checksum: c0a543a2149d15ad9c129f002cb01974c79a16ea10de9e3f9b7a296f2bbe3deaef9457acf6b9d2238e9629d5e98964539d28843cdd4d328b115f559871ccf533
   languageName: node
   linkType: hard
+
+"@babel/helper-module-transforms@workspace:^7.13.0, @babel/helper-module-transforms@workspace:^7.14.0, @babel/helper-module-transforms@workspace:^7.14.2, @babel/helper-module-transforms@workspace:packages/babel-helper-module-transforms":
+  version: 0.0.0-use.local
+  resolution: "@babel/helper-module-transforms@workspace:packages/babel-helper-module-transforms"
+  dependencies:
+    "@babel/helper-module-imports": "workspace:^7.13.12"
+    "@babel/helper-replace-supers": "workspace:^7.13.12"
+    "@babel/helper-simple-access": "workspace:^7.13.12"
+    "@babel/helper-split-export-declaration": "workspace:^7.12.13"
+    "@babel/helper-validator-identifier": "workspace:^7.14.0"
+    "@babel/template": "workspace:^7.12.13"
+    "@babel/traverse": "workspace:^7.14.2"
+    "@babel/types": "workspace:^7.14.2"
+  languageName: unknown
+  linkType: soft
 
 "@babel/helper-optimise-call-expression@npm:^7.12.13":
   version: 7.12.13
@@ -14913,13 +14905,13 @@ typescript@~4.2.3:
   linkType: hard
 
 "v8-to-istanbul@npm:^7.0.0":
-  version: 7.1.2
-  resolution: "v8-to-istanbul@npm:7.1.2"
+  version: 7.1.1
+  resolution: "v8-to-istanbul@npm:7.1.1"
   dependencies:
     "@types/istanbul-lib-coverage": ^2.0.1
     convert-source-map: ^1.6.0
     source-map: ^0.7.3
-  checksum: ff653089c952d618b01c5ff1ab4517144240ba0b6193a9e7116d2f19a6990a76f9bdb3e8f31424f556169c3bf29beadb5ddbaa0aded62da9f5ea63116c27c610
+  checksum: 12aad5bcaf3bdc9587eac86299313b677c53f3ad4c4663067d7ee456fb4c606b3abfef0b7d67b4a604b7f270e1ad4c00d31d1c6183d1cf023f348cff4f922e40
   languageName: node
   linkType: hard
 

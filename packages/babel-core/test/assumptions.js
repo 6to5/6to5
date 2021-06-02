@@ -1,6 +1,7 @@
 import path from "path";
 import { fileURLToPath } from "url";
 import { loadOptions as loadOptionsOrig, transformSync } from "../lib";
+import { jest } from "@jest/globals";
 import pluginCommonJS from "@babel/plugin-transform-modules-commonjs";
 
 const cwd = path.dirname(fileURLToPath(import.meta.url));

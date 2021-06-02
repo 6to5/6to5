@@ -55,5 +55,6 @@ transform(code, {
         }
       }
     }
-  ]
+  ],
+  configFile: false,
 });

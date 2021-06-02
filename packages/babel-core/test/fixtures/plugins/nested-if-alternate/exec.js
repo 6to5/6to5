@@ -16,6 +16,7 @@ var res = transform('', {
       }
     },
   ],
+  configFile: false,
 });
 
 expect(eval(res.code)).toBe(23);

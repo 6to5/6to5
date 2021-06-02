@@ -17,4 +17,5 @@ transform(code, {
       }
     },
   ],
+  configFile: false,
 });
