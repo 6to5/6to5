@@ -2,6 +2,11 @@ import testRunner from "@babel/helper-transform-fixture-test-runner";
 import path from "path";
 import { URL } from "url";
 
+// Workaround for https://github.com/facebook/jest/issues/11434
+import "../../babel-helper-create-class-features-plugin/lib/index";
+import "../../babel-template/lib/index";
+import "../../babel-core/lib/index";
+
 export default function (loc) {
   if (!process.env.BABEL_8_BREAKING) {
     if (!loc.startsWith("file://")) {

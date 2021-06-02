@@ -1,3 +1,3 @@
 #!/usr/bin/env node
 
-require("../lib/babel");
+import("../lib/babel.js");

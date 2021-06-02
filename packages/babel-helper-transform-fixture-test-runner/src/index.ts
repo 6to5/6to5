@@ -14,6 +14,12 @@ import path from "path";
 import vm from "vm";
 import QuickLRU from "quick-lru";
 import { fileURLToPath } from "url";
+import { jest } from "@jest/globals";
+
+// Workaround for https://github.com/facebook/jest/issues/11434
+import "../../babel-helper-create-class-features-plugin/lib/index";
+import "../../babel-template/lib/index";
+import "../../babel-core/lib/index";
 
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
@@ -196,7 +202,7 @@ export function runCodeInTestContext(
   }
 }
 
-function run(task) {
+async function run(task) {
   const {
     actual,
     expect: expected,
@@ -234,7 +240,7 @@ function run(task) {
   if (execCode) {
     const context = createContext();
     const execOpts = getOpts(exec);
-    result = babel.transform(execCode, execOpts);
+    result = await babel.transformAsync(execCode, execOpts);
     checkDuplicatedNodes(babel, result.ast);
     execCode = result.code;
 
@@ -266,7 +272,7 @@ function run(task) {
       };
     }
 
-    result = babel.transform(inputCode, getOpts(actual));
+    result = await babel.transformAsync(inputCode, getOpts(actual));
 
     if (restoreSpies) restoreSpies();
 
@@ -448,9 +454,9 @@ export default function (
         testFn(
           task.title,
 
-          function () {
+          async function () {
             function runTask() {
-              run(task);
+              return run(task);
             }
 
             if ("sourceMap" in task.options === false) {
@@ -477,7 +483,7 @@ export default function (
               // the options object with useless options
               delete task.options.throws;
 
-              assert.throws(runTask, function (err) {
+              await assert.rejects(runTask, function (err) {
                 assert.ok(
                   throwMsg === true || err.message.includes(throwMsg),
                   `
@@ -487,14 +493,7 @@ Actual Error: ${err.message}`,
                 return true;
               });
             } else {
-              if (task.exec.code) {
-                const result = run(task);
-                if (result && typeof result.then === "function") {
-                  return result;
-                }
-              } else {
-                runTask();
-              }
+              return runTask();
             }
           },
         );

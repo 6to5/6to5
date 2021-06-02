@@ -11,7 +11,7 @@ import {
 import simplifyAccess from "@babel/helper-simple-access";
 import { template, types as t } from "@babel/core";
 
-import { createDynamicImportTransform } from "babel-plugin-dynamic-import-node/utils";
+import { createDynamicImportTransform } from "babel-plugin-dynamic-import-node/utils.js";
 
 export default declare((api, options) => {
   api.assertVersion(7);

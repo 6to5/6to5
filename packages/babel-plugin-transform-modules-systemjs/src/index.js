@@ -1,7 +1,7 @@
 import { declare } from "@babel/helper-plugin-utils";
 import hoistVariables from "@babel/helper-hoist-variables";
 import { template, types as t } from "@babel/core";
-import { getImportSource } from "babel-plugin-dynamic-import-node/utils";
+import { getImportSource } from "babel-plugin-dynamic-import-node/utils.js";
 import { rewriteThis, getModuleName } from "@babel/helper-module-transforms";
 import { isIdentifierName } from "@babel/helper-validator-identifier";
 

@@ -3,13 +3,20 @@ import { parseSync, traverse } from "@babel/core";
 
 function getPath(input, parserOpts) {
   let targetPath;
-  traverse(parseSync(input, { parserOpts, filename: "example.js" }), {
-    OptionalMemberExpression(path) {
-      targetPath = path;
-      path.stop();
+  traverse(
+    parseSync(input, {
+      configFile: false,
+      parserOpts,
+      filename: "example.js",
+    }),
+    {
+      OptionalMemberExpression(path) {
+        targetPath = path;
+        path.stop();
+      },
+      noScope: true,
     },
-    noScope: true,
-  });
+  );
   return targetPath;
 }
 
