@@ -1,6 +1,6 @@
 // @flow
 
-import { lt } from "semver";
+import semver from "semver";
 import { minVersions } from "./available-plugins";
 
 // $FlowIgnore
@@ -19,7 +19,7 @@ export function removeUnsupportedItems(
   babelVersion: string,
 ) {
   items.forEach(item => {
-    if (has(minVersions, item) && lt(babelVersion, minVersions[item])) {
+    if (has(minVersions, item) && semver.lt(babelVersion, minVersions[item])) {
       items.delete(item);
     }
   });

@@ -1,15 +1,18 @@
 import path from "path";
 import fs from "fs";
 import { createRequire } from "module";
-import helpers from "@babel/helpers";
-import babel from "@babel/core";
+import * as helpers from "@babel/helpers";
+import * as babel from "@babel/core";
 import template from "@babel/template";
-import t from "@babel/types";
+import * as t from "@babel/types";
 import { fileURLToPath } from "url";
 
 import transformRuntime from "../lib/index.js";
 import corejs2Definitions from "./runtime-corejs2-definitions.js";
 import corejs3Definitions from "./runtime-corejs3-definitions.js";
+
+import presetEnv from "@babel/preset-env";
+import pluginTransformTypeofSymbol from "@babel/plugin-transform-typeof-symbol";
 
 const require = createRequire(import.meta.url);
 const runtimeVersion = require("@babel/runtime/package.json").version;
@@ -238,7 +241,7 @@ function buildHelper(
     filename: helperFilename,
     presets: [
       [
-        "@babel/preset-env",
+        presetEnv,
         { modules: false, exclude: ["@babel/plugin-transform-typeof-symbol"] },
       ],
     ],
@@ -250,7 +253,7 @@ function buildHelper(
     overrides: [
       {
         exclude: /typeof/,
-        plugins: ["@babel/plugin-transform-typeof-symbol"],
+        plugins: [pluginTransformTypeofSymbol],
       },
     ],
   }).code;

@@ -6,12 +6,9 @@ import pluginLegacyBabelPolyfill from "../lib/polyfills/babel-polyfill";
 import transformations from "../lib/module-transformations";
 import availablePlugins from "../lib/available-plugins";
 
-import _pluginCoreJS2 from "babel-plugin-polyfill-corejs2";
-import _pluginCoreJS3 from "babel-plugin-polyfill-corejs3";
-import _pluginRegenerator from "babel-plugin-polyfill-regenerator";
-const pluginCoreJS2 = _pluginCoreJS2.default;
-const pluginCoreJS3 = _pluginCoreJS3.default;
-const pluginRegenerator = _pluginRegenerator.default;
+import pluginCoreJS2 from "babel-plugin-polyfill-corejs2";
+import pluginCoreJS3 from "babel-plugin-polyfill-corejs3";
+import pluginRegenerator from "babel-plugin-polyfill-regenerator";
 
 describe("babel-preset-env", () => {
   describe("transformIncludesAndExcludes", () => {
