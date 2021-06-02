@@ -67,3 +67,8 @@ gen_enforced_field(WorkspaceCwd, FieldName, ExpectedValue) :-
   \+ atom_concat('./', _, CurrentValue),
   % Store './' + CurrentValue in ExpectedValue
   atom_concat('./', CurrentValue, ExpectedValue).
+
+% Enforces the type field to be set
+gen_enforced_field(WorkspaceCwd, 'type', 'module') :-
+  \+ workspace_field(WorkspaceCwd, 'type', 'commonjs'),
+  \+ workspace_field(WorkspaceCwd, 'private', true).
