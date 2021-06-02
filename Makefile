@@ -116,7 +116,7 @@ test-clean:
 
 # Does not work on Windows; use "$(YARN) jest" instead
 test-only:
-	BABEL_ENV=test ./scripts/test.sh
+	NODE_OPTIONS="--experimental-vm-modules" BABEL_ENV=test ./scripts/test.sh
 	$(MAKE) test-clean
 
 test: lint test-only

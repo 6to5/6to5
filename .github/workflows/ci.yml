@@ -131,7 +131,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14, 12, 10, 8, 6]
+        node-version: [14, 12]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -173,7 +173,7 @@ jobs:
 
         # Todo(Babel 8): Jest execution path is hardcoded because Yarn 2 does not support node 6
         run: |
-          BABEL_ENV=test node ./node_modules/.bin/jest --ci --color
+          NODE_OPTIONS="--experimental-vm-modules" BABEL_ENV=test node ./node_modules/.bin/jest --ci --color
 
   test-babel-8-breaking:
     name: Test Babel 8 breaking changes
@@ -209,7 +209,7 @@ jobs:
         # Hack: --color has supports-color@5 returned true for GitHub CI
         # Remove once `chalk` is bumped to 4.0.
         run: |
-          yarn jest --ci --color
+          NODE_OPTIONS="--experimental-vm-modules" yarn jest --ci --color
           yarn test:esm
         env:
           BABEL_ENV: test
@@ -243,7 +243,7 @@ jobs:
       - name: Test on Windows
         # Hack: --color has supports-color@5 returned true for GitHub CI
         # Remove once `chalk` is bumped to 4.0.
-        run: yarn jest --ci --color
+        run: NODE_OPTIONS="--experimental-vm-modules" yarn jest --ci --color
         env:
           BABEL_ENV: test
 
