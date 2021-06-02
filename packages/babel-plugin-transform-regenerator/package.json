@@ -9,6 +9,7 @@
     "url": "https://github.com/babel/babel.git",
     "directory": "packages/babel-plugin-transform-regenerator"
   },
+  "type": "module",
   "main": "./lib/index.js",
   "dependencies": {
     "regenerator-transform": "^0.14.2"

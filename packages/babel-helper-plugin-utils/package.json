@@ -13,6 +13,7 @@
     "url": "https://github.com/babel/babel.git",
     "directory": "packages/babel-helper-plugin-utils"
   },
+  "type": "module",
   "main": "./lib/index.js",
   "engines": {
     "node": ">=6.9.0"

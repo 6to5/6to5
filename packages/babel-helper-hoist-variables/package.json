@@ -12,6 +12,7 @@
   "publishConfig": {
     "access": "public"
   },
+  "type": "module",
   "main": "./lib/index.js",
   "TODO": "The @babel/traverse dependency is only needed for the NodePath TS type. After converting @babel/core to TS we can import NodePath from there.",
   "dependencies": {

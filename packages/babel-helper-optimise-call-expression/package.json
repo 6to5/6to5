@@ -12,6 +12,7 @@
   "publishConfig": {
     "access": "public"
   },
+  "type": "module",
   "main": "./lib/index.js",
   "dependencies": {
     "@babel/types": "workspace:^7.12.13"

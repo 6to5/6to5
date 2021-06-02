@@ -13,6 +13,7 @@
     "directory": "packages/babel-plugin-proposal-decorators"
   },
   "homepage": "https://babel.dev/docs/en/next/babel-plugin-proposal-decorators",
+  "type": "module",
   "main": "./lib/index.js",
   "keywords": [
     "babel",

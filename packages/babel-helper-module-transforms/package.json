@@ -13,6 +13,7 @@
     "url": "https://github.com/babel/babel.git",
     "directory": "packages/babel-helper-module-transforms"
   },
+  "type": "module",
   "main": "./lib/index.js",
   "dependencies": {
     "@babel/helper-module-imports": "workspace:^7.13.12",

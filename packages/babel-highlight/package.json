@@ -13,6 +13,7 @@
     "url": "https://github.com/babel/babel.git",
     "directory": "packages/babel-highlight"
   },
+  "type": "module",
   "main": "./lib/index.js",
   "dependencies": {
     "@babel/helper-validator-identifier": "workspace:^7.14.0",

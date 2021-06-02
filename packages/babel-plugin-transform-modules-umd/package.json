@@ -12,6 +12,7 @@
   "publishConfig": {
     "access": "public"
   },
+  "type": "module",
   "main": "./lib/index.js",
   "dependencies": {
     "@babel/helper-module-transforms": "workspace:^7.14.0",

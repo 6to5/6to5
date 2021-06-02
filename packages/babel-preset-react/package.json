@@ -14,6 +14,7 @@
     "url": "https://github.com/babel/babel.git",
     "directory": "packages/babel-preset-react"
   },
+  "type": "module",
   "main": "./lib/index.js",
   "dependencies": {
     "@babel/helper-plugin-utils": "workspace:^7.13.0",
