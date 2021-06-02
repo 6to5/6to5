@@ -7,6 +7,7 @@ import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
 import { createRequire } from "module";
+import { jest } from "@jest/globals";
 
 import { chmod } from "../lib/babel/util";
 

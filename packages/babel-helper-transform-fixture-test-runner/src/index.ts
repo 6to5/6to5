@@ -17,9 +17,9 @@ import { fileURLToPath } from "url";
 import { jest } from "@jest/globals";
 
 // Workaround for https://github.com/facebook/jest/issues/11434
-import "../../babel-helper-create-class-features-plugin/lib/index";
-import "../../babel-template/lib/index";
-import "../../babel-core/lib/index";
+import "../../babel-helper-create-class-features-plugin/lib/index.js";
+import "../../babel-template/lib/index.js";
+import "../../babel-core/lib/index.js";
 
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);

@@ -3,9 +3,9 @@ import path from "path";
 import { URL } from "url";
 
 // Workaround for https://github.com/facebook/jest/issues/11434
-import "../../babel-helper-create-class-features-plugin/lib/index";
-import "../../babel-template/lib/index";
-import "../../babel-core/lib/index";
+import "../../babel-helper-create-class-features-plugin/lib/index.js";
+import "../../babel-template/lib/index.js";
+import "../../babel-core/lib/index.js";
 
 export default function (loc) {
   if (!process.env.BABEL_8_BREAKING) {
