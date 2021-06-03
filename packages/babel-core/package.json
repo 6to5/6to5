@@ -4,6 +4,10 @@
   "description": "Babel compiler core.",
   "type": "module",
   "main": "./lib/index.js",
+  "exports": {
+    "require": "./proxy.cjs",
+    "default": "./lib/index.js"
+  },
   "author": "The Babel Team (https://babel.dev/team)",
   "license": "MIT",
   "publishConfig": {
