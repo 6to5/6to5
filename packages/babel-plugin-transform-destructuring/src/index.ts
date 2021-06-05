@@ -249,6 +249,7 @@ export default declare((api, options) => {
           program.scope.push({
             id,
             init: keyExpression,
+            // @ts-expect-error todo(flow->ts) types do require either "var" or "let", but not "const"
             kind: "const",
           });
 
