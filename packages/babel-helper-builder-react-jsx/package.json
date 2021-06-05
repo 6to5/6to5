@@ -18,6 +18,10 @@
     "@babel/types": "workspace:^7.14.5"
   },
   "devDependencies": {
-    "@babel/traverse": "workspace:^7.12.17"
+    "@babel/traverse": "workspace:*"
+  },
+  "author": "The Babel Team (https://babel.dev/team)",
+  "engines": {
+    "node": ">=6.9.0"
   }
 }
