@@ -22,6 +22,7 @@
     "url": "https://github.com/babel/babel.git",
     "directory": "packages/babel-parser"
   },
+  "type": "module",
   "main": "./lib/index.js",
   "types": "./typings/babel-parser.d.ts",
   "files": [

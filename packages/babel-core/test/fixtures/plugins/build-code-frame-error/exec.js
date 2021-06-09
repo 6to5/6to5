@@ -14,5 +14,6 @@ expect(() => {
     ],
     // hard to assert on ANSI escape codes
     highlightCode: false,
+    configFile: false,
   });
 }).toThrow(/^unknown: someMsg\s+> 1 \| function f\(\) {}/);

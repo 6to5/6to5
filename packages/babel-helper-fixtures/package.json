@@ -13,6 +13,7 @@
     "directory": "packages/babel-helper-fixtures"
   },
   "homepage": "https://babel.dev/docs/en/next/babel-helper-fixtures",
+  "type": "module",
   "main": "./lib/index.js",
   "dependencies": {
     "semver": "condition:BABEL_8_BREAKING ? ^7.3.4 : ^6.3.0"

@@ -5,22 +5,22 @@
 import * as t from "@babel/types";
 
 export interface VirtualTypeAliases {
+  BindingIdentifier: t.Identifier;
+  BlockScoped: t.Node;
+  ExistentialTypeParam: t.ExistsTypeAnnotation;
+  Expression: t.Expression;
+  Flow: t.Flow | t.ImportDeclaration | t.ExportDeclaration | t.ImportSpecifier;
+  ForAwaitStatement: t.ForOfStatement;
+  Generated: t.Node;
+  NumericLiteralTypeAnnotation: t.NumberLiteralTypeAnnotation;
+  Pure: t.Node;
+  Referenced: t.Node;
   ReferencedIdentifier: t.Identifier | t.JSXIdentifier;
   ReferencedMemberExpression: t.MemberExpression;
-  BindingIdentifier: t.Identifier;
-  Statement: t.Statement;
-  Expression: t.Expression;
-  Scope: t.Scopable | t.Pattern;
-  Referenced: t.Node;
-  BlockScoped: t.Node;
-  Var: t.VariableDeclaration;
-  User: t.Node;
-  Generated: t.Node;
-  Pure: t.Node;
-  Flow: t.Flow | t.ImportDeclaration | t.ExportDeclaration | t.ImportSpecifier;
   RestProperty: t.RestElement;
+  Scope: t.Scopable | t.Pattern;
   SpreadProperty: t.RestElement;
-  ExistentialTypeParam: t.ExistsTypeAnnotation;
-  NumericLiteralTypeAnnotation: t.NumberLiteralTypeAnnotation;
-  ForAwaitStatement: t.ForOfStatement;
+  Statement: t.Statement;
+  User: t.Node;
+  Var: t.VariableDeclaration;
 }

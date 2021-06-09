@@ -10,7 +10,7 @@ import {
   getModuleName,
 } from "@babel/helper-module-transforms";
 import { template, types as t } from "@babel/core";
-import { getImportSource } from "babel-plugin-dynamic-import-node/utils";
+import { getImportSource } from "babel-plugin-dynamic-import-node/utils.js";
 
 const buildWrapper = template(`
   define(MODULE_NAME, AMD_ARGUMENTS, function(IMPORT_NAMES) {

@@ -12,6 +12,7 @@
   "publishConfig": {
     "access": "public"
   },
+  "type": "module",
   "main": "./lib/index.js",
   "keywords": [
     "babel-plugin"

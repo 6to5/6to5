@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-node="yarn node"
+node="yarn node --experimental-vm-modules"
 jestArgs="--coverage"
 
 if [ -n "$CI" ]; then

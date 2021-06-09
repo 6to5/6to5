@@ -315,6 +315,10 @@ const instantiatePlugin = makeWeakCache(function* (
   { value, options, dirname, alias }: LoadedDescriptor,
   cache: CacheConfigurator<Context.SimplePlugin>,
 ): Handler<Plugin> {
+  if (typeof (value as any).inherits === "object" && (value as any).inherits) {
+    (value as any).inherits = (value as any).inherits.default;
+  }
+
   const pluginObj = validatePluginObject(value);
 
   const plugin = {

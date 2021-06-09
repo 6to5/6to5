@@ -6,12 +6,6 @@ import { createRequire } from "module";
 
 const require = createRequire(import.meta.url);
 
-let import_;
-try {
-  // Node < 13.3 doesn't support import() syntax.
-  import_ = require("./import").default;
-} catch {}
-
 export default function* loadCjsOrMjsDefault(
   filepath: string,
   asyncError: string,
@@ -56,15 +50,8 @@ function loadCjsDefault(filepath: string, fallbackToTranspiledModule: boolean) {
 }
 
 async function loadMjsDefault(filepath: string) {
-  if (!import_) {
-    throw new Error(
-      "Internal error: Native ECMAScript modules aren't supported" +
-        " by this platform.\n",
-    );
-  }
-
   // import() expects URLs, not file paths.
   // https://github.com/nodejs/node/issues/31710
-  const module = await import_(pathToFileURL(filepath));
+  const module = await import(pathToFileURL(filepath).href);
   return module.default;
 }

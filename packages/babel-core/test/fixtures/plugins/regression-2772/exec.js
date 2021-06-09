@@ -34,5 +34,6 @@ transform(code, {
         }
       };
     }
-  ]
+  ],
+  configFile: false,
 });

@@ -14,6 +14,7 @@
     "url": "https://github.com/babel/babel.git",
     "directory": "packages/babel-code-frame"
   },
+  "type": "module",
   "main": "./lib/index.js",
   "dependencies": {
     "@babel/highlight": "workspace:^7.12.13"

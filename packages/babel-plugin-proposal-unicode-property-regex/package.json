@@ -7,6 +7,7 @@
   "publishConfig": {
     "access": "public"
   },
+  "type": "module",
   "main": "./lib/index.js",
   "engines": {
     "node": ">=4"

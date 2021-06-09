@@ -1,4 +1,7 @@
+const isESMBuild = true; // bool(process.env.BABEL_ESM_BUILD);
+
 module.exports = {
+  resolver: "<rootDir>/jest-resolver.js",
   collectCoverageFrom: [
     "packages/*/src/**/*.{js,mjs,ts}",
     "codemods/*/src/**/*.{js,mjs,ts}",
@@ -20,7 +23,11 @@ module.exports = {
     "<rootDir>/test/warning\\.js",
     "<rootDir>/build/",
     "_browser\\.js",
-  ],
+    isESMBuild && "<rootDir>/eslint",
+    isESMBuild && "/babel-register/",
+    isESMBuild && "/babel-node/",
+    isESMBuild && "/babel-standalone/",
+  ].filter(Boolean),
   testEnvironment: "node",
   setupFilesAfterEnv: ["<rootDir>/test/testSetupFile.js"],
   transformIgnorePatterns: [

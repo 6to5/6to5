@@ -9,6 +9,7 @@
     "url": "https://github.com/babel/babel.git",
     "directory": "packages/babel-helper-compilation-targets"
   },
+  "type": "module",
   "main": "./lib/index.js",
   "exports": {
     ".": "./lib/index.js"

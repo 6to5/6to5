@@ -1,4 +1,7 @@
-import { loadOptions as loadOptionsOrig } from "../lib";
+import {
+  loadOptions as loadOptionsOrig,
+  loadOptionsAsync as loadOptionsAsyncOrig,
+} from "../lib";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -6,6 +9,9 @@ const cwd = path.dirname(fileURLToPath(import.meta.url));
 
 function loadOptions(opts) {
   return loadOptionsOrig({ cwd, ...opts });
+}
+function loadOptionsAsync(opts) {
+  return loadOptionsAsyncOrig({ cwd, ...opts });
 }
 
 describe("option-manager", () => {
@@ -61,10 +67,10 @@ describe("option-manager", () => {
       }).toThrowErrorMatchingSnapshot();
     });
 
-    it("should not throw when a preset string followed by valid preset object", () => {
+    it("should not throw when a preset string followed by valid preset object", async () => {
       const { plugin } = makePlugin();
       expect(
-        loadOptions({
+        await loadOptionsAsync({
           presets: [
             "@babel/env",
             { plugins: [[plugin, undefined, "my-plugin"]] },

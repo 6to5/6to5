@@ -97,7 +97,7 @@ describe("parser and generator options", function () {
     function newTransformWithPlugins(string) {
       return transform(string, {
         ast: true,
-        plugins: [cwd + "/../../babel-plugin-syntax-flow"],
+        plugins: [pluginSyntaxFlow],
         parserOpts: {
           parser: recast.parse,
         },

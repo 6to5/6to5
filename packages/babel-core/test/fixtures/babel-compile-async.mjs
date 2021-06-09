@@ -2,10 +2,8 @@
 
 // Usage:
 // babel-compile-async.js [filename]
-import babel from "../../lib/index.js";
+import { transformAsync } from "../../lib/index.js";
 
 (async () => {
-  process.stdout.write(
-    JSON.stringify(await babel.transformAsync(""))
-  );
+  process.stdout.write(JSON.stringify(await transformAsync("")));
 })();

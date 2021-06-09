@@ -11,5 +11,6 @@ transform(code, {
       };
     },
   ],
-  filename: "/fake/path/example.js"
+  filename: "/fake/path/example.js",
+  configFile: false,
 });

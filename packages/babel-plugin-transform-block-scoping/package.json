@@ -12,6 +12,7 @@
   "publishConfig": {
     "access": "public"
   },
+  "type": "module",
   "main": "./lib/index.js",
   "dependencies": {
     "@babel/helper-plugin-utils": "workspace:^7.13.0"

@@ -13,6 +13,7 @@
     "access": "public"
   },
   "main": "./lib/index.js",
+  "type": "module",
   "exports": {
     ".": [
       "./lib/index.js"

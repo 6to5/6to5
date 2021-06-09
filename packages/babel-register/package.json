@@ -12,6 +12,7 @@
     "directory": "packages/babel-register"
   },
   "author": "The Babel Team (https://babel.dev/team)",
+  "type": "module",
   "main": "./lib/index.js",
   "browser": {
     "./lib/nodeWrapper.js": "./lib/browser.js"

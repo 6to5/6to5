@@ -1,3 +1,3 @@
 /* eslint-disable @babel/development/plugin-name */
 
-export { default } from "@babel/plugin-transform-react-jsx/lib/development";
+export { default } from "@babel/plugin-transform-react-jsx/lib/development.js";

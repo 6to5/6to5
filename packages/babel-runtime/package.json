@@ -16,6 +16,7 @@
   "dependencies": {
     "regenerator-runtime": "^0.13.4"
   },
+  "type": "commonjs",
   "exports": {
     "./helpers/jsx": [
       {

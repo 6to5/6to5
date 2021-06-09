@@ -14,6 +14,7 @@
     "url": "https://github.com/babel/babel.git",
     "directory": "packages/babel-preset-env"
   },
+  "type": "module",
   "main": "./lib/index.js",
   "dependencies": {
     "@babel/compat-data": "workspace:^7.14.4",

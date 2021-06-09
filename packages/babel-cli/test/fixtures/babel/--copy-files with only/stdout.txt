@@ -1,2 +1,1 @@
-src/foo/bar.js -> lib/foo/bar.js
-Successfully compiled 1 file with Babel (123ms).
+Successfully compiled 0 files with Babel (123ms).

@@ -152,11 +152,12 @@ function resolveStandardizedName(
 const LOADING_MODULES = new Set();
 function* requireModule(type: string, name: string): Handler<unknown> {
   if (LOADING_MODULES.has(name)) {
-    throw new Error(
+    // TODO: This causes problems with async plugins
+    /*throw new Error(
       `Reentrant ${type} detected trying to load "${name}". This module is not ignored ` +
         "and is trying to load itself while compiling itself, leading to a dependency cycle. " +
         'We recommend adding it to your "ignore" list in your babelrc, or to a .babelignore.',
-    );
+    );*/
   }
 
   try {
