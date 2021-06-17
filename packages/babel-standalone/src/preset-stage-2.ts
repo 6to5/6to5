@@ -12,7 +12,6 @@ export default (_: any, opts: any = {}) => {
   return {
     presets: [[presetStage3, { loose, useBuiltIns }]],
     plugins: [
-      babelPlugins.proposalClassStaticBlock,
       [
         babelPlugins.proposalDecorators,
         { legacy: decoratorsLegacy, decoratorsBeforeExport },

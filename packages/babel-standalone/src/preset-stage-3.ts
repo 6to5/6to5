@@ -20,6 +20,7 @@ export default (_: any, opts: any) => {
       babelPlugins.proposalJsonStrings,
       babelPlugins.proposalNumericSeparator,
       [babelPlugins.proposalPrivateMethods, { loose }],
+      babelPlugins.proposalClassStaticBlock,
     ],
   };
 };
