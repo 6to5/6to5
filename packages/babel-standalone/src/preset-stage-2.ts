@@ -17,7 +17,6 @@ export default (_: any, opts: any = {}) => {
         { legacy: decoratorsLegacy, decoratorsBeforeExport },
       ],
       babelPlugins.proposalFunctionSent,
-      babelPlugins.proposalPrivatePropertyInObject,
       babelPlugins.proposalThrowExpressions,
     ],
   };

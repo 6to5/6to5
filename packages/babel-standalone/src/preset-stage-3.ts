@@ -12,6 +12,7 @@ export default (_: any, opts: any) => {
     plugins: [
       babelPlugins.syntaxImportAssertions,
       babelPlugins.proposalClassStaticBlock,
+      babelPlugins.proposalPrivatePropertyInObject,
     ],
   };
 };
