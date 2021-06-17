@@ -20,6 +20,7 @@ export default (_: any, opts: any = {}) => {
       babelPlugins.proposalFunctionSent,
       babelPlugins.proposalThrowExpressions,
       [babelPlugins.syntaxRecordAndTuple, { syntaxType: recordAndTupleSyntax }],
+      babelPlugins.syntaxModuleBlocks,
     ],
   };
 };
