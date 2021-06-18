@@ -409,6 +409,43 @@ const privateNameHandlerSpec = {
   },
 };
 
+const privateNameHandlerLoose = {
+  get(member) {
+    const { privateNamesMap, file } = this;
+    const { object } = member.node;
+    const { name } = member.node.property.id;
+
+    return template.expression`BASE(REF, PROP)[PROP]`({
+      BASE: file.addHelper("classPrivateFieldLooseBase"),
+      REF: t.cloneNode(object),
+      PROP: t.cloneNode(privateNamesMap.get(name).id),
+    });
+  },
+
+  boundGet(member) {
+    return t.callExpression(
+      t.memberExpression(this.get(member), t.identifier("bind")),
+      [t.cloneNode(member.node.object)],
+    );
+  },
+
+  simpleSet(member) {
+    return this.get(member);
+  },
+
+  destructureSet(member) {
+    return this.get(member);
+  },
+
+  call(member, args) {
+    return t.callExpression(this.get(member), args);
+  },
+
+  optionalCall(member, args) {
+    return t.optionalCallExpression(this.get(member), args, true);
+  },
+};
+
 export function transformPrivateNamesUsage(
   ref,
   path,
@@ -419,10 +456,9 @@ export function transformPrivateNamesUsage(
   if (!privateNamesMap.size) return;
 
   const body = path.get("body");
-  // const handler = privateFieldsAsProperties
-  //   ? privateNameHandlerLoose
-  //   : privateNameHandlerSpec;
-  const handler = privateNameHandlerSpec;
+  const handler = privateFieldsAsProperties
+    ? privateNameHandlerLoose
+    : privateNameHandlerSpec;
 
   memberExpressionToFunctions(body, privateNameVisitor, {
     privateNamesMap,
@@ -440,7 +476,6 @@ export function transformPrivateNamesUsage(
 }
 
 export function buildPrivateInstanceFieldInitSpec(
-  ref,
   node,
   scope,
   privateNamesMap,
@@ -448,7 +483,7 @@ export function buildPrivateInstanceFieldInitSpec(
   const { id } = privateNamesMap.get(node.key.id.name);
   const value = node.value || scope.buildUndefinedNode();
 
-  return template.expression.ast`${t.cloneNode(id)}.set(${ref}, ${value})`;
+  return template.expression.ast`${t.cloneNode(id)}.set(this, ${value})`;
 }
 
 export function buildPrivateStaticFieldInitSpec(node, scope, privateNamesMap) {
@@ -459,8 +494,25 @@ export function buildPrivateStaticFieldInitSpec(node, scope, privateNamesMap) {
   return t.assignmentExpression("=", t.cloneNode(id), value);
 }
 
+export function buildPrivateFieldInitLoose(
+  node,
+  scope,
+  privateNamesMap,
+  getClassRef = t.thisExpression,
+) {
+  const { id } = privateNamesMap.get(node.key.id.name);
+  const value = node.value || scope.buildUndefinedNode();
+
+  // configurable and enumerable are false by default
+  return template.expression.ast`
+    Object.defineProperty(${getClassRef()}, ${t.cloneNode(id)}, {
+      writable: true,
+      value: ${value}
+    })
+  `;
+}
+
 export function buildPrivateInstanceMethodInitSpec(
-  ref,
   node,
   scope,
   privateNamesMap,
@@ -473,7 +525,46 @@ export function buildPrivateInstanceMethodInitSpec(
 
   privateNamesMap.set(name, { ...privateName, initAdded: true });
 
-  return template.expression.ast`${id}.add(${ref})`;
+  return template.expression.ast`${id}.add(this)`;
+}
+
+export function buildPrivateMethodInitLoose(
+  node,
+  scope,
+  privateNamesMap,
+  getClassRef = t.thisExpression,
+) {
+  const privateName = privateNamesMap.get(node.key.id.name);
+  const { methodId, id, getId, setId, initAdded } = privateName;
+  if (initAdded) return;
+
+  if (methodId) {
+    return template.expression.ast`
+      Object.defineProperty(${getClassRef()}, ${id}, {
+        // configurable is false by default
+        // enumerable is false by default
+        // writable is false by default
+        value: ${methodId.name}
+      })
+    `;
+  }
+  const isAccessor = getId || setId;
+  if (isAccessor) {
+    privateNamesMap.set(node.key.id.name, {
+      ...privateName,
+      initAdded: true,
+    });
+
+    return template.expression.ast`
+      Object.defineProperty(${getClassRef()}, ${id}, {
+        // configurable is false by default
+        // enumerable is false by default
+        // writable is false by default
+        get: ${getId ? getId.name : scope.buildUndefinedNode()},
+        set: ${setId ? setId.name : scope.buildUndefinedNode()}
+      })
+    `;
+  }
 }
 
 export function buildPrivateMethodDeclaration(

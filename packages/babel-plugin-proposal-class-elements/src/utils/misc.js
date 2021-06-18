@@ -67,7 +67,7 @@ export function injectStaticInitialization(
   needsClassRef,
 ) {
   if (path.isClassDeclaration()) {
-    path.insertAfter(nodes);
+    return path.insertAfter(nodes).slice(1);
   } else {
     const assignment = t.assignmentExpression(
       "=",
@@ -75,15 +75,19 @@ export function injectStaticInitialization(
       path.node,
     );
     if (nodes.length > 0) {
-      path.replaceWithMultiple([
+      const paths = path.replaceWithMultiple([
         assignment,
         ...nodes,
         t.cloneNode(externalClassRef),
       ]);
       path.scope.push({ id: externalClassRef });
+
+      return paths.slice(1, -1);
     } else if (needsClassRef) {
       path.replaceWith(assignment);
       path.scope.push({ id: externalClassRef });
+
+      return [];
     }
   }
 }

@@ -1,0 +1,7 @@
+{
+  "minNodeVersion": "8.0.0",
+  "plugins": [["proposal-class-elements", { "targetSyntax": "privateFields" }]],
+  "parserOpts": {
+    "allowReturnOutsideFunction": true
+  }
+}

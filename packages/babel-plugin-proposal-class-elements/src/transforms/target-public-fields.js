@@ -4,6 +4,8 @@ import {
   buildPrivateInstanceFieldInitSpec,
   buildPrivateStaticFieldInitSpec,
   buildPrivateInstanceMethodInitSpec,
+  buildPrivateFieldInitLoose,
+  buildPrivateMethodInitLoose,
   transformPrivateNamesUsage,
 } from "../utils/private";
 import {
@@ -18,6 +20,7 @@ import {
   replaceSupers,
   replaceThisContextInExtractedNodes,
 } from "../utils/context";
+import { map, mapFilter } from "../utils/fp";
 
 function unshiftFieldInit(fieldPath, exprs) {
   if (exprs.length === 0) return;
@@ -40,37 +43,52 @@ export default function privateToFields(api) {
   const noDocumentAll = api.assumption("noDocumentAll");
   const privateFieldsAsProperties = api.assumption("privateFieldsAsProperties");
 
+  const ifPFAP = fn => {
+    return privateFieldsAsProperties ? fn() : [];
+  };
+
+  const buildPrivateInstanceFieldInit = privateFieldsAsProperties
+    ? buildPrivateFieldInitLoose
+    : buildPrivateInstanceFieldInitSpec;
+
   return {
     Class(path, state) {
       const privateNamesMap = new Map();
 
-      const initInstancePrivFields = nodes =>
-        nodes.map(node =>
-          buildPrivateInstanceFieldInitSpec(
-            t.thisExpression(),
-            node,
-            path.scope,
-            privateNamesMap,
-          ),
-        );
-      const initStaticPrivFields = nodes =>
-        nodes
-          .map(node =>
+      const initInstancePrivFields = map(node =>
+        buildPrivateInstanceFieldInit(node, path.scope, privateNamesMap),
+      );
+      const initStaticPrivFields = privateFieldsAsProperties
+        ? (nodes, getClassRef) =>
+            nodes.map(node =>
+              buildPrivateFieldInitLoose(
+                node,
+                path.scope,
+                privateNamesMap,
+                getClassRef,
+              ),
+            )
+        : mapFilter(node =>
             buildPrivateStaticFieldInitSpec(node, path.scope, privateNamesMap),
-          )
-          .filter(Boolean);
-      const initPrivMethods = nodes =>
-        nodes
-          .map(node =>
+          );
+      const initPrivMethods = privateFieldsAsProperties
+        ? (nodes, getClassRef) =>
+            mapFilter(node =>
+              buildPrivateMethodInitLoose(
+                node,
+                path.scope,
+                privateNamesMap,
+                getClassRef,
+              ),
+            )(nodes)
+        : mapFilter(node =>
             buildPrivateInstanceMethodInitSpec(
-              t.thisExpression(),
               node,
               path.scope,
               privateNamesMap,
               state,
             ),
-          )
-          .filter(Boolean);
+          );
 
       const instanceMeta = {
         firstPrivFields: null,
@@ -99,6 +117,10 @@ export default function privateToFields(api) {
           classRef,
           originalClassRef,
         ));
+      const getExternalClassRefForUsage = () => {
+        needsClassRef = true;
+        return t.cloneNode(getExternalClassRef());
+      };
 
       for (const el of path.get("body.body")) {
         if (el.isPrivate()) {
@@ -153,33 +175,25 @@ export default function privateToFields(api) {
         state,
       );
 
+      let instanceInit;
       if (instanceMeta.firstPublicFieldPath) {
         unshiftFieldInit(instanceMeta.firstPublicFieldPath, [
           ...initPrivMethods(instanceMeta.privMethods),
           ...initInstancePrivFields(instanceMeta.firstPrivFields),
         ]);
-        instanceMeta.privFields = initInstancePrivFields(
-          instanceMeta.privFields,
-        );
+        instanceInit = initInstancePrivFields(instanceMeta.privFields);
       } else {
-        instanceMeta.privFields = [
+        instanceInit = [
           ...initPrivMethods(instanceMeta.privMethods),
           ...initInstancePrivFields(instanceMeta.privFields),
         ];
       }
 
-      if (staticMeta.firstPublicFieldPath) {
-        unshiftFieldInit(
-          staticMeta.firstPublicFieldPath,
-          initStaticPrivFields(staticMeta.firstPrivFields),
-        );
-      }
-
-      if (instanceMeta.privFields.length > 0) {
+      if (instanceInit.length > 0) {
         injectInitialization(
           path,
           constructorPath,
-          instanceMeta.privFields.map(p => t.expressionStatement(p)),
+          instanceInit.map(p => t.expressionStatement(p)),
         );
       }
 
@@ -203,9 +217,27 @@ export default function privateToFields(api) {
           constantSuper,
         ) || needsClassRef;
 
+      if (staticMeta.firstPublicFieldPath) {
+        unshiftFieldInit(staticMeta.firstPublicFieldPath, [
+          ...ifPFAP(() => initPrivMethods(staticMeta.privMethods)),
+          ...initStaticPrivFields(staticMeta.firstPrivFields),
+        ]);
+      }
+
       injectStaticInitialization(
         path,
-        initStaticPrivFields(staticMeta.privFields),
+        [
+          ...ifPFAP(() =>
+            initPrivMethods(
+              staticMeta.privMethods,
+              getExternalClassRefForUsage,
+            ),
+          ),
+          ...initStaticPrivFields(
+            staticMeta.privFields,
+            getExternalClassRefForUsage,
+          ),
+        ],
         getExternalClassRef(),
         needsClassRef,
       );

@@ -5,6 +5,8 @@ import {
   buildPrivateStaticFieldInitSpec,
   buildPrivateInstanceMethodInitSpec,
   transformPrivateNamesUsage,
+  buildPrivateFieldInitLoose,
+  buildPrivateMethodInitLoose,
 } from "../utils/private";
 import { buildPublicFieldInitSpec } from "../utils/public";
 import {
@@ -19,11 +21,23 @@ import {
   replaceSupers,
   replaceThisContextInExtractedNodes,
 } from "../utils/context";
+import { map, mapFilter } from "../utils/fp";
 
 export default function classElementsToES6(api) {
   const constantSuper = api.assumption("constantSuper");
   const noDocumentAll = api.assumption("noDocumentAll");
   const privateFieldsAsProperties = api.assumption("privateFieldsAsProperties");
+
+  const ifPFAP = fn => {
+    return privateFieldsAsProperties ? fn() : [];
+  };
+
+  const buildPrivateInstanceFieldInit = privateFieldsAsProperties
+    ? buildPrivateFieldInitLoose
+    : buildPrivateInstanceFieldInitSpec;
+  const buildPrivateStaticFieldInit = privateFieldsAsProperties
+    ? buildPrivateFieldInitLoose
+    : buildPrivateStaticFieldInitSpec;
 
   return {
     Class(path, state) {
@@ -45,6 +59,10 @@ export default function classElementsToES6(api) {
           classRef,
           originalClassRef,
         ));
+      const getExternalClassRefForUsage = () => {
+        needsClassRef = true;
+        return t.cloneNode(getExternalClassRef());
+      };
 
       for (const el of path.get("body.body")) {
         const isStatic = el.node.static;
@@ -97,50 +115,50 @@ export default function classElementsToES6(api) {
           constantSuper,
         ) || needsClassRef;
 
-      const initInstanceFields = nodes =>
-        nodes.map(node => {
-          if (t.isPrivate(node)) {
-            return buildPrivateInstanceFieldInitSpec(
-              t.thisExpression(),
-              node,
-              path.scope,
-              privateNamesMap,
-            );
-          } else {
-            return buildPublicFieldInitSpec(t.thisExpression(), node, state);
-          }
-        });
-      const initStaticFields = nodes =>
-        nodes
-          .map(node => {
-            if (t.isPrivate(node)) {
-              return buildPrivateStaticFieldInitSpec(
+      const initInstanceFields = map(node => {
+        if (t.isPrivate(node)) {
+          return buildPrivateInstanceFieldInit(
+            node,
+            path.scope,
+            privateNamesMap,
+          );
+        } else {
+          return buildPublicFieldInitSpec(t.thisExpression(), node, state);
+        }
+      });
+      const initStaticFields = mapFilter(node => {
+        if (t.isPrivate(node)) {
+          return buildPrivateStaticFieldInit(
+            node,
+            path.scope,
+            privateNamesMap,
+            getExternalClassRefForUsage,
+          );
+        } else {
+          return buildPublicFieldInitSpec(
+            getExternalClassRefForUsage(),
+            node,
+            state,
+          );
+        }
+      });
+      const initPrivMethods = privateFieldsAsProperties
+        ? (nodes, getClassRef) =>
+            mapFilter(node =>
+              buildPrivateMethodInitLoose(
                 node,
                 path.scope,
                 privateNamesMap,
-              );
-            } else {
-              needsClassRef = true;
-              return buildPublicFieldInitSpec(
-                getExternalClassRef(),
-                node,
-                state,
-              );
-            }
-          })
-          .filter(Boolean);
-      const initPrivMethods = nodes =>
-        nodes
-          .map(node =>
+                getClassRef,
+              ),
+            )(nodes)
+        : mapFilter(node =>
             buildPrivateInstanceMethodInitSpec(
-              t.thisExpression(),
               node,
               path.scope,
               privateNamesMap,
-              state,
             ),
-          )
-          .filter(Boolean);
+          );
 
       const instanceInit = [
         ...initPrivMethods(instancePrivMethods),
@@ -165,7 +183,12 @@ export default function classElementsToES6(api) {
 
       injectStaticInitialization(
         path,
-        initStaticFields(staticFields).map(n => t.expressionStatement(n)),
+        [
+          ...ifPFAP(() =>
+            initPrivMethods(staticPrivMethods, getExternalClassRefForUsage),
+          ),
+          ...initStaticFields(staticFields),
+        ].map(n => t.expressionStatement(n)),
         getExternalClassRef(),
         needsClassRef,
       );

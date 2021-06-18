@@ -4,7 +4,7 @@ export function buildPublicFieldInitSpec(ref, node, state) {
   const { key, computed, value } = node;
 
   return t.callExpression(state.addHelper("defineProperty"), [
-    t.cloneNode(ref),
+    ref,
     computed || t.isLiteral(key) ? key : t.stringLiteral(key.name),
     value ?? t.unaryExpression("void", t.numericLiteral(0)),
   ]);
