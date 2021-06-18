@@ -1,16 +1,24 @@
 import { types as t } from "@babel/core";
 import {
   pushPrivateName,
-  buildPrivateNamesNodes,
   buildPrivateInstanceFieldInitSpec,
   buildPrivateStaticFieldInitSpec,
   buildPrivateInstanceMethodInitSpec,
-  buildPrivateMethodDeclaration,
   transformPrivateNamesUsage,
 } from "../utils/private";
 import { buildPublicFieldInitSpec } from "../utils/public";
-import { injectInitialization } from "../utils/misc";
-import { replaceSupers, replaceThisContext } from "../utils/context";
+import {
+  injectInitialization,
+  injectPureStatics,
+  injectStaticInitialization,
+} from "../utils/misc";
+import {
+  ensureClassRef,
+  ensureExternalClassRef,
+  replaceInnerBindingReferences,
+  replaceSupers,
+  replaceThisContextInExtractedNodes,
+} from "../utils/context";
 
 export default function classElementsToES6(api) {
   const constantSuper = api.assumption("constantSuper");
@@ -20,6 +28,74 @@ export default function classElementsToES6(api) {
   return {
     Class(path, state) {
       const privateNamesMap = new Map();
+
+      const eltsToRemove = [];
+      const instanceFields = [];
+      const staticFields = [];
+      const instancePrivMethods = [];
+      const staticPrivMethods = [];
+      let constructorPath;
+
+      const { classRef, originalClassRef } = ensureClassRef(path);
+      let needsClassRef = false;
+      let externalClassRef;
+      const getExternalClassRef = () =>
+        (externalClassRef ||= ensureExternalClassRef(
+          path,
+          classRef,
+          originalClassRef,
+        ));
+
+      for (const el of path.get("body.body")) {
+        const isStatic = el.node.static;
+        if (el.isPrivate()) {
+          pushPrivateName(privateNamesMap, el);
+        }
+
+        if (el.isClassPrivateProperty() || el.isClassProperty()) {
+          (isStatic ? staticFields : instanceFields).push(el.node);
+          eltsToRemove.push(el);
+          continue;
+        }
+
+        if (el.isClassPrivateMethod()) {
+          (isStatic ? staticPrivMethods : instancePrivMethods).push(el.node);
+
+          replaceSupers(path, el, state, constantSuper);
+          needsClassRef =
+            replaceInnerBindingReferences(
+              el,
+              getExternalClassRef(),
+              classRef,
+            ) || needsClassRef;
+
+          eltsToRemove.push(el);
+          continue;
+        }
+
+        if (el.isClassMethod({ kind: "constructor" })) {
+          constructorPath = el;
+        }
+      }
+
+      transformPrivateNamesUsage(
+        classRef,
+        path,
+        privateNamesMap,
+        { privateFieldsAsProperties, noDocumentAll },
+        state,
+      );
+
+      needsClassRef =
+        replaceThisContextInExtractedNodes(
+          staticFields,
+          eltsToRemove,
+          path,
+          getExternalClassRef(),
+          originalClassRef,
+          state,
+          constantSuper,
+        ) || needsClassRef;
 
       const initInstanceFields = nodes =>
         nodes.map(node => {
@@ -44,7 +120,12 @@ export default function classElementsToES6(api) {
                 privateNamesMap,
               );
             } else {
-              return buildPublicFieldInitSpec(classRef, node, state);
+              needsClassRef = true;
+              return buildPublicFieldInitSpec(
+                getExternalClassRef(),
+                node,
+                state,
+              );
             }
           })
           .filter(Boolean);
@@ -61,74 +142,6 @@ export default function classElementsToES6(api) {
           )
           .filter(Boolean);
 
-      const eltsToRemove = [];
-      const instanceFields = [];
-      const staticFields = [];
-      const instancePrivMethods = [];
-      const staticPrivMethods = [];
-      let constructorPath;
-
-      for (const el of path.get("body.body")) {
-        const isStatic = el.node.static;
-        if (el.isPrivate()) {
-          pushPrivateName(privateNamesMap, el);
-        }
-
-        if (el.isClassPrivateProperty() || el.isClassProperty()) {
-          (isStatic ? staticFields : instanceFields).push(el.node);
-          eltsToRemove.push(el);
-          continue;
-        }
-
-        if (el.isClassPrivateMethod()) {
-          (isStatic ? staticPrivMethods : instancePrivMethods).push(el.node);
-          replaceSupers(path, el, state, constantSuper);
-          eltsToRemove.push(el);
-          continue;
-        }
-
-        if (el.isClassMethod({ kind: "constructor" })) {
-          constructorPath = el;
-        }
-      }
-
-      let classRef = path.node.id;
-      if (!classRef) {
-        path.set("id", (classRef = path.scope.generateUidIdentifier("class")));
-      }
-
-      const stmtParent = path.find(
-        parent =>
-          parent.isStatement() ||
-          parent.isDeclaration() ||
-          parent.parentPath.isArrowFunctionExpression({
-            body: parent.node,
-          }),
-      );
-
-      transformPrivateNamesUsage(
-        classRef,
-        path,
-        privateNamesMap,
-        { privateFieldsAsProperties, noDocumentAll },
-        state,
-      );
-
-      for (let i = 0, j = 0; i < staticFields.length; i++) {
-        while (staticFields[i] !== eltsToRemove[j].node) {
-          j++;
-          if (j > eltsToRemove.length) throw new Error("Internal Babel error");
-        }
-
-        replaceThisContext(
-          path,
-          eltsToRemove[j],
-          classRef,
-          state,
-          constantSuper,
-        );
-      }
-
       const instanceInit = [
         ...initPrivMethods(instancePrivMethods),
         ...initInstanceFields(instanceFields),
@@ -141,30 +154,21 @@ export default function classElementsToES6(api) {
         );
       }
 
-      const pureStaticNodesBefore = buildPrivateNamesNodes(
-        privateNamesMap,
-        privateFieldsAsProperties,
+      injectPureStatics({
         state,
-      );
-      if (pureStaticNodesBefore) stmtParent.insertBefore(pureStaticNodesBefore);
+        path,
+        privateNamesMap,
+        instancePrivMethods,
+        staticPrivMethods,
+        privateFieldsAsProperties,
+      });
 
-      const pureStaticNodesAfter = instancePrivMethods
-        .concat(staticPrivMethods)
-        .map(method =>
-          buildPrivateMethodDeclaration(
-            method,
-            privateNamesMap,
-            privateFieldsAsProperties,
-          ),
-        );
-      if (pureStaticNodesAfter.length > 0) {
-        stmtParent.insertAfter(pureStaticNodesAfter);
-      }
-
-      const staticNodesAfter = initStaticFields(staticFields).map(n =>
-        t.expressionStatement(n),
+      injectStaticInitialization(
+        path,
+        initStaticFields(staticFields).map(n => t.expressionStatement(n)),
+        getExternalClassRef(),
+        needsClassRef,
       );
-      if (staticNodesAfter.length > 0) path.insertAfter(staticNodesAfter);
 
       eltsToRemove.forEach(el => el.remove());
     },

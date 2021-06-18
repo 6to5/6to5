@@ -1,15 +1,23 @@
 import { types as t } from "@babel/core";
 import {
   pushPrivateName,
-  buildPrivateNamesNodes,
   buildPrivateInstanceFieldInitSpec,
   buildPrivateStaticFieldInitSpec,
   buildPrivateInstanceMethodInitSpec,
-  buildPrivateMethodDeclaration,
   transformPrivateNamesUsage,
 } from "../utils/private";
-import { injectInitialization } from "../utils/misc";
-import { replaceSupers, replaceThisContext } from "../utils/context";
+import {
+  injectInitialization,
+  injectPureStatics,
+  injectStaticInitialization,
+} from "../utils/misc";
+import {
+  ensureClassRef,
+  ensureExternalClassRef,
+  replaceInnerBindingReferences,
+  replaceSupers,
+  replaceThisContextInExtractedNodes,
+} from "../utils/context";
 
 function unshiftFieldInit(fieldPath, exprs) {
   if (exprs.length === 0) return;
@@ -82,6 +90,16 @@ export default function privateToFields(api) {
       const eltsToRemove = [];
       let constructorPath;
 
+      const { classRef, originalClassRef } = ensureClassRef(path);
+      let needsClassRef = false;
+      let externalClassRef;
+      const getExternalClassRef = () =>
+        (externalClassRef ||= ensureExternalClassRef(
+          path,
+          classRef,
+          originalClassRef,
+        ));
+
       for (const el of path.get("body.body")) {
         if (el.isPrivate()) {
           pushPrivateName(privateNamesMap, el);
@@ -97,7 +115,15 @@ export default function privateToFields(api) {
 
         if (el.isClassPrivateMethod()) {
           meta.privMethods.push(el.node);
+
           replaceSupers(path, el, state, constantSuper);
+          needsClassRef =
+            replaceInnerBindingReferences(
+              el,
+              getExternalClassRef(),
+              classRef,
+            ) || needsClassRef;
+
           eltsToRemove.push(el);
           continue;
         }
@@ -117,11 +143,6 @@ export default function privateToFields(api) {
         if (el.isClassMethod({ kind: "constructor" })) {
           constructorPath = el;
         }
-      }
-
-      let classRef = path.node.id;
-      if (!classRef) {
-        path.set("id", (classRef = path.scope.generateUidIdentifier("class")));
       }
 
       transformPrivateNamesUsage(
@@ -162,45 +183,32 @@ export default function privateToFields(api) {
         );
       }
 
-      const staticNodesBefore = buildPrivateNamesNodes(
-        privateNamesMap,
-        privateFieldsAsProperties,
+      injectPureStatics({
         state,
-      );
-      if (staticNodesBefore) path.insertBefore(staticNodesBefore);
+        path,
+        privateNamesMap,
+        instancePrivMethods: instanceMeta.privMethods,
+        staticPrivMethods: staticMeta.privMethods,
+        privateFieldsAsProperties,
+      });
 
-      for (let i = 0, j = 0; i < staticMeta.privFields.length; i++) {
-        while (staticMeta.privFields[i] !== eltsToRemove[j].node) {
-          j++;
-          if (j > eltsToRemove.length) throw new Error("Internal Babel error");
-        }
-
-        replaceThisContext(
+      needsClassRef =
+        replaceThisContextInExtractedNodes(
+          staticMeta.privFields,
+          eltsToRemove,
           path,
-          eltsToRemove[j],
-          classRef,
+          getExternalClassRef(),
+          originalClassRef,
           state,
           constantSuper,
-        );
-      }
+        ) || needsClassRef;
 
-      const staticNodesAfter = [
-        ...initStaticPrivFields(staticMeta.privFields),
-        ...instanceMeta.privMethods
-          .concat(staticMeta.privMethods)
-          .map(method =>
-            buildPrivateMethodDeclaration(
-              method,
-              privateNamesMap,
-              privateFieldsAsProperties,
-            ),
-          ),
-      ];
-      if (staticNodesAfter.length > 0) {
-        path
-          .find(parent => parent.isStatement() || parent.isDeclaration())
-          .insertAfter(staticNodesAfter);
-      }
+      injectStaticInitialization(
+        path,
+        initStaticPrivFields(staticMeta.privFields),
+        getExternalClassRef(),
+        needsClassRef,
+      );
 
       eltsToRemove.forEach(el => el.remove());
     },

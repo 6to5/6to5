@@ -1,5 +1,9 @@
 import { template, types as t } from "@babel/core";
 import { findBareSupers } from "./context";
+import {
+  buildPrivateMethodDeclaration,
+  buildPrivateNamesNodes,
+} from "./private";
 
 const referenceVisitor = {
   "TSTypeAnnotation|TypeAnnotation"(path) {
@@ -53,5 +57,71 @@ export function injectInitialization(path, constructor, nodes, renamer) {
     }
   } else {
     constructor.get("body").unshiftContainer("body", nodes);
+  }
+}
+
+export function injectStaticInitialization(
+  path,
+  nodes,
+  externalClassRef,
+  needsClassRef,
+) {
+  if (path.isClassDeclaration()) {
+    path.insertAfter(nodes);
+  } else {
+    const assignment = t.assignmentExpression(
+      "=",
+      t.cloneNode(externalClassRef),
+      path.node,
+    );
+    if (nodes.length > 0) {
+      path.replaceWithMultiple([
+        assignment,
+        ...nodes,
+        t.cloneNode(externalClassRef),
+      ]);
+      path.scope.push({ id: externalClassRef });
+    } else if (needsClassRef) {
+      path.replaceWith(assignment);
+      path.scope.push({ id: externalClassRef });
+    }
+  }
+}
+
+export function injectPureStatics({
+  state,
+  path,
+  privateNamesMap,
+  instancePrivMethods,
+  staticPrivMethods,
+  privateFieldsAsProperties,
+}) {
+  const stmtParent = path.find(
+    parent =>
+      parent.isStatement() ||
+      parent.isDeclaration() ||
+      parent.parentPath.isArrowFunctionExpression({
+        body: parent.node,
+      }),
+  );
+
+  const pureStaticNodesBefore = buildPrivateNamesNodes(
+    privateNamesMap,
+    privateFieldsAsProperties,
+    state,
+  );
+  if (pureStaticNodesBefore) stmtParent.insertBefore(pureStaticNodesBefore);
+
+  const pureStaticNodesAfter = instancePrivMethods
+    .concat(staticPrivMethods)
+    .map(method =>
+      buildPrivateMethodDeclaration(
+        method,
+        privateNamesMap,
+        privateFieldsAsProperties,
+      ),
+    );
+  if (pureStaticNodesAfter.length > 0) {
+    stmtParent.insertAfter(pureStaticNodesAfter);
   }
 }
