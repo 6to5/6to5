@@ -63,7 +63,7 @@ export function injectInitialization(path, constructor, nodes, renamer) {
 export function injectStaticInitialization(
   path,
   nodes,
-  externalClassRef,
+  getExternalClassRef,
   needsClassRef,
 ) {
   if (path.isClassDeclaration()) {
@@ -71,21 +71,21 @@ export function injectStaticInitialization(
   } else {
     const assignment = t.assignmentExpression(
       "=",
-      t.cloneNode(externalClassRef),
+      getExternalClassRef(),
       path.node,
     );
     if (nodes.length > 0) {
       const paths = path.replaceWithMultiple([
         assignment,
         ...nodes,
-        t.cloneNode(externalClassRef),
+        getExternalClassRef(),
       ]);
-      path.scope.push({ id: externalClassRef });
+      path.scope.push({ id: getExternalClassRef() });
 
       return paths.slice(1, -1);
     } else if (needsClassRef) {
       path.replaceWith(assignment);
-      path.scope.push({ id: externalClassRef });
+      path.scope.push({ id: getExternalClassRef() });
 
       return [];
     }
