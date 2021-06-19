@@ -14,8 +14,7 @@ import {
   injectStaticInitialization,
 } from "../utils/misc";
 import {
-  ensureClassRef,
-  ensureExternalClassRef,
+  getClassRefs,
   replaceInnerBindingReferences,
   replaceSupers,
   replaceThisContextInExtractedNodes,
@@ -108,19 +107,12 @@ export default function privateToFields(api) {
       const eltsToRemove = [];
       let constructorPath;
 
-      const { classRef, originalClassRef } = ensureClassRef(path);
-      let needsClassRef = false;
-      let externalClassRef;
-      const getExternalClassRef = () =>
-        (externalClassRef ||= ensureExternalClassRef(
-          path,
-          classRef,
-          originalClassRef,
-        ));
-      const getExternalClassRefForUsage = () => {
-        needsClassRef = true;
-        return t.cloneNode(getExternalClassRef());
-      };
+      const {
+        internalClassRef,
+        getExternalClassRef,
+        differentRefs,
+        needsExternalClassRef,
+      } = getClassRefs(path);
 
       for (const el of path.get("body.body")) {
         if (el.isPrivate()) {
@@ -139,12 +131,13 @@ export default function privateToFields(api) {
           meta.privMethods.push(el.node);
 
           replaceSupers(path, el, state, constantSuper);
-          needsClassRef =
+          if (differentRefs) {
             replaceInnerBindingReferences(
               el,
-              getExternalClassRef(),
-              classRef,
-            ) || needsClassRef;
+              getExternalClassRef,
+              internalClassRef,
+            );
+          }
 
           eltsToRemove.push(el);
           continue;
@@ -168,7 +161,7 @@ export default function privateToFields(api) {
       }
 
       transformPrivateNamesUsage(
-        classRef,
+        internalClassRef,
         path,
         privateNamesMap,
         { privateFieldsAsProperties, noDocumentAll },
@@ -206,16 +199,15 @@ export default function privateToFields(api) {
         privateFieldsAsProperties,
       });
 
-      needsClassRef =
-        replaceThisContextInExtractedNodes(
-          staticMeta.privFields,
-          eltsToRemove,
-          path,
-          getExternalClassRef(),
-          originalClassRef,
-          state,
-          constantSuper,
-        ) || needsClassRef;
+      replaceThisContextInExtractedNodes(
+        staticMeta.privFields,
+        eltsToRemove,
+        path,
+        getExternalClassRef,
+        internalClassRef,
+        state,
+        constantSuper,
+      );
 
       if (staticMeta.firstPublicFieldPath) {
         unshiftFieldInit(staticMeta.firstPublicFieldPath, [
@@ -228,18 +220,12 @@ export default function privateToFields(api) {
         path,
         [
           ...ifPFAP(() =>
-            initPrivMethods(
-              staticMeta.privMethods,
-              getExternalClassRefForUsage,
-            ),
+            initPrivMethods(staticMeta.privMethods, getExternalClassRef),
           ),
-          ...initStaticPrivFields(
-            staticMeta.privFields,
-            getExternalClassRefForUsage,
-          ),
+          ...initStaticPrivFields(staticMeta.privFields, getExternalClassRef),
         ],
-        getExternalClassRef(),
-        needsClassRef,
+        getExternalClassRef,
+        needsExternalClassRef(),
       );
 
       eltsToRemove.forEach(el => el.remove());

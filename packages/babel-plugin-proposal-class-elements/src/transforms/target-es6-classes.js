@@ -15,8 +15,7 @@ import {
   injectStaticInitialization,
 } from "../utils/misc";
 import {
-  ensureClassRef,
-  ensureExternalClassRef,
+  getClassRefs,
   replaceInnerBindingReferences,
   replaceSupers,
   replaceThisContextInExtractedNodes,
@@ -50,19 +49,12 @@ export default function classElementsToES6(api) {
       const staticPrivMethods = [];
       let constructorPath;
 
-      const { classRef, originalClassRef } = ensureClassRef(path);
-      let needsClassRef = false;
-      let externalClassRef;
-      const getExternalClassRef = () =>
-        (externalClassRef ||= ensureExternalClassRef(
-          path,
-          classRef,
-          originalClassRef,
-        ));
-      const getExternalClassRefForUsage = () => {
-        needsClassRef = true;
-        return t.cloneNode(getExternalClassRef());
-      };
+      const {
+        internalClassRef,
+        getExternalClassRef,
+        differentRefs,
+        needsExternalClassRef,
+      } = getClassRefs(path);
 
       for (const el of path.get("body.body")) {
         const isStatic = el.node.static;
@@ -80,12 +72,13 @@ export default function classElementsToES6(api) {
           (isStatic ? staticPrivMethods : instancePrivMethods).push(el.node);
 
           replaceSupers(path, el, state, constantSuper);
-          needsClassRef =
+          if (differentRefs) {
             replaceInnerBindingReferences(
               el,
-              getExternalClassRef(),
-              classRef,
-            ) || needsClassRef;
+              getExternalClassRef,
+              internalClassRef,
+            );
+          }
 
           eltsToRemove.push(el);
           continue;
@@ -97,23 +90,22 @@ export default function classElementsToES6(api) {
       }
 
       transformPrivateNamesUsage(
-        classRef,
+        internalClassRef,
         path,
         privateNamesMap,
         { privateFieldsAsProperties, noDocumentAll },
         state,
       );
 
-      needsClassRef =
-        replaceThisContextInExtractedNodes(
-          staticFields,
-          eltsToRemove,
-          path,
-          getExternalClassRef(),
-          originalClassRef,
-          state,
-          constantSuper,
-        ) || needsClassRef;
+      replaceThisContextInExtractedNodes(
+        staticFields,
+        eltsToRemove,
+        path,
+        getExternalClassRef,
+        internalClassRef,
+        state,
+        constantSuper,
+      );
 
       const initInstanceFields = map(node => {
         if (t.isPrivate(node)) {
@@ -132,14 +124,10 @@ export default function classElementsToES6(api) {
             node,
             path.scope,
             privateNamesMap,
-            getExternalClassRefForUsage,
+            getExternalClassRef,
           );
         } else {
-          return buildPublicFieldInitSpec(
-            getExternalClassRefForUsage(),
-            node,
-            state,
-          );
+          return buildPublicFieldInitSpec(getExternalClassRef(), node, state);
         }
       });
       const initPrivMethods = privateFieldsAsProperties
@@ -185,12 +173,12 @@ export default function classElementsToES6(api) {
         path,
         [
           ...ifPFAP(() =>
-            initPrivMethods(staticPrivMethods, getExternalClassRefForUsage),
+            initPrivMethods(staticPrivMethods, getExternalClassRef),
           ),
           ...initStaticFields(staticFields),
         ].map(n => t.expressionStatement(n)),
-        getExternalClassRef(),
-        needsClassRef,
+        getExternalClassRef,
+        needsExternalClassRef(),
       );
 
       eltsToRemove.forEach(el => el.remove());
