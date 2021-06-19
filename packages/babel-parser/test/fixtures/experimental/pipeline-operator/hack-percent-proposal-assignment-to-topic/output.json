@@ -1,0 +1,52 @@
+{
+  "type": "File",
+  "start":0,"end":17,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":17}},
+  "errors": [
+    "SyntaxError: Invalid left-hand side in assignment expression. (1:10)"
+  ],
+  "program": {
+    "type": "Program",
+    "start":0,"end":17,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":17}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start":0,"end":17,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":17}},
+        "expression": {
+          "type": "BinaryExpression",
+          "start":0,"end":16,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":16}},
+          "left": {
+            "type": "Identifier",
+            "start":0,"end":5,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":5},"identifierName":"value"},
+            "name": "value"
+          },
+          "operator": "|>",
+          "right": {
+            "type": "AssignmentExpression",
+            "start":10,"end":15,"loc":{"start":{"line":1,"column":10},"end":{"line":1,"column":15}},
+            "extra": {
+              "parenthesized": true,
+              "parenStart": 9
+            },
+            "operator": "=",
+            "left": {
+              "type": "TopicReference",
+              "start":10,"end":11,"loc":{"start":{"line":1,"column":10},"end":{"line":1,"column":11}}
+            },
+            "right": {
+              "type": "NumericLiteral",
+              "start":14,"end":15,"loc":{"start":{"line":1,"column":14},"end":{"line":1,"column":15}},
+              "extra": {
+                "rawValue": 1,
+                "raw": "1"
+              },
+              "value": 1
+            }
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}

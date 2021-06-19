@@ -1,0 +1,62 @@
+{
+  "type": "File",
+  "start":0,"end":38,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":38}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":38,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":38}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start":0,"end":38,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":38}},
+        "expression": {
+          "type": "BinaryExpression",
+          "start":0,"end":38,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":38}},
+          "left": {
+            "type": "Identifier",
+            "start":0,"end":5,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":5},"identifierName":"value"},
+            "name": "value"
+          },
+          "operator": "|>",
+          "right": {
+            "type": "DoExpression",
+            "start":9,"end":38,"loc":{"start":{"line":1,"column":9},"end":{"line":1,"column":38}},
+            "async": false,
+            "body": {
+              "type": "BlockStatement",
+              "start":12,"end":38,"loc":{"start":{"line":1,"column":12},"end":{"line":1,"column":38}},
+              "body": [
+                {
+                  "type": "ForOfStatement",
+                  "start":14,"end":36,"loc":{"start":{"line":1,"column":14},"end":{"line":1,"column":36}},
+                  "await": false,
+                  "left": {
+                    "type": "Identifier",
+                    "start":19,"end":20,"loc":{"start":{"line":1,"column":19},"end":{"line":1,"column":20},"identifierName":"e"},
+                    "name": "e"
+                  },
+                  "right": {
+                    "type": "Identifier",
+                    "start":24,"end":32,"loc":{"start":{"line":1,"column":24},"end":{"line":1,"column":32},"identifierName":"sequence"},
+                    "name": "sequence"
+                  },
+                  "body": {
+                    "type": "ExpressionStatement",
+                    "start":34,"end":36,"loc":{"start":{"line":1,"column":34},"end":{"line":1,"column":36}},
+                    "expression": {
+                      "type": "TopicReference",
+                      "start":34,"end":35,"loc":{"start":{"line":1,"column":34},"end":{"line":1,"column":35}}
+                    }
+                  }
+                }
+              ],
+              "directives": []
+            }
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}

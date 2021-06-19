@@ -1,0 +1,69 @@
+{
+  "type": "File",
+  "start":0,"end":19,"loc":{"start":{"line":1,"column":0},"end":{"line":2,"column":13}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":19,"loc":{"start":{"line":1,"column":0},"end":{"line":2,"column":13}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start":0,"end":5,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":5}},
+        "expression": {
+          "type": "TupleExpression",
+          "start":0,"end":4,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":4}},
+          "elements": [
+            {
+              "type": "NumericLiteral",
+              "start":2,"end":3,"loc":{"start":{"line":1,"column":2},"end":{"line":1,"column":3}},
+              "extra": {
+                "rawValue": 0,
+                "raw": "0"
+              },
+              "value": 0
+            }
+          ]
+        }
+      },
+      {
+        "type": "ExpressionStatement",
+        "start":6,"end":19,"loc":{"start":{"line":2,"column":0},"end":{"line":2,"column":13}},
+        "expression": {
+          "type": "BinaryExpression",
+          "start":6,"end":18,"loc":{"start":{"line":2,"column":0},"end":{"line":2,"column":12}},
+          "left": {
+            "type": "NumericLiteral",
+            "start":6,"end":7,"loc":{"start":{"line":2,"column":0},"end":{"line":2,"column":1}},
+            "extra": {
+              "rawValue": 1,
+              "raw": "1"
+            },
+            "value": 1
+          },
+          "operator": "|>",
+          "right": {
+            "type": "TupleExpression",
+            "start":11,"end":18,"loc":{"start":{"line":2,"column":5},"end":{"line":2,"column":12}},
+            "elements": [
+              {
+                "type": "NumericLiteral",
+                "start":13,"end":14,"loc":{"start":{"line":2,"column":7},"end":{"line":2,"column":8}},
+                "extra": {
+                  "rawValue": 0,
+                  "raw": "0"
+                },
+                "value": 0
+              },
+              {
+                "type": "TopicReference",
+                "start":16,"end":17,"loc":{"start":{"line":2,"column":10},"end":{"line":2,"column":11}}
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}

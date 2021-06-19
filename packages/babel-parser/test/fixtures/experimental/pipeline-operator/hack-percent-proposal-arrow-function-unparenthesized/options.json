@@ -1,0 +1,12 @@
+{
+  "plugins": [
+    [
+      "pipelineOperator",
+      {
+        "proposal": "hack",
+        "topicToken": "%"
+      }
+    ]
+  ],
+  "throws": "Unexpected => after pipeline body; any => expression acting as Hack-style pipe body must be parenthesized due to its loose operator precedence. (1:8)"
+}

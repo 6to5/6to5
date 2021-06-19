@@ -1,0 +1,110 @@
+{
+  "type": "File",
+  "start":0,"end":49,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":49}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":49,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":49}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start":0,"end":49,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":49}},
+        "expression": {
+          "type": "BinaryExpression",
+          "start":0,"end":49,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":49}},
+          "left": {
+            "type": "Identifier",
+            "start":0,"end":5,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":5},"identifierName":"value"},
+            "name": "value"
+          },
+          "operator": "|>",
+          "right": {
+            "type": "DoExpression",
+            "start":9,"end":49,"loc":{"start":{"line":1,"column":9},"end":{"line":1,"column":49}},
+            "async": false,
+            "body": {
+              "type": "BlockStatement",
+              "start":12,"end":49,"loc":{"start":{"line":1,"column":12},"end":{"line":1,"column":49}},
+              "body": [
+                {
+                  "type": "ForStatement",
+                  "start":14,"end":47,"loc":{"start":{"line":1,"column":14},"end":{"line":1,"column":47}},
+                  "init": {
+                    "type": "VariableDeclaration",
+                    "start":19,"end":28,"loc":{"start":{"line":1,"column":19},"end":{"line":1,"column":28}},
+                    "declarations": [
+                      {
+                        "type": "VariableDeclarator",
+                        "start":23,"end":28,"loc":{"start":{"line":1,"column":23},"end":{"line":1,"column":28}},
+                        "id": {
+                          "type": "Identifier",
+                          "start":23,"end":24,"loc":{"start":{"line":1,"column":23},"end":{"line":1,"column":24},"identifierName":"i"},
+                          "name": "i"
+                        },
+                        "init": {
+                          "type": "NumericLiteral",
+                          "start":27,"end":28,"loc":{"start":{"line":1,"column":27},"end":{"line":1,"column":28}},
+                          "extra": {
+                            "rawValue": 0,
+                            "raw": "0"
+                          },
+                          "value": 0
+                        }
+                      }
+                    ],
+                    "kind": "let"
+                  },
+                  "test": {
+                    "type": "BinaryExpression",
+                    "start":30,"end":35,"loc":{"start":{"line":1,"column":30},"end":{"line":1,"column":35}},
+                    "left": {
+                      "type": "Identifier",
+                      "start":30,"end":31,"loc":{"start":{"line":1,"column":30},"end":{"line":1,"column":31},"identifierName":"i"},
+                      "name": "i"
+                    },
+                    "operator": "<",
+                    "right": {
+                      "type": "Identifier",
+                      "start":34,"end":35,"loc":{"start":{"line":1,"column":34},"end":{"line":1,"column":35},"identifierName":"n"},
+                      "name": "n"
+                    }
+                  },
+                  "update": {
+                    "type": "AssignmentExpression",
+                    "start":37,"end":43,"loc":{"start":{"line":1,"column":37},"end":{"line":1,"column":43}},
+                    "operator": "+=",
+                    "left": {
+                      "type": "Identifier",
+                      "start":37,"end":38,"loc":{"start":{"line":1,"column":37},"end":{"line":1,"column":38},"identifierName":"i"},
+                      "name": "i"
+                    },
+                    "right": {
+                      "type": "NumericLiteral",
+                      "start":42,"end":43,"loc":{"start":{"line":1,"column":42},"end":{"line":1,"column":43}},
+                      "extra": {
+                        "rawValue": 1,
+                        "raw": "1"
+                      },
+                      "value": 1
+                    }
+                  },
+                  "body": {
+                    "type": "ExpressionStatement",
+                    "start":45,"end":47,"loc":{"start":{"line":1,"column":45},"end":{"line":1,"column":47}},
+                    "expression": {
+                      "type": "TopicReference",
+                      "start":45,"end":46,"loc":{"start":{"line":1,"column":45},"end":{"line":1,"column":46}}
+                    }
+                  }
+                }
+              ],
+              "directives": []
+            }
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}

@@ -3,5 +3,6 @@
     ["pipelineOperator", { "proposal": "smart" }],
     ["recordAndTuple", { "syntaxType": "hash" }]
   ],
+  "BABEL_8_BREAKING": false,
   "throws": "Plugin conflict between `[\"pipelineOperator\", { proposal: \"smart\" }]` and `[\"recordAndtuple\", { syntaxType: \"hash\"}]`."
 }

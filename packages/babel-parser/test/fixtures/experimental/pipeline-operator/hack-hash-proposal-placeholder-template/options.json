@@ -1,0 +1,7 @@
+{
+  "plugins": [
+    ["pipelineOperator", { "proposal": "hack", "topicToken": "#" }],
+    "placeholders"
+  ],
+  "throws": "Cannot combine placeholders plugin and Hack-style pipes."
+}

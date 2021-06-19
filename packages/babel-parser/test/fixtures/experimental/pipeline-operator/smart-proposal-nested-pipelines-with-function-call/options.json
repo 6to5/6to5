@@ -1,3 +1,4 @@
 {
-  "plugins": [["pipelineOperator", { "proposal": "smart" }]]
+  "plugins": [["pipelineOperator", { "proposal": "smart" }]],
+  "BABEL_8_BREAKING": false
 }

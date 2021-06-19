@@ -1246,10 +1246,32 @@ export default class ExpressionParser extends LValParser {
         return node;
       }
 
+      case tt.modulo:
       case tt.hash: {
-        node = this.maybeParseTopicReference();
-        if (node) {
-          return node;
+        const pipeProposal = this.getPluginOption(
+          "pipelineOperator",
+          "proposal",
+        );
+
+        if (pipeProposal) {
+          // A pipe-operator proposal is active,
+          // although its configuration might not match the current token’s type.
+          node = this.startNode();
+          const start = this.state.start;
+          const tokenType = this.state.type;
+
+          // Consume the current token.
+          this.next();
+
+          // If the pipe-operator plugin’s configuration matches the current token’s type,
+          // then this will return `node`, will have been finished as a topic reference.
+          // Otherwise, this will throw a `PipeTopicUnconfiguredToken` error.
+          return this.finishTopicReference(
+            node,
+            start,
+            pipeProposal,
+            tokenType,
+          );
         }
       }
 
@@ -1272,64 +1294,66 @@ export default class ExpressionParser extends LValParser {
     }
   }
 
-  // https://github.com/js-choi/proposal-hack-pipes
-  maybeParseTopicReference(): ?N.Expression {
-    const pipeProposal = this.getPluginOption("pipelineOperator", "proposal");
+  // This helper method attempts to finish the given `node`
+  // into a topic-reference node for the given `pipeProposal`.
+  // See <https://github.com/js-choi/proposal-hack-pipes>.
+  //
+  // This helper method attempts to finish the given `node`
+  // into a topic-reference node for the given `pipeProposal`.
+  // The method assumes that any topic token was consumed before it was called.
+  //
+  // If the `pipelineOperator` plugin is active,
+  // and if the given `tokenType` matches the plugin’s configuration,
+  // then this method will return the finished `node`.
+  //
+  // If the `pipelineOperator` plugin is active,
+  // but if the given `tokenType` does not match the plugin’s configuration,
+  // then this method will throw a `PipeTopicUnconfiguredToken` error.
+  finishTopicReference(
+    node: N.Node,
+    start: number,
+    pipeProposal: string,
+    tokenType: TokenType,
+  ): N.Expression {
+    if (this.testTopicReferenceConfiguration(pipeProposal, start, tokenType)) {
+      // The token matches the plugin’s configuration.
+      // The token is therefore a topic reference.
 
-    // `pipeProposal` is falsy when an input program
-    // contains a topic reference on its own,
-    // outside of a pipe expression,
-    // and without having turned on the pipelineOperator plugin.
-    if (pipeProposal) {
-      // A pipe-operator proposal is active.
-
-      const { type: tokenType, start } = this.state;
-
-      if (this.testTopicReferenceConfiguration(pipeProposal, tokenType)) {
-        // The token matches the plugin’s configuration.
-        // The token is therefore a topic reference.
-
-        const node = this.startNode();
-
-        // Determine the node type for the topic reference
-        // that is appropriate for the active pipe-operator proposal.
-        let nodeType;
-        if (pipeProposal === "smart") {
-          nodeType = "PipelinePrimaryTopicReference";
-        } else {
-          // The proposal must otherwise be "hack",
-          // as enforced by testTopicReferenceConfiguration.
-          nodeType = "TopicReference";
-        }
-
-        // Consume the token.
-        this.next();
-
-        // Register the topic reference so that its pipe body knows
-        // that its topic was used at least once.
-        this.registerTopicReference();
-
-        if (!this.topicReferenceIsAllowedInCurrentContext()) {
-          // The topic reference is not allowed in the current context:
-          // it is outside of a pipe body.
-          // Raise recoverable errors.
-          if (pipeProposal === "smart") {
-            this.raise(start, Errors.PrimaryTopicNotAllowed);
-          } else {
-            // In this case, `pipeProposal === "hack"` is true.
-            this.raise(start, Errors.PipeTopicUnbound);
-          }
-        }
-
-        return this.finishNode(node, nodeType);
+      // Determine the node type for the topic reference
+      // that is appropriate for the active pipe-operator proposal.
+      let nodeType;
+      if (pipeProposal === "smart") {
+        nodeType = "PipelinePrimaryTopicReference";
       } else {
-        // The token does not match the plugin’s configuration.
-        throw this.raise(
-          start,
-          Errors.PipeTopicUnconfiguredToken,
-          tokenType.label,
-        );
+        // The proposal must otherwise be "hack",
+        // as enforced by testTopicReferenceConfiguration.
+        nodeType = "TopicReference";
       }
+
+      if (!this.topicReferenceIsAllowedInCurrentContext()) {
+        // The topic reference is not allowed in the current context:
+        // it is outside of a pipe body.
+        // Raise recoverable errors.
+        if (pipeProposal === "smart") {
+          this.raise(start, Errors.PrimaryTopicNotAllowed);
+        } else {
+          // In this case, `pipeProposal === "hack"` is true.
+          this.raise(start, Errors.PipeTopicUnbound);
+        }
+      }
+
+      // Register the topic reference so that its pipe body knows
+      // that its topic was used at least once.
+      this.registerTopicReference();
+
+      return this.finishNode(node, nodeType);
+    } else {
+      // The token does not match the plugin’s configuration.
+      throw this.raise(
+        start,
+        Errors.PipeTopicUnconfiguredToken,
+        tokenType.label,
+      );
     }
   }
 
@@ -1344,6 +1368,7 @@ export default class ExpressionParser extends LValParser {
   // then an error is thrown.
   testTopicReferenceConfiguration(
     pipeProposal: string,
+    start: number,
     tokenType: TokenType,
   ): boolean {
     switch (pipeProposal) {
@@ -1357,7 +1382,7 @@ export default class ExpressionParser extends LValParser {
       case "smart":
         return tokenType === tt.hash;
       default:
-        throw this.raise(this.state.start, Errors.PipeTopicRequiresHackPipes);
+        throw this.raise(start, Errors.PipeTopicRequiresHackPipes);
     }
   }
 

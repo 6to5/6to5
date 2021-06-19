@@ -78,41 +78,73 @@ export function validatePlugins(plugins: PluginList) {
   if (hasPlugin(plugins, "pipelineOperator")) {
     const proposal = getPluginOption(plugins, "pipelineOperator", "proposal");
 
-    if (!PIPELINE_PROPOSALS.includes(proposal)) {
-      const proposalList = PIPELINE_PROPOSALS.map(p => `"${p}"`).join(", ");
-      throw new Error(
-        `"pipelineOperator" requires "proposal" option whose value must be one of: ${proposalList}.`,
-      );
-    }
-
     const tupleSyntaxIsHash =
       hasPlugin(plugins, "recordAndTuple") &&
       getPluginOption(plugins, "recordAndTuple", "syntaxType") === "hash";
 
-    if (proposal === "hack") {
-      const topicToken = getPluginOption(
-        plugins,
-        "pipelineOperator",
-        "topicToken",
-      );
+    switch (proposal) {
+      case "hack": {
+        if (hasPlugin(plugins, "placeholders")) {
+          throw new Error(
+            "Cannot combine placeholders plugin and Hack-style pipes.",
+          );
+        }
 
-      if (!TOPIC_TOKENS.includes(topicToken)) {
-        const tokenList = TOPIC_TOKENS.map(t => `"${t}"`).join(", ");
+        if (hasPlugin(plugins, "v8intrinsic")) {
+          throw new Error(
+            "Cannot combine v8intrinsic plugin and Hack-style pipes.",
+          );
+        }
 
-        throw new Error(
-          `"pipelineOperator" in "proposal": "hack" mode also requires a "topicToken" option whose value must be one of: ${tokenList}.`,
+        const topicToken = getPluginOption(
+          plugins,
+          "pipelineOperator",
+          "topicToken",
         );
+
+        if (!TOPIC_TOKENS.includes(topicToken)) {
+          const tokenList = TOPIC_TOKENS.map(t => `"${t}"`).join(", ");
+
+          throw new Error(
+            `"pipelineOperator" in "proposal": "hack" mode also requires a "topicToken" option whose value must be one of: ${tokenList}.`,
+          );
+        }
+
+        if (topicToken === "#" && tupleSyntaxIsHash) {
+          throw new Error(
+            'Plugin conflict between `["pipelineOperator", { proposal: "hack", topicToken: "#" }]` and `["recordAndtuple", { syntaxType: "hash"}]`.',
+          );
+        }
+
+        break;
       }
 
-      if (topicToken === "#" && tupleSyntaxIsHash) {
-        throw new Error(
-          'Plugin conflict between `["pipelineOperator", { proposal: "hack", topicToken: "#" }]` and `["recordAndtuple", { syntaxType: "hash"}]`.',
-        );
+      case "smart": {
+        if (process.env.BABEL_8_BREAKING) {
+          throw new Error(
+            'Smart-mix pipes are deprecated and have been removed in Babel v8.0. Use { proposal: "hack" } instead.',
+          );
+        }
+
+        if (tupleSyntaxIsHash) {
+          throw new Error(
+            'Plugin conflict between `["pipelineOperator", { proposal: "smart" }]` and `["recordAndtuple", { syntaxType: "hash"}]`.',
+          );
+        }
+
+        break;
       }
-    } else if (proposal === "smart" && tupleSyntaxIsHash) {
-      throw new Error(
-        'Plugin conflict between `["pipelineOperator", { proposal: "smart" }]` and `["recordAndtuple", { syntaxType: "hash"}]`.',
-      );
+
+      default: {
+        if (!PIPELINE_PROPOSALS.includes(proposal)) {
+          const proposalList = PIPELINE_PROPOSALS.map(p => `"${p}"`).join(", ");
+          throw new Error(
+            `"pipelineOperator" requires "proposal" option whose value must be one of: ${proposalList}.`,
+          );
+        }
+
+        break;
+      }
     }
   }
 

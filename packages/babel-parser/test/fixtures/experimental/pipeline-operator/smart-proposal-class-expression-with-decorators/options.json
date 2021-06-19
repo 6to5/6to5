@@ -2,5 +2,6 @@
   "plugins": [
     ["pipelineOperator", { "proposal": "smart" }],
     ["decorators", {"decoratorsBeforeExport": true}]
-  ]
+  ],
+  "BABEL_8_BREAKING": false
 }

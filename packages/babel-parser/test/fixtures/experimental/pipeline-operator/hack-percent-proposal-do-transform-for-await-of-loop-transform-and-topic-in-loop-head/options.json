@@ -1,0 +1,7 @@
+{
+  "plugins": [
+    ["pipelineOperator", { "proposal": "hack", "topicToken": "%" }],
+    "doExpressions",
+    "asyncGenerators"
+  ]
+}

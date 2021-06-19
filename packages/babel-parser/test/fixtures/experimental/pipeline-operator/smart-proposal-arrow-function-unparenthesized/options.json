@@ -7,5 +7,6 @@
       }
     ]
   ],
+  "BABEL_8_BREAKING": false,
   "throws": "Unexpected token (1:8)"
 }

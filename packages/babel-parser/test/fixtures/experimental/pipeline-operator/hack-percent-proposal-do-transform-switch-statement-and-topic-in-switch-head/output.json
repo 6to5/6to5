@@ -1,0 +1,125 @@
+{
+  "type": "File",
+  "start":0,"end":83,"loc":{"start":{"line":1,"column":0},"end":{"line":7,"column":1}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":83,"loc":{"start":{"line":1,"column":0},"end":{"line":7,"column":1}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start":0,"end":83,"loc":{"start":{"line":1,"column":0},"end":{"line":7,"column":1}},
+        "expression": {
+          "type": "BinaryExpression",
+          "start":0,"end":83,"loc":{"start":{"line":1,"column":0},"end":{"line":7,"column":1}},
+          "left": {
+            "type": "Identifier",
+            "start":0,"end":5,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":5},"identifierName":"value"},
+            "name": "value"
+          },
+          "operator": "|>",
+          "right": {
+            "type": "DoExpression",
+            "start":9,"end":83,"loc":{"start":{"line":1,"column":9},"end":{"line":7,"column":1}},
+            "async": false,
+            "body": {
+              "type": "BlockStatement",
+              "start":12,"end":83,"loc":{"start":{"line":1,"column":12},"end":{"line":7,"column":1}},
+              "body": [
+                {
+                  "type": "SwitchStatement",
+                  "start":16,"end":81,"loc":{"start":{"line":2,"column":2},"end":{"line":6,"column":3}},
+                  "discriminant": {
+                    "type": "TopicReference",
+                    "start":24,"end":25,"loc":{"start":{"line":2,"column":10},"end":{"line":2,"column":11}}
+                  },
+                  "cases": [
+                    {
+                      "type": "SwitchCase",
+                      "start":33,"end":44,"loc":{"start":{"line":3,"column":4},"end":{"line":3,"column":15}},
+                      "consequent": [
+                        {
+                          "type": "ExpressionStatement",
+                          "start":41,"end":44,"loc":{"start":{"line":3,"column":12},"end":{"line":3,"column":15}},
+                          "expression": {
+                            "type": "NumericLiteral",
+                            "start":41,"end":43,"loc":{"start":{"line":3,"column":12},"end":{"line":3,"column":14}},
+                            "extra": {
+                              "rawValue": 50,
+                              "raw": "50"
+                            },
+                            "value": 50
+                          }
+                        }
+                      ],
+                      "test": {
+                        "type": "NumericLiteral",
+                        "start":38,"end":39,"loc":{"start":{"line":3,"column":9},"end":{"line":3,"column":10}},
+                        "extra": {
+                          "rawValue": 0,
+                          "raw": "0"
+                        },
+                        "value": 0
+                      }
+                    },
+                    {
+                      "type": "SwitchCase",
+                      "start":49,"end":60,"loc":{"start":{"line":4,"column":4},"end":{"line":4,"column":15}},
+                      "consequent": [
+                        {
+                          "type": "ExpressionStatement",
+                          "start":57,"end":60,"loc":{"start":{"line":4,"column":12},"end":{"line":4,"column":15}},
+                          "expression": {
+                            "type": "NumericLiteral",
+                            "start":57,"end":59,"loc":{"start":{"line":4,"column":12},"end":{"line":4,"column":14}},
+                            "extra": {
+                              "rawValue": 60,
+                              "raw": "60"
+                            },
+                            "value": 60
+                          }
+                        }
+                      ],
+                      "test": {
+                        "type": "NumericLiteral",
+                        "start":54,"end":55,"loc":{"start":{"line":4,"column":9},"end":{"line":4,"column":10}},
+                        "extra": {
+                          "rawValue": 1,
+                          "raw": "1"
+                        },
+                        "value": 1
+                      }
+                    },
+                    {
+                      "type": "SwitchCase",
+                      "start":65,"end":77,"loc":{"start":{"line":5,"column":4},"end":{"line":5,"column":16}},
+                      "consequent": [
+                        {
+                          "type": "ExpressionStatement",
+                          "start":74,"end":77,"loc":{"start":{"line":5,"column":13},"end":{"line":5,"column":16}},
+                          "expression": {
+                            "type": "NumericLiteral",
+                            "start":74,"end":76,"loc":{"start":{"line":5,"column":13},"end":{"line":5,"column":15}},
+                            "extra": {
+                              "rawValue": 70,
+                              "raw": "70"
+                            },
+                            "value": 70
+                          }
+                        }
+                      ],
+                      "test": null
+                    }
+                  ]
+                }
+              ],
+              "directives": []
+            }
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}

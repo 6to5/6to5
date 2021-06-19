@@ -1,0 +1,9 @@
+{
+  "plugins": [
+    ["proposal-pipeline-operator", { "proposal": "hack", "topicToken": "%" }],
+    "transform-arrow-functions"
+  ],
+  "parserOpts": {
+    "allowReturnOutsideFunction": true
+  }
+}

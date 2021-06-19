@@ -1,0 +1,64 @@
+{
+  "type": "File",
+  "start":0,"end":38,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":38}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":38,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":38}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start":0,"end":38,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":38}},
+        "expression": {
+          "type": "BinaryExpression",
+          "start":0,"end":38,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":38}},
+          "left": {
+            "type": "Identifier",
+            "start":0,"end":5,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":5},"identifierName":"value"},
+            "name": "value"
+          },
+          "operator": "|>",
+          "right": {
+            "type": "DoExpression",
+            "start":9,"end":38,"loc":{"start":{"line":1,"column":9},"end":{"line":1,"column":38}},
+            "async": false,
+            "body": {
+              "type": "BlockStatement",
+              "start":12,"end":38,"loc":{"start":{"line":1,"column":12},"end":{"line":1,"column":38}},
+              "body": [
+                {
+                  "type": "IfStatement",
+                  "start":14,"end":36,"loc":{"start":{"line":1,"column":14},"end":{"line":1,"column":36}},
+                  "test": {
+                    "type": "Identifier",
+                    "start":18,"end":21,"loc":{"start":{"line":1,"column":18},"end":{"line":1,"column":21},"identifierName":"yes"},
+                    "name": "yes"
+                  },
+                  "consequent": {
+                    "type": "ExpressionStatement",
+                    "start":23,"end":28,"loc":{"start":{"line":1,"column":23},"end":{"line":1,"column":28}},
+                    "expression": {
+                      "type": "NullLiteral",
+                      "start":23,"end":27,"loc":{"start":{"line":1,"column":23},"end":{"line":1,"column":27}}
+                    }
+                  },
+                  "alternate": {
+                    "type": "ExpressionStatement",
+                    "start":34,"end":36,"loc":{"start":{"line":1,"column":34},"end":{"line":1,"column":36}},
+                    "expression": {
+                      "type": "TopicReference",
+                      "start":34,"end":35,"loc":{"start":{"line":1,"column":34},"end":{"line":1,"column":35}}
+                    }
+                  }
+                }
+              ],
+              "directives": []
+            }
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}

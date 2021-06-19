@@ -3,5 +3,6 @@
     ["pipelineOperator", { "proposal": "smart" }],
     "doExpressions",
     "asyncGenerators"
-  ]
+  ],
+  "BABEL_8_BREAKING": false
 }

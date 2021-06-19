@@ -1,0 +1,57 @@
+{
+  "type": "File",
+  "start":0,"end":22,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":22}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":22,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":22}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start":0,"end":22,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":22}},
+        "expression": {
+          "type": "BinaryExpression",
+          "start":0,"end":22,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":22}},
+          "left": {
+            "type": "Identifier",
+            "start":0,"end":5,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":5},"identifierName":"value"},
+            "name": "value"
+          },
+          "operator": "|>",
+          "right": {
+            "type": "ArrowFunctionExpression",
+            "start":10,"end":21,"loc":{"start":{"line":1,"column":10},"end":{"line":1,"column":21}},
+            "extra": {
+              "parenthesized": true,
+              "parenStart": 9
+            },
+            "id": null,
+            "generator": false,
+            "async": false,
+            "params": [],
+            "body": {
+              "type": "BinaryExpression",
+              "start":16,"end":21,"loc":{"start":{"line":1,"column":16},"end":{"line":1,"column":21}},
+              "left": {
+                "type": "TopicReference",
+                "start":16,"end":17,"loc":{"start":{"line":1,"column":16},"end":{"line":1,"column":17}}
+              },
+              "operator": "+",
+              "right": {
+                "type": "NumericLiteral",
+                "start":20,"end":21,"loc":{"start":{"line":1,"column":20},"end":{"line":1,"column":21}},
+                "extra": {
+                  "rawValue": 1,
+                  "raw": "1"
+                },
+                "value": 1
+              }
+            }
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "plugins": [["pipelineOperator", { "proposal": "smart" }]],
+  "BABEL_8_BREAKING": true,
+  "throws": "Smart-mix pipes are deprecated and have been removed in Babel v8.0. Use { proposal: \"hack\" } instead."
+}

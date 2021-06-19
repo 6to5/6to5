@@ -1,0 +1,46 @@
+{
+  "type": "File",
+  "start":0,"end":35,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":35}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":35,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":35}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start":0,"end":35,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":35}},
+        "expression": {
+          "type": "BinaryExpression",
+          "start":0,"end":34,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":34}},
+          "left": {
+            "type": "Identifier",
+            "start":0,"end":5,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":5},"identifierName":"input"},
+            "name": "input"
+          },
+          "operator": "|>",
+          "right": {
+            "type": "PipelineTopicExpression",
+            "start":9,"end":34,"loc":{"start":{"line":1,"column":9},"end":{"line":1,"column":34}},
+            "expression": {
+              "type": "CallExpression",
+              "start":9,"end":34,"loc":{"start":{"line":1,"column":9},"end":{"line":1,"column":34}},
+              "callee": {
+                "type": "V8IntrinsicIdentifier",
+                "start":9,"end":31,"loc":{"start":{"line":1,"column":9},"end":{"line":1,"column":31},"identifierName":"GetOptimizationStatus"},
+                "name": "GetOptimizationStatus"
+              },
+              "arguments": [
+                {
+                  "type": "PipelinePrimaryTopicReference",
+                  "start":32,"end":33,"loc":{"start":{"line":1,"column":32},"end":{"line":1,"column":33}}
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}

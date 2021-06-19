@@ -1,0 +1,41 @@
+{
+  "type": "File",
+  "start":0,"end":15,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":15}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":15,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":15}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start":0,"end":15,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":15}},
+        "expression": {
+          "type": "BinaryExpression",
+          "start":0,"end":14,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":14}},
+          "left": {
+            "type": "Identifier",
+            "start":0,"end":1,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":1},"identifierName":"x"},
+            "name": "x"
+          },
+          "operator": "|>",
+          "right": {
+            "type": "BinaryExpression",
+            "start":5,"end":14,"loc":{"start":{"line":1,"column":5},"end":{"line":1,"column":14}},
+            "left": {
+              "type": "Identifier",
+              "start":5,"end":10,"loc":{"start":{"line":1,"column":5},"end":{"line":1,"column":10},"identifierName":"yield"},
+              "name": "yield"
+            },
+            "operator": "+",
+            "right": {
+              "type": "TopicReference",
+              "start":13,"end":14,"loc":{"start":{"line":1,"column":13},"end":{"line":1,"column":14}}
+            }
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}

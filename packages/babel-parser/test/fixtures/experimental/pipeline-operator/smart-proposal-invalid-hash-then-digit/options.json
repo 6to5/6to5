@@ -8,5 +8,6 @@
       }
     ]
   ],
+  "BABEL_8_BREAKING": false,
   "throws": "Unexpected digit after hash token. (1:5)"
 }

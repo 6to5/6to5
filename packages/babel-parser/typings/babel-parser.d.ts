@@ -159,7 +159,7 @@ export interface DecoratorsPluginOptions {
 
 export interface PipelineOperatorPluginOptions {
   proposal: "minimal" | "fsharp" | "hack" | "smart";
-  topicToken?: "#";
+  topicToken?: "%" | "#";
 }
 
 export interface RecordAndTuplePluginOptions {

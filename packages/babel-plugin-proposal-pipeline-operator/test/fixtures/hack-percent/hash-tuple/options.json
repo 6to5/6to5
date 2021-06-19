@@ -1,0 +1,6 @@
+{
+  "plugins": [
+    ["proposal-pipeline-operator", { "proposal": "hack", "topicToken": "%" }],
+    ["proposal-record-and-tuple", { "syntaxType": "hash" }]
+  ]
+}
