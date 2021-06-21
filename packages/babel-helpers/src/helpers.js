@@ -2023,3 +2023,91 @@ if (!process.env.BABEL_8_BREAKING) {
     }
   `;
 }
+
+helpers.classCheckPrivateInstanceAccess2 = helper("7.15.0")`
+export default function _classCheckPrivateInstanceAccess2(receiver, privateMapOrSet, action) {
+  if (!privateMapOrSet.has(receiver)) {
+    throw new TypeError("attempted to " + action + " private field on non-instance");
+  }
+}
+`;
+
+helpers.classPrivateFieldGet2 = helper("7.15.0")`
+  import classCheckPrivateInstanceAccess2 from "classCheckPrivateInstanceAccess2";
+
+  export default function _classPrivateFieldGet2(receiver, privateMap) {
+    classCheckPrivateInstanceAccess2(receiver, privateMap, "get");
+    return privateMap.get(receiver);
+  }
+`;
+
+helpers.classPrivateFieldSet2 = helper("7.15.0")`
+  import classCheckPrivateInstanceAccess2 from "classCheckPrivateInstanceAccess2";
+
+  export default function _classPrivateFieldSet2(receiver, privateMap, value) {
+    classCheckPrivateInstanceAccess2(receiver, privateMap, "set");
+    privateMap.set(receiver, value);
+    return value;
+  }
+`;
+
+helpers.classPrivateAccessorGet2 = helper("7.15.0")`
+  import classCheckPrivateInstanceAccess2 from "classCheckPrivateInstanceAccess2";
+
+  export default function _classPrivateAccessorGet2(receiver, privateSet, fn) {
+    classCheckPrivateInstanceAccess2(receiver, privateSet, "get");
+    return fn.call(receiver);
+  }
+`;
+
+helpers.classPrivateAccessorSet2 = helper("7.15.0")`
+  import classCheckPrivateInstanceAccess2 from "classCheckPrivateInstanceAccess2";
+
+  export default function _classPrivateAccessorSet2(receiver, privateSet, fn, value) {
+    classCheckPrivateInstanceAccess2(receiver, privateSet, "set");
+    fn.call(receiver, value);
+    return value;
+  }
+`;
+
+helpers.classInstancePrivateFieldDestructureSet2 = helper("7.15.0")`
+  import classCheckPrivateInstanceAccess2 from "classCheckPrivateInstanceAccess2";
+
+  export default function _classInstancePrivateFieldDestructureSet2(receiver, privateMap) {
+    classCheckPrivateInstanceAccess2(receiver, privateMap, "set");
+    return {
+      set _(value) { privateMap.set(receiver, value) }
+    }
+  }
+`;
+
+helpers.classInstancePrivateAccessorDestructureSet2 = helper("7.15.0")`
+  import classCheckPrivateInstanceAccess2 from "classCheckPrivateInstanceAccess2";
+
+  export default function _classInstancePrivateAccessorDestructureSet2(receiver, privateSet, setter) {
+    classCheckPrivateInstanceAccess2(receiver, privateSet, "set");
+    return {
+      set _(value) { setter.call(receiver, value) }
+    }
+  }
+`;
+
+helpers.classStaticPrivateFieldDestructureSet2 = helper("7.15.0")`
+  import classCheckPrivateStaticAccess from "classCheckPrivateStaticAccess";
+
+  export default function _classStaticPrivateFieldDestructureSet2(receiver, classConstructor, setter) {
+    classCheckPrivateStaticAccess(receiver, classConstructor);
+    return Object.defineProperty({}, "_", { set: setter });
+  }
+`;
+
+helpers.classStaticPrivateAccessorDestructureSet2 = helper("7.15.0")`
+  import classCheckPrivateStaticAccess from "classCheckPrivateStaticAccess";
+
+  export default function _classStaticPrivateAccessorDestructureSet2(receiver, classConstructor, setter) {
+    classCheckPrivateStaticAccess(receiver, classConstructor);
+    return {
+      set _(value) { setter.call(receiver, value) }
+    }
+  }
+`;

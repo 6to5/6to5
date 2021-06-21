@@ -1,0 +1,39 @@
+{
+  "name": "@babel/plugin-proposal-class-elements",
+  "version": "7.13.0",
+  "description": "This plugin transforms static class properties as well as properties declared with the property initializer syntax",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/babel/babel.git",
+    "directory": "packages/babel-plugin-proposal-class-elements"
+  },
+  "homepage": "https://babel.dev/docs/en/next/babel-plugin-proposal-class-properties",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./lib/index.js",
+  "keywords": [
+    "babel-plugin"
+  ],
+  "dependencies": {
+    "@babel/compat-data": "workspace:^7.13.8",
+    "@babel/helper-annotate-as-pure": "workspace:^7.12.13",
+    "@babel/helper-compilation-targets": "workspace:^7.13.10",
+    "@babel/helper-member-expression-to-functions": "workspace:^7.13.0",
+    "@babel/helper-optimise-call-expression": "workspace:^7.12.13",
+    "@babel/helper-plugin-utils": "workspace:^7.13.0",
+    "@babel/helper-replace-supers": "workspace:^7.13.0"
+  },
+  "peerDependencies": {
+    "@babel/core": "^7.0.0-0"
+  },
+  "devDependencies": {
+    "@babel/core": "workspace:*",
+    "@babel/helper-plugin-test-runner": "workspace:*"
+  },
+  "author": "The Babel Team (https://babel.dev/team)",
+  "engines": {
+    "node": ">=6.9.0"
+  }
+}

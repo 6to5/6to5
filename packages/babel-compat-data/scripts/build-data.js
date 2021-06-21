@@ -5,12 +5,18 @@ const compatData = require("@mdn/browser-compat-data").javascript;
 const { process } = require("./build-modules-support");
 const { generateData, environments, writeFile } = require("./utils-build-data");
 
-for (const target of ["plugin", "corejs2-built-in"]) {
+const sources = new Map([
+  ["plugin", "plugins"],
+  ["corejs2-built-in", "corejs2-built-ins"],
+  ["es", "es"],
+]);
+
+for (const [source, target] of sources) {
   const newData = generateData(
     environments,
-    require(`./data/${target}-features`)
+    require(`./data/${source}-features`)
   );
-  if (target === "plugin") {
+  if (source === "plugin") {
     // add export-namespace-from from @mdn/browser-compat-data
     const exportNamespaceFromCompatData = process(
       compatData.statements.export.namespace
@@ -20,7 +26,7 @@ for (const target of ["plugin", "corejs2-built-in"]) {
     exportNamespaceFromCompatData.node = "13.2";
     newData["proposal-export-namespace-from"] = exportNamespaceFromCompatData;
   }
-  const dataPath = path.join(__dirname, `../data/${target}s.json`);
+  const dataPath = path.join(__dirname, `../data/${target}.json`);
 
   if (!writeFile(newData, dataPath, target)) {
     process.exitCode = 1;

@@ -809,6 +809,87 @@
       "./helpers/classPrivateMethodSet.js"
     ],
     "./helpers/esm/classPrivateMethodSet": "./helpers/esm/classPrivateMethodSet.js",
+    "./helpers/classCheckPrivateInstanceAccess2": [
+      {
+        "node": "./helpers/classCheckPrivateInstanceAccess2.js",
+        "import": "./helpers/esm/classCheckPrivateInstanceAccess2.js",
+        "default": "./helpers/classCheckPrivateInstanceAccess2.js"
+      },
+      "./helpers/classCheckPrivateInstanceAccess2.js"
+    ],
+    "./helpers/esm/classCheckPrivateInstanceAccess2": "./helpers/esm/classCheckPrivateInstanceAccess2.js",
+    "./helpers/classPrivateFieldGet2": [
+      {
+        "node": "./helpers/classPrivateFieldGet2.js",
+        "import": "./helpers/esm/classPrivateFieldGet2.js",
+        "default": "./helpers/classPrivateFieldGet2.js"
+      },
+      "./helpers/classPrivateFieldGet2.js"
+    ],
+    "./helpers/esm/classPrivateFieldGet2": "./helpers/esm/classPrivateFieldGet2.js",
+    "./helpers/classPrivateFieldSet2": [
+      {
+        "node": "./helpers/classPrivateFieldSet2.js",
+        "import": "./helpers/esm/classPrivateFieldSet2.js",
+        "default": "./helpers/classPrivateFieldSet2.js"
+      },
+      "./helpers/classPrivateFieldSet2.js"
+    ],
+    "./helpers/esm/classPrivateFieldSet2": "./helpers/esm/classPrivateFieldSet2.js",
+    "./helpers/classPrivateAccessorGet2": [
+      {
+        "node": "./helpers/classPrivateAccessorGet2.js",
+        "import": "./helpers/esm/classPrivateAccessorGet2.js",
+        "default": "./helpers/classPrivateAccessorGet2.js"
+      },
+      "./helpers/classPrivateAccessorGet2.js"
+    ],
+    "./helpers/esm/classPrivateAccessorGet2": "./helpers/esm/classPrivateAccessorGet2.js",
+    "./helpers/classPrivateAccessorSet2": [
+      {
+        "node": "./helpers/classPrivateAccessorSet2.js",
+        "import": "./helpers/esm/classPrivateAccessorSet2.js",
+        "default": "./helpers/classPrivateAccessorSet2.js"
+      },
+      "./helpers/classPrivateAccessorSet2.js"
+    ],
+    "./helpers/esm/classPrivateAccessorSet2": "./helpers/esm/classPrivateAccessorSet2.js",
+    "./helpers/classInstancePrivateFieldDestructureSet2": [
+      {
+        "node": "./helpers/classInstancePrivateFieldDestructureSet2.js",
+        "import": "./helpers/esm/classInstancePrivateFieldDestructureSet2.js",
+        "default": "./helpers/classInstancePrivateFieldDestructureSet2.js"
+      },
+      "./helpers/classInstancePrivateFieldDestructureSet2.js"
+    ],
+    "./helpers/esm/classInstancePrivateFieldDestructureSet2": "./helpers/esm/classInstancePrivateFieldDestructureSet2.js",
+    "./helpers/classInstancePrivateAccessorDestructureSet2": [
+      {
+        "node": "./helpers/classInstancePrivateAccessorDestructureSet2.js",
+        "import": "./helpers/esm/classInstancePrivateAccessorDestructureSet2.js",
+        "default": "./helpers/classInstancePrivateAccessorDestructureSet2.js"
+      },
+      "./helpers/classInstancePrivateAccessorDestructureSet2.js"
+    ],
+    "./helpers/esm/classInstancePrivateAccessorDestructureSet2": "./helpers/esm/classInstancePrivateAccessorDestructureSet2.js",
+    "./helpers/classStaticPrivateFieldDestructureSet2": [
+      {
+        "node": "./helpers/classStaticPrivateFieldDestructureSet2.js",
+        "import": "./helpers/esm/classStaticPrivateFieldDestructureSet2.js",
+        "default": "./helpers/classStaticPrivateFieldDestructureSet2.js"
+      },
+      "./helpers/classStaticPrivateFieldDestructureSet2.js"
+    ],
+    "./helpers/esm/classStaticPrivateFieldDestructureSet2": "./helpers/esm/classStaticPrivateFieldDestructureSet2.js",
+    "./helpers/classStaticPrivateAccessorDestructureSet2": [
+      {
+        "node": "./helpers/classStaticPrivateAccessorDestructureSet2.js",
+        "import": "./helpers/esm/classStaticPrivateAccessorDestructureSet2.js",
+        "default": "./helpers/classStaticPrivateAccessorDestructureSet2.js"
+      },
+      "./helpers/classStaticPrivateAccessorDestructureSet2.js"
+    ],
+    "./helpers/esm/classStaticPrivateAccessorDestructureSet2": "./helpers/esm/classStaticPrivateAccessorDestructureSet2.js",
     "./package": "./package.json",
     "./package.json": "./package.json",
     "./regenerator": "./regenerator/index.js",
