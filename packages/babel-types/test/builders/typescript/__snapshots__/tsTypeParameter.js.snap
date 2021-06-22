@@ -5,16 +5,22 @@ Object {
   "constraint": Object {
     "type": "TSTypeReference",
     "typeName": Object {
+      "decorators": null,
       "name": "bar",
+      "optional": null,
       "type": "Identifier",
+      "typeAnnotation": null,
     },
     "typeParameters": null,
   },
   "default": Object {
     "type": "TSTypeReference",
     "typeName": Object {
+      "decorators": null,
       "name": "baz",
+      "optional": null,
       "type": "Identifier",
+      "typeAnnotation": null,
     },
     "typeParameters": null,
   },

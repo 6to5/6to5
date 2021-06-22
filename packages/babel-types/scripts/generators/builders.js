@@ -51,12 +51,20 @@ function generateBuilderArgs(type) {
     }
 
     if (builderNames.includes(fieldName)) {
+      const field = definitions.NODE_FIELDS[type][fieldName];
+
+      const def =
+        field.default !== undefined
+          ? Array.isArray(field.default)
+            ? "[]"
+            : JSON.stringify(field.default)
+          : undefined;
       const bindingIdentifierName = t.toBindingIdentifierName(fieldName);
       if (areAllRemainingFieldsNullable(fieldName, builderNames, fields)) {
         args.push(
           `${bindingIdentifierName}${
-            isNullable(field) ? "?:" : ":"
-          } ${typeAnnotation}`
+            isNullable(field) && !def ? "?:" : ":"
+          } ${typeAnnotation}${def ? `= ${def}` : ""}`
         );
       } else {
         args.push(
@@ -82,7 +90,7 @@ function generateLowercaseBuilders() {
  * This file is auto-generated! Do not modify it directly.
  * To re-generate run 'make build'
  */
-import builder from "../builder";
+import validateNode from "../validateNode";
 import type * as t from "../..";
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -96,11 +104,40 @@ import type * as t from "../..";
     const formatedBuilderNameLocal = reservedNames.has(formatedBuilderName)
       ? `_${formatedBuilderName}`
       : formatedBuilderName;
+
+    const fieldNames = sortFieldNames(
+      Object.keys(definitions.NODE_FIELDS[type]),
+      type
+    );
+    const builderNames = definitions.BUILDER_KEYS[type];
+    const objectFields = [["type", JSON.stringify(type)]];
+    fieldNames.forEach(fieldName => {
+      const field = definitions.NODE_FIELDS[type][fieldName];
+
+      function defaultExpression() {
+        return Array.isArray(field.default)
+          ? "[]"
+          : JSON.stringify(field.default);
+      }
+
+      if (builderNames.includes(fieldName)) {
+        const bindingIdentifierName = t.toBindingIdentifierName(fieldName);
+        objectFields.push([fieldName, bindingIdentifierName]);
+      } else {
+        objectFields.push([fieldName, defaultExpression()]);
+      }
+    });
+
     output += `${
       formatedBuilderNameLocal === formatedBuilderName ? "export " : ""
     }function ${formatedBuilderNameLocal}(${defArgs.join(
       ", "
-    )}): t.${type} { return builder("${type}", ...arguments); }\n`;
+    )}) {\n  const node = {\n${objectFields
+      .map(([k, v]) => `    ${k}: ${v},`)
+      .join(
+        "\n"
+      )}  } as t.${type};\n  validateNode(node);\n  return node;\n}\n`;
+
     if (formatedBuilderNameLocal !== formatedBuilderName) {
       output += `export { ${formatedBuilderNameLocal} as ${formatedBuilderName} };\n`;
     }
@@ -118,10 +155,11 @@ import type * as t from "../..";
   Object.keys(definitions.DEPRECATED_KEYS).forEach(type => {
     const newType = definitions.DEPRECATED_KEYS[type];
     const formatedBuilderName = formatBuilderName(type);
+    const formatedNewBuilderName = formatBuilderName(newType);
     output += `/** @deprecated */
-function ${type}(...args: Array<any>): any {
+function ${type}(...args: Parameters<typeof ${formatedNewBuilderName}>): any {
   console.trace("The node type ${type} has been renamed to ${newType}");
-  return builder("${type}", ...args);
+  return ${formatedNewBuilderName}(...args);
 }
 export { ${type} as ${formatedBuilderName} };\n`;
     // This is needed for backwards compatibility.

@@ -39,8 +39,11 @@ export default function cloneNode<T extends t.Node>(
   if (isIdentifier(node)) {
     newNode.name = node.name;
 
-    if (has(node, "optional") && typeof node.optional === "boolean") {
+    if (has(node, "optional")) {
       newNode.optional = node.optional;
+    }
+    if (has(node, "decorators")) {
+      newNode.decorators = node.decorators;
     }
 
     if (has(node, "typeAnnotation")) {

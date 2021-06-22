@@ -92,4 +92,4 @@ Expected 1 quasis but got 2"
 
 exports[`builders es2015 templateLiteral should validate 5`] = `"Property quasis expected type of array but got object"`;
 
-exports[`builders es2015 templateLiteral should validate 6`] = `"Property expressions expected type of array but got null"`;
+exports[`builders es2015 templateLiteral should validate 6`] = `"Property expressions expected type of array but got undefined"`;

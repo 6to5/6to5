@@ -9,8 +9,11 @@ Object {
 exports[`builders flow createTypeAnnotationBasedOnTypeof function is valid 1`] = `
 Object {
   "id": Object {
+    "decorators": null,
     "name": "Function",
+    "optional": null,
     "type": "Identifier",
+    "typeAnnotation": null,
   },
   "type": "GenericTypeAnnotation",
   "typeParameters": null,
@@ -26,8 +29,11 @@ Object {
 exports[`builders flow createTypeAnnotationBasedOnTypeof object is valid 1`] = `
 Object {
   "id": Object {
+    "decorators": null,
     "name": "Object",
+    "optional": null,
     "type": "Identifier",
+    "typeAnnotation": null,
   },
   "type": "GenericTypeAnnotation",
   "typeParameters": null,
@@ -43,8 +49,11 @@ Object {
 exports[`builders flow createTypeAnnotationBasedOnTypeof symbol is valid 1`] = `
 Object {
   "id": Object {
+    "decorators": null,
     "name": "Symbol",
+    "optional": null,
     "type": "Identifier",
+    "typeAnnotation": null,
   },
   "type": "GenericTypeAnnotation",
   "typeParameters": null,

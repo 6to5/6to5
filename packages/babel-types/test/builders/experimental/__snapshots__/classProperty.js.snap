@@ -2,12 +2,19 @@
 
 exports[`builders experimental classProperty should validate 1`] = `
 Object {
+  "abstract": null,
+  "accessibility": null,
   "computed": false,
+  "declare": null,
   "decorators": null,
+  "definite": null,
   "key": Object {
     "type": "StringLiteral",
     "value": "test",
   },
+  "optional": null,
+  "override": false,
+  "readonly": null,
   "static": false,
   "type": "ClassProperty",
   "typeAnnotation": null,
@@ -20,12 +27,19 @@ Object {
 
 exports[`builders experimental classProperty should validate 2`] = `
 Object {
+  "abstract": null,
+  "accessibility": null,
   "computed": false,
+  "declare": null,
   "decorators": null,
+  "definite": null,
   "key": Object {
     "type": "StringLiteral",
     "value": "test",
   },
+  "optional": null,
+  "override": false,
+  "readonly": null,
   "static": true,
   "type": "ClassProperty",
   "typeAnnotation": null,

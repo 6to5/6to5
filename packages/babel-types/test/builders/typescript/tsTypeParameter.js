@@ -17,7 +17,7 @@ describe("builders", function () {
             t.tsTypeReference(t.identifier("bar")),
             t.tsTypeReference(t.identifier("baz")),
           );
-        }).toThrow("Property name expected type of string but got null");
+        }).toThrow("Property name expected type of string but got undefined");
       });
     });
   });
