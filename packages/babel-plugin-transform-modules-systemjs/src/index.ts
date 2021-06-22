@@ -61,15 +61,14 @@ export function getExportSpecifierName(
   }
 }
 
-type PluginState = {|
-  contextIdent: string,
-
+type PluginState = {
+  contextIdent: string;
   // List of names that should only be printed as string literals.
   // i.e. `import { "any unicode" as foo } from "some-module"`
   // `stringSpecifiers` is Set(1) ["any unicode"]
   // In most cases `stringSpecifiers` is an empty Set
-  stringSpecifiers: Set<string>,
-|};
+  stringSpecifiers: Set<string>;
+};
 
 function constructExportCall(
   path,
@@ -333,7 +332,7 @@ export default declare((api, options) => {
           const exportNames = [];
           const exportValues = [];
 
-          const body: Array<Object> = path.get("body");
+          const body: Array<any> = path.get("body");
 
           for (const path of body) {
             if (path.isFunctionDeclaration()) {

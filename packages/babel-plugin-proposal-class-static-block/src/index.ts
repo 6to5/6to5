@@ -41,7 +41,11 @@ export default declare(({ types: t, template, assertVersion }) => {
       // Run on ClassBody and not on class so that if @babel/helper-create-class-features-plugin
       // is enabled it can generte optimized output without passing from the intermediate
       // private fields representation.
-      ClassBody(classBody: NodePath<Class>) {
+      ClassBody(
+        classBody: NodePath<{
+          new (...args: any): any;
+        }>,
+      ) {
         const { scope } = classBody;
         const privateNames = new Set();
         const body = classBody.get("body");

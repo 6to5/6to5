@@ -11,7 +11,7 @@ const DEFAULT_FILENAME = path.join(
   `.babel.${babel.version}.${babel.getEnv()}.json`,
 );
 const FILENAME: string = process.env.BABEL_CACHE_PATH || DEFAULT_FILENAME;
-let data: Object = {};
+let data: any = {};
 
 let cacheDirty = false;
 
@@ -112,7 +112,7 @@ due to a permission issue. Cache is disabled.`,
  * Retrieve data from cache.
  */
 
-export function get(): Object {
+export function get(): any {
   return data;
 }
 

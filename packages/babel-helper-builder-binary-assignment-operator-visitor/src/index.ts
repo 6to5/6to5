@@ -1,7 +1,7 @@
 import explode from "@babel/helper-explode-assignable-expression";
 import * as t from "@babel/types";
 
-export default function (opts: { build: Function, operator: string }): Object {
+export default function (opts: { build: Function; operator: string }): any {
   const { build, operator } = opts;
 
   return {

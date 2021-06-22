@@ -48,7 +48,10 @@ export function transform(
   {
     pureGetters,
     noDocumentAll,
-  }: { pureGetters: boolean, noDocumentAll: boolean },
+  }: {
+    pureGetters: boolean;
+    noDocumentAll: boolean;
+  },
 ) {
   const { scope } = path;
   // maybeWrapped points to the outermost transparent expression wrapper

@@ -11,7 +11,7 @@ export default declare(api => {
       Program(path) {
         const { node } = path;
 
-        for (const directive of (node.directives: Array<Object>)) {
+        for (const directive of node.directives as Array<any>) {
           if (directive.value.value === "use strict") return;
         }
 

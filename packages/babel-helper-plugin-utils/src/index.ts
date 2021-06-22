@@ -101,12 +101,9 @@ function throwVersionError(range, version) {
     Error.stackTraceLimit = limit;
   }
 
-  throw Object.assign(
-    err,
-    ({
-      code: "BABEL_VERSION_UNSUPPORTED",
-      version,
-      range,
-    }: any),
-  );
+  throw Object.assign(err, {
+    code: "BABEL_VERSION_UNSUPPORTED",
+    version,
+    range,
+  } as any);
 }

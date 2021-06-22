@@ -2,11 +2,11 @@ import * as t from "@babel/types";
 import annotateAsPure from "@babel/helper-annotate-as-pure";
 
 type ElementState = {
-  tagExpr: Object, // tag node
-  tagName: ?string, // raw string tag name
-  args: Array<Object>, // array of call arguments
-  call?: Object, // optional call property that can be set to override the call expression returned
-  pure: boolean, // true if the element can be marked with a #__PURE__ annotation
+  tagExpr: any; // tag node,
+  tagName: string | undefined | null; // raw string tag name,
+  args: Array<any>; // array of call arguments,
+  call?: any; // optional call property that can be set to override the call expression returned,
+  pure: boolean; // true if the element can be marked with a #__PURE__ annotation
 };
 
 export default function (opts) {

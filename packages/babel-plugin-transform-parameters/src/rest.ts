@@ -289,7 +289,7 @@ export default function convertFunctionRest(path) {
 
   // There are only "shorthand" references
   if (!state.deopted && !state.references.length) {
-    for (const { path, cause } of (state.candidates: Array)) {
+    for (const { path, cause } of state.candidates as Array) {
       const clonedArgsId = t.cloneNode(argsId);
       switch (cause) {
         case "indexGetter":

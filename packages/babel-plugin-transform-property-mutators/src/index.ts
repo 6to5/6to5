@@ -12,7 +12,7 @@ export default declare(api => {
       ObjectExpression(path, file) {
         const { node } = path;
         let hasAny = false;
-        for (const prop of (node.properties: Array)) {
+        for (const prop of node.properties as Array) {
           if (prop.kind === "get" || prop.kind === "set") {
             hasAny = true;
             break;

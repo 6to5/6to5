@@ -1,7 +1,7 @@
 import nameFunction from "@babel/helper-function-name";
 import * as t from "@babel/types";
 
-function toKind(node: Object) {
+function toKind(node: any) {
   if (t.isClassMethod(node) || t.isObjectMethod(node)) {
     if (node.kind === "get" || node.kind === "set") {
       return node.kind;
@@ -14,12 +14,12 @@ function toKind(node: Object) {
 const has = Function.prototype.call.bind(Object.prototype.hasOwnProperty);
 
 export function push(
-  mutatorMap: Object,
-  node: Object,
+  mutatorMap: any,
+  node: any,
   kind: string,
   file,
   scope?,
-): Object {
+): any {
   const alias = t.toKeyAlias(node);
 
   //
@@ -98,7 +98,7 @@ export function push(
   return map;
 }
 
-export function hasComputed(mutatorMap: Object): boolean {
+export function hasComputed(mutatorMap: any): boolean {
   for (const key of Object.keys(mutatorMap)) {
     if (mutatorMap[key]._computed) {
       return true;
@@ -107,7 +107,7 @@ export function hasComputed(mutatorMap: Object): boolean {
   return false;
 }
 
-export function toComputedObjectFromClass(obj: Object): Object {
+export function toComputedObjectFromClass(obj: any): any {
   const objExpr = t.arrayExpression([]);
 
   for (let i = 0; i < obj.properties.length; i++) {
@@ -122,7 +122,7 @@ export function toComputedObjectFromClass(obj: Object): Object {
   return objExpr;
 }
 
-export function toClassObject(mutatorMap: Object): Object {
+export function toClassObject(mutatorMap: any): any {
   const objExpr = t.objectExpression([]);
 
   Object.keys(mutatorMap).forEach(function (mutatorMapKey) {
@@ -148,7 +148,7 @@ export function toClassObject(mutatorMap: Object): Object {
   return objExpr;
 }
 
-export function toDefineObject(mutatorMap: Object): Object {
+export function toDefineObject(mutatorMap: any): any {
   Object.keys(mutatorMap).forEach(function (key) {
     const map = mutatorMap[key];
     if (map.value) map.writable = t.booleanLiteral(true);

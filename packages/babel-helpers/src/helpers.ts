@@ -1,5 +1,3 @@
-// @flow
-
 import template from "@babel/template";
 
 import * as generated from "./helpers-generated";

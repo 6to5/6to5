@@ -279,7 +279,7 @@ function loadHelper(name) {
 
 export function get(
   name,
-  getDependency?: string => ?t.Expression,
+  getDependency?: (a: string) => t.Expression | undefined | null,
   id?,
   localBindings?: string[],
 ) {
@@ -290,7 +290,7 @@ export function minVersion(name: string) {
   return loadHelper(name).minVersion();
 }
 
-export function getDependencies(name: string): $ReadOnlyArray<string> {
+export function getDependencies(name: string): ReadonlyArray<string> {
   return Array.from(loadHelper(name).dependencies.values());
 }
 

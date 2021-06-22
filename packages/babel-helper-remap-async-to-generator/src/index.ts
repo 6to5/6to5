@@ -30,7 +30,10 @@ const awaitVisitor = {
 
 export default function (
   path: NodePath,
-  helpers: { wrapAsync: Object, wrapAwait: Object },
+  helpers: {
+    wrapAsync: any;
+    wrapAwait: any;
+  },
   noNewArrows?: boolean,
 ) {
   path.traverse(awaitVisitor, {

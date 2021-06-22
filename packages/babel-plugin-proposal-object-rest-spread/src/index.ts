@@ -626,7 +626,7 @@ export default declare((api, opts) => {
           ]);
         }
 
-        for (const prop of (path.node.properties: Array)) {
+        for (const prop of path.node.properties as Array) {
           if (t.isSpreadElement(prop)) {
             make();
             exp.arguments.push(prop.argument);
