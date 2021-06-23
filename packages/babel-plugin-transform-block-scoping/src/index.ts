@@ -168,7 +168,7 @@ function convertBlockScopedToVar(
   }
 }
 
-function isVar(node) {
+function isVar(node): node is t.VariableDeclaration {
   return t.isVariableDeclaration(node, { kind: "var" }) && !isBlockScoped(node);
 }
 
@@ -229,7 +229,7 @@ const hoistVarDeclarationsVisitor: Visitor<BlockScoping> = {
     if (path.isForStatement()) {
       const { node } = path;
       if (isVar(node.init)) {
-        const nodes = self.pushDeclar(node.init as t.VariableDeclaration);
+        const nodes = self.pushDeclar(node.init);
         if (nodes.length === 1) {
           node.init = nodes[0];
         } else {
@@ -239,14 +239,12 @@ const hoistVarDeclarationsVisitor: Visitor<BlockScoping> = {
     } else if (path.isForInStatement() || path.isForOfStatement()) {
       const { node } = path;
       if (isVar(node.left)) {
-        self.pushDeclar(node.left as t.VariableDeclaration);
-        node.left = (node.left as t.VariableDeclaration).declarations[0].id;
+        self.pushDeclar(node.left);
+        node.left = node.left.declarations[0].id;
       }
     } else if (isVar(path.node)) {
       path.replaceWithMultiple(
-        self
-          .pushDeclar(path.node as t.VariableDeclaration)
-          .map(expr => t.expressionStatement(expr)),
+        self.pushDeclar(path.node).map(expr => t.expressionStatement(expr)),
       );
     } else if (path.isFunction()) {
       return path.skip();
@@ -334,7 +332,12 @@ const loopVisitor: Visitor<LoopVisitorState> = {
     let replace;
     let loopText = loopNodeTo(node);
 
-    if (loopText && !t.isReturnStatement(node)) {
+    if (loopText) {
+      if (t.isReturnStatement(node)) {
+        throw new Error(
+          "Internal error: unexpected return statement with `loopText`",
+        );
+      }
       if (node.label) {
         // we shouldn't be transforming this because it exists somewhere inside
         if (state.innerLabels.indexOf(node.label.name) >= 0) {
@@ -949,7 +952,7 @@ class BlockScoping {
    * their declarations hoisted to before the closure wrapper.
    */
 
-  pushDeclar(node: t.VariableDeclaration): Array<any> {
+  pushDeclar(node: t.VariableDeclaration): Array<t.AssignmentExpression> {
     const declars = [];
     const names = t.getBindingIdentifiers(node);
     for (const name of Object.keys(names)) {
