@@ -113,7 +113,7 @@ const COMMON_VALIDATORS: ValidatorSet = {
   highlightCode: assertBoolean as Validator<ValidatedOptions["highlightCode"]>,
   sourceMaps: assertSourceMaps as Validator<ValidatedOptions["sourceMaps"]>,
   sourceMap: assertSourceMaps as Validator<ValidatedOptions["sourceMap"]>,
-  sourceFileName: assertString as Validator<ValidatedOptions["sourceFileName"]>,
+  sourceFilename: assertString as Validator<ValidatedOptions["sourceFilename"]>,
   sourceRoot: assertString as Validator<ValidatedOptions["sourceRoot"]>,
   parserOpts: assertObject as Validator<ValidatedOptions["parserOpts"]>,
   generatorOpts: assertObject as Validator<ValidatedOptions["generatorOpts"]>,
@@ -178,7 +178,7 @@ export type ValidatedOptions = {
   // Sourcemap generation options.
   sourceMaps?: SourceMapsOption;
   sourceMap?: SourceMapsOption;
-  sourceFileName?: string;
+  sourceFilename?: string;
   sourceRoot?: string;
   // Deprecate top level parserOpts
   parserOpts?: {};

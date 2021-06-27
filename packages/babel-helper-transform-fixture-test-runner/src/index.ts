@@ -216,7 +216,7 @@ function run(task) {
       cwd: path.dirname(self.loc),
       filename: self.loc,
       filenameRelative: self.filename,
-      sourceFileName: self.filename,
+      sourceFilename: self.filename,
       sourceType: "script",
       babelrc: false,
       configFile: false,

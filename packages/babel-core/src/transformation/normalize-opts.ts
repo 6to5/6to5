@@ -15,7 +15,7 @@ export default function normalizeOptions(config: ResolvedConfig): {} {
       ? undefined
       : config.options.moduleRoot,
 
-    sourceFileName = path.basename(filenameRelative),
+    sourceFilename = path.basename(filenameRelative),
 
     comments = true,
     compact = "auto",
@@ -30,7 +30,7 @@ export default function normalizeOptions(config: ResolvedConfig): {} {
       sourceType:
         path.extname(filenameRelative) === ".mjs" ? "module" : sourceType,
 
-      ...(sourceFileName !== "unknown" && { sourceFilename: sourceFileName }),
+      sourceFilename,
       plugins: [],
       ...opts.parserOpts,
     },
@@ -51,7 +51,7 @@ export default function normalizeOptions(config: ResolvedConfig): {} {
       sourceMaps,
 
       sourceRoot,
-      sourceFileName,
+      sourceFilename,
       ...opts.generatorOpts,
     },
   };

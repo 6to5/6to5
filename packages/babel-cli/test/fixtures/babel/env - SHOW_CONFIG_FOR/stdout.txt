@@ -118,7 +118,7 @@ programmatic options from @babel/cli
     "<ROOTDIR>/packages/babel-plugin-transform-modules-commonjs"
   ],
   "configFile": "./my-config.js",
-  "sourceFileName": "./src/index.js",
+  "sourceFilename": "./src/index.js",
   "caller": {
     "name": "@babel/cli"
   },
