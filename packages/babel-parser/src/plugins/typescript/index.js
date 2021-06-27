@@ -2072,6 +2072,14 @@ export default (superClass: Class<Parser>): Class<Parser> =>
         return this.finishNode(nonNullExpression, "TSNonNullExpression");
       }
 
+      if (
+        this.match(tt.questionDot) &&
+        this.lookaheadCharCode() === charCodes.lessThan
+      ) {
+        state.optionalChainMember = true;
+        this.next();
+      }
+
       if (this.isRelational("<")) {
         // tsTryParseAndCatch is expensive, so avoid if not necessary.
         // There are number of things we are going to "maybe" parse, like type arguments on
