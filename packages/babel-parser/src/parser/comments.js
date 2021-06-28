@@ -33,9 +33,7 @@ function last<T>(stack: $ReadOnlyArray<T>): T {
 
 export default class CommentsParser extends BaseParser {
   addComment(comment: Comment): void {
-    if (this.filename && this.filename !== "unknown") {
-      comment.loc.filename = this.filename;
-    }
+    if (this.filename) comment.loc.filename = this.filename;
     this.state.trailingComments.push(comment);
     this.state.leadingComments.push(comment);
   }

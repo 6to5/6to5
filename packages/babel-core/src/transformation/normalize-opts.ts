@@ -30,7 +30,7 @@ export default function normalizeOptions(config: ResolvedConfig): {} {
       sourceType:
         path.extname(filenameRelative) === ".mjs" ? "module" : sourceType,
 
-      sourceFilename,
+      ...(sourceFilename !== "unknown" && { sourceFilename }),
       plugins: [],
       ...opts.parserOpts,
     },
