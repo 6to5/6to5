@@ -1,9 +1,9 @@
 {
   "type": "File",
-  "start":0,"end":22,"loc":{"start":{"line":1,"column":0},"end":{"line":2,"column":12}},
+  "start":0,"end":33,"loc":{"start":{"line":1,"column":0},"end":{"line":4,"column":8}},
   "program": {
     "type": "Program",
-    "start":0,"end":22,"loc":{"start":{"line":1,"column":0},"end":{"line":2,"column":12}},
+    "start":0,"end":33,"loc":{"start":{"line":1,"column":0},"end":{"line":4,"column":8}},
     "sourceType": "module",
     "interpreter": null,
     "body": [
@@ -69,6 +69,36 @@
                   "type": "Identifier",
                   "start":17,"end":18,"loc":{"start":{"line":2,"column":7},"end":{"line":2,"column":8},"identifierName":"W"},
                   "name": "W"
+                }
+              }
+            ]
+          },
+          "optional": false
+        }
+      },
+      {
+        "type": "ExpressionStatement",
+        "start":23,"end":33,"loc":{"start":{"line":3,"column":0},"end":{"line":4,"column":8}},
+        "expression": {
+          "type": "OptionalCallExpression",
+          "start":23,"end":32,"loc":{"start":{"line":3,"column":0},"end":{"line":4,"column":7}},
+          "callee": {
+            "type": "Identifier",
+            "start":23,"end":24,"loc":{"start":{"line":3,"column":0},"end":{"line":3,"column":1},"identifierName":"f"},
+            "name": "f"
+          },
+          "arguments": [],
+          "typeParameters": {
+            "type": "TSTypeParameterInstantiation",
+            "start":27,"end":30,"loc":{"start":{"line":4,"column":2},"end":{"line":4,"column":5}},
+            "params": [
+              {
+                "type": "TSTypeReference",
+                "start":28,"end":29,"loc":{"start":{"line":4,"column":3},"end":{"line":4,"column":4}},
+                "typeName": {
+                  "type": "Identifier",
+                  "start":28,"end":29,"loc":{"start":{"line":4,"column":3},"end":{"line":4,"column":4},"identifierName":"Q"},
+                  "name": "Q"
                 }
               }
             ]
