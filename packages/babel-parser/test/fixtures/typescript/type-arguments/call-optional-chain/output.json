@@ -1,12 +1,9 @@
 {
   "type": "File",
-  "start":0,"end":49,"loc":{"start":{"line":1,"column":0},"end":{"line":5,"column":15}},
-  "errors": [
-    "SyntaxError: Identifier expected. (5:0)"
-  ],
+  "start":0,"end":33,"loc":{"start":{"line":1,"column":0},"end":{"line":4,"column":8}},
   "program": {
     "type": "Program",
-    "start":0,"end":49,"loc":{"start":{"line":1,"column":0},"end":{"line":5,"column":15}},
+    "start":0,"end":33,"loc":{"start":{"line":1,"column":0},"end":{"line":4,"column":8}},
     "sourceType": "module",
     "interpreter": null,
     "body": [
@@ -105,26 +102,6 @@
                 }
               }
             ]
-          },
-          "optional": false
-        }
-      },
-      {
-        "type": "ExpressionStatement",
-        "start":34,"end":49,"loc":{"start":{"line":5,"column":0},"end":{"line":5,"column":15}},
-        "expression": {
-          "type": "OptionalMemberExpression",
-          "start":34,"end":48,"loc":{"start":{"line":5,"column":0},"end":{"line":5,"column":14}},
-          "object": "SyntaxError: Identifier expected. (5:0)",
-          "computed": true,
-          "property": {
-            "type": "NumericLiteral",
-            "start":46,"end":47,"loc":{"start":{"line":5,"column":12},"end":{"line":5,"column":13}},
-            "extra": {
-              "rawValue": 1,
-              "raw": "1"
-            },
-            "value": 1
           },
           "optional": false
         }
