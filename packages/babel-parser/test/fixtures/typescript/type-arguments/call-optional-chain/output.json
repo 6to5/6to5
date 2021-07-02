@@ -11,7 +11,7 @@
         "type": "ExpressionStatement",
         "start":0,"end":9,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":9}},
         "expression": {
-          "type": "OptionalCallExpression",
+          "type": "CallExpression",
           "start":0,"end":8,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":8}},
           "callee": {
             "type": "Identifier",
@@ -34,14 +34,14 @@
               }
             ]
           },
-          "optional": false
+          "optional": true
         }
       },
       {
         "type": "ExpressionStatement",
         "start":10,"end":22,"loc":{"start":{"line":2,"column":0},"end":{"line":2,"column":12}},
         "expression": {
-          "type": "OptionalCallExpression",
+          "type": "CallExpression",
           "start":10,"end":21,"loc":{"start":{"line":2,"column":0},"end":{"line":2,"column":11}},
           "callee": {
             "type": "Identifier",
@@ -73,14 +73,14 @@
               }
             ]
           },
-          "optional": false
+          "optional": true
         }
       },
       {
         "type": "ExpressionStatement",
         "start":23,"end":33,"loc":{"start":{"line":3,"column":0},"end":{"line":4,"column":8}},
         "expression": {
-          "type": "OptionalCallExpression",
+          "type": "CallExpression",
           "start":23,"end":32,"loc":{"start":{"line":3,"column":0},"end":{"line":4,"column":7}},
           "callee": {
             "type": "Identifier",
@@ -103,7 +103,7 @@
               }
             ]
           },
-          "optional": false
+          "optional": true
         }
       }
     ],

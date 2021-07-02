@@ -1,9 +1,9 @@
 {
   "type": "File",
-  "start":0,"end":14,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":14}},
+  "start":0,"end":31,"loc":{"start":{"line":1,"column":0},"end":{"line":2,"column":16}},
   "program": {
     "type": "Program",
-    "start":0,"end":14,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":14}},
+    "start":0,"end":31,"loc":{"start":{"line":1,"column":0},"end":{"line":2,"column":16}},
     "sourceType": "script",
     "interpreter": null,
     "body": [
@@ -49,6 +49,51 @@
               ]
             },
             "optional": false
+          }
+        }
+      },
+      {
+        "type": "ExpressionStatement",
+        "start":15,"end":31,"loc":{"start":{"line":2,"column":0},"end":{"line":2,"column":16}},
+        "expression": {
+          "type": "ChainExpression",
+          "start":15,"end":30,"loc":{"start":{"line":2,"column":0},"end":{"line":2,"column":15}},
+          "expression": {
+            "type": "CallExpression",
+            "start":15,"end":30,"loc":{"start":{"line":2,"column":0},"end":{"line":2,"column":15}},
+            "callee": {
+              "type": "MemberExpression",
+              "start":15,"end":23,"loc":{"start":{"line":2,"column":0},"end":{"line":2,"column":8}},
+              "object": {
+                "type": "Identifier",
+                "start":15,"end":18,"loc":{"start":{"line":2,"column":0},"end":{"line":2,"column":3},"identifierName":"foo"},
+                "name": "foo"
+              },
+              "computed": false,
+              "property": {
+                "type": "Identifier",
+                "start":20,"end":23,"loc":{"start":{"line":2,"column":5},"end":{"line":2,"column":8},"identifierName":"foo"},
+                "name": "foo"
+              },
+              "optional": true
+            },
+            "arguments": [],
+            "typeParameters": {
+              "type": "TSTypeParameterInstantiation",
+              "start":25,"end":28,"loc":{"start":{"line":2,"column":10},"end":{"line":2,"column":13}},
+              "params": [
+                {
+                  "type": "TSTypeReference",
+                  "start":26,"end":27,"loc":{"start":{"line":2,"column":11},"end":{"line":2,"column":12}},
+                  "typeName": {
+                    "type": "Identifier",
+                    "start":26,"end":27,"loc":{"start":{"line":2,"column":11},"end":{"line":2,"column":12},"identifierName":"T"},
+                    "name": "T"
+                  }
+                }
+              ]
+            },
+            "optional": true
           }
         }
       }

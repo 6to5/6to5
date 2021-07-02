@@ -2077,7 +2077,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
         this.match(tt.questionDot) &&
         this.lookaheadCharCode() === charCodes.lessThan
       ) {
-        state.optionalChainMember = isOptionalCall = true;
+        isOptionalCall = true;
         if (noCalls) {
           state.stop = true;
           return base;
@@ -2124,7 +2124,14 @@ export default (superClass: Class<Parser>): Class<Parser> =>
                 // $FlowIgnore
                 node.optional = false;
               }
-              return this.finishCallExpression(node, state.optionalChainMember);
+              if (isOptionalCall) {
+                node.optional = true;
+              }
+
+              return this.finishCallExpression(
+                node,
+                state.optionalChainMember || isOptionalCall,
+              );
             } else if (this.match(tt.backQuote)) {
               const result = this.parseTaggedTemplateExpression(
                 base,
