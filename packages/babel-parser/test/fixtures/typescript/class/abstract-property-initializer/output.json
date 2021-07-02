@@ -1,18 +1,19 @@
 {
   "type": "File",
-  "start":0,"end":42,"loc":{"start":{"line":1,"column":0},"end":{"line":3,"column":1}},
+  "start":0,"end":67,"loc":{"start":{"line":1,"column":0},"end":{"line":4,"column":1}},
   "errors": [
-    "SyntaxError: Property 'prop' cannot have a initializer because it is marked abstract. (2:16)"
+    "SyntaxError: Property 'prop' cannot have a initializer because it is marked abstract. (2:16)",
+    "SyntaxError: Property '[Bar.foo]' cannot have a initializer because it is marked abstract. (3:21)"
   ],
   "program": {
     "type": "Program",
-    "start":0,"end":42,"loc":{"start":{"line":1,"column":0},"end":{"line":3,"column":1}},
+    "start":0,"end":67,"loc":{"start":{"line":1,"column":0},"end":{"line":4,"column":1}},
     "sourceType": "module",
     "interpreter": null,
     "body": [
       {
         "type": "ClassDeclaration",
-        "start":0,"end":42,"loc":{"start":{"line":1,"column":0},"end":{"line":3,"column":1}},
+        "start":0,"end":67,"loc":{"start":{"line":1,"column":0},"end":{"line":4,"column":1}},
         "abstract": true,
         "id": {
           "type": "Identifier",
@@ -22,7 +23,7 @@
         "superClass": null,
         "body": {
           "type": "ClassBody",
-          "start":19,"end":42,"loc":{"start":{"line":1,"column":19},"end":{"line":3,"column":1}},
+          "start":19,"end":67,"loc":{"start":{"line":1,"column":19},"end":{"line":4,"column":1}},
           "body": [
             {
               "type": "ClassProperty",
@@ -43,6 +44,37 @@
                   "raw": "1"
                 },
                 "value": 1
+              }
+            },
+            {
+              "type": "ClassProperty",
+              "start":43,"end":65,"loc":{"start":{"line":3,"column":2},"end":{"line":3,"column":24}},
+              "abstract": true,
+              "static": false,
+              "computed": true,
+              "key": {
+                "type": "MemberExpression",
+                "start":53,"end":60,"loc":{"start":{"line":3,"column":12},"end":{"line":3,"column":19}},
+                "object": {
+                  "type": "Identifier",
+                  "start":53,"end":56,"loc":{"start":{"line":3,"column":12},"end":{"line":3,"column":15},"identifierName":"Bar"},
+                  "name": "Bar"
+                },
+                "computed": false,
+                "property": {
+                  "type": "Identifier",
+                  "start":57,"end":60,"loc":{"start":{"line":3,"column":16},"end":{"line":3,"column":19},"identifierName":"foo"},
+                  "name": "foo"
+                }
+              },
+              "value": {
+                "type": "NumericLiteral",
+                "start":64,"end":65,"loc":{"start":{"line":3,"column":23},"end":{"line":3,"column":24}},
+                "extra": {
+                  "rawValue": 2,
+                  "raw": "2"
+                },
+                "value": 2
               }
             }
           ]
