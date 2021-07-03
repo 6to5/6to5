@@ -10,7 +10,7 @@ exports.normalizeESLintConfig = function (options) {
   } = options;
 
   return {
-    babelOptions,
+    babelOptions: { cwd: process.cwd(), ...babelOptions },
     ecmaVersion,
     sourceType,
     allowImportExportEverywhere,
