@@ -1,19 +1,20 @@
 {
   "type": "File",
-  "start":0,"end":67,"loc":{"start":{"line":1,"column":0},"end":{"line":4,"column":1}},
+  "start":0,"end":88,"loc":{"start":{"line":1,"column":0},"end":{"line":5,"column":1}},
   "errors": [
     "SyntaxError: Property 'prop' cannot have a initializer because it is marked abstract. (2:16)",
-    "SyntaxError: Property '[Bar.foo]' cannot have a initializer because it is marked abstract. (3:21)"
+    "SyntaxError: Property '[Bar.foo]' cannot have a initializer because it is marked abstract. (3:21)",
+    "SyntaxError: Property '[Bar]' cannot have a initializer because it is marked abstract. (4:17)"
   ],
   "program": {
     "type": "Program",
-    "start":0,"end":67,"loc":{"start":{"line":1,"column":0},"end":{"line":4,"column":1}},
+    "start":0,"end":88,"loc":{"start":{"line":1,"column":0},"end":{"line":5,"column":1}},
     "sourceType": "module",
     "interpreter": null,
     "body": [
       {
         "type": "ClassDeclaration",
-        "start":0,"end":67,"loc":{"start":{"line":1,"column":0},"end":{"line":4,"column":1}},
+        "start":0,"end":88,"loc":{"start":{"line":1,"column":0},"end":{"line":5,"column":1}},
         "abstract": true,
         "id": {
           "type": "Identifier",
@@ -23,7 +24,7 @@
         "superClass": null,
         "body": {
           "type": "ClassBody",
-          "start":19,"end":67,"loc":{"start":{"line":1,"column":19},"end":{"line":4,"column":1}},
+          "start":19,"end":88,"loc":{"start":{"line":1,"column":19},"end":{"line":5,"column":1}},
           "body": [
             {
               "type": "ClassProperty",
@@ -75,6 +76,27 @@
                   "raw": "2"
                 },
                 "value": 2
+              }
+            },
+            {
+              "type": "ClassProperty",
+              "start":68,"end":86,"loc":{"start":{"line":4,"column":2},"end":{"line":4,"column":20}},
+              "abstract": true,
+              "static": false,
+              "computed": true,
+              "key": {
+                "type": "Identifier",
+                "start":78,"end":81,"loc":{"start":{"line":4,"column":12},"end":{"line":4,"column":15},"identifierName":"Bar"},
+                "name": "Bar"
+              },
+              "value": {
+                "type": "NumericLiteral",
+                "start":85,"end":86,"loc":{"start":{"line":4,"column":19},"end":{"line":4,"column":20}},
+                "extra": {
+                  "rawValue": 3,
+                  "raw": "3"
+                },
+                "value": 3
               }
             }
           ]

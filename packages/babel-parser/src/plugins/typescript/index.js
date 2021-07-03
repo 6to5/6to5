@@ -2614,7 +2614,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
         this.raise(
           this.state.start,
           TSErrors.AbstractPropertyHasInitializer,
-          key.type === "Identifier"
+          !node.computed
             ? key.name
             : `[${this.input.slice(key.start, key.end)}]`,
         );
@@ -3194,7 +3194,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
           this.raise(
             method.start,
             TSErrors.AbstractMethodHasImplementation,
-            key.type === "Identifier"
+            !method.computed
               ? key.name
               : `[${this.input.slice(key.start, key.end)}]`,
           );
