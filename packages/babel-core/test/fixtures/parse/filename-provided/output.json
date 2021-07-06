@@ -1,0 +1,298 @@
+{
+  "type": "File",
+  "start": 0,
+  "end": 91,
+  "errors": [],
+  "loc": {
+    "filename": "input.js",
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 7,
+      "column": 0
+    }
+  },
+  "program": {
+    "type": "Program",
+    "start": 0,
+    "end": 91,
+    "loc": {
+      "filename": "input.js",
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 7,
+        "column": 0
+      }
+    },
+    "interpreter": null,
+    "sourceType": "module",
+    "body": [{
+        "type": "ClassDeclaration",
+        "start": 0,
+        "end": 29,
+        "loc": {
+          "filename": "input.js",
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 17
+          }
+        },
+        "decorators": [{
+          "type": "Decorator",
+          "start": 0,
+          "end": 11,
+          "loc": {
+            "filename": "input.js",
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 1,
+              "column": 11
+            }
+          },
+          "expression": {
+            "type": "Identifier",
+            "start": 1,
+            "end": 11,
+            "loc": {
+              "filename": "input.js",
+              "start": {
+                "line": 1,
+                "column": 1
+              },
+              "end": {
+                "line": 1,
+                "column": 11
+              },
+              "identifierName": "annotation"
+            },
+            "name": "annotation"
+          }
+        }],
+        "id": {
+          "type": "Identifier",
+          "start": 18,
+          "end": 25,
+          "loc": {
+            "filename": "input.js",
+            "start": {
+              "line": 2,
+              "column": 6
+            },
+            "end": {
+              "line": 2,
+              "column": 13
+            },
+            "identifierName": "MyClass"
+          },
+          "name": "MyClass"
+        },
+        "superClass": null,
+        "body": {
+          "type": "ClassBody",
+          "start": 26,
+          "end": 29,
+          "loc": {
+            "filename": "input.js",
+            "start": {
+              "line": 2,
+              "column": 14
+            },
+            "end": {
+              "line": 2,
+              "column": 17
+            }
+          },
+          "body": []
+        }
+      },
+      {
+        "type": "FunctionDeclaration",
+        "start": 31,
+        "end": 90,
+        "loc": {
+          "filename": "input.js",
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 1
+          }
+        },
+        "id": {
+          "type": "Identifier",
+          "start": 40,
+          "end": 50,
+          "loc": {
+            "filename": "input.js",
+            "start": {
+              "line": 4,
+              "column": 9
+            },
+            "end": {
+              "line": 4,
+              "column": 19
+            },
+            "identifierName": "annotation"
+          },
+          "name": "annotation"
+        },
+        "generator": false,
+        "async": false,
+        "params": [{
+          "type": "Identifier",
+          "start": 51,
+          "end": 57,
+          "loc": {
+            "filename": "input.js",
+            "start": {
+              "line": 4,
+              "column": 20
+            },
+            "end": {
+              "line": 4,
+              "column": 26
+            },
+            "identifierName": "target"
+          },
+          "name": "target"
+        }],
+        "body": {
+          "type": "BlockStatement",
+          "start": 59,
+          "end": 90,
+          "loc": {
+            "filename": "input.js",
+            "start": {
+              "line": 4,
+              "column": 28
+            },
+            "end": {
+              "line": 6,
+              "column": 1
+            }
+          },
+          "body": [{
+            "type": "ExpressionStatement",
+            "start": 64,
+            "end": 88,
+            "loc": {
+              "filename": "input.js",
+              "start": {
+                "line": 5,
+                "column": 3
+              },
+              "end": {
+                "line": 5,
+                "column": 27
+              }
+            },
+            "expression": {
+              "type": "AssignmentExpression",
+              "start": 64,
+              "end": 87,
+              "loc": {
+                "filename": "input.js",
+                "start": {
+                  "line": 5,
+                  "column": 3
+                },
+                "end": {
+                  "line": 5,
+                  "column": 26
+                }
+              },
+              "operator": "=",
+              "left": {
+                "type": "MemberExpression",
+                "start": 64,
+                "end": 80,
+                "loc": {
+                  "filename": "input.js",
+                  "start": {
+                    "line": 5,
+                    "column": 3
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 19
+                  }
+                },
+                "object": {
+                  "type": "Identifier",
+                  "start": 64,
+                  "end": 70,
+                  "loc": {
+                    "filename": "input.js",
+                    "start": {
+                      "line": 5,
+                      "column": 3
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 9
+                    },
+                    "identifierName": "target"
+                  },
+                  "name": "target"
+                },
+                "property": {
+                  "type": "Identifier",
+                  "start": 71,
+                  "end": 80,
+                  "loc": {
+                    "filename": "input.js",
+                    "start": {
+                      "line": 5,
+                      "column": 10
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 19
+                    },
+                    "identifierName": "annotated"
+                  },
+                  "name": "annotated"
+                },
+                "computed": false
+              },
+              "right": {
+                "type": "BooleanLiteral",
+                "start": 83,
+                "end": 87,
+                "loc": {
+                  "filename": "input.js",
+                  "start": {
+                    "line": 5,
+                    "column": 22
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 26
+                  }
+                },
+                "value": true
+              }
+            }
+          }],
+          "directives": []
+        }
+      }
+    ],
+    "directives": []
+  },
+  "comments": []
+}
