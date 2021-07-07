@@ -32,8 +32,10 @@ export function shouldTransform(
     chains.push(node);
 
     if (optionalPath.isOptionalMemberExpression()) {
+      // @ts-expect-error todo(flow->ts)
       optionalPath = skipTransparentExprWrappers(optionalPath.get("object"));
     } else if (optionalPath.isOptionalCallExpression()) {
+      // @ts-expect-error todo(flow->ts)
       optionalPath = skipTransparentExprWrappers(optionalPath.get("callee"));
     }
   }

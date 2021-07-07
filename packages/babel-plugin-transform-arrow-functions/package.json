@@ -25,7 +25,8 @@
   "devDependencies": {
     "@babel/core": "workspace:*",
     "@babel/helper-plugin-test-runner": "workspace:*",
-    "@babel/traverse": "workspace:*"
+    "@babel/traverse": "workspace:*",
+    "@babel/types": "workspace:*"
   },
   "engines": {
     "node": ">=6.9.0"

@@ -30,6 +30,7 @@
   "devDependencies": {
     "@babel/core": "workspace:*",
     "@babel/helper-plugin-test-runner": "workspace:*",
+    "@babel/traverse": "workspace:*",
     "babel-plugin-polyfill-es-shims": "^0.2.2",
     "object.getownpropertydescriptors": "^2.1.1"
   },
