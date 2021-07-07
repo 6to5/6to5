@@ -490,6 +490,10 @@ export default class ExpressionParser extends LValParser {
             return this.withSoloAwaitPermittingContext(() => {
               return this.parseFSharpPipelineBody(prec);
             });
+          case "elixir":
+            // allow unparenthesized arrow function on the right-hand side
+            this.state.potentialArrowAt = startPos;
+            return this.parseExprOpBaseRightExpr(op, prec);
         }
 
       // Falls through.

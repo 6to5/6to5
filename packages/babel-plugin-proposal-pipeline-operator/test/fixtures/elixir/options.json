@@ -1,0 +1,6 @@
+{
+  "plugins": [["proposal-pipeline-operator", { "proposal": "elixir" }]],
+  "parserOpts": {
+    "allowReturnOutsideFunction": true
+  }
+}

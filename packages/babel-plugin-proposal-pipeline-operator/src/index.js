@@ -3,12 +3,14 @@ import syntaxPipelineOperator from "@babel/plugin-syntax-pipeline-operator";
 import minimalVisitor from "./minimalVisitor";
 import hackVisitor from "./hackVisitor";
 import fsharpVisitor from "./fsharpVisitor";
+import elixirVisitor from "./elixirVisitor";
 import smartVisitor from "./smartVisitor";
 
 const visitorsPerProposal = {
   minimal: minimalVisitor,
   hack: hackVisitor,
   fsharp: fsharpVisitor,
+  elixir: elixirVisitor,
   smart: smartVisitor,
 };
 

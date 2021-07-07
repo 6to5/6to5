@@ -1,12 +1,17 @@
 import { types as t } from "@babel/core";
 
 // tries to optimize sequence expressions in the format
-//   (a = b, ((c) => d + e)(a))
+//   (a = b, (c => c + e)(a))
 // to
 //   (a = b, a + e)
-const buildOptimizedSequenceExpression = ({ assign, call, path }) => {
-  const { left: placeholderNode, right: pipelineLeft } = assign;
+const buildOptimizedSequenceExpression = ({ call, path, placeholder }) => {
   const { callee: calledExpression } = call;
+  const pipelineLeft = path.node.left;
+  const assign = t.assignmentExpression(
+    "=",
+    t.cloneNode(placeholder),
+    pipelineLeft,
+  );
 
   let optimizeArrow =
     t.isArrowFunctionExpression(calledExpression) &&
@@ -30,7 +35,7 @@ const buildOptimizedSequenceExpression = ({ assign, call, path }) => {
 
     call.callee = evalSequence;
 
-    path.scope.push({ id: t.cloneNode(placeholderNode) });
+    path.scope.push({ id: t.cloneNode(placeholder) });
 
     return t.sequenceExpression([assign, call]);
   }
@@ -40,10 +45,10 @@ const buildOptimizedSequenceExpression = ({ assign, call, path }) => {
     return t.sequenceExpression([pipelineLeft, calledExpression.body]);
   }
 
-  path.scope.push({ id: t.cloneNode(placeholderNode) });
+  path.scope.push({ id: t.cloneNode(placeholder) });
 
   if (param) {
-    path.get("right").scope.rename(param.name, placeholderNode.name);
+    path.get("right").scope.rename(param.name, placeholder.name);
 
     return t.sequenceExpression([assign, calledExpression.body]);
   }

@@ -14,7 +14,7 @@ const fsharpVisitor = {
         ? t.awaitExpression(t.cloneNode(placeholder))
         : t.callExpression(right, [t.cloneNode(placeholder)]);
     const sequence = buildOptimizedSequenceExpression({
-      assign: t.assignmentExpression("=", t.cloneNode(placeholder), left),
+      placeholder,
       call,
       path,
     });

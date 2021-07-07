@@ -38,7 +38,7 @@ export function getPluginOption(
   return null;
 }
 
-const PIPELINE_PROPOSALS = ["minimal", "fsharp", "hack", "smart"];
+const PIPELINE_PROPOSALS = ["minimal", "fsharp", "hack", "elixir", "smart"];
 const TOPIC_TOKENS = ["%", "#"];
 const RECORD_AND_TUPLE_SYNTAX_TYPES = ["hash", "bar"];
 

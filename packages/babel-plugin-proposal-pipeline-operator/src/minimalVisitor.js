@@ -12,7 +12,7 @@ const minimalVisitor = {
     const call = t.callExpression(right, [t.cloneNode(placeholder)]);
     path.replaceWith(
       buildOptimizedSequenceExpression({
-        assign: t.assignmentExpression("=", t.cloneNode(placeholder), left),
+        placeholder,
         call,
         path,
       }),

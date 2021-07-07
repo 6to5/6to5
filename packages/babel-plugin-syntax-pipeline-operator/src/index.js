@@ -1,6 +1,6 @@
 import { declare } from "@babel/helper-plugin-utils";
 
-const PIPELINE_PROPOSALS = ["minimal", "fsharp", "hack", "smart"];
+const PIPELINE_PROPOSALS = ["minimal", "fsharp", "hack", "elixir", "smart"];
 const TOPIC_TOKENS = ["%", "#"];
 const documentationURL =
   "https://babeljs.io/docs/en/babel-plugin-proposal-pipeline-operator";
