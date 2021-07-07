@@ -2077,7 +2077,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
         this.match(tt.questionDot) &&
         this.lookaheadCharCode() === charCodes.lessThan
       ) {
-        isOptionalCall = true;
+        state.optionalChainMember = isOptionalCall = true;
         if (noCalls) {
           state.stop = true;
           return base;
@@ -2086,6 +2086,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
       }
 
       if (this.isRelational("<")) {
+        let error;
         // tsTryParseAndCatch is expensive, so avoid if not necessary.
         // There are number of things we are going to "maybe" parse, like type arguments on
         // tagged template expressions. If any of them fail, walk it back and continue.
@@ -2108,6 +2109,11 @@ export default (superClass: Class<Parser>): Class<Parser> =>
           const typeArguments = this.tsParseTypeArguments();
 
           if (typeArguments) {
+            if (isOptionalCall && !this.match(tt.parenL)) {
+              error = [this.state.pos, tt.parenL];
+              this.unexpected();
+            }
+
             if (!noCalls && this.eat(tt.parenL)) {
               // possibleAsync always false here, because we would have handled it above.
               // $FlowIgnore (won't be any undefined arguments)
@@ -2128,10 +2134,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
                 node.optional = true;
               }
 
-              return this.finishCallExpression(
-                node,
-                state.optionalChainMember || isOptionalCall,
-              );
+              return this.finishCallExpression(node, state.optionalChainMember);
             } else if (this.match(tt.backQuote)) {
               const result = this.parseTaggedTemplateExpression(
                 base,
@@ -2147,8 +2150,8 @@ export default (superClass: Class<Parser>): Class<Parser> =>
           this.unexpected();
         });
 
-        if (!result && isOptionalCall) {
-          this.unexpected(this.state.pos, tt.parenL);
+        if (error) {
+          this.unexpected(...error);
         }
 
         if (result) return result;

@@ -3,5 +3,5 @@
   "plugins": [
     "typescript"
   ],
-  "throws": "Unexpected token, expected \"(\" (1:4)"
+  "throws": "Unexpected token, expected \"(\" (1:12)"
 }
