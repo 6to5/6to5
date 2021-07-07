@@ -1,0 +1,70 @@
+{
+  "type": "File",
+  "start":0,"end":24,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":24}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":24,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":24}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start":0,"end":24,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":24}},
+        "expression": {
+          "type": "BinaryExpression",
+          "start":0,"end":24,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":24}},
+          "left": {
+            "type": "Identifier",
+            "start":0,"end":1,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":1},"identifierName":"y"},
+            "name": "y"
+          },
+          "operator": "|>",
+          "right": {
+            "type": "ArrowFunctionExpression",
+            "start":5,"end":24,"loc":{"start":{"line":1,"column":5},"end":{"line":1,"column":24}},
+            "id": null,
+            "generator": false,
+            "async": false,
+            "params": [
+              {
+                "type": "Identifier",
+                "start":5,"end":6,"loc":{"start":{"line":1,"column":5},"end":{"line":1,"column":6},"identifierName":"x"},
+                "name": "x"
+              }
+            ],
+            "body": {
+              "type": "ConditionalExpression",
+              "start":10,"end":24,"loc":{"start":{"line":1,"column":10},"end":{"line":1,"column":24}},
+              "test": {
+                "type": "Identifier",
+                "start":10,"end":11,"loc":{"start":{"line":1,"column":10},"end":{"line":1,"column":11},"identifierName":"x"},
+                "name": "x"
+              },
+              "consequent": {
+                "type": "BinaryExpression",
+                "start":14,"end":20,"loc":{"start":{"line":1,"column":14},"end":{"line":1,"column":20}},
+                "left": {
+                  "type": "Identifier",
+                  "start":14,"end":15,"loc":{"start":{"line":1,"column":14},"end":{"line":1,"column":15},"identifierName":"x"},
+                  "name": "x"
+                },
+                "operator": "|>",
+                "right": {
+                  "type": "Identifier",
+                  "start":19,"end":20,"loc":{"start":{"line":1,"column":19},"end":{"line":1,"column":20},"identifierName":"f"},
+                  "name": "f"
+                }
+              },
+              "alternate": {
+                "type": "Identifier",
+                "start":23,"end":24,"loc":{"start":{"line":1,"column":23},"end":{"line":1,"column":24},"identifierName":"x"},
+                "name": "x"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}
