@@ -13,7 +13,7 @@ function benchCases(name, implementation, options) {
   }
 }
 
-benchCases("baseline", baseline);
+benchCases("baseline", baseline, { attachComment: true });
 benchCases("current + attachComment: false", current, { attachComment: false });
 
 suite.on("cycle", report).run();

@@ -9,22 +9,20 @@ import type { Comment, Node as NodeType, NodeBase } from "../types";
 
 class Node implements NodeBase {
   constructor(parser: Parser, pos: number, loc: Position) {
-    this.type = "";
     this.start = pos;
-    this.end = 0;
     this.loc = new SourceLocation(loc);
     if (parser?.options.ranges) this.range = [pos, 0];
     if (parser?.filename) this.loc.filename = parser.filename;
   }
 
-  type: string;
-  start: number;
-  end: number;
+  type: string = "";
+  declare start: number;
+  end: number = 0;
   loc: SourceLocation;
-  range: [number, number];
-  leadingComments: Array<Comment>;
-  trailingComments: Array<Comment>;
-  innerComments: Array<Comment>;
+  declare range: [number, number];
+  declare leadingComments: Array<Comment>;
+  declare trailingComments: Array<Comment>;
+  declare innerComments: Array<Comment>;
   extra: { [key: string]: any };
 
   __clone(): this {
@@ -93,7 +91,7 @@ export class NodeUtils extends UtilParser {
     node.end = pos;
     node.loc.end = loc;
     if (this.options.ranges) node.range[1] = pos;
-    this.processComment(node);
+    if (this.options.attachComment) this.processComment(node);
     return node;
   }
 

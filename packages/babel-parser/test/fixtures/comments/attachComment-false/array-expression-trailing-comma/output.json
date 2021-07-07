@@ -1,0 +1,187 @@
+{
+  "type": "File",
+  "start":0,"end":229,"loc":{"start":{"line":1,"column":0},"end":{"line":18,"column":10}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":229,"loc":{"start":{"line":1,"column":0},"end":{"line":18,"column":10}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "VariableDeclaration",
+        "start":0,"end":76,"loc":{"start":{"line":1,"column":0},"end":{"line":6,"column":1}},
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "start":6,"end":76,"loc":{"start":{"line":1,"column":6},"end":{"line":6,"column":1}},
+            "id": {
+              "type": "Identifier",
+              "start":6,"end":17,"loc":{"start":{"line":1,"column":6},"end":{"line":1,"column":17},"identifierName":"nonTrailing"},
+              "name": "nonTrailing"
+            },
+            "init": {
+              "type": "ArrayExpression",
+              "start":20,"end":76,"loc":{"start":{"line":1,"column":20},"end":{"line":6,"column":1}},
+              "elements": [
+                {
+                  "type": "StringLiteral",
+                  "start":24,"end":29,"loc":{"start":{"line":2,"column":2},"end":{"line":2,"column":7}},
+                  "extra": {
+                    "rawValue": "One",
+                    "raw": "\"One\""
+                  },
+                  "value": "One"
+                },
+                {
+                  "type": "StringLiteral",
+                  "start":50,"end":55,"loc":{"start":{"line":4,"column":2},"end":{"line":4,"column":7}},
+                  "extra": {
+                    "rawValue": "Two",
+                    "raw": "\"Two\""
+                  },
+                  "value": "Two"
+                }
+              ]
+            }
+          }
+        ],
+        "kind": "const"
+      },
+      {
+        "type": "VariableDeclaration",
+        "start":78,"end":162,"loc":{"start":{"line":8,"column":0},"end":{"line":13,"column":1}},
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "start":84,"end":162,"loc":{"start":{"line":8,"column":6},"end":{"line":13,"column":1}},
+            "id": {
+              "type": "Identifier",
+              "start":84,"end":102,"loc":{"start":{"line":8,"column":6},"end":{"line":8,"column":24},"identifierName":"trailingAfterComma"},
+              "name": "trailingAfterComma"
+            },
+            "init": {
+              "type": "ArrayExpression",
+              "start":105,"end":162,"loc":{"start":{"line":8,"column":27},"end":{"line":13,"column":1}},
+              "extra": {
+                "trailingComma": 140
+              },
+              "elements": [
+                {
+                  "type": "StringLiteral",
+                  "start":109,"end":114,"loc":{"start":{"line":9,"column":2},"end":{"line":9,"column":7}},
+                  "extra": {
+                    "rawValue": "One",
+                    "raw": "\"One\""
+                  },
+                  "value": "One"
+                },
+                {
+                  "type": "StringLiteral",
+                  "start":135,"end":140,"loc":{"start":{"line":11,"column":2},"end":{"line":11,"column":7}},
+                  "extra": {
+                    "rawValue": "Two",
+                    "raw": "\"Two\""
+                  },
+                  "value": "Two"
+                }
+              ]
+            }
+          }
+        ],
+        "kind": "const"
+      },
+      {
+        "type": "VariableDeclaration",
+        "start":164,"end":220,"loc":{"start":{"line":15,"column":0},"end":{"line":18,"column":1}},
+        "declarations": [
+          {
+            "type": "VariableDeclarator",
+            "start":170,"end":220,"loc":{"start":{"line":15,"column":6},"end":{"line":18,"column":1}},
+            "id": {
+              "type": "Identifier",
+              "start":170,"end":188,"loc":{"start":{"line":15,"column":6},"end":{"line":15,"column":24},"identifierName":"trailingAfterArray"},
+              "name": "trailingAfterArray"
+            },
+            "init": {
+              "type": "ArrayExpression",
+              "start":191,"end":220,"loc":{"start":{"line":15,"column":27},"end":{"line":18,"column":1}},
+              "extra": {
+                "trailingComma": 200
+              },
+              "elements": [
+                {
+                  "type": "StringLiteral",
+                  "start":195,"end":200,"loc":{"start":{"line":16,"column":2},"end":{"line":16,"column":7}},
+                  "extra": {
+                    "rawValue": "One",
+                    "raw": "\"One\""
+                  },
+                  "value": "One"
+                }
+              ]
+            }
+          }
+        ],
+        "kind": "const"
+      }
+    ],
+    "directives": []
+  },
+  "comments": [
+    {
+      "type": "CommentLine",
+      "value": " One",
+      "start":31,"end":37,"loc":{"start":{"line":2,"column":9},"end":{"line":2,"column":15}}
+    },
+    {
+      "type": "CommentLine",
+      "value": " Two",
+      "start":41,"end":47,"loc":{"start":{"line":3,"column":3},"end":{"line":3,"column":9}}
+    },
+    {
+      "type": "CommentLine",
+      "value": " Three",
+      "start":56,"end":64,"loc":{"start":{"line":4,"column":8},"end":{"line":4,"column":16}}
+    },
+    {
+      "type": "CommentLine",
+      "value": " Four",
+      "start":67,"end":74,"loc":{"start":{"line":5,"column":2},"end":{"line":5,"column":9}}
+    },
+    {
+      "type": "CommentLine",
+      "value": " One",
+      "start":116,"end":122,"loc":{"start":{"line":9,"column":9},"end":{"line":9,"column":15}}
+    },
+    {
+      "type": "CommentLine",
+      "value": " Two",
+      "start":126,"end":132,"loc":{"start":{"line":10,"column":3},"end":{"line":10,"column":9}}
+    },
+    {
+      "type": "CommentLine",
+      "value": " Three",
+      "start":142,"end":150,"loc":{"start":{"line":11,"column":9},"end":{"line":11,"column":17}}
+    },
+    {
+      "type": "CommentLine",
+      "value": " Four",
+      "start":153,"end":160,"loc":{"start":{"line":12,"column":2},"end":{"line":12,"column":9}}
+    },
+    {
+      "type": "CommentLine",
+      "value": " One",
+      "start":202,"end":208,"loc":{"start":{"line":16,"column":9},"end":{"line":16,"column":15}}
+    },
+    {
+      "type": "CommentLine",
+      "value": " Two",
+      "start":212,"end":218,"loc":{"start":{"line":17,"column":3},"end":{"line":17,"column":9}}
+    },
+    {
+      "type": "CommentLine",
+      "value": " Three",
+      "start":221,"end":229,"loc":{"start":{"line":18,"column":2},"end":{"line":18,"column":10}}
+    }
+  ]
+}

@@ -31,6 +31,8 @@ function normalizeParserOptions(options) {
       allowSuperOutsideMethod: true,
       ...options.babelOptions.parserOpts,
       plugins: getParserPlugins(options.babelOptions),
+      // skip comment attaching for parsing performance
+      attachComment: false,
       ranges: true,
       tokens: true,
     },

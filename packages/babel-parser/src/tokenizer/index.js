@@ -403,7 +403,7 @@ export default class Tokenizer extends ParserErrors {
               const comment = this.skipBlockComment();
               if (comment !== undefined) {
                 this.addComment(comment);
-                comments.push(comment);
+                if (this.options.attachComment) comments.push(comment);
               }
               break;
             }
@@ -412,7 +412,7 @@ export default class Tokenizer extends ParserErrors {
               const comment = this.skipLineComment(2);
               if (comment !== undefined) {
                 this.addComment(comment);
-                comments.push(comment);
+                if (this.options.attachComment) comments.push(comment);
               }
               break;
             }
@@ -436,7 +436,7 @@ export default class Tokenizer extends ParserErrors {
               const comment = this.skipLineComment(3);
               if (comment !== undefined) {
                 this.addComment(comment);
-                comments.push(comment);
+                if (this.options.attachComment) comments.push(comment);
               }
             } else {
               break loop;
@@ -452,7 +452,7 @@ export default class Tokenizer extends ParserErrors {
               const comment = this.skipLineComment(4);
               if (comment !== undefined) {
                 this.addComment(comment);
-                comments.push(comment);
+                if (this.options.attachComment) comments.push(comment);
               }
             } else {
               break loop;
