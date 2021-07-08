@@ -1,0 +1,10 @@
+{
+  "plugins": [
+    ["proposal-pipeline-operator", { "proposal": "hack", "topicToken": "var" }],
+    "transform-arrow-functions"
+  ],
+  "parserOpts": {
+    "allowReturnOutsideFunction": true
+  },
+  "minNodeVersion": "8.0.0"
+}
