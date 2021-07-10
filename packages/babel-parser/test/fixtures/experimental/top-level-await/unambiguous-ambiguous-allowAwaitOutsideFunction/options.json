@@ -1,5 +1,0 @@
-{
-  "plugins": ["topLevelAwait"],
-  "sourceType": "unambiguous",
-  "allowAwaitOutsideFunction": true
-}

@@ -3,7 +3,7 @@
   "start":0,"end":27,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":27}},
   "errors": [
     "SyntaxError: Missing semicolon. (1:10)",
-    "SyntaxError: 'await' is only allowed within async functions. (1:18)"
+    "SyntaxError: 'await' is only allowed within async functions and at the top levels of modules. (1:18)"
   ],
   "program": {
     "type": "Program",

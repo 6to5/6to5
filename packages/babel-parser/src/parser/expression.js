@@ -39,14 +39,12 @@ import {
   SCOPE_DIRECT_SUPER,
   SCOPE_FUNCTION,
   SCOPE_SUPER,
-  SCOPE_PROGRAM,
 } from "../util/scopeflags";
 import { ExpressionErrors } from "./util";
 import {
   PARAM_AWAIT,
   PARAM_IN,
   PARAM_RETURN,
-  PARAM,
   functionFlags,
 } from "../util/production-parameter";
 import {
@@ -151,12 +149,7 @@ export default class ExpressionParser extends LValParser {
 
   // Convenience method to parse an Expression only
   getExpression(): N.Expression & N.ParserOutput {
-    let paramFlags = PARAM;
-    if (this.hasPlugin("topLevelAwait") && this.inModule) {
-      paramFlags |= PARAM_AWAIT;
-    }
-    this.scope.enter(SCOPE_PROGRAM);
-    this.prodParam.enter(paramFlags);
+    this.enterInitialScopes();
     this.nextToken();
     const expr = this.parseExpression();
     if (!this.match(tt.eof)) {
@@ -558,12 +551,7 @@ export default class ExpressionParser extends LValParser {
         ? this.state.type.startsExpr
         : this.state.type.startsExpr && !this.match(tt.modulo);
       if (startsExpr && !this.isAmbiguousAwait()) {
-        this.raiseOverwrite(
-          startPos,
-          this.hasPlugin("topLevelAwait")
-            ? Errors.AwaitNotInAsyncContext
-            : Errors.AwaitNotInAsyncFunction,
-        );
+        this.raiseOverwrite(startPos, Errors.AwaitNotInAsyncContext);
         return this.parseAwait(startPos, startLoc);
       }
     }

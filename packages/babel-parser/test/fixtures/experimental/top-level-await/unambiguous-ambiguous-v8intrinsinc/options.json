@@ -1,4 +1,0 @@
-{
-  "plugins": ["topLevelAwait", "v8intrinsic"],
-  "sourceType": "unambiguous"
-}

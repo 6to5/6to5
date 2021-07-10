@@ -1,4 +1,0 @@
-{
-  "plugins": ["topLevelAwait"],
-  "sourceType": "script"
-}

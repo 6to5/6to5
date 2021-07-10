@@ -395,7 +395,7 @@ export default class UtilParser extends Tokenizer {
 
   enterInitialScopes() {
     let paramFlags = PARAM;
-    if (this.hasPlugin("topLevelAwait") && this.inModule) {
+    if (this.inModule) {
       paramFlags |= PARAM_AWAIT;
     }
     this.scope.enter(SCOPE_PROGRAM);

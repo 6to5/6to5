@@ -2,7 +2,7 @@
   "type": "File",
   "start":0,"end":35,"loc":{"start":{"line":1,"column":0},"end":{"line":3,"column":1}},
   "errors": [
-    "SyntaxError: 'await' is only allowed within async functions. (2:2)"
+    "SyntaxError: 'await' is only allowed within async functions and at the top levels of modules. (2:2)"
   ],
   "program": {
     "type": "Program",

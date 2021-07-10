@@ -1,9 +1,0 @@
-{
-  "caller": {
-    "name": "test-fixture",
-    "supportsStaticESM": true,
-    "supportsDynamicImport": true,
-    "supportsTopLevelAwait": true
-  },
-  "presets": ["env"]
-}
