@@ -72,7 +72,7 @@ function isThisAllowed(path) {
     return true;
   }
   if (!parentMethodOrFunction.isMethod()) {
-    // If the closest parent is a regular function, `this` will be rebind, therefore it is fine to use `this`.
+    // If the closest parent is a regular function, `this` will be rebound, therefore it is fine to use `this`.
     return true;
   }
   // Current node is within a method, so we need to check if the method is a constructor.
@@ -80,7 +80,7 @@ function isThisAllowed(path) {
     // We are not in a constructor, therefore it is always fine to use `this`.
     return true;
   }
-  // Now we are in a constructor. We need to check if there is a `super()` call following the current node.
+  // Now we are in a constructor. We need to check if there is a `super()` call within the constructor.
   return !containsSuperCall(parentMethodOrFunction);
 }
 
