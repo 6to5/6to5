@@ -49,3 +49,10 @@ class E extends A {
   }
 
 }
+
+class F {
+  constructor() {
+    <sometag9 __self={this} />;
+  }
+
+}

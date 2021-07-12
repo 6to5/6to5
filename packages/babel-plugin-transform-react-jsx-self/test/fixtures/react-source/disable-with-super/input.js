@@ -37,3 +37,9 @@ class E extends A {
     super();
   }
 }
+
+class F {
+  constructor() {
+    <sometag9 />
+  }
+}
