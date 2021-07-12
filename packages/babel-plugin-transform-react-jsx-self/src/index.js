@@ -1,7 +1,8 @@
 /**
  * This adds a __self={this} JSX attribute to all JSX elements, which React will use
- * to generate some runtime warnings. However, if the JSX element appears prior to a
- * `super()` call, `__self={this}` will not be inserted to prevent runtime errors.
+ * to generate some runtime warnings. However, if the JSX element appears within a
+ * constructor that contains a `super()` call, `__self={this}` will not be inserted
+ * in order to prevent runtime errors.
  *
  * == JSX Literals ==
  *
@@ -17,7 +18,26 @@ import { types as t } from "@babel/core";
 const TRACE_ID = "__self";
 
 /**
- * Returns whether the given path contains a `super()` call.
+ * Finds the closest parent function that provides `this`. Specifically, this looks for
+ * the first parent function that isn't an arrow function.
+ *
+ * Derived from `Scope#getFunctionParent`
+ */
+function getThisFunctionParent(path) {
+  let scope = path.scope;
+  do {
+    if (
+      scope.path.isFunctionParent() &&
+      !scope.path.isArrowFunctionExpression()
+    ) {
+      return scope.path;
+    }
+  } while ((scope = scope.parent));
+  return null;
+}
+
+/**
+ * Returns whether `this` is allowed at given path.
  */
 function containsSuperCall(sourcePath) {
   // We don't want to go into inner classes as their super() calls aren't relevant for us.
@@ -26,15 +46,12 @@ function containsSuperCall(sourcePath) {
   }
   let exists = false;
   sourcePath.traverse({
-    // Again, we don't go into inner classes.
-    ClassDeclaration(path) {
+    Class(path) {
+      // We don't want to go into inner classes as their super() calls aren't relevant for us.
       path.skip();
     },
-    ClassExpression(path) {
-      path.skip();
-    },
-    // Find a `Super` that is used in a call expression.
     Super(path) {
+      // Test if this `Super` is used in a call expression.
       if (path.parentPath.isCallExpression()) {
         exists = true;
         path.stop();
@@ -47,16 +64,9 @@ function containsSuperCall(sourcePath) {
 /**
  * Returns whether it is allowed to use `this` at given path.
  */
-function canUseThis(path) {
-  const statement = path.getStatementParent();
+function isThisAllowed(path) {
   // This specifically skips arrow functions as they do not rewrite `this`.
-  const parentMethodOrFunction = statement.findParent(path => {
-    return (
-      path.isFunctionDeclaration() ||
-      path.isFunctionExpression() ||
-      path.isClassMethod()
-    );
-  });
+  const parentMethodOrFunction = getThisFunctionParent(path);
   if (parentMethodOrFunction === null) {
     // We are not in a method or function. It is fine to use `this`.
     return true;
@@ -71,12 +81,7 @@ function canUseThis(path) {
     return true;
   }
   // Now we are in a constructor. We need to check if there is a `super()` call following the current node.
-  if (containsSuperCall(statement)) {
-    return false;
-  }
-  return !statement
-    .getAllNextSiblings()
-    .some(sibling => containsSuperCall(sibling));
+  return !containsSuperCall(parentMethodOrFunction);
 }
 
 export default declare(api => {
@@ -84,7 +89,7 @@ export default declare(api => {
 
   const visitor = {
     JSXOpeningElement(path) {
-      if (!canUseThis(path)) {
+      if (!isThisAllowed(path)) {
         return;
       }
       const node = path.node;

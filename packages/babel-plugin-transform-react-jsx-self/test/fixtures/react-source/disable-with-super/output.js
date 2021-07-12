@@ -1,4 +1,4 @@
-class A { }
+class A {}
 
 class B extends A {
   constructor() {
@@ -6,33 +6,46 @@ class B extends A {
     super(<sometag2 />);
     <sometag3 />;
   }
+
 }
 
 class C {
   constructor() {
-    <sometag4 />;
+    <sometag4 __self={this} />;
+
     class D extends A {
       constructor() {
         super();
       }
+
     }
+
     const E = class extends A {
       constructor() {
         super();
       }
+
     };
   }
+
 }
 
 class E extends A {
   constructor() {
     this.x = () => <sometag5 />;
+
     this.y = function () {
-      return <sometag6 />;
+      return <sometag6 __self={this} />;
     };
-    this.z = function z() {
-      return <sometag7 />;
-    };
+
+    function z() {
+      return <sometag7 __self={this} />;
+    }
+
+    {
+      <sometag8 />;
+    }
     super();
   }
+
 }
