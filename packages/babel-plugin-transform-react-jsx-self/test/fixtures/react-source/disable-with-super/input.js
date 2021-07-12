@@ -43,3 +43,9 @@ class F {
     <sometag9 />
   }
 }
+
+class G extends A {
+  constructor() {
+    return <sometag10 />;
+  }
+}

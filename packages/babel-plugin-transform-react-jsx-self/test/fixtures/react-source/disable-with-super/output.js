@@ -56,3 +56,10 @@ class F {
   }
 
 }
+
+class G extends A {
+  constructor() {
+    return <sometag10 />;
+  }
+
+}
