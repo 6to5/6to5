@@ -1214,6 +1214,26 @@ export default class ExpressionParser extends LValParser {
         return node;
       }
 
+      case tt.moduloAssign:
+        if (
+          this.getPluginOption("pipelineOperator", "proposal") === "hack" &&
+          this.getPluginOption("pipelineOperator", "topicToken") === "%"
+        ) {
+          // If we find %= in an expression position, and the Hack-pipes proposal is active,
+          // then the % could be the topic token (e.g., in x |> %==y or x |> %===y), and so we
+          // reparse it as %.
+          // The next readToken() call will start parsing from =.
+
+          this.state.value = "%";
+          this.state.type = tt.modulo;
+          this.state.pos--;
+          this.state.end--;
+          this.state.endLoc.column--;
+        } else {
+          throw this.unexpected();
+        }
+
+      // falls through
       case tt.modulo:
       case tt.hash: {
         const pipeProposal = this.getPluginOption(

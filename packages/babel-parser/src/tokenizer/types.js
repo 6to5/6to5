@@ -140,6 +140,9 @@ export const types: { [name: string]: TokenType } = {
   eq: new TokenType("=", { beforeExpr, isAssign }),
   assign: new TokenType("_=", { beforeExpr, isAssign }),
   slashAssign: new TokenType("_=", { beforeExpr, isAssign }),
+  // This is only needed to support % as a Hack-pipe topic token. If the proposal
+  // ends up choosing a different token, it can be merged with tt.assign.
+  moduloAssign: new TokenType("_=", { beforeExpr, isAssign }),
   incDec: new TokenType("++/--", { prefix, postfix, startsExpr }),
   bang: new TokenType("!", { beforeExpr, prefix, startsExpr }),
   tilde: new TokenType("~", { beforeExpr, prefix, startsExpr }),

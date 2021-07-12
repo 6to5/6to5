@@ -574,7 +574,7 @@ export default class Tokenizer extends ParserErrors {
 
     if (next === charCodes.equalsTo && !this.state.inType) {
       width++;
-      type = tt.assign;
+      type = code === charCodes.percentSign ? tt.moduloAssign : tt.assign;
     }
 
     this.finishOp(type, width);
