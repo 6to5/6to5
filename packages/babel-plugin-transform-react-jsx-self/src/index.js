@@ -1,8 +1,8 @@
 /**
  * This adds a __self={this} JSX attribute to all JSX elements, which React will use
  * to generate some runtime warnings. However, if the JSX element appears within a
- * constructor that contains a `super()` call, `__self={this}` will not be inserted
- * in order to prevent runtime errors.
+ * constructor of a derived class, `__self={this}` will not be inserted in order to
+ * prevent runtime errors.
  *
  * == JSX Literals ==
  *
@@ -37,12 +37,10 @@ function getThisFunctionParent(path) {
 }
 
 /**
- * Returns whether the constructor contains a `super()` call.
+ * Returns whether the class has specified a superclass.
  */
-function containsSuperCall(sourcePath) {
-  // All classes that specify a super class needs to have a `super()` call within its
-  // constructor.
-  return sourcePath.parentPath.parentPath.node.superClass !== null;
+function isDerivedClass(classPath) {
+  return classPath.node.superClass !== null;
 }
 
 /**
@@ -64,8 +62,8 @@ function isThisAllowed(path) {
     // We are not in a constructor, therefore it is always fine to use `this`.
     return true;
   }
-  // Now we are in a constructor. We need to check if there is a `super()` call within the constructor.
-  return !containsSuperCall(parentMethodOrFunction);
+  // Now we are in a constructor. If it is a derived class, we do not reference `this`.
+  return !isDerivedClass(parentMethodOrFunction.parentPath.parentPath);
 }
 
 export default declare(api => {
