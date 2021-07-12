@@ -37,32 +37,16 @@ function getThisFunctionParent(path) {
 }
 
 /**
- * Returns whether `this` is allowed at given path.
+ * Returns whether the constructor contains a `super()` call.
  */
 function containsSuperCall(sourcePath) {
-  // We don't want to go into inner classes as their super() calls aren't relevant for us.
-  if (sourcePath.isClassDeclaration() || sourcePath.isClassExpression()) {
-    return false;
-  }
-  let exists = false;
-  sourcePath.traverse({
-    Class(path) {
-      // We don't want to go into inner classes as their super() calls aren't relevant for us.
-      path.skip();
-    },
-    Super(path) {
-      // Test if this `Super` is used in a call expression.
-      if (path.parentPath.isCallExpression()) {
-        exists = true;
-        path.stop();
-      }
-    },
-  });
-  return exists;
+  // All classes that specify a super class needs to have a `super()` call within its
+  // constructor.
+  return sourcePath.parentPath.parentPath.node.superClass !== null;
 }
 
 /**
- * Returns whether it is allowed to use `this` at given path.
+ * Returns whether `this` is allowed at given path.
  */
 function isThisAllowed(path) {
   // This specifically skips arrow functions as they do not rewrite `this`.
