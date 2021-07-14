@@ -23,7 +23,10 @@ export default (_: any, opts: any = {}) => {
       [babelPlugins.syntaxRecordAndTuple, { syntaxType: recordAndTupleSyntax }],
       babelPlugins.syntaxModuleBlocks,
       babelPlugins.proposalExportDefaultFrom,
-      [babelPlugins.proposalPipelineOperator, { proposal: pipelineProposal }],
+      [
+        babelPlugins.proposalPipelineOperator,
+        { proposal: pipelineProposal, topicToken: "%" },
+      ],
       babelPlugins.proposalDoExpressions,
     ],
   };
