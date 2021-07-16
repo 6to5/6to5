@@ -1,0 +1,79 @@
+{
+  "type": "File",
+  "start":0,"end":42,"loc":{"start":{"line":1,"column":0},"end":{"line":4,"column":1}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":42,"loc":{"start":{"line":1,"column":0},"end":{"line":4,"column":1}},
+    "sourceType": "module",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ClassDeclaration",
+        "start":0,"end":42,"loc":{"start":{"line":1,"column":0},"end":{"line":4,"column":1}},
+        "id": {
+          "type": "Identifier",
+          "start":6,"end":7,"loc":{"start":{"line":1,"column":6},"end":{"line":1,"column":7},"identifierName":"C"},
+          "name": "C"
+        },
+        "superClass": null,
+        "body": {
+          "type": "ClassBody",
+          "start":8,"end":42,"loc":{"start":{"line":1,"column":8},"end":{"line":4,"column":1}},
+          "body": [
+            {
+              "type": "ClassMethod",
+              "start":12,"end":24,"loc":{"start":{"line":2,"column":2},"end":{"line":2,"column":14}},
+              "static": false,
+              "key": {
+                "type": "Identifier",
+                "start":16,"end":19,"loc":{"start":{"line":2,"column":6},"end":{"line":2,"column":9},"identifierName":"baz"},
+                "name": "baz"
+              },
+              "computed": false,
+              "kind": "get",
+              "id": null,
+              "generator": false,
+              "async": false,
+              "params": [],
+              "body": {
+                "type": "BlockStatement",
+                "start":22,"end":24,"loc":{"start":{"line":2,"column":12},"end":{"line":2,"column":14}},
+                "body": [],
+                "directives": []
+              }
+            },
+            {
+              "type": "ClassMethod",
+              "start":27,"end":40,"loc":{"start":{"line":3,"column":2},"end":{"line":3,"column":15}},
+              "static": false,
+              "key": {
+                "type": "Identifier",
+                "start":31,"end":34,"loc":{"start":{"line":3,"column":6},"end":{"line":3,"column":9},"identifierName":"baz"},
+                "name": "baz"
+              },
+              "computed": false,
+              "kind": "set",
+              "id": null,
+              "generator": false,
+              "async": false,
+              "params": [
+                {
+                  "type": "Identifier",
+                  "start":35,"end":36,"loc":{"start":{"line":3,"column":10},"end":{"line":3,"column":11},"identifierName":"v"},
+                  "name": "v"
+                }
+              ],
+              "body": {
+                "type": "BlockStatement",
+                "start":38,"end":40,"loc":{"start":{"line":3,"column":13},"end":{"line":3,"column":15}},
+                "body": [],
+                "directives": []
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "directives": []
+  }
+}

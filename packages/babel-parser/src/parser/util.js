@@ -6,7 +6,6 @@ import State from "../tokenizer/state";
 import type { Node } from "../types";
 import { lineBreak } from "../util/whitespace";
 import { isIdentifierChar } from "../util/identifier";
-import ClassScopeHandler from "../util/class-scope";
 import ExpressionScopeHandler from "../util/expression-scope";
 import { SCOPE_PROGRAM } from "../util/scopeflags";
 import ProductionParameterHandler, {
@@ -17,6 +16,7 @@ import { Errors, type ErrorTemplate, ErrorCodes } from "./error";
 import type { ParsingError } from "./error";
 /*::
 import type ScopeHandler from "../util/scope";
+import type ClassScopeHandler from "../util/class-scope";
 */
 
 type TryParse<Node, Error, Thrown, Aborted, FailState> = {
@@ -33,6 +33,7 @@ export default class UtilParser extends Tokenizer {
   // Forward-declaration: defined in parser/index.js
   /*::
   +getScopeHandler: () => Class<ScopeHandler<*>>;
+  +getClassScopeHandler: () => Class<ClassScopeHandler<*>>;
   */
 
   // TODO
@@ -374,6 +375,7 @@ export default class UtilParser extends Tokenizer {
     this.prodParam = new ProductionParameterHandler();
 
     const oldClassScope = this.classScope;
+    const ClassScopeHandler = this.getClassScopeHandler();
     this.classScope = new ClassScopeHandler(this.raise.bind(this));
 
     const oldExpressionScope = this.expressionScope;

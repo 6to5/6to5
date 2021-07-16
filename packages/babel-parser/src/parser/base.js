@@ -13,7 +13,7 @@ export default class BaseParser {
   declare options: Options;
   declare inModule: boolean;
   declare scope: ScopeHandler<*>;
-  declare classScope: ClassScopeHandler;
+  declare classScope: ClassScopeHandler<*>;
   declare prodParam: ProductionParameterHandler;
   declare expressionScope: ExpressionScopeHandler;
   declare plugins: PluginsMap;

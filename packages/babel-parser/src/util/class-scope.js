@@ -19,8 +19,8 @@ export class ClassScope {
   undefinedPrivateNames: Map<string, number> = new Map();
 }
 
-export default class ClassScopeHandler {
-  stack: Array<ClassScope> = [];
+export default class ClassScopeHandler<IClassScope: ClassScope = ClassScope> {
+  stack: Array<IClassScope> = [];
   declare raise: raiseFunction;
   undefinedPrivateNames: Map<string, number> = new Map();
 
@@ -28,12 +28,16 @@ export default class ClassScopeHandler {
     this.raise = raise;
   }
 
-  current(): ClassScope {
+  current(): IClassScope {
     return this.stack[this.stack.length - 1];
   }
 
   enter() {
-    this.stack.push(new ClassScope());
+    this.stack.push(this.createScope());
+  }
+
+  createScope(): ClassScope {
+    return new ClassScope();
   }
 
   exit() {

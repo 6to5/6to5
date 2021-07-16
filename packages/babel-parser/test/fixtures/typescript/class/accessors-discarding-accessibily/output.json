@@ -1,0 +1,270 @@
+{
+  "type": "File",
+  "start":0,"end":229,"loc":{"start":{"line":1,"column":0},"end":{"line":13,"column":1}},
+  "errors": [
+    "SyntaxError: Accessors should have the same accessibilty level. (3:2)",
+    "SyntaxError: Accessors should have the same accessibilty level. (6:2)"
+  ],
+  "program": {
+    "type": "Program",
+    "start":0,"end":229,"loc":{"start":{"line":1,"column":0},"end":{"line":13,"column":1}},
+    "sourceType": "module",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ClassDeclaration",
+        "start":0,"end":229,"loc":{"start":{"line":1,"column":0},"end":{"line":13,"column":1}},
+        "id": {
+          "type": "Identifier",
+          "start":6,"end":7,"loc":{"start":{"line":1,"column":6},"end":{"line":1,"column":7},"identifierName":"C"},
+          "name": "C"
+        },
+        "superClass": null,
+        "body": {
+          "type": "ClassBody",
+          "start":8,"end":229,"loc":{"start":{"line":1,"column":8},"end":{"line":13,"column":1}},
+          "body": [
+            {
+              "type": "ClassMethod",
+              "start":12,"end":31,"loc":{"start":{"line":2,"column":2},"end":{"line":2,"column":21}},
+              "accessibility": "public",
+              "static": false,
+              "key": {
+                "type": "Identifier",
+                "start":23,"end":26,"loc":{"start":{"line":2,"column":13},"end":{"line":2,"column":16},"identifierName":"bar"},
+                "name": "bar"
+              },
+              "computed": false,
+              "kind": "get",
+              "id": null,
+              "generator": false,
+              "async": false,
+              "params": [],
+              "body": {
+                "type": "BlockStatement",
+                "start":29,"end":31,"loc":{"start":{"line":2,"column":19},"end":{"line":2,"column":21}},
+                "body": [],
+                "directives": []
+              }
+            },
+            {
+              "type": "ClassMethod",
+              "start":34,"end":47,"loc":{"start":{"line":3,"column":2},"end":{"line":3,"column":15}},
+              "static": false,
+              "key": {
+                "type": "Identifier",
+                "start":38,"end":41,"loc":{"start":{"line":3,"column":6},"end":{"line":3,"column":9},"identifierName":"bar"},
+                "name": "bar"
+              },
+              "computed": false,
+              "kind": "set",
+              "id": null,
+              "generator": false,
+              "async": false,
+              "params": [
+                {
+                  "type": "Identifier",
+                  "start":42,"end":43,"loc":{"start":{"line":3,"column":10},"end":{"line":3,"column":11},"identifierName":"v"},
+                  "name": "v"
+                }
+              ],
+              "body": {
+                "type": "BlockStatement",
+                "start":45,"end":47,"loc":{"start":{"line":3,"column":13},"end":{"line":3,"column":15}},
+                "body": [],
+                "directives": []
+              }
+            },
+            {
+              "type": "ClassMethod",
+              "start":51,"end":70,"loc":{"start":{"line":5,"column":2},"end":{"line":5,"column":21}},
+              "accessibility": "public",
+              "static": false,
+              "key": {
+                "type": "Identifier",
+                "start":62,"end":65,"loc":{"start":{"line":5,"column":13},"end":{"line":5,"column":16},"identifierName":"foo"},
+                "name": "foo"
+              },
+              "computed": false,
+              "kind": "get",
+              "id": null,
+              "generator": false,
+              "async": false,
+              "params": [],
+              "body": {
+                "type": "BlockStatement",
+                "start":68,"end":70,"loc":{"start":{"line":5,"column":19},"end":{"line":5,"column":21}},
+                "body": [],
+                "directives": []
+              }
+            },
+            {
+              "type": "ClassMethod",
+              "start":73,"end":94,"loc":{"start":{"line":6,"column":2},"end":{"line":6,"column":23}},
+              "accessibility": "private",
+              "static": false,
+              "key": {
+                "type": "Identifier",
+                "start":85,"end":88,"loc":{"start":{"line":6,"column":14},"end":{"line":6,"column":17},"identifierName":"foo"},
+                "name": "foo"
+              },
+              "computed": false,
+              "kind": "set",
+              "id": null,
+              "generator": false,
+              "async": false,
+              "params": [
+                {
+                  "type": "Identifier",
+                  "start":89,"end":90,"loc":{"start":{"line":6,"column":18},"end":{"line":6,"column":19},"identifierName":"v"},
+                  "name": "v"
+                }
+              ],
+              "body": {
+                "type": "BlockStatement",
+                "start":92,"end":94,"loc":{"start":{"line":6,"column":21},"end":{"line":6,"column":23}},
+                "body": [],
+                "directives": []
+              }
+            },
+            {
+              "type": "ClassMethod",
+              "start":98,"end":134,"loc":{"start":{"line":8,"column":2},"end":{"line":8,"column":38}},
+              "accessibility": "protected",
+              "static": false,
+              "key": {
+                "type": "MemberExpression",
+                "start":113,"end":128,"loc":{"start":{"line":8,"column":17},"end":{"line":8,"column":32}},
+                "object": {
+                  "type": "Identifier",
+                  "start":113,"end":119,"loc":{"start":{"line":8,"column":17},"end":{"line":8,"column":23},"identifierName":"Symbol"},
+                  "name": "Symbol"
+                },
+                "computed": false,
+                "property": {
+                  "type": "Identifier",
+                  "start":120,"end":128,"loc":{"start":{"line":8,"column":24},"end":{"line":8,"column":32},"identifierName":"iterator"},
+                  "name": "iterator"
+                }
+              },
+              "computed": true,
+              "kind": "get",
+              "id": null,
+              "generator": false,
+              "async": false,
+              "params": [],
+              "body": {
+                "type": "BlockStatement",
+                "start":132,"end":134,"loc":{"start":{"line":8,"column":36},"end":{"line":8,"column":38}},
+                "body": [],
+                "directives": []
+              }
+            },
+            {
+              "type": "ClassMethod",
+              "start":137,"end":172,"loc":{"start":{"line":9,"column":2},"end":{"line":9,"column":37}},
+              "accessibility": "private",
+              "static": false,
+              "key": {
+                "type": "MemberExpression",
+                "start":150,"end":165,"loc":{"start":{"line":9,"column":15},"end":{"line":9,"column":30}},
+                "object": {
+                  "type": "Identifier",
+                  "start":150,"end":156,"loc":{"start":{"line":9,"column":15},"end":{"line":9,"column":21},"identifierName":"Symbol"},
+                  "name": "Symbol"
+                },
+                "computed": false,
+                "property": {
+                  "type": "Identifier",
+                  "start":157,"end":165,"loc":{"start":{"line":9,"column":22},"end":{"line":9,"column":30},"identifierName":"iterator"},
+                  "name": "iterator"
+                }
+              },
+              "computed": true,
+              "kind": "set",
+              "id": null,
+              "generator": false,
+              "async": false,
+              "params": [
+                {
+                  "type": "Identifier",
+                  "start":167,"end":168,"loc":{"start":{"line":9,"column":32},"end":{"line":9,"column":33},"identifierName":"v"},
+                  "name": "v"
+                }
+              ],
+              "body": {
+                "type": "BlockStatement",
+                "start":170,"end":172,"loc":{"start":{"line":9,"column":35},"end":{"line":9,"column":37}},
+                "body": [],
+                "directives": []
+              }
+            },
+            {
+              "type": "ClassMethod",
+              "start":176,"end":199,"loc":{"start":{"line":11,"column":2},"end":{"line":11,"column":25}},
+              "accessibility": "public",
+              "static": false,
+              "key": {
+                "type": "CallExpression",
+                "start":188,"end":193,"loc":{"start":{"line":11,"column":14},"end":{"line":11,"column":19}},
+                "callee": {
+                  "type": "Identifier",
+                  "start":188,"end":191,"loc":{"start":{"line":11,"column":14},"end":{"line":11,"column":17},"identifierName":"baz"},
+                  "name": "baz"
+                },
+                "arguments": []
+              },
+              "computed": true,
+              "kind": "get",
+              "id": null,
+              "generator": false,
+              "async": false,
+              "params": [],
+              "body": {
+                "type": "BlockStatement",
+                "start":197,"end":199,"loc":{"start":{"line":11,"column":23},"end":{"line":11,"column":25}},
+                "body": [],
+                "directives": []
+              }
+            },
+            {
+              "type": "ClassMethod",
+              "start":202,"end":227,"loc":{"start":{"line":12,"column":2},"end":{"line":12,"column":27}},
+              "accessibility": "private",
+              "static": false,
+              "key": {
+                "type": "CallExpression",
+                "start":215,"end":220,"loc":{"start":{"line":12,"column":15},"end":{"line":12,"column":20}},
+                "callee": {
+                  "type": "Identifier",
+                  "start":215,"end":218,"loc":{"start":{"line":12,"column":15},"end":{"line":12,"column":18},"identifierName":"baz"},
+                  "name": "baz"
+                },
+                "arguments": []
+              },
+              "computed": true,
+              "kind": "set",
+              "id": null,
+              "generator": false,
+              "async": false,
+              "params": [
+                {
+                  "type": "Identifier",
+                  "start":222,"end":223,"loc":{"start":{"line":12,"column":22},"end":{"line":12,"column":23},"identifierName":"v"},
+                  "name": "v"
+                }
+              ],
+              "body": {
+                "type": "BlockStatement",
+                "start":225,"end":227,"loc":{"start":{"line":12,"column":25},"end":{"line":12,"column":27}},
+                "body": [],
+                "directives": []
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "directives": []
+  }
+}

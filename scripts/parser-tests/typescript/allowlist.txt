@@ -138,6 +138,7 @@ dependencyViaImportAlias.ts
 destructuredDeclarationEmit.ts
 divergentAccessors1.ts
 divergentAccessorsTypes1.ts
+divergentAccessorsVisibility1.ts
 doubleUnderscoreExportStarConflict.ts
 duplicateIdentifierBindingElementInParameterDeclaration1.ts
 duplicateIdentifierBindingElementInParameterDeclaration2.ts
@@ -233,6 +234,7 @@ functionDeclarationWithResolutionOfTypeNamedArguments01.ts
 functionExpressionInWithBlock.ts
 functionExpressionWithResolutionOfTypeNamedArguments01.ts
 getterErrorMessageNotDuplicated.ts
+gettersAndSettersAccessibility.ts
 gettersAndSettersErrors.ts
 giant.ts
 globalThisDeclarationEmit.ts
@@ -387,6 +389,7 @@ preserveUnusedImports.ts
 privacyCheckExternalModuleExportAssignmentOfGenericClass.ts
 privacyTopLevelAmbientExternalModuleImportWithExport.ts
 privacyTopLevelAmbientExternalModuleImportWithoutExport.ts
+publicGetterProtectedSetterFromThisParameter.ts
 reExportGlobalDeclaration1.ts
 reExportUndefined1.ts
 reExportUndefined2.ts

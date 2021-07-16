@@ -29,6 +29,7 @@ import TypeScriptScopeHandler from "./scope";
 import * as charCodes from "charcodes";
 import type { ExpressionErrors } from "../../parser/util";
 import { PARAM } from "../../util/production-parameter";
+import TypeScriptClassScopeHandler from "./class-scope";
 import {
   Errors,
   makeErrorTemplates,
@@ -65,8 +66,7 @@ type ParsingContext =
   | "TypeMembers"
   | "TypeParametersOrArguments";
 
-/* eslint sort-keys: "error" */
-const TSErrors = makeErrorTemplates(
+export const TSErrors = makeErrorTemplates(
   {
     AbstractMethodHasImplementation:
       "Method '%0' cannot have an implementation because it is marked abstract.",
@@ -83,6 +83,8 @@ const TSErrors = makeErrorTemplates(
       "Initializers are not allowed in ambient contexts.",
     DeclareFunctionHasImplementation:
       "An implementation cannot be declared in ambient contexts.",
+    DifferentAccessorAccessibilityModifier:
+      "Accessors should have the same accessibilty level.",
     DuplicateAccessibilityModifier: "Accessibility modifier already seen.",
     DuplicateModifier: "Duplicate modifier: '%0'.",
     EmptyHeritageClauseType: "'%0' list cannot be empty.",
@@ -196,6 +198,10 @@ export default (superClass: Class<Parser>): Class<Parser> =>
   class extends superClass {
     getScopeHandler(): Class<TypeScriptScopeHandler> {
       return TypeScriptScopeHandler;
+    }
+
+    getClassScopeHandler(): Class<TypeScriptClassScopeHandler> {
+      return TypeScriptClassScopeHandler;
     }
 
     tsIsIdentifier(): boolean {
@@ -2645,10 +2651,15 @@ export default (superClass: Class<Parser>): Class<Parser> =>
         this.raise(typeParameters.start, TSErrors.ConstructorHasTypeParameters);
       }
 
-      // $FlowIgnore
-      if (method.declare && (method.kind === "get" || method.kind === "set")) {
-        this.raise(method.start, TSErrors.DeclareAccessor, method.kind);
+      if (method.kind === "get" || method.kind === "set") {
+        // $FlowIgnore
+        if (method.declare) {
+          this.raise(method.start, TSErrors.DeclareAccessor, method.kind);
+        }
+
+        this.classScope.declareAccessor(method);
       }
+
       if (typeParameters) method.typeParameters = typeParameters;
       super.pushClassMethod(
         classBody,

@@ -6,6 +6,7 @@ import type { PluginList } from "../plugin-utils";
 import { getOptions } from "../options";
 import StatementParser from "./statement";
 import ScopeHandler from "../util/scope";
+import ClassScopeHandler from "../util/class-scope";
 
 export type PluginsMap = Map<string, { [string]: any }>;
 
@@ -27,9 +28,13 @@ export default class Parser extends StatementParser {
     this.filename = options.sourceFilename;
   }
 
-  // This can be overwritten, for example, by the TypeScript plugin.
+  // These scope handlers can be overwritten, for example, by the TypeScript plugin.
   getScopeHandler(): Class<ScopeHandler<*>> {
     return ScopeHandler;
+  }
+
+  getClassScopeHandler(): Class<ClassScopeHandler<*>> {
+    return ClassScopeHandler;
   }
 
   parse(): File {
