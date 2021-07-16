@@ -59,7 +59,7 @@ Our top sponsors are shown below! [[Become a sponsor](https://opencollective.com
 
 Babel is a tool that helps you write code in the latest version of JavaScript. When your supported environments don't support certain features natively, Babel will help you compile those features down to a supported version.
 
-**In**
+**Input**
 
 ```js
 // ES2020 nullish coalescing
@@ -68,7 +68,7 @@ function greet(input) {
 }
 ```
 
-**Out**
+**Output**
 
 ```js
 function greet(input) {
