@@ -149,6 +149,36 @@ describe("inference", function () {
         t.isGenericTypeAnnotation(type) && type.id.name === "Function",
       ).toBeTruthy();
     });
+    it("should infer Array type from outside of function declaration", function () {
+      const path = getPath(`
+      const arr = []; function func() { const a = arr }`).get(
+        "body.1.body.body.0.declarations.0",
+      );
+      const type = path.getTypeAnnotation();
+      expect(
+        t.isGenericTypeAnnotation(type) && type.id.name === "Array",
+      ).toBeTruthy();
+    });
+    it("should infer Array type from outside of function expression", function () {
+      const path = getPath(`
+        const arr = []; const func = function () { const a = arr }`).get(
+        "body.1.declarations.0.init.body.body.0.declarations.0",
+      );
+      const type = path.getTypeAnnotation();
+      expect(
+        t.isGenericTypeAnnotation(type) && type.id.name === "Array",
+      ).toBeTruthy();
+    });
+    it("should infer Array type from outside of arrow function", function () {
+      const path = getPath(`
+        const arr = []; const func = () => { const a = arr }`).get(
+        "body.1.declarations.0.init.body.body.0.declarations.0",
+      );
+      const type = path.getTypeAnnotation();
+      expect(
+        t.isGenericTypeAnnotation(type) && type.id.name === "Array",
+      ).toBeTruthy();
+    });
     it("should infer call return type using function", function () {
       const path = getPath("(function (): string {})()")
         .get("body")[0]

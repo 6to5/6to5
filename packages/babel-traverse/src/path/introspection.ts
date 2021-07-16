@@ -236,7 +236,7 @@ export function willIMaybeExecuteBefore(this: NodePath, target): boolean {
   return this._guessExecutionStatusRelativeTo(target) !== "after";
 }
 
-function getOuterFunction(path) {
+function getOuterFunction(path: NodePath) {
   return (path.scope.getFunctionParent() || path.scope.getProgramParent()).path;
 }
 
@@ -402,8 +402,12 @@ export function _guessExecutionStatusRelativeToDifferentFunctions(
   this: NodePath,
   target: NodePath,
 ): RelativeExecutionStatus {
+  const targetIsGenericFunctionExpression =
+    (target.isArrowFunctionExpression() || target.isFunctionExpression()) &&
+    t.isVariableDeclarator(target.parent) &&
+    t.isIdentifier(target.parent.id);
   if (
-    !target.isFunctionDeclaration() ||
+    (!target.isFunctionDeclaration() && !targetIsGenericFunctionExpression) ||
     target.parentPath.isExportDeclaration()
   ) {
     return "unknown";
@@ -413,7 +417,10 @@ export function _guessExecutionStatusRelativeToDifferentFunctions(
   // then we can be a bit smarter and handle cases where the function is either
   // a. not called at all (part of an export)
   // b. called directly
-  const binding = target.scope.getBinding(target.node.id.name);
+  const bindingName = targetIsGenericFunctionExpression
+    ? ((target.parent as t.VariableDeclarator).id as t.Identifier).name
+    : (target.node as t.FunctionDeclaration).id.name;
+  const binding = target.scope.getBinding(bindingName);
 
   // no references!
   if (!binding.references) return "before";
@@ -429,7 +436,10 @@ export function _guessExecutionStatusRelativeToDifferentFunctions(
     const childOfFunction = !!path.find(path => path.node === target.node);
     if (childOfFunction) continue;
 
-    if (path.key !== "callee" || !path.parentPath.isCallExpression()) {
+    if (
+      (path.key !== "callee" || !path.parentPath.isCallExpression()) &&
+      !path.parentPath.isReturnStatement()
+    ) {
       // This function is passed as a reference, so we don't
       // know when it will be called.
       return "unknown";
