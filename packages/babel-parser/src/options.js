@@ -1,6 +1,7 @@
 // @flow
 
 import type { PluginList } from "./plugin-utils";
+import sourcemap from "source-map";
 
 // A second optional argument can be given to further configure
 // the parser process. These options are recognized:
@@ -66,14 +67,20 @@ export const defaultOptions: Options = {
   // When enabled, errors are attached to the AST instead of being directly thrown.
   // Some errors will still throw, because @babel/parser can't always recover.
   errorRecovery: false,
+  inputSourceMap: undefined,
 };
 
 // Interpret and default an options object
 
-export function getOptions(opts: ?Options): Options {
+export function getOptions(opts: ?Options, input: string): Options {
   const options: any = {};
   for (const key of Object.keys(defaultOptions)) {
     options[key] = opts && opts[key] != null ? opts[key] : defaultOptions[key];
+  }
+  if(typeof options.inputSourceMap === 'object') {
+    options.inputSourceMap = new sourcemap.SourceMapConsumer(options.inputSourceMap);
+  } else if(options.inputSourceMap === true){
+    throw new Error("not implemented")
   }
   return options;
 }

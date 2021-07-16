@@ -18,7 +18,7 @@ export default class Parser extends StatementParser {
   */
 
   constructor(options: ?Options, input: string) {
-    options = getOptions(options);
+    options = getOptions(options, input);
     super(options, input);
 
     this.options = options;

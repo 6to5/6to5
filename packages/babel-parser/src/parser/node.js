@@ -2,7 +2,7 @@
 
 import type Parser from "./index";
 import UtilParser from "./util";
-import { SourceLocation, type Position } from "../util/location";
+import { SourceLocation, Position } from "../util/location";
 import type { Comment, Node as NodeType, NodeBase } from "../types";
 
 // Start an AST node, attaching a start offset.
@@ -12,9 +12,16 @@ class Node implements NodeBase {
     this.type = "";
     this.start = pos;
     this.end = 0;
-    this.loc = new SourceLocation(loc);
+    if(parser.options.inputSourceMap){
+      let {line, column, name, source} = parser.options.inputSourceMap.originalPositionFor(loc);
+      this.loc = new SourceLocation(new Position(line, column));
+      this.loc.filename = source;
+      this.loc.identifierName = name;
+    } else {
+      this.loc = new SourceLocation(loc);
+      if (parser?.filename) this.loc.filename = parser.filename;
+    }
     if (parser?.options.ranges) this.range = [pos, 0];
-    if (parser?.filename) this.loc.filename = parser.filename;
   }
 
   type: string;
@@ -91,7 +98,12 @@ export class NodeUtils extends UtilParser {
     }
     node.type = type;
     node.end = pos;
-    node.loc.end = loc;
+    if(this.options.inputSourceMap){
+      let {line, column} = this.options.inputSourceMap.originalPositionFor(loc);
+      node.loc.end = new Position(line, column);
+    } else {
+      node.loc.end = loc;
+    }
     if (this.options.ranges) node.range[1] = pos;
     this.processComment(node);
     return node;
@@ -109,7 +121,12 @@ export class NodeUtils extends UtilParser {
     endLoc?: Position = this.state.lastTokEndLoc,
   ): void {
     node.end = end;
-    node.loc.end = endLoc;
+    if(this.options.inputSourceMap){
+      let {line, column} = this.options.inputSourceMap.originalPositionFor(endLoc);
+      node.loc.end = new Position(line, column);
+    } else {
+      node.loc.end = endLoc;
+    }
     if (this.options.ranges) node.range[1] = end;
   }
 
