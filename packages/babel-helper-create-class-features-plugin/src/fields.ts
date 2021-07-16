@@ -1,4 +1,5 @@
 import { template, traverse, types as t } from "@babel/core";
+import type { NodePath } from "@babel/traverse";
 import ReplaceSupers, {
   environmentVisitor,
 } from "@babel/helper-replace-supers";
@@ -665,6 +666,24 @@ const thisContextVisitor = traverse.visitors.merge([
       state.needsClassRef = true;
       path.replaceWith(t.cloneNode(state.classRef));
     },
+    Function(path: NodePath<t.Function>, state) {
+      // only `() => { new.target }` needs to be replaced
+      state.shouldReplaceNewTarget = path.isArrowFunctionExpression();
+    },
+    MetaProperty(path: NodePath<t.MetaProperty>, state) {
+      const meta = path.get("meta");
+      const property = path.get("property");
+      const { scope } = path;
+      // if there are `new.target` in static field
+      // we should replace it with `undefined`
+      if (
+        state.shouldReplaceNewTarget &&
+        meta.isIdentifier({ name: "new" }) &&
+        property.isIdentifier({ name: "target" })
+      ) {
+        path.replaceWith(scope.buildUndefinedNode());
+      }
+    },
   },
   environmentVisitor,
 ]);
@@ -693,6 +712,7 @@ function replaceThisContext(
     classRef: ref,
     needsClassRef: false,
     innerBinding: innerBindingRef,
+    shouldReplaceNewTarget: true,
   };
 
   const replacer = new ReplaceSupers({
