@@ -1,0 +1,112 @@
+{
+  "type": "File",
+  "start":0,"end":33,"loc":{"start":{"line":1,"column":0},"end":{"line":4,"column":8}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":33,"loc":{"start":{"line":1,"column":0},"end":{"line":4,"column":8}},
+    "sourceType": "module",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start":0,"end":9,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":9}},
+        "expression": {
+          "type": "OptionalCallExpression",
+          "start":0,"end":8,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":8}},
+          "callee": {
+            "type": "Identifier",
+            "start":0,"end":1,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":1},"identifierName":"f"},
+            "name": "f"
+          },
+          "arguments": [],
+          "typeParameters": {
+            "type": "TSTypeParameterInstantiation",
+            "start":3,"end":6,"loc":{"start":{"line":1,"column":3},"end":{"line":1,"column":6}},
+            "params": [
+              {
+                "type": "TSTypeReference",
+                "start":4,"end":5,"loc":{"start":{"line":1,"column":4},"end":{"line":1,"column":5}},
+                "typeName": {
+                  "type": "Identifier",
+                  "start":4,"end":5,"loc":{"start":{"line":1,"column":4},"end":{"line":1,"column":5},"identifierName":"Q"},
+                  "name": "Q"
+                }
+              }
+            ]
+          },
+          "optional": true
+        }
+      },
+      {
+        "type": "ExpressionStatement",
+        "start":10,"end":22,"loc":{"start":{"line":2,"column":0},"end":{"line":2,"column":12}},
+        "expression": {
+          "type": "OptionalCallExpression",
+          "start":10,"end":21,"loc":{"start":{"line":2,"column":0},"end":{"line":2,"column":11}},
+          "callee": {
+            "type": "Identifier",
+            "start":10,"end":11,"loc":{"start":{"line":2,"column":0},"end":{"line":2,"column":1},"identifierName":"f"},
+            "name": "f"
+          },
+          "arguments": [],
+          "typeParameters": {
+            "type": "TSTypeParameterInstantiation",
+            "start":13,"end":19,"loc":{"start":{"line":2,"column":3},"end":{"line":2,"column":9}},
+            "params": [
+              {
+                "type": "TSTypeReference",
+                "start":14,"end":15,"loc":{"start":{"line":2,"column":4},"end":{"line":2,"column":5}},
+                "typeName": {
+                  "type": "Identifier",
+                  "start":14,"end":15,"loc":{"start":{"line":2,"column":4},"end":{"line":2,"column":5},"identifierName":"Q"},
+                  "name": "Q"
+                }
+              },
+              {
+                "type": "TSTypeReference",
+                "start":17,"end":18,"loc":{"start":{"line":2,"column":7},"end":{"line":2,"column":8}},
+                "typeName": {
+                  "type": "Identifier",
+                  "start":17,"end":18,"loc":{"start":{"line":2,"column":7},"end":{"line":2,"column":8},"identifierName":"W"},
+                  "name": "W"
+                }
+              }
+            ]
+          },
+          "optional": true
+        }
+      },
+      {
+        "type": "ExpressionStatement",
+        "start":23,"end":33,"loc":{"start":{"line":3,"column":0},"end":{"line":4,"column":8}},
+        "expression": {
+          "type": "OptionalCallExpression",
+          "start":23,"end":32,"loc":{"start":{"line":3,"column":0},"end":{"line":4,"column":7}},
+          "callee": {
+            "type": "Identifier",
+            "start":23,"end":24,"loc":{"start":{"line":3,"column":0},"end":{"line":3,"column":1},"identifierName":"f"},
+            "name": "f"
+          },
+          "arguments": [],
+          "typeParameters": {
+            "type": "TSTypeParameterInstantiation",
+            "start":27,"end":30,"loc":{"start":{"line":4,"column":2},"end":{"line":4,"column":5}},
+            "params": [
+              {
+                "type": "TSTypeReference",
+                "start":28,"end":29,"loc":{"start":{"line":4,"column":3},"end":{"line":4,"column":4}},
+                "typeName": {
+                  "type": "Identifier",
+                  "start":28,"end":29,"loc":{"start":{"line":4,"column":3},"end":{"line":4,"column":4},"identifierName":"Q"},
+                  "name": "Q"
+                }
+              }
+            ]
+          },
+          "optional": true
+        }
+      }
+    ],
+    "directives": []
+  }
+}

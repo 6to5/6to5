@@ -2072,7 +2072,21 @@ export default (superClass: Class<Parser>): Class<Parser> =>
         return this.finishNode(nonNullExpression, "TSNonNullExpression");
       }
 
+      let isOptionalCall = false;
+      if (
+        this.match(tt.questionDot) &&
+        this.lookaheadCharCode() === charCodes.lessThan
+      ) {
+        if (noCalls) {
+          state.stop = true;
+          return base;
+        }
+        state.optionalChainMember = isOptionalCall = true;
+        this.next();
+      }
+
       if (this.isRelational("<")) {
+        let missingParenErrorPos;
         // tsTryParseAndCatch is expensive, so avoid if not necessary.
         // There are number of things we are going to "maybe" parse, like type arguments on
         // tagged template expressions. If any of them fail, walk it back and continue.
@@ -2095,6 +2109,11 @@ export default (superClass: Class<Parser>): Class<Parser> =>
           const typeArguments = this.tsParseTypeArguments();
 
           if (typeArguments) {
+            if (isOptionalCall && !this.match(tt.parenL)) {
+              missingParenErrorPos = this.state.pos;
+              this.unexpected();
+            }
+
             if (!noCalls && this.eat(tt.parenL)) {
               // possibleAsync always false here, because we would have handled it above.
               // $FlowIgnore (won't be any undefined arguments)
@@ -2111,6 +2130,10 @@ export default (superClass: Class<Parser>): Class<Parser> =>
                 // $FlowIgnore
                 node.optional = false;
               }
+              if (isOptionalCall) {
+                node.optional = true;
+              }
+
               return this.finishCallExpression(node, state.optionalChainMember);
             } else if (this.match(tt.backQuote)) {
               const result = this.parseTaggedTemplateExpression(
@@ -2126,6 +2149,10 @@ export default (superClass: Class<Parser>): Class<Parser> =>
 
           this.unexpected();
         });
+
+        if (missingParenErrorPos) {
+          this.unexpected(missingParenErrorPos, tt.parenL);
+        }
 
         if (result) return result;
       }
