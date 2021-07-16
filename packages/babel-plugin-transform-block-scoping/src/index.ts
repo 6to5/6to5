@@ -1,8 +1,9 @@
 import { declare } from "@babel/helper-plugin-utils";
-import type NodePath from "@babel/traverse";
-import type Scope from "@babel/traverse";
+import type { NodePath, Visitor, Scope } from "@babel/traverse";
 import { visitor as tdzVisitor } from "./tdz";
+import type { TDZVisitorState } from "./tdz";
 import { traverse, template, types as t } from "@babel/core";
+import type { File } from "@babel/core";
 
 const DONE = new WeakSet();
 
@@ -26,8 +27,9 @@ export default declare((api, opts) => {
         if (!isBlockScoped(node)) return;
         convertBlockScopedToVar(path, null, parent, scope, true);
 
+        // @ts-expect-error todo(flow->ts): avoid mutations
         if (node._tdzThis) {
-          const nodes = [node];
+          const nodes: t.Node[] = [node];
 
           for (let i = 0; i < node.declarations.length; i++) {
             const decl = node.declarations[i];
@@ -36,11 +38,13 @@ export default declare((api, opts) => {
               t.cloneNode(decl.id),
               decl.init || scope.buildUndefinedNode(),
             );
+            // @ts-expect-error todo(flow->ts): avoid mutations
             assign._ignoreBlockScopingTDZ = true;
             nodes.push(t.expressionStatement(assign));
             decl.init = this.addHelper("temporalUndefined");
           }
 
+          // @ts-expect-error todo(flow->ts): avoid mutations
           node._blockHoist = 2;
 
           if (path.isCompletionRecord()) {
@@ -83,7 +87,10 @@ export default declare((api, opts) => {
         blockScoping.run();
       },
 
-      "BlockStatement|SwitchStatement|Program"(path, state) {
+      "BlockStatement|SwitchStatement|Program"(
+        path: NodePath<t.BlockStatement | t.SwitchStatement | t.Program>,
+        state,
+      ) {
         if (!ignoreBlock(path)) {
           const blockScoping = new BlockScoping(
             null,
@@ -97,7 +104,7 @@ export default declare((api, opts) => {
           blockScoping.run();
         }
       },
-    },
+    } as Visitor<File>,
   };
 });
 
@@ -161,8 +168,16 @@ function convertBlockScopedToVar(
   }
 }
 
-function isVar(node) {
+function isVar(node): node is t.VariableDeclaration {
   return t.isVariableDeclaration(node, { kind: "var" }) && !isBlockScoped(node);
+}
+
+interface LetReferenceVisitorState extends TDZVisitorState {
+  tdzEnabled: boolean;
+  loopDepth: number;
+  addHelper: (name) => any;
+  letReferences: any;
+  closurify: boolean;
 }
 
 const letReferenceBlockVisitor = traverse.visitors.merge([
@@ -188,7 +203,7 @@ const letReferenceBlockVisitor = traverse.visitors.merge([
     },
   },
   tdzVisitor,
-]);
+] as Visitor<LetReferenceVisitorState>[]);
 
 const letReferenceFunctionVisitor = traverse.visitors.merge([
   {
@@ -207,14 +222,13 @@ const letReferenceFunctionVisitor = traverse.visitors.merge([
     },
   },
   tdzVisitor,
-]);
+] as Visitor<LetReferenceVisitorState>[]);
 
-const hoistVarDeclarationsVisitor = {
+const hoistVarDeclarationsVisitor: Visitor<BlockScoping> = {
   enter(path, self) {
-    const { node, parent } = path;
-
     if (path.isForStatement()) {
-      if (isVar(node.init, node)) {
+      const { node } = path;
+      if (isVar(node.init)) {
         const nodes = self.pushDeclar(node.init);
         if (nodes.length === 1) {
           node.init = nodes[0];
@@ -222,14 +236,15 @@ const hoistVarDeclarationsVisitor = {
           node.init = t.sequenceExpression(nodes);
         }
       }
-    } else if (path.isFor()) {
-      if (isVar(node.left, node)) {
+    } else if (path.isForInStatement() || path.isForOfStatement()) {
+      const { node } = path;
+      if (isVar(node.left)) {
         self.pushDeclar(node.left);
         node.left = node.left.declarations[0].id;
       }
-    } else if (isVar(node, parent)) {
+    } else if (isVar(path.node)) {
       path.replaceWithMultiple(
-        self.pushDeclar(node).map(expr => t.expressionStatement(expr)),
+        self.pushDeclar(path.node).map(expr => t.expressionStatement(expr)),
       );
     } else if (path.isFunction()) {
       return path.skip();
@@ -237,13 +252,30 @@ const hoistVarDeclarationsVisitor = {
   },
 };
 
-const loopLabelVisitor = {
+interface LoopVisitorState {
+  inSwitchCase: boolean;
+  hasBreakContinue: boolean;
+  innerLabels: any[];
+  hasReturn: boolean;
+  ignoreLabeless: boolean;
+  LOOP_IGNORE: symbol;
+  isLoop: boolean;
+  map: any;
+}
+
+const loopLabelVisitor: Visitor<LoopVisitorState> = {
   LabeledStatement({ node }, state) {
     state.innerLabels.push(node.label.name);
   },
 };
 
-const continuationVisitor = {
+interface ContinuationVisitorState {
+  returnStatements: any[];
+  reassignments: any;
+  outsideReferences: any;
+}
+
+const continuationVisitor: Visitor<ContinuationVisitorState> = {
   enter(path, state) {
     if (path.isAssignmentExpression() || path.isUpdateExpression()) {
       for (const name of Object.keys(path.getBindingIdentifiers())) {
@@ -269,7 +301,7 @@ function loopNodeTo(node) {
   }
 }
 
-const loopVisitor = {
+const loopVisitor: Visitor<LoopVisitorState> = {
   Loop(path, state) {
     const oldIgnoreLabeless = state.ignoreLabeless;
     state.ignoreLabeless = true;
@@ -290,7 +322,10 @@ const loopVisitor = {
     path.skip();
   },
 
-  "BreakStatement|ContinueStatement|ReturnStatement"(path, state) {
+  "BreakStatement|ContinueStatement|ReturnStatement"(
+    path: NodePath<t.BreakStatement | t.ContinueStatement | t.ReturnStatement>,
+    state,
+  ) {
     const { node, scope } = path;
     if (node[this.LOOP_IGNORE]) return;
 
@@ -298,6 +333,11 @@ const loopVisitor = {
     let loopText = loopNodeTo(node);
 
     if (loopText) {
+      if (t.isReturnStatement(node)) {
+        throw new Error(
+          "Internal error: unexpected return statement with `loopText`",
+        );
+      }
       if (node.label) {
         // we shouldn't be transforming this because it exists somewhere inside
         if (state.innerLabels.indexOf(node.label.name) >= 0) {
@@ -319,7 +359,7 @@ const loopVisitor = {
       replace = t.stringLiteral(loopText);
     }
 
-    if (path.isReturnStatement()) {
+    if (t.isReturnStatement(node)) {
       state.hasReturn = true;
       replace = t.objectExpression([
         t.objectProperty(
@@ -351,14 +391,31 @@ function isStrict(path) {
 }
 
 class BlockScoping {
+  private parent: any;
+  private state: any;
+  private scope: Scope;
+  private throwIfClosureRequired: boolean;
+  private tdzEnabled: boolean;
+  private blockPath: NodePath;
+  private block: t.Node;
+  private outsideLetReferences: Map<string, t.Identifier>;
+  private hasLetReferences: boolean;
+  private letReferences: any;
+  private body: any[];
+  // todo(flow->ts) add more specific type
+  private loopParent: t.Node;
+  private loopLabel: t.Identifier;
+  private loopPath: NodePath<t.Loop>;
+  private loop: t.Loop;
+  private has: any;
   constructor(
-    loopPath?: NodePath,
+    loopPath: NodePath<t.Loop> | undefined | null,
     blockPath: NodePath,
-    parent: Object,
+    parent: any,
     scope: Scope,
     throwIfClosureRequired: boolean,
     tdzEnabled: boolean,
-    state: Object,
+    state: any,
   ) {
     this.parent = parent;
     this.scope = scope;
@@ -426,7 +483,7 @@ class BlockScoping {
       const binding = scope.bindings[name];
       if (binding.kind !== "const") continue;
 
-      for (const violation of (binding.constantViolations: Array)) {
+      for (const violation of binding.constantViolations) {
         const readOnlyError = state.addHelper("readOnlyError");
         const throwNode = t.callExpression(readOnlyError, [
           t.stringLiteral(name),
@@ -441,6 +498,7 @@ class BlockScoping {
           } else if (["&&=", "||=", "??="].includes(operator)) {
             violation.replaceWith(
               t.logicalExpression(
+                // @ts-expect-error todo(flow->ts)
                 operator.slice(0, -1),
                 violation.get("left").node,
                 t.sequenceExpression([violation.get("right").node, throwNode]),
@@ -450,6 +508,7 @@ class BlockScoping {
             violation.replaceWith(
               t.sequenceExpression([
                 t.binaryExpression(
+                  // @ts-expect-error todo(flow->ts)
                   operator.slice(0, -1),
                   violation.get("left").node,
                   violation.get("right").node,
@@ -476,13 +535,14 @@ class BlockScoping {
                 ),
               ]),
             );
+          // @ts-expect-error todo(flow->ts): possible bug "for(…) switch(){}"
           violation.node.body.body.unshift(t.expressionStatement(throwNode));
         }
       }
     }
   }
 
-  updateScopeInfo(wrappedInClosure) {
+  updateScopeInfo(wrappedInClosure?: boolean) {
     const blockScope = this.blockPath.scope;
 
     const parentScope =
@@ -530,7 +590,9 @@ class BlockScoping {
           const parentBinding = scope.parent.getOwnBinding(key);
           if (
             binding.kind === "hoisted" &&
+            // @ts-expect-error todo(flow->ts)
             !binding.path.node.async &&
+            // @ts-expect-error todo(flow->ts)
             !binding.path.node.generator &&
             (!parentBinding || isVar(parentBinding.path.parent)) &&
             !isStrict(binding.path.parentPath)
@@ -608,13 +670,15 @@ class BlockScoping {
     const fn = t.functionExpression(
       null,
       params,
+      // @ts-expect-error todo(flow->ts) improve block type annotations
       t.blockStatement(isSwitch ? [block] : block.body),
     );
 
     // continuation
     this.addContinuations(fn);
 
-    let call = t.callExpression(t.nullLiteral(), args);
+    let call: t.CallExpression | t.YieldExpression | t.AwaitExpression =
+      t.callExpression(t.nullLiteral(), args);
     let basePath = ".callee";
 
     // handle generators
@@ -669,6 +733,7 @@ class BlockScoping {
       this.blockPath.replaceWithMultiple(this.body);
       callPath = parentPath.get(listKey)[key + index];
     } else {
+      // @ts-expect-error todo(flow->ts) improve block type annotations
       block.body = this.body;
       callPath = this.blockPath.get("body")[index];
     }
@@ -704,7 +769,7 @@ class BlockScoping {
    */
 
   addContinuations(fn) {
-    const state = {
+    const state: ContinuationVisitorState = {
       reassignments: {},
       returnStatements: [],
       outsideReferences: this.outsideLetReferences,
@@ -753,6 +818,7 @@ class BlockScoping {
     const declarators = [];
 
     if (this.loop) {
+      // @ts-expect-error todo(flow->ts) add check for loop type
       const init = this.loop.left || this.loop.init;
       if (isBlockScoped(init)) {
         declarators.push(init);
@@ -786,17 +852,22 @@ class BlockScoping {
       }
     };
 
-    //
+    // @ts-expect-error todo(flow->ts) check block node type instead
     if (block.body) {
       const declarPaths = this.blockPath.get("body");
+      // @ts-expect-error todo(flow->ts)
       for (let i = 0; i < block.body.length; i++) {
+        // @ts-expect-error todo(flow->ts)
         addDeclarationsFromChild(declarPaths[i]);
       }
     }
 
+    // @ts-expect-error todo(flow->ts) check block node type instead
     if (block.cases) {
       const declarPaths = this.blockPath.get("cases");
+      // @ts-expect-error todo(flow->ts)
       for (let i = 0; i < block.cases.length; i++) {
+        // @ts-expect-error todo(flow->ts)
         const consequents = block.cases[i].consequent;
 
         for (let j = 0; j < consequents.length; j++) {
@@ -823,7 +894,7 @@ class BlockScoping {
     // no let references so we can just quit
     if (!this.hasLetReferences) return;
 
-    const state = {
+    const state: LetReferenceVisitorState = {
       letReferences: this.letReferences,
       closurify: false,
       loopDepth: 0,
@@ -849,8 +920,8 @@ class BlockScoping {
    * later on.
    */
 
-  checkLoop(): Object {
-    const state = {
+  checkLoop(): any {
+    const state: LoopVisitorState = {
       hasBreakContinue: false,
       ignoreLabeless: false,
       inSwitchCase: false,
@@ -881,7 +952,7 @@ class BlockScoping {
    * their declarations hoisted to before the closure wrapper.
    */
 
-  pushDeclar(node: { type: "VariableDeclaration" }): Array<Object> {
+  pushDeclar(node: t.VariableDeclaration): Array<t.AssignmentExpression> {
     const declars = [];
     const names = t.getBindingIdentifiers(node);
     for (const name of Object.keys(names)) {
