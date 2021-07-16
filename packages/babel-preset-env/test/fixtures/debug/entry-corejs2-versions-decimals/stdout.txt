@@ -11,6 +11,7 @@ Using targets:
 Using modules transform: auto
 
 Using plugins:
+  proposal-private-property-in-object { chrome < 91, electron < 13.0, ie, node }
   proposal-class-properties { chrome < 84, electron < 10.0, ie, node < 14.6 }
   proposal-private-methods { chrome < 84, electron < 10.0, ie, node < 14.6 }
   proposal-numeric-separator { chrome < 75, electron < 6.0, ie, node < 12.5 }

@@ -140,7 +140,7 @@ export type ParserPlugin =
   | "partialApplication"
   | "pipelineOperator"
   | "placeholders"
-  | "privateIn"
+  | "privateIn" // Enabled by default
   | "throwExpressions"
   | "topLevelAwait"
   | "typescript"

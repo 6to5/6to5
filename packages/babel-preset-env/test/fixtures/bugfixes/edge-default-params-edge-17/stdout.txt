@@ -8,6 +8,7 @@ Using targets:
 Using modules transform: auto
 
 Using plugins:
+  proposal-private-property-in-object { edge }
   proposal-class-properties { edge < 84 }
   proposal-private-methods { edge < 84 }
   proposal-numeric-separator { edge < 79 }

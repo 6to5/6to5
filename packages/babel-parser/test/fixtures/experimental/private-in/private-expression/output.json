@@ -2,7 +2,7 @@
   "type": "File",
   "start":0,"end":46,"loc":{"start":{"line":1,"column":0},"end":{"line":6,"column":1}},
   "errors": [
-    "SyntaxError: Private names are only allowed in property accesses (`obj.#x`) or in `in` expressions (`#x in obj`). (4:6)"
+    "SyntaxError: Private names are only allowed in property accesses (`obj.#x`) or in `in` expressions (`#x in obj`). (4:4)"
   ],
   "program": {
     "type": "Program",

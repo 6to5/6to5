@@ -8,6 +8,7 @@ Using targets:
 Using modules transform: auto
 
 Using plugins:
+  proposal-private-property-in-object { safari }
   proposal-class-properties { safari < 15 }
   proposal-private-methods { safari < 15 }
   proposal-numeric-separator { safari < 13 }

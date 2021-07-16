@@ -8,6 +8,7 @@ Using targets:
 Using modules transform: auto
 
 Using plugins:
+  proposal-private-property-in-object { android }
   proposal-class-properties { android }
   proposal-private-methods { android }
   proposal-numeric-separator { android }

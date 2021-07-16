@@ -8,6 +8,7 @@ Using targets:
 Using modules transform: false
 
 Using plugins:
+  proposal-private-property-in-object { chrome < 91 }
   proposal-class-properties { chrome < 84 }
   proposal-private-methods { chrome < 84 }
   proposal-numeric-separator { chrome < 75 }

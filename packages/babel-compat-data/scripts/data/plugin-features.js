@@ -134,8 +134,7 @@ const es2021 = {
   "proposal-logical-assignment-operators": "Logical Assignment",
 };
 
-const shippedProposal = {
-  "proposal-class-static-block": "Class static initialization blocks",
+const es2022 = {
   "proposal-private-property-in-object":
     "Ergonomic brand checks for private fields",
   "proposal-class-properties": {
@@ -149,10 +148,15 @@ const shippedProposal = {
   "proposal-private-methods": "private class methods",
 };
 
+const shippedProposal = {
+  "proposal-class-static-block": "Class static initialization blocks",
+};
+
 // Run plugins for modern features first
 module.exports = Object.assign(
   {},
   shippedProposal,
+  es2022,
   es2021,
   es2020,
   es2019,

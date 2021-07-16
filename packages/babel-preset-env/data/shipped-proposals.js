@@ -4,7 +4,6 @@
 
 const proposalPlugins = new Set([
   "proposal-class-static-block",
-  "proposal-private-property-in-object",
 ]);
 
 // use intermediary object to enforce alphabetical key order

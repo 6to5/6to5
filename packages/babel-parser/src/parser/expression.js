@@ -1153,16 +1153,12 @@ export default class ExpressionParser extends LValParser {
         // https://tc39.es/proposal-private-fields-in-in
         // RelationalExpression [In, Yield, Await]
         //   [+In] PrivateIdentifier in ShiftExpression[?Yield, ?Await]
-        const start = this.state.start;
-        const value = this.state.value;
+        const { value, start } = this.state;
         node = this.parsePrivateName();
         if (this.match(tt._in)) {
-          this.expectPlugin("privateIn");
-          this.classScope.usePrivateName(value, node.start);
-        } else if (this.hasPlugin("privateIn")) {
-          this.raise(this.state.start, Errors.PrivateInExpectedIn, value);
+          this.classScope.usePrivateName(value, start);
         } else {
-          throw this.unexpected(start);
+          this.raise(start, Errors.PrivateInExpectedIn, value);
         }
         return node;
       }

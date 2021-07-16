@@ -152,7 +152,6 @@ const ignoredFeatures = [
 const ignoredTests = ["built-ins/RegExp/", "language/literals/regexp/"];
 
 const featuresToPlugins = {
-  "class-fields-private-in": "privateIn",
   "class-static-block": "classStaticBlock",
   "top-level-await": "topLevelAwait",
   "import-assertions": "importAssertions",

@@ -8,6 +8,7 @@ Using targets:
 Using modules transform: auto
 
 Using plugins:
+  proposal-private-property-in-object { electron < 13.0 }
   proposal-class-properties { electron < 10.0 }
   proposal-private-methods { electron < 10.0 }
   proposal-numeric-separator { electron < 6.0 }

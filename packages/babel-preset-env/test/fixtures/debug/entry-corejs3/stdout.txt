@@ -10,6 +10,7 @@ Using targets:
 Using modules transform: auto
 
 Using plugins:
+  proposal-private-property-in-object { chrome < 91, ie, node }
   proposal-class-properties { chrome < 84, ie, node < 14.6 }
   proposal-private-methods { chrome < 84, ie, node < 14.6 }
   proposal-numeric-separator { chrome < 75, ie, node < 12.5 }

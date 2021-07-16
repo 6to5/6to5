@@ -16,6 +16,7 @@ Using targets:
 Using modules transform: auto
 
 Using plugins:
+  proposal-private-property-in-object { android, chrome < 91, edge, firefox < 90, ios, node, opera, safari, samsung }
   proposal-class-properties { android, chrome < 84, edge < 84, firefox < 90, ios, node < 14.6, opera < 70, safari < 15, samsung }
   proposal-private-methods { android, chrome < 84, edge < 84, firefox < 90, ios, node < 14.6, opera < 70, safari < 15, samsung }
   proposal-numeric-separator { android, chrome < 75, edge < 79, firefox < 70, ios < 13, opera < 62, safari < 13, samsung < 11 }

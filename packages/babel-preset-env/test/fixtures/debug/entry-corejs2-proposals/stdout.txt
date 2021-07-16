@@ -8,6 +8,7 @@ Using targets:
 Using modules transform: auto
 
 Using plugins:
+  proposal-private-property-in-object { ie }
   proposal-class-properties { ie }
   proposal-private-methods { ie }
   proposal-numeric-separator { ie }

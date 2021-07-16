@@ -9,6 +9,7 @@ Using targets:
 Using modules transform: auto
 
 Using plugins:
+  proposal-private-property-in-object { firefox < 90, node }
   proposal-class-properties { firefox < 90, node < 14.6 }
   proposal-private-methods { firefox < 90, node < 14.6 }
   proposal-numeric-separator { firefox < 70, node < 12.5 }

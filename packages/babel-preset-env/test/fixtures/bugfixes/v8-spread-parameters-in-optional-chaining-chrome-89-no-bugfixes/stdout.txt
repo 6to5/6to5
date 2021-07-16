@@ -8,6 +8,7 @@ Using targets:
 Using modules transform: auto
 
 Using plugins:
+  proposal-private-property-in-object { chrome < 91 }
   syntax-class-properties
   syntax-numeric-separator
   syntax-nullish-coalescing-operator
