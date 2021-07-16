@@ -7,11 +7,14 @@ export function ClassDeclaration(
   parent: any,
 ) {
   if (
-    !this.format.decoratorsBeforeExport ||
-    (!t.isExportDefaultDeclaration(parent) &&
-      !t.isExportNamedDeclaration(parent))
+    !t.isExportDefaultDeclaration(parent) &&
+    !t.isExportNamedDeclaration(parent)
   ) {
     this.printJoin(node.decorators, node);
+  } else if (!process.env.BABEL_8_BREAKING) {
+    if (!(this.format as any).decoratorsBeforeExport) {
+      this.printJoin(node.decorators, node);
+    }
   }
 
   if (node.declare) {

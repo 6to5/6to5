@@ -1,0 +1,5 @@
+{
+  "BABEL_8_BREAKING": false,
+  "throws": "This experimental syntax requires enabling one of the following parser plugin(s): 'decorators-legacy, decorators' (1:0)",
+  "plugins": []
+}

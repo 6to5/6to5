@@ -25,7 +25,6 @@ export type Format = {
     style: string;
     base: number;
   };
-  decoratorsBeforeExport: boolean;
   recordAndTupleSyntaxType: "bar" | "hash";
   jsescOption;
   jsonCompatibleStrings?;

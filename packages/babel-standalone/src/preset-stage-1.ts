@@ -6,16 +6,22 @@ export default (_: any, opts: any = {}) => {
     loose = false,
     useBuiltIns = false,
     decoratorsLegacy = false,
-    decoratorsBeforeExport,
     pipelineProposal = "minimal",
     recordAndTupleSyntax: recordAndTupleSyntax = "hash",
   } = opts;
+
+  if (!process.env.BABEL_8_BREAKING) {
+    // eslint-disable-next-line no-var
+    var { decoratorsBeforeExport } = opts;
+  }
 
   return {
     presets: [
       [
         presetStage2,
-        { loose, useBuiltIns, decoratorsLegacy, decoratorsBeforeExport },
+        process.env.BABEL_8_BREAKING
+          ? { loose, useBuiltIns, decoratorsLegacy }
+          : { loose, useBuiltIns, decoratorsLegacy, decoratorsBeforeExport },
       ],
     ],
     plugins: [

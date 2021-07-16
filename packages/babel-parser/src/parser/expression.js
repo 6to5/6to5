@@ -1739,8 +1739,10 @@ export default class ExpressionParser extends LValParser {
   ): N.ObjectMember | N.SpreadElement | N.RestElement {
     let decorators = [];
     if (this.match(tt.at)) {
-      if (this.hasPlugin("decorators")) {
-        this.raise(this.state.start, Errors.UnsupportedPropertyDecorator);
+      if (!process.env.BABEL_8_BREAKING) {
+        if (this.hasPlugin("decorators")) {
+          this.raise(this.state.start, Errors.UnsupportedPropertyDecorator);
+        }
       }
 
       // we needn't check if decorators (stage 0) plugin is enabled since it's checked by

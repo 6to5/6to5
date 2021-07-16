@@ -238,7 +238,7 @@ const require = createRequire(import.meta.url);
       it("#11628 - supports stage-0 passing importAssertionsVersion to stage-1", () => {
         expect(() =>
           Babel.transform("const getMessage = () => 'Hello World'", {
-            presets: [["stage-0", { decoratorsBeforeExport: false }]],
+            presets: [["stage-0", { decoratorsLegacy: true }]],
           }),
         ).not.toThrow();
       });

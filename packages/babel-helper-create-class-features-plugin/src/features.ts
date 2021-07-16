@@ -1,13 +1,21 @@
 import { hasOwnDecorators } from "./decorators";
 
-export const FEATURES = Object.freeze({
-  //classes: 1 << 0,
-  fields: 1 << 1,
-  privateMethods: 1 << 2,
-  decorators: 1 << 3,
-  privateIn: 1 << 4,
-  staticBlocks: 1 << 5,
-});
+export const FEATURES = process.env.BABEL_8_BREAKING
+  ? Object.freeze({
+      //classes: 1 << 0,
+      fields: 1 << 1,
+      privateMethods: 1 << 2,
+      privateIn: 1 << 3,
+      staticBlocks: 1 << 4,
+    })
+  : Object.freeze({
+      //classes: 1 << 0,
+      fields: 1 << 1,
+      privateMethods: 1 << 2,
+      decorators: 1 << 3,
+      privateIn: 1 << 4,
+      staticBlocks: 1 << 5,
+    });
 
 const featuresSameLoose = new Map([
   [FEATURES.fields, "@babel/plugin-proposal-class-properties"],
@@ -124,9 +132,9 @@ function canIgnoreLoose(file, feature) {
 
 export function verifyUsedFeatures(path, file) {
   if (hasOwnDecorators(path.node)) {
-    if (!hasFeature(file, FEATURES.decorators)) {
+    if (process.env.BABEL_8_BREAKING) {
       throw path.buildCodeFrameError(
-        "Decorators are not enabled." +
+        "Babel doesn't support the new decorators proposal yet." +
           "\nIf you are using " +
           '["@babel/plugin-proposal-decorators", { "legacy": true }], ' +
           'make sure it comes *before* "@babel/plugin-proposal-class-properties" ' +
@@ -134,14 +142,26 @@ export function verifyUsedFeatures(path, file) {
           '\t["@babel/plugin-proposal-decorators", { "legacy": true }]\n' +
           '\t["@babel/plugin-proposal-class-properties", { "loose": true }]',
       );
-    }
+    } else {
+      if (!hasFeature(file, (FEATURES as any).decorators)) {
+        throw path.buildCodeFrameError(
+          "Decorators are not enabled." +
+            "\nIf you are using " +
+            '["@babel/plugin-proposal-decorators", { "legacy": true }], ' +
+            'make sure it comes *before* "@babel/plugin-proposal-class-properties" ' +
+            "and enable loose mode, like so:\n" +
+            '\t["@babel/plugin-proposal-decorators", { "legacy": true }]\n' +
+            '\t["@babel/plugin-proposal-class-properties", { "loose": true }]',
+        );
+      }
 
-    if (path.isPrivate()) {
-      throw path.buildCodeFrameError(
-        `Private ${
-          path.isClassMethod() ? "methods" : "fields"
-        } in decorated classes are not supported yet.`,
-      );
+      if (path.isPrivate()) {
+        throw path.buildCodeFrameError(
+          `Private ${
+            path.isClassMethod() ? "methods" : "fields"
+          } in decorated classes are not supported yet.`,
+        );
+      }
     }
   }
 

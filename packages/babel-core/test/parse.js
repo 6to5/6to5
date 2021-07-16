@@ -33,7 +33,7 @@ describe("parse", function () {
 
     const result = parse(input, {
       parserOpts: {
-        plugins: [["decorators", { decoratorsBeforeExport: false }]],
+        plugins: ["decorators-legacy"],
       },
       cwd: fixture(),
     });

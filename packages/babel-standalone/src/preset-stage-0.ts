@@ -6,23 +6,35 @@ export default (_: any, opts: any = {}) => {
     loose = false,
     useBuiltIns = false,
     decoratorsLegacy = false,
-    decoratorsBeforeExport,
     pipelineProposal = "minimal",
     importAssertionsVersion = "september-2020",
   } = opts;
+
+  if (!process.env.BABEL_8_BREAKING) {
+    // eslint-disable-next-line no-var
+    var { decoratorsBeforeExport } = opts;
+  }
 
   return {
     presets: [
       [
         presetStage1,
-        {
-          loose,
-          useBuiltIns,
-          decoratorsLegacy,
-          decoratorsBeforeExport,
-          pipelineProposal,
-          importAssertionsVersion,
-        },
+        process.env.BABEL_8_BREAKING
+          ? {
+              loose,
+              useBuiltIns,
+              decoratorsLegacy,
+              pipelineProposal,
+              importAssertionsVersion,
+            }
+          : {
+              loose,
+              useBuiltIns,
+              decoratorsLegacy,
+              decoratorsBeforeExport,
+              pipelineProposal,
+              importAssertionsVersion,
+            },
       ],
     ],
     plugins: [proposalFunctionBind],

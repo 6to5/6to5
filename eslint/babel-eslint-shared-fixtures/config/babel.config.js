@@ -9,7 +9,7 @@ module.exports = {
   plugins: [
     "@babel/plugin-syntax-export-default-from",
     "@babel/plugin-proposal-class-properties",
-    ["@babel/plugin-proposal-decorators", { decoratorsBeforeExport: false }],
+    ["@babel/plugin-proposal-decorators", { legacy: true }],
     ["@babel/plugin-proposal-pipeline-operator", { proposal: "minimal" }],
     "@babel/plugin-proposal-private-methods",
     "@babel/plugin-proposal-do-expressions",
