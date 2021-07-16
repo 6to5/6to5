@@ -33,7 +33,11 @@ export default class State {
 
   init(options: Options): void {
     this.strict =
-      options.strictMode === false ? false : options.sourceType === "module";
+      options.strictMode === false
+        ? false
+        : options.strictMode === true
+        ? true
+        : options.sourceType === "module";
 
     this.curLine = options.startLine;
     this.startLoc = this.endLoc = this.curPosition();
