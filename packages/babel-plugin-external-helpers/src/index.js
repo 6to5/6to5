@@ -20,6 +20,9 @@ export default declare((api, options) => {
   return {
     name: "external-helpers",
     pre(file) {
+      // will track the referenced helpers in this file
+      file.set('global-helpers', new Set());
+
       file.set("helperGenerator", name => {
         // If the helper didn't exist yet at the version given, we bail
         // out and let Babel either insert it directly, or throw an error
@@ -37,11 +40,19 @@ export default declare((api, options) => {
         // avoid referencing 'babelHelpers.XX' when the helper does not exist.
         if (helperWhitelist && !helperWhitelist.has(name)) return;
 
+        // track the helper
+        file.get('global-helpers').add(name);
+
         return t.memberExpression(
           t.identifier("babelHelpers"),
           t.identifier(name),
         );
       });
     },
+    post(file) {
+      // export the list of used helpers so it can be used by babelCore.buildExternalHelpers()
+      const usedHelpers = [...file.get('global-helpers').values()];
+      file.metadata.usedHelpers = usedHelpers;
+    }
   };
 });
