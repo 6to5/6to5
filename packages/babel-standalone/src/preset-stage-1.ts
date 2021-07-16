@@ -8,7 +8,6 @@ export default (_: any, opts: any = {}) => {
     decoratorsLegacy = false,
     decoratorsBeforeExport,
     pipelineProposal = "minimal",
-    recordAndTupleSyntax: recordAndTupleSyntax = "hash",
   } = opts;
 
   return {
@@ -20,8 +19,6 @@ export default (_: any, opts: any = {}) => {
     ],
     plugins: [
       babelPlugins.syntaxDecimal,
-      [babelPlugins.syntaxRecordAndTuple, { syntaxType: recordAndTupleSyntax }],
-      babelPlugins.syntaxModuleBlocks,
       babelPlugins.proposalExportDefaultFrom,
       [babelPlugins.proposalPipelineOperator, { proposal: pipelineProposal }],
       babelPlugins.proposalDoExpressions,

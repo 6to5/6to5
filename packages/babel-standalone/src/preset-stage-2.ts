@@ -7,19 +7,20 @@ export default (_: any, opts: any = {}) => {
     useBuiltIns = false,
     decoratorsLegacy = false,
     decoratorsBeforeExport,
+    recordAndTupleSyntax: recordAndTupleSyntax = "hash",
   } = opts;
 
   return {
     presets: [[presetStage3, { loose, useBuiltIns }]],
     plugins: [
-      babelPlugins.proposalClassStaticBlock,
       [
         babelPlugins.proposalDecorators,
         { legacy: decoratorsLegacy, decoratorsBeforeExport },
       ],
       babelPlugins.proposalFunctionSent,
-      babelPlugins.proposalPrivatePropertyInObject,
       babelPlugins.proposalThrowExpressions,
+      [babelPlugins.syntaxRecordAndTuple, { syntaxType: recordAndTupleSyntax }],
+      babelPlugins.syntaxModuleBlocks,
     ],
   };
 };
