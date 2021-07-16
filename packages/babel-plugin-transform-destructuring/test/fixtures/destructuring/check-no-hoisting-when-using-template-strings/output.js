@@ -1,5 +1,6 @@
 var example = obj => {
   var foo = 'foo';
-  var _ = obj[`prefix_${foo}`],
-      rest = babelHelpers.objectWithoutProperties(obj, [`prefix_${foo}`]);
+  var _ref = `prefix_${foo}`,
+      _ = obj[_ref],
+      rest = babelHelpers.objectWithoutProperties(obj, [_ref]);
 };

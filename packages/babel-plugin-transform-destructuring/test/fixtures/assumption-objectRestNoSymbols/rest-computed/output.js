@@ -1,4 +1,4 @@
 let _obj = obj,
-    _a = a,
+    _a = babelHelpers.toPropertyKey(a),
     b = _obj[_a],
-    c = babelHelpers.objectWithoutPropertiesLoose(_obj, [_a].map(babelHelpers.toPropertyKey));
+    c = babelHelpers.objectWithoutPropertiesLoose(_obj, [_a]);

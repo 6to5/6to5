@@ -57,6 +57,29 @@ export default declare((api, options) => {
     return false;
   }
 
+  /**
+   * Test whether a Node is an expression that evaluates to String.
+   *
+   * Heuristic allowed to give false negatives, but never false positives.
+   */
+  function evaluatesToString(node) {
+    if (t.isUnaryExpression(node)) {
+      return node.operator === "typeof";
+    }
+    if (t.isBinaryExpression(node) && node.operator === "+") {
+      return evaluatesToString(node.left) || evaluatesToString(node.right);
+    }
+    if (t.isLogicalExpression(node)) {
+      return evaluatesToString(node.left) && evaluatesToString(node.right);
+    }
+    if (t.isConditionalExpression(node)) {
+      return (
+        evaluatesToString(node.consequent) && evaluatesToString(node.alternate)
+      );
+    }
+    return t.isStringLiteral(node) || t.isTemplateLiteral(node);
+  }
+
   const STOP_TRAVERSAL = {};
 
   // NOTE: This visitor is meant to be used via t.traverse
@@ -190,7 +213,6 @@ export default declare((api, options) => {
 
       const keys = [];
       let allLiteral = true;
-      let hasTemplateLiteral = false;
       for (let i = 0; i < pattern.properties.length; i++) {
         const prop = pattern.properties[i];
 
@@ -204,10 +226,7 @@ export default declare((api, options) => {
         const key = prop.key;
         if (t.isIdentifier(key) && !prop.computed) {
           keys.push(t.stringLiteral(key.name));
-        } else if (t.isTemplateLiteral(key)) {
-          keys.push(t.cloneNode(key));
-          hasTemplateLiteral = true;
-        } else if (t.isLiteral(key)) {
+        } else if (t.isImmutable(key)) {
           keys.push(t.stringLiteral(String(key.value)));
         } else {
           keys.push(t.cloneNode(key));
@@ -224,12 +243,7 @@ export default declare((api, options) => {
       } else {
         let keyExpression = t.arrayExpression(keys);
 
-        if (!allLiteral) {
-          keyExpression = t.callExpression(
-            t.memberExpression(keyExpression, t.identifier("map")),
-            [this.addHelper("toPropertyKey")],
-          );
-        } else if (!hasTemplateLiteral && !t.isProgram(this.scope.block)) {
+        if (allLiteral && !t.isProgram(this.scope.block)) {
           // Hoist definition of excluded keys, so that it's not created each time.
           const program = this.scope.path.findParent(path => path.isProgram());
           const id = this.scope.generateUidIdentifier("excluded");
@@ -294,29 +308,40 @@ export default declare((api, options) => {
         objRef = temp;
       }
 
-      // Replace impure computed key expressions if we have a rest parameter
+      // Replace computed key expressions if we have a rest parameter
       if (hasObjectRest(pattern)) {
-        let copiedPattern;
+        const replacedProperties = [];
         for (let i = 0; i < pattern.properties.length; i++) {
           const prop = pattern.properties[i];
           if (t.isRestElement(prop)) {
             break;
           }
           const key = prop.key;
-          if (prop.computed && !this.scope.isPure(key)) {
-            const name = this.scope.generateUidIdentifierBasedOnNode(key);
-            this.nodes.push(this.buildVariableDeclaration(name, key));
-            if (!copiedPattern) {
-              copiedPattern = pattern = {
-                ...pattern,
-                properties: pattern.properties.slice(),
-              };
-            }
-            copiedPattern.properties[i] = {
-              ...copiedPattern.properties[i],
-              key: name,
-            };
+          if (!prop.computed || t.isPureish(key)) {
+            // no side effects, can be evaluated twice
+            continue;
           }
+          if (t.isTemplateLiteral(key) && key.expressions.length === 0) {
+            // no side effects, can be treated as plain string literal
+            continue;
+          }
+          const propertyName = evaluatesToString(key)
+            ? key
+            : t.callExpression(this.addHelper("toPropertyKey"), [key]);
+          const temp = this.scope.generateUidIdentifierBasedOnNode(key);
+          this.nodes.push(this.buildVariableDeclaration(temp, propertyName));
+          replacedProperties[i] = {
+            ...pattern.properties[i],
+            key: temp,
+          };
+        }
+        if (replacedProperties.length) {
+          pattern = {
+            ...pattern,
+            properties: pattern.properties.map(
+              (prop, i) => replacedProperties[i] ?? prop,
+            ),
+          };
         }
       }
       //

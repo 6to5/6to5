@@ -7,4 +7,4 @@ var _ref = prefix + 'state',
     country = input[`country`],
     state = input[_ref],
     consents = input[_ref2],
-    rest = babelHelpers.objectWithoutProperties(input, ["given_name", "last_name", `country`, _ref, _ref2].map(babelHelpers.toPropertyKey));
+    rest = babelHelpers.objectWithoutProperties(input, ["given_name", "last_name", `country`, _ref, _ref2]);

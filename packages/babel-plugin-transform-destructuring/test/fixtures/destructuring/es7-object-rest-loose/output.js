@@ -5,9 +5,11 @@ var _z = z,
 var _z2 = z,
     x = _z2.x,
     y = babelHelpers.objectWithoutPropertiesLoose(_z2, ["x"]);
+
 var _z3 = z,
-    x = _z3[x],
-    y = babelHelpers.objectWithoutPropertiesLoose(_z3, [x].map(babelHelpers.toPropertyKey));
+    _x = babelHelpers.toPropertyKey(x),
+    x = _z3[_x],
+    y = babelHelpers.objectWithoutPropertiesLoose(_z3, [_x]);
 
 (function (_ref) {
   let x = _ref.x,
