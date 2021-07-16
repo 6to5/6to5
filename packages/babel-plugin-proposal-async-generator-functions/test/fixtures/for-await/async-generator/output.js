@@ -4,14 +4,14 @@ function g() {
 
 function _g() {
   _g = babelHelpers.wrapAsyncGenerator(function* () {
-    var _iteratorNormalCompletion = true;
+    var _iteratorAbruptCompletion = false;
     var _didIteratorError = false;
 
     var _iteratorError;
 
     try {
-      for (var _iterator = babelHelpers.asyncIterator(y), _step, _value; _step = yield babelHelpers.awaitAsyncGenerator(_iterator.next()), _iteratorNormalCompletion = _step.done, _value = yield babelHelpers.awaitAsyncGenerator(_step.value), !_iteratorNormalCompletion; _iteratorNormalCompletion = true) {
-        let x = _value;
+      for (var _iterator = babelHelpers.asyncIterator(y), _step; _iteratorAbruptCompletion = !(_step = yield babelHelpers.awaitAsyncGenerator(_iterator.next())).done; _iteratorAbruptCompletion = false) {
+        let x = _step.value;
         f(x);
       }
     } catch (err) {
@@ -19,7 +19,7 @@ function _g() {
       _iteratorError = err;
     } finally {
       try {
-        if (!_iteratorNormalCompletion && _iterator.return != null) {
+        if (_iteratorAbruptCompletion && _iterator.return != null) {
           yield babelHelpers.awaitAsyncGenerator(_iterator.return());
         }
       } finally {

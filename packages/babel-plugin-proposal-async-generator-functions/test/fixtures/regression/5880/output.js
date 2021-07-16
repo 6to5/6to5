@@ -1,21 +1,20 @@
 (async () => {
-  var _iteratorNormalCompletion = true;
+  var _iteratorAbruptCompletion = false;
   var _didIteratorError = false;
 
   var _iteratorError;
 
   try {
-    for (var _iterator = babelHelpers.asyncIterator(iterable), _step, _value; _step = await _iterator.next(), _iteratorNormalCompletion = _step.done, _value = await _step.value, !_iteratorNormalCompletion; _iteratorNormalCompletion = true) {
-      const _value2 = _value,
-            _value3 = babelHelpers.slicedToArray(_value2, 1),
-            value = _value3[0];
+    for (var _iterator = babelHelpers.asyncIterator(iterable), _step; _iteratorAbruptCompletion = !(_step = await _iterator.next()).done; _iteratorAbruptCompletion = false) {
+      const _step$value = babelHelpers.slicedToArray(_step.value, 1),
+            value = _step$value[0];
     }
   } catch (err) {
     _didIteratorError = true;
     _iteratorError = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion && _iterator.return != null) {
+      if (_iteratorAbruptCompletion && _iterator.return != null) {
         await _iterator.return();
       }
     } finally {
