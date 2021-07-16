@@ -23,7 +23,7 @@ programmatic options from @babel/cli
     "<ROOTDIR>/packages/babel-plugin-transform-strict-mode",
     "<ROOTDIR>/packages/babel-plugin-transform-modules-commonjs"
   ],
-  "sourceFileName": "src/foo.js",
+  "sourceFilename": "src/foo.js",
   "caller": {
     "name": "@babel/cli"
   },

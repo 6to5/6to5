@@ -88,7 +88,7 @@ commander.option(
   "Set `file` on returned source map.",
 );
 commander.option(
-  "--source-file-name [string]",
+  "--source-filename [string]",
   "Set `sources[0]` on returned source map.",
 );
 commander.option(
@@ -278,7 +278,7 @@ export default function parseArgv(args: Array<string>): CmdOptions | null {
     auxiliaryCommentBefore: opts.auxiliaryCommentBefore,
     auxiliaryCommentAfter: opts.auxiliaryCommentAfter,
     sourceMaps: opts.sourceMaps,
-    sourceFileName: opts.sourceFileName,
+    sourceFilename: opts.sourceFilename,
     sourceRoot: opts.sourceRoot,
 
     // Commander will default the "--no-" arguments to true, but we want to

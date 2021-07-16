@@ -169,7 +169,7 @@ export interface GeneratorOptions {
    * The filename for the source code (i.e. the code in the `code` argument).
    * This will only be used if `code` is a string.
    */
-  sourceFileName?: string;
+  sourceFilename?: string;
 
   /**
    * Set to true to run jsesc with "json": true to print "\u00A9" vs. "©";

@@ -32,14 +32,14 @@ export default class SourceMap {
       const code = this._code;
       if (typeof code === "string") {
         map.setSourceContent(
-          this._opts.sourceFileName.replace(/\\/g, "/"),
+          this._opts.sourceFilename.replace(/\\/g, "/"),
           code,
         );
       } else if (typeof code === "object") {
-        Object.keys(code).forEach(sourceFileName => {
+        Object.keys(code).forEach(sourceFilename => {
           map.setSourceContent(
-            sourceFileName.replace(/\\/g, "/"),
-            code[sourceFileName],
+            sourceFilename.replace(/\\/g, "/"),
+            code[sourceFilename],
           );
         });
       }
@@ -99,7 +99,7 @@ export default class SourceMap {
       source:
         line == null
           ? undefined
-          : (filename || this._opts.sourceFileName).replace(/\\/g, "/"),
+          : (filename || this._opts.sourceFilename).replace(/\\/g, "/"),
       original:
         line == null
           ? undefined

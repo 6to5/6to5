@@ -63,7 +63,7 @@ function buildBabelOptions(script, filename) {
       "transform-flow-strip-types",
     ],
     sourceMaps: "inline",
-    sourceFileName: filename,
+    sourceFilename: filename,
   };
 }
 
