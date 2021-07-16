@@ -28,10 +28,14 @@
                     "type": "TSImportType",
                     "start":14,"end":27,"loc":{"start":{"line":1,"column":14},"end":{"line":1,"column":27}},
                     "argument": {
-                      "type": "Literal",
+                      "type": "TSLiteralType",
                       "start":21,"end":26,"loc":{"start":{"line":1,"column":21},"end":{"line":1,"column":26}},
-                      "value": "./x",
-                      "raw": "'./x'"
+                      "literal": {
+                        "type": "Literal",
+                        "start":21,"end":26,"loc":{"start":{"line":1,"column":21},"end":{"line":1,"column":26}},
+                        "value": "./x",
+                        "raw": "'./x'"
+                      }
                     }
                   }
                 }
@@ -60,10 +64,14 @@
                   "type": "TSImportType",
                   "start":36,"end":51,"loc":{"start":{"line":2,"column":7},"end":{"line":2,"column":22}},
                   "argument": {
-                    "type": "Literal",
+                    "type": "TSLiteralType",
                     "start":43,"end":48,"loc":{"start":{"line":2,"column":14},"end":{"line":2,"column":19}},
-                    "value": "./y",
-                    "raw": "'./y'"
+                    "literal": {
+                      "type": "Literal",
+                      "start":43,"end":48,"loc":{"start":{"line":2,"column":14},"end":{"line":2,"column":19}},
+                      "value": "./y",
+                      "raw": "'./y'"
+                    }
                   },
                   "qualifier": {
                     "type": "Identifier",
@@ -96,10 +104,14 @@
                   "type": "TSImportType",
                   "start":60,"end":88,"loc":{"start":{"line":3,"column":7},"end":{"line":3,"column":35}},
                   "argument": {
-                    "type": "Literal",
+                    "type": "TSLiteralType",
                     "start":67,"end":71,"loc":{"start":{"line":3,"column":14},"end":{"line":3,"column":18}},
-                    "value": "/z",
-                    "raw": "\"/z\""
+                    "literal": {
+                      "type": "Literal",
+                      "start":67,"end":71,"loc":{"start":{"line":3,"column":14},"end":{"line":3,"column":18}},
+                      "value": "/z",
+                      "raw": "\"/z\""
+                    }
                   },
                   "qualifier": {
                     "type": "TSQualifiedName",

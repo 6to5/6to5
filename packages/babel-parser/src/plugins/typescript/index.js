@@ -424,8 +424,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
         this.raise(this.state.start, TSErrors.UnsupportedImportTypeArgument);
       }
 
-      // For compatibility to estree we cannot call parseLiteral directly here
-      node.argument = this.parseExprAtom();
+      node.argument = this.tsParseType();
       this.expect(tt.parenR);
 
       if (this.eat(tt.dot)) {

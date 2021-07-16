@@ -24,13 +24,17 @@
           "type": "TSImportType",
           "start":9,"end":18,"loc":{"start":{"line":1,"column":9},"end":{"line":1,"column":18}},
           "argument": {
-            "type": "NumericLiteral",
+            "type": "TSLiteralType",
             "start":16,"end":17,"loc":{"start":{"line":1,"column":16},"end":{"line":1,"column":17}},
-            "extra": {
-              "rawValue": 3,
-              "raw": "3"
-            },
-            "value": 3
+            "literal": {
+              "type": "NumericLiteral",
+              "start":16,"end":17,"loc":{"start":{"line":1,"column":16},"end":{"line":1,"column":17}},
+              "extra": {
+                "rawValue": 3,
+                "raw": "3"
+              },
+              "value": 3
+            }
           }
         }
       },
@@ -46,20 +50,24 @@
           "type": "TSImportType",
           "start":29,"end":42,"loc":{"start":{"line":2,"column":9},"end":{"line":2,"column":22}},
           "argument": {
-            "type": "TemplateLiteral",
+            "type": "TSLiteralType",
             "start":36,"end":41,"loc":{"start":{"line":2,"column":16},"end":{"line":2,"column":21}},
-            "expressions": [],
-            "quasis": [
-              {
-                "type": "TemplateElement",
-                "start":37,"end":40,"loc":{"start":{"line":2,"column":17},"end":{"line":2,"column":20}},
-                "value": {
-                  "raw": "Foo",
-                  "cooked": "Foo"
-                },
-                "tail": true
-              }
-            ]
+            "literal": {
+              "type": "TemplateLiteral",
+              "start":36,"end":41,"loc":{"start":{"line":2,"column":16},"end":{"line":2,"column":21}},
+              "expressions": [],
+              "quasis": [
+                {
+                  "type": "TemplateElement",
+                  "start":37,"end":40,"loc":{"start":{"line":2,"column":17},"end":{"line":2,"column":20}},
+                  "value": {
+                    "raw": "Foo",
+                    "cooked": "Foo"
+                  },
+                  "tail": true
+                }
+              ]
+            }
           }
         }
       },
@@ -75,9 +83,13 @@
           "type": "TSImportType",
           "start":53,"end":62,"loc":{"start":{"line":3,"column":9},"end":{"line":3,"column":18}},
           "argument": {
-            "type": "Identifier",
-            "start":60,"end":61,"loc":{"start":{"line":3,"column":16},"end":{"line":3,"column":17},"identifierName":"Y"},
-            "name": "Y"
+            "type": "TSTypeReference",
+            "start":60,"end":61,"loc":{"start":{"line":3,"column":16},"end":{"line":3,"column":17}},
+            "typeName": {
+              "type": "Identifier",
+              "start":60,"end":61,"loc":{"start":{"line":3,"column":16},"end":{"line":3,"column":17},"identifierName":"Y"},
+              "name": "Y"
+            }
           }
         }
       }
