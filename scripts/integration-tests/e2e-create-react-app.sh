@@ -28,6 +28,10 @@ cd tmp/create-react-app || exit
 # This change replaces useBuiltIns: true with runtime: "classic"
 sed -i 's/useBuiltIns: true/runtime: "classic"/' packages/babel-preset-react-app/create.js
 
+# create-react-app throws if `@babel/eslint-parser` is not pinned, but we
+# must upgrade it for test purposes
+sed -i "s/'@babel\/eslint-parser',/" packages/react-scripts/scripts/utils/verifyPackageTree.js
+
 bump_deps="$PWD/../../utils/bump-babel-dependencies.js"
 node "$bump_deps"
 for d in ./packages/*/
