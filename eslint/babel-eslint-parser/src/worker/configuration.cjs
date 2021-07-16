@@ -41,7 +41,7 @@ function normalizeParserOptions(options) {
   };
 }
 
-function validateResolvedConfig(config, options) {
+function validateResolvedConfig(config, options, parseOptions) {
   if (config !== null) {
     if (options.requireConfigFile !== false) {
       if (!config.hasFilesystemConfig()) {
@@ -54,8 +54,10 @@ function validateResolvedConfig(config, options) {
         throw new Error(error);
       }
     }
-    return config.options;
+    if (config.options) return config.options;
   }
+
+  return getDefaultParserOptions(parseOptions);
 }
 
 function getDefaultParserOptions(options) {
@@ -70,25 +72,14 @@ function getDefaultParserOptions(options) {
   };
 }
 
-module.exports = function normalizeBabelParseConfig(options) {
+exports.normalizeBabelParseConfig = async function (options) {
   const parseOptions = normalizeParserOptions(options);
+  const config = await babel.loadPartialConfigAsync(parseOptions);
+  return validateResolvedConfig(config, options, parseOptions);
+};
 
-  if (process.env.BABEL_8_BREAKING) {
-    return babel
-      .loadPartialConfigAsync(parseOptions)
-      .then(config => validateConfigWithFallback(config));
-  } else {
-    const config = babel.loadPartialConfigSync(parseOptions);
-    return validateConfigWithFallback(config);
-  }
-
-  function validateConfigWithFallback(inputConfig) {
-    const result = validateResolvedConfig(inputConfig, options);
-    if (result) {
-      return result;
-    } else {
-      // Fallback when `loadPartialConfig` returns `null` (e.g.: when the file is ignored)
-      return getDefaultParserOptions(parseOptions);
-    }
-  }
+exports.normalizeBabelParseConfigSync = function (options) {
+  const parseOptions = normalizeParserOptions(options);
+  const config = babel.loadPartialConfigSync(parseOptions);
+  return validateResolvedConfig(config, options, parseOptions);
 };

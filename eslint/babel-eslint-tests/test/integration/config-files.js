@@ -16,4 +16,21 @@ describe("Babel config files", () => {
       ]),
     ).toMatchObject({ errorCount: 0 });
   });
+
+  const babel7node12 =
+    process.env.BABEL_8_BREAKING || parseInt(process.versions.node) < 12
+      ? it.skip
+      : it;
+
+  babel7node12("experimental worker works with babel.config.mjs", () => {
+    const engine = new eslint.CLIEngine({ ignore: false });
+    expect(
+      engine.executeOnFiles([
+        path.resolve(
+          path.dirname(fileURLToPath(import.meta.url)),
+          `../fixtures/mjs-config-file-babel-7/a.js`,
+        ),
+      ]),
+    ).toMatchObject({ errorCount: 0 });
+  });
 });

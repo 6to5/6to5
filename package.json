@@ -43,6 +43,7 @@
     "babel-plugin-transform-charcodes": "^0.2.0",
     "chalk": "^2.4.2",
     "charcodes": "^0.2.0",
+    "enhanced-resolve": "^5.8.2",
     "eslint": "^7.27.0",
     "eslint-import-resolver-node": "^0.3.4",
     "eslint-plugin-flowtype": "^5.7.2",

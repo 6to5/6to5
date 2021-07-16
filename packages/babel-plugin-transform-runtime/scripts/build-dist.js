@@ -127,7 +127,7 @@ function writeHelperFile(
     buildHelper(runtimeName, pkgDirname, fullPath, helperName, { esm, corejs })
   );
 
-  return `./${filePath}`;
+  return esm ? `./helpers/esm/${fileName}` : `./helpers/${fileName}`;
 }
 
 function writeHelpers(runtimeName, { corejs } = {}) {
@@ -164,12 +164,13 @@ function writeHelpers(runtimeName, { corejs } = {}) {
     // - Node.js <13.2.0 will fail resolving the first array entry, and will
     //   fallback to the second entry (the CJS file)
     // In Babel 8 we can simplify this.
-    helperSubExports[`./${helperPath}`] = [
+    helperSubExports[`./${path.posix.join("helpers", helperName)}`] = [
       { node: cjs, import: esm, default: cjs },
       cjs,
     ];
     // For backward compatibility. We can remove this in Babel 8.
-    helperSubExports[`./${path.join("helpers", "esm", helperName)}`] = esm;
+    helperSubExports[`./${path.posix.join("helpers", "esm", helperName)}`] =
+      esm;
   }
 
   writeHelperExports(runtimeName, helperSubExports);
