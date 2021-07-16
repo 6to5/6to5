@@ -1,5 +1,5 @@
-var _class;
+var _decoratedFoo, _class;
 
 import { observer } from 'mobx-react';
 
-let Foo = observer(_class = class Foo {}) || _class;
+let Foo = _decoratedFoo = observer(_class = class Foo {}) || _class;

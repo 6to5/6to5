@@ -1,0 +1,8 @@
+{
+  "presets": ["env"],
+  "plugins": [
+    ["proposal-decorators", { "legacy": true }],
+    ["proposal-private-methods", { "loose": true }],
+    ["proposal-class-properties", { "loose": true }]
+  ]
+}

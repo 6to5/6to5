@@ -66,9 +66,33 @@ function applyClassDecorators(classPath) {
   const decorators = classPath.node.decorators || [];
   classPath.node.decorators = null;
 
+  const className = classPath.node.id;
+  let externalName;
+  if (className) {
+    externalName = classPath.scope.generateDeclaredUidIdentifier(
+      "decorated" + className.name,
+    );
+    const fix = path => {
+      if (path.node.body.body.length) {
+        path.node.body.body.unshift(
+          t.variableDeclaration("let", [
+            t.variableDeclarator(
+              t.cloneNode(className),
+              t.cloneNode(externalName),
+            ),
+          ]),
+        );
+      }
+    };
+    classPath.scope.traverse(classPath.node, {
+      ClassMethod: fix,
+      ClassPrivateMethod: fix,
+    });
+  }
+
   const name = classPath.scope.generateDeclaredUidIdentifier("class");
 
-  return decorators
+  const res = decorators
     .map(dec => dec.expression)
     .reverse()
     .reduce(function (acc, decorator) {
@@ -78,6 +102,8 @@ function applyClassDecorators(classPath) {
         INNER: acc,
       }).expression;
     }, classPath.node);
+  if (!externalName) return res;
+  return t.assignmentExpression("=", externalName, res);
 }
 
 function hasClassDecorators(classNode) {
