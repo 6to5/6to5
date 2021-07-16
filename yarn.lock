@@ -830,14 +830,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@babel/helper-validator-identifier-baseline@npm:@babel/helper-validator-identifier@7.10.4":
-  version: 7.10.4
-  resolution: "@babel/helper-validator-identifier@npm:7.10.4"
-  checksum: 25098ef842e3ffecdd9a7216f6173da7ad7be1b0b3e454a9f6965055154b9ad7a4acd2f218ba3d2efc0821bdab97837b3cb815844af7d72f66f89d446a54efc6
-  languageName: node
-  linkType: hard
-
-"@babel/helper-validator-identifier@npm:^7.14.5":
+"@babel/helper-validator-identifier-baseline@npm:@babel/helper-validator-identifier@7.14.5, @babel/helper-validator-identifier@npm:^7.14.5":
   version: 7.14.5
   resolution: "@babel/helper-validator-identifier@npm:7.14.5"
   checksum: 778312189a7c5228daac9f7767795a74f11d1eac595ca38bfea248324666459b24aaae6aef43c957ce01bbe61672039ea1c08c5623067c3701beeb1bb1f1ee33
@@ -848,7 +841,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@babel/helper-validator-identifier@workspace:packages/babel-helper-validator-identifier"
   dependencies:
-    "@babel/helper-validator-identifier-baseline": "npm:@babel/helper-validator-identifier@7.10.4"
+    "@babel/helper-validator-identifier-baseline": "npm:@babel/helper-validator-identifier@7.14.5"
     "@unicode/unicode-13.0.0": ^1.0.6
     benchmark: ^2.1.4
     charcodes: ^0.2.0

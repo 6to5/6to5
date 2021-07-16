@@ -4,72 +4,158 @@
 // https://tc39.github.io/ecma262/#sec-conformance
 const version = "13.0.0";
 
-const start = require("@unicode/unicode-" +
-  version +
-  "/Binary_Property/ID_Start/code-points.js").filter(function (ch) {
-  return ch > 0x7f;
-});
-let last = -1;
-const cont = [0x200c, 0x200d].concat(
-  require("@unicode/unicode-" +
-    version +
-    "/Binary_Property/ID_Continue/code-points.js").filter(function (ch) {
-    return ch > 0x7f && search(start, ch, last + 1) == -1;
-  })
-);
+const charCodes = require("charcodes");
 
-function search(arr, ch, starting) {
-  for (let i = starting; arr[i] <= ch && i < arr.length; last = i++) {
-    if (arr[i] === ch) return i;
+const idStartCodePoints =
+  require(`@unicode/unicode-${version}/Binary_Property/ID_Start/code-points.js`)
+    .concat([charCodes.dollarSign, charCodes.underscore])
+    .sort((a, b) => a - b);
+
+const idContinueCodePoints =
+  require(`@unicode/unicode-${version}/Binary_Property/ID_Continue/code-points.js`)
+    .concat([charCodes.dollarSign, 0x200c, 0x200d])
+    .sort((a, b) => a - b);
+
+const idTailCodePoints = [];
+{
+  // Because idStartCodePoints is a subsequence of idContinueCodePoints,
+  // we can iterate them in parallel and exclude elements present in both
+  // with just strict equality comparison.
+  for (let si = 0, ci = 0; ci < idContinueCodePoints.length; ++ci) {
+    const cp = idContinueCodePoints[ci];
+    if (cp === idStartCodePoints[si]) {
+      ++si; // skip
+    } else {
+      idTailCodePoints.push(cp);
+    }
   }
-  return -1;
 }
 
-function pad(str, width) {
-  while (str.length < width) str = "0" + str;
-  return str;
-}
+const idStartRanges = extractRanges(idStartCodePoints);
+const idTailRanges = extractRanges(idTailCodePoints);
 
 function esc(code) {
-  const hex = code.toString(16);
-  if (hex.length <= 2) return "\\x" + pad(hex, 2);
-  else return "\\u" + pad(hex, 4);
+  if (code < 0x7f) return String.fromCharCode(code);
+  if (code < 0x100) return "\\x" + code.toString(16).padStart(2, "0");
+  return "\\u" + code.toString(16).padStart(4, "0");
 }
 
-function generate(chars) {
+function extractRanges(codePoints) {
+  const basic = [];
   const astral = [];
-  let re = "";
-  for (let i = 0, at = 0x10000; i < chars.length; i++) {
-    const from = chars[i];
+  for (let i = 0, len = codePoints.length; i < len; ) {
+    const from = codePoints[i++];
     let to = from;
-    while (i < chars.length - 1 && chars[i + 1] == to + 1) {
+    while (i < len && codePoints[i] === to + 1) {
       i++;
       to++;
     }
     if (to <= 0xffff) {
-      if (from == to) re += esc(from);
-      else if (from + 1 == to) re += esc(from) + esc(to);
-      else re += esc(from) + "-" + esc(to);
+      basic.push(from, to);
     } else {
-      astral.push(from - at, to - from);
-      at = to;
+      astral.push(from, to);
     }
   }
-  return { nonASCII: re, astral: astral };
+  return { basic, astral };
 }
 
-const startData = generate(start);
-const contData = generate(cont);
+function highSurrogate(codePoint) {
+  const offset = codePoint - 0x10000;
+  return offset < 0 ? void 0 : 0xd800 + (offset >> 10);
+}
 
-console.log("/* prettier-ignore */");
-console.log('let nonASCIIidentifierStartChars = "' + startData.nonASCII + '";');
-console.log("/* prettier-ignore */");
-console.log('let nonASCIIidentifierChars = "' + contData.nonASCII + '";');
-console.log("/* prettier-ignore */");
-console.log(
-  "const astralIdentifierStartCodes = " + JSON.stringify(startData.astral) + ";"
-);
-console.log("/* prettier-ignore */");
-console.log(
-  "const astralIdentifierCodes = " + JSON.stringify(contData.astral) + ";"
-);
+function lowSurrogate(codePoint) {
+  const offset = codePoint - 0x10000;
+  return offset < 0 ? void 0 : 0xdc00 + (offset & 0x3ff);
+}
+
+function pushEscRange(array, from, to) {
+  array.push(esc(from));
+  if (from + 1 < to) array.push("-", esc(to));
+  else if (from < to) array.push(esc(to));
+}
+
+function buildBasicCharClass(codeRanges) {
+  const { basic } = codeRanges;
+  const re = [];
+  for (let i = 0; i < basic.length; i += 2) {
+    const from = basic[i];
+    const to = basic[i + 1];
+    pushEscRange(re, from, to);
+  }
+  return re.join("");
+}
+
+function buildAstralCharRegex(codeRanges) {
+  const { astral } = codeRanges;
+  const alternatives = [];
+  const current = [];
+  const wholeHighRanges = ["["];
+  let lastHigh = void 0;
+
+  function pushLowRange(from, to) {
+    const fromHigh = highSurrogate(from);
+    if (lastHigh !== fromHigh) {
+      if (current.length) {
+        current.push("]");
+        alternatives.push(current.join(""));
+        current.length = 0;
+      }
+      lastHigh = fromHigh;
+    }
+    if (!current.length) {
+      current.push(esc(fromHigh));
+      current.push("[");
+    }
+    pushEscRange(current, lowSurrogate(from), lowSurrogate(to));
+  }
+
+  for (let i = 0; i < astral.length; i += 2) {
+    let from = astral[i];
+    let to = astral[i + 1];
+    if ((from & 0x3ff) !== 0) {
+      if (to <= (from | 0x3ff)) {
+        pushLowRange(from, to);
+        continue;
+      }
+      pushLowRange(from, from | 0x3ff);
+      from = (from | 0x3ff) + 1;
+    }
+    if ((to & 0x3ff) !== 0x3ff) {
+      pushLowRange(to & 0xffc00, to);
+      to = (to & 0xffc00) - 1;
+    }
+    if (from < to) {
+      const fromHigh = highSurrogate(from);
+      const toHigh = highSurrogate(to);
+      pushEscRange(wholeHighRanges, fromHigh, toHigh);
+    }
+  }
+  if (current.length) {
+    current.push("]");
+    alternatives.push(current.join(""));
+  }
+  if (wholeHighRanges.length > 1) {
+    wholeHighRanges.push("]", "[\\udc00-\\udfff]");
+    alternatives.unshift(wholeHighRanges.join(""));
+  }
+  return alternatives.join("|");
+}
+
+const GENERATED = `\
+// Generated by \`scripts/generate-identifier-regex.js\`.
+/* prettier-ignore */`;
+
+console.log(`
+${GENERATED}
+let basicIdentifierStartChars = "${buildBasicCharClass(idStartRanges)}";
+
+${GENERATED}
+let basicIdentifierTailChars = "${buildBasicCharClass(idTailRanges)}";
+
+${GENERATED}
+let astralIdentifierStartChars = "${buildAstralCharRegex(idStartRanges)}";
+
+${GENERATED}
+let astralIdentifierTailChars = "${buildAstralCharRegex(idTailRanges)}";
+`);
