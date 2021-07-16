@@ -555,7 +555,7 @@ export default class Tokenizer extends ParserErrors {
   readToken_dot(): void {
     const next = this.input.charCodeAt(this.state.pos + 1);
     if (next >= charCodes.digit0 && next <= charCodes.digit9) {
-      this.readNumber(true);
+      this.readNumber(charCodes.dot);
       return;
     }
 
@@ -911,7 +911,7 @@ export default class Tokenizer extends ParserErrors {
       case charCodes.digit7:
       case charCodes.digit8:
       case charCodes.digit9:
-        this.readNumber(false);
+        this.readNumber(code);
         return;
 
       // Quotes produce strings.
@@ -1179,20 +1179,25 @@ export default class Tokenizer extends ParserErrors {
 
   // Read an integer, octal integer, or floating-point number.
 
-  readNumber(startsWithDot: boolean): void {
+  readNumber(next: number): void {
     const start = this.state.pos;
-    let isFloat = false;
-    let isBigInt = false;
-    let isDecimal = false;
-    let hasExponent = false;
-    let isOctal = false;
+    //todo(flow->ts): use const enums when we convert @babel/parser to TypeScript
+    /*
+      0: isInteger
+      2: isFloat
+      3: isFloat && hasExponent
+      4: isOctal
+      8: isBigInt
+      16: isDecimal
+    */
+    let numberType: 0 | 2 | 3 | 4 | 8 | 16 = 0;
+    let val;
 
-    if (!startsWithDot && this.readInt(10) === null) {
+    if (next !== charCodes.dot && (val = this.readInt(10)) === null) {
       this.raise(start, Errors.InvalidNumber);
     }
     const hasLeadingZero =
-      this.state.pos - start >= 2 &&
-      this.input.charCodeAt(start) === charCodes.digit0;
+      this.state.pos - start >= 2 && next === charCodes.digit0;
 
     if (hasLeadingZero) {
       const integer = this.input.slice(start, this.state.pos);
@@ -1204,20 +1209,22 @@ export default class Tokenizer extends ParserErrors {
           this.raise(underscorePos + start, Errors.ZeroDigitNumericSeparator);
         }
       }
-      isOctal = hasLeadingZero && !/[89]/.test(integer);
+      if (!/[89]/.test(integer)) {
+        numberType = 4 /* isOctal */;
+      }
     }
 
-    let next = this.input.charCodeAt(this.state.pos);
-    if (next === charCodes.dot && !isOctal) {
+    next = this.input.charCodeAt(this.state.pos);
+    if (next === charCodes.dot && numberType === 0 /* isInteger */) {
       ++this.state.pos;
       this.readInt(10);
-      isFloat = true;
+      numberType = 2 /* isFloat */;
       next = this.input.charCodeAt(this.state.pos);
     }
 
     if (
       (next === charCodes.uppercaseE || next === charCodes.lowercaseE) &&
-      !isOctal
+      numberType !== 4 /* isOctal */
     ) {
       next = this.input.charCodeAt(++this.state.pos);
       if (next === charCodes.plusSign || next === charCodes.dash) {
@@ -1226,49 +1233,53 @@ export default class Tokenizer extends ParserErrors {
       if (this.readInt(10) === null) {
         this.raise(start, Errors.InvalidOrMissingExponent);
       }
-      isFloat = true;
-      hasExponent = true;
+      numberType = 3 /* isFloat && hasExponent */;
       next = this.input.charCodeAt(this.state.pos);
     }
+    const end = this.state.pos;
 
     if (next === charCodes.lowercaseN) {
       // disallow floats, legacy octal syntax and non octal decimals
       // new style octal ("0o") is handled in this.readRadixNumber
-      if (isFloat || hasLeadingZero) {
+      if ((numberType & 2) > 0 /* isFloat */ || hasLeadingZero) {
         this.raise(start, Errors.InvalidBigIntLiteral);
       }
       ++this.state.pos;
-      isBigInt = true;
+      numberType = 8 /* isBigInt */;
     }
 
     if (next === charCodes.lowercaseM) {
       this.expectPlugin("decimal", this.state.pos);
-      if (hasExponent || hasLeadingZero) {
+      if (numberType === 3 /* isFloat && hasExponent */ || hasLeadingZero) {
         this.raise(start, Errors.InvalidDecimal);
       }
       ++this.state.pos;
-      isDecimal = true;
+      numberType = 16 /* isDecimal */;
     }
 
     if (isIdentifierStart(this.codePointAtPos(this.state.pos))) {
       throw this.raise(this.state.pos, Errors.NumberIdentifier);
     }
 
-    // remove "_" for numeric literal separator, and trailing `m` or `n`
-    const str = this.input.slice(start, this.state.pos).replace(/[_mn]/g, "");
-
-    if (isBigInt) {
-      this.finishToken(tt.bigint, str);
-      return;
+    if (numberType === 0 /* isInteger */) {
+      this.finishToken(tt.num, val);
+    } else {
+      // remove "_" for numeric literal separator
+      const str = this.input.slice(start, end).replace(/_/g, "");
+      if (numberType === 8 /* isBigInt */) {
+        this.finishToken(tt.bigint, str);
+        return;
+      } else if (numberType === 16 /* isDecimal */) {
+        this.finishToken(tt.decimal, str);
+        return;
+      } else if (numberType === 4 /* isOctal */) {
+        val = parseInt(str, 8);
+      } else {
+        /* isFloat */
+        val = parseFloat(str);
+      }
+      this.finishToken(tt.num, val);
     }
-
-    if (isDecimal) {
-      this.finishToken(tt.decimal, str);
-      return;
-    }
-
-    const val = isOctal ? parseInt(str, 8) : parseFloat(str);
-    this.finishToken(tt.num, val);
   }
 
   // Read a string value, interpreting backslash-escapes.
