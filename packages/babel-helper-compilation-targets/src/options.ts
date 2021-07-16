@@ -10,4 +10,5 @@ export const TargetNames = {
   android: "android",
   electron: "electron",
   samsung: "samsung",
+  rhino: "rhino",
 };

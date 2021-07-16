@@ -187,7 +187,7 @@ declare module "convert-source-map" {
 }
 
 declare module "core-js-compat/data" {
-  declare type Target = "node" | "chrome" | "opera" | "edge" | "firefox" | "safari" | "ie" | "ios" | "android" | "electron" | "samsung";
+  declare type Target = "node" | "chrome" | "opera" | "edge" | "firefox" | "safari" | "ie" | "ios" | "android" | "electron" | "samsung" | "rhino";
 
   declare module.exports: {
     [key: string]: {

@@ -1,0 +1,13 @@
+{
+  "presets": [
+    [
+      "../../../../lib",
+      {
+        "targets": {
+          "rhino": "1.7.13"
+        },
+        "modules": false
+      }
+    ]
+  ]
+}
