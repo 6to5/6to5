@@ -2077,16 +2077,16 @@ export default (superClass: Class<Parser>): Class<Parser> =>
         this.match(tt.questionDot) &&
         this.lookaheadCharCode() === charCodes.lessThan
       ) {
-        state.optionalChainMember = isOptionalCall = true;
         if (noCalls) {
           state.stop = true;
           return base;
         }
+        state.optionalChainMember = isOptionalCall = true;
         this.next();
       }
 
       if (this.isRelational("<")) {
-        let error;
+        let missingParenErrorPos;
         // tsTryParseAndCatch is expensive, so avoid if not necessary.
         // There are number of things we are going to "maybe" parse, like type arguments on
         // tagged template expressions. If any of them fail, walk it back and continue.
@@ -2110,7 +2110,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
 
           if (typeArguments) {
             if (isOptionalCall && !this.match(tt.parenL)) {
-              error = [this.state.pos, tt.parenL];
+              missingParenErrorPos = this.state.pos;
               this.unexpected();
             }
 
@@ -2150,8 +2150,8 @@ export default (superClass: Class<Parser>): Class<Parser> =>
           this.unexpected();
         });
 
-        if (error) {
-          this.unexpected(...error);
+        if (missingParenErrorPos) {
+          this.unexpected(missingParenErrorPos, tt.parenL);
         }
 
         if (result) return result;
