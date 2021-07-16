@@ -7,13 +7,14 @@ const suite = new Benchmark.Suite();
 
 function benchCases(name, implementation, options) {
   for (const length of [256, 512, 1024, 2048]) {
+    const input = ";".repeat(length);
     suite.add(`${name} ${length} empty statement`, () => {
-      implementation.parse(";".repeat(length), options);
+      implementation.parse(input, options);
     });
   }
 }
 
-benchCases("baseline", baseline);
+benchCases("baseline", baseline, { attachComment: true });
 benchCases("current + attachComment: false", current, { attachComment: false });
 
 suite.on("cycle", report).run();

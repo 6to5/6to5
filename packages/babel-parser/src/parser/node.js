@@ -9,7 +9,6 @@ import type { Comment, Node as NodeType, NodeBase } from "../types";
 
 class Node implements NodeBase {
   constructor(parser: Parser, pos: number, loc: Position) {
-    this.type = "";
     this.start = pos;
     this.end = 0;
     this.loc = new SourceLocation(loc);
@@ -17,15 +16,15 @@ class Node implements NodeBase {
     if (parser?.filename) this.loc.filename = parser.filename;
   }
 
-  type: string;
-  start: number;
-  end: number;
-  loc: SourceLocation;
-  range: [number, number];
-  leadingComments: Array<Comment>;
-  trailingComments: Array<Comment>;
-  innerComments: Array<Comment>;
-  extra: { [key: string]: any };
+  type: string = "";
+  declare start: number;
+  declare end: number;
+  declare loc: SourceLocation;
+  declare range: [number, number];
+  declare leadingComments: Array<Comment>;
+  declare trailingComments: Array<Comment>;
+  declare innerComments: Array<Comment>;
+  declare extra: { [key: string]: any };
 
   __clone(): this {
     // $FlowIgnore
@@ -93,7 +92,7 @@ export class NodeUtils extends UtilParser {
     node.end = pos;
     node.loc.end = loc;
     if (this.options.ranges) node.range[1] = pos;
-    this.processComment(node);
+    if (this.options.attachComment) this.processComment(node);
     return node;
   }
 

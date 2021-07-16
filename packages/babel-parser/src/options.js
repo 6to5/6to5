@@ -22,6 +22,7 @@ export type Options = {
   tokens: boolean,
   createParenthesizedExpressions: boolean,
   errorRecovery: boolean,
+  attachComment: boolean,
 };
 
 export const defaultOptions: Options = {
@@ -66,6 +67,11 @@ export const defaultOptions: Options = {
   // When enabled, errors are attached to the AST instead of being directly thrown.
   // Some errors will still throw, because @babel/parser can't always recover.
   errorRecovery: false,
+  // When enabled, comments will be attached to adjacent AST nodes as one of
+  // `leadingComments`, `trailingComments` and `innerComments`. The comment attachment
+  // is vital to preserve comments after transform. If you don't print AST back,
+  // consider set this option to `false` for performance
+  attachComment: true,
 };
 
 // Interpret and default an options object
