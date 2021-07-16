@@ -1,0 +1,3 @@
+export declare enum A {}
+
+;

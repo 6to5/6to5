@@ -12,6 +12,7 @@ export default declare((api, opts) => {
     jsxPragma,
     jsxPragmaFrag,
     onlyRemoveTypeImports,
+    optimizeConstEnums,
   } = normalizeOptions(opts);
 
   const pluginOptions = process.env.BABEL_8_BREAKING
@@ -21,6 +22,7 @@ export default declare((api, opts) => {
         jsxPragma,
         jsxPragmaFrag,
         onlyRemoveTypeImports,
+        optimizeConstEnums,
       })
     : isTSX => ({
         allowDeclareFields: opts.allowDeclareFields,
@@ -29,6 +31,7 @@ export default declare((api, opts) => {
         jsxPragma,
         jsxPragmaFrag,
         onlyRemoveTypeImports,
+        optimizeConstEnums,
       });
 
   return {

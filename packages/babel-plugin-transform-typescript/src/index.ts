@@ -3,6 +3,7 @@ import syntaxTypeScript from "@babel/plugin-syntax-typescript";
 import { types as t, template } from "@babel/core";
 import { injectInitialization } from "@babel/helper-create-class-features-plugin";
 
+import transpileConstEnum from "./const-enum";
 import transpileEnum from "./enum";
 import transpileNamespace from "./namespace";
 import type { NodePath } from "@babel/traverse";
@@ -60,6 +61,7 @@ export default declare((api, opts) => {
     jsxPragma = "React.createElement",
     jsxPragmaFrag = "React.Fragment",
     onlyRemoveTypeImports = false,
+    optimizeConstEnums = false,
   } = opts;
 
   if (!process.env.BABEL_8_BREAKING) {
@@ -462,7 +464,11 @@ export default declare((api, opts) => {
       },
 
       TSEnumDeclaration(path) {
-        transpileEnum(path, t);
+        if (optimizeConstEnums && path.node.const) {
+          transpileConstEnum(path, t);
+        } else {
+          transpileEnum(path, t);
+        }
       },
 
       TSImportEqualsDeclaration(path) {

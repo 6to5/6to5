@@ -1,0 +1,4 @@
+{
+  "plugins": [["transform-typescript", { "optimizeConstEnums": true }]],
+  "sourceType": "module"
+}

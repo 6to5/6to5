@@ -4,15 +4,17 @@ const v = new OptionValidator("@babel/preset-typescript");
 export default function normalizeOptions(options = {}) {
   let { allowNamespaces = true, jsxPragma, onlyRemoveTypeImports } = options;
 
+  const TopLevelOptions = {
+    allExtensions: "allExtensions",
+    allowNamespaces: "allowNamespaces",
+    isTSX: "isTSX",
+    jsxPragma: "jsxPragma",
+    jsxPragmaFrag: "jsxPragmaFrag",
+    onlyRemoveTypeImports: "onlyRemoveTypeImports",
+    optimizeConstEnums: "optimizeConstEnums",
+  };
+
   if (process.env.BABEL_8_BREAKING) {
-    const TopLevelOptions = {
-      allExtensions: "allExtensions",
-      allowNamespaces: "allowNamespaces",
-      isTSX: "isTSX",
-      jsxPragma: "jsxPragma",
-      jsxPragmaFrag: "jsxPragmaFrag",
-      onlyRemoveTypeImports: "onlyRemoveTypeImports",
-    };
     v.validateTopLevelOptions(options, TopLevelOptions);
     allowNamespaces = v.validateBooleanOption(
       TopLevelOptions.allowNamespaces,
@@ -32,22 +34,31 @@ export default function normalizeOptions(options = {}) {
   }
 
   const jsxPragmaFrag = v.validateStringOption(
-    "jsxPragmaFrag",
+    TopLevelOptions.jsxPragmaFrag,
     options.jsxPragmaFrag,
     "React.Fragment",
   );
 
   const allExtensions = v.validateBooleanOption(
-    "allExtensions",
+    TopLevelOptions.allExtensions,
     options.allExtensions,
     false,
   );
 
-  const isTSX = v.validateBooleanOption("isTSX", options.isTSX, false);
-
+  const isTSX = v.validateBooleanOption(
+    TopLevelOptions.isTSX,
+    options.isTSX,
+    false,
+  );
   if (isTSX) {
     v.invariant(allExtensions, "isTSX:true requires allExtensions:true");
   }
+
+  const optimizeConstEnums = v.validateBooleanOption(
+    TopLevelOptions.optimizeConstEnums,
+    options.optimizeConstEnums,
+    false,
+  );
 
   return {
     allExtensions,
@@ -56,5 +67,6 @@ export default function normalizeOptions(options = {}) {
     jsxPragma,
     jsxPragmaFrag,
     onlyRemoveTypeImports,
+    optimizeConstEnums,
   };
 }
