@@ -98,7 +98,7 @@ const FlowErrors = makeErrorTemplates(
       "`declare module` cannot be used inside another `declare module`.",
     NestedFlowComment:
       "Cannot have a flow comment inside another flow comment.",
-    OptionalBindingPattern:
+    PatternIsOptional:
       "A binding pattern parameter cannot be optional in an implementation signature.",
     SetterMayNotHaveThisParam: "A setter cannot have a `this` parameter.",
     SpreadVariance: "Spread properties cannot have variance.",
@@ -2569,7 +2569,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
     parseAssignableListItemTypes(param: N.Pattern): N.Pattern {
       if (this.eat(tt.question)) {
         if (param.type !== "Identifier") {
-          this.raise(param.start, FlowErrors.OptionalBindingPattern);
+          this.raise(param.start, FlowErrors.PatternIsOptional);
         }
         if (this.isThisParam(param)) {
           this.raise(param.start, FlowErrors.ThisParamMayNotBeOptional);
