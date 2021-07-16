@@ -70,6 +70,8 @@ const TSErrors = makeErrorTemplates(
   {
     AbstractMethodHasImplementation:
       "Method '%0' cannot have an implementation because it is marked abstract.",
+    AbstractPropertyHasInitializer:
+      "Property '%0' cannot have a initializer because it is marked abstract.",
     AccesorCannotDeclareThisParameter:
       "'get' and 'set' accessors cannot declare 'this' parameters.",
     AccesorCannotHaveTypeParameters: "An accessor cannot have type parameters.",
@@ -2607,6 +2609,16 @@ export default (superClass: Class<Parser>): Class<Parser> =>
       if (this.state.isAmbientContext && this.match(tt.eq)) {
         this.raise(this.state.start, TSErrors.DeclareClassFieldHasInitializer);
       }
+      if (node.abstract && this.match(tt.eq)) {
+        const { key } = node;
+        this.raise(
+          this.state.start,
+          TSErrors.AbstractPropertyHasInitializer,
+          !node.computed
+            ? key.name
+            : `[${this.input.slice(key.start, key.end)}]`,
+        );
+      }
 
       return super.parseClassProperty(node);
     }
@@ -3182,7 +3194,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
           this.raise(
             method.start,
             TSErrors.AbstractMethodHasImplementation,
-            key.type === "Identifier"
+            !method.computed
               ? key.name
               : `[${this.input.slice(key.start, key.end)}]`,
           );
