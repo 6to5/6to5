@@ -1,0 +1,4 @@
+{
+  "plugins": [["pipelineOperator", { "proposal": "fsharp" }]],
+  "throws": "Topic reference is used, but the pipelineOperator plugin was not passed a \"proposal\": \"hack\" or \"smart\" option. (1:5)"
+}

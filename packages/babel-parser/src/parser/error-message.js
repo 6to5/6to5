@@ -134,6 +134,21 @@ export const ErrorMessages = makeErrorTemplates(
     ParamDupe: "Argument name clash.",
     PatternHasAccessor: "Object pattern can't contain getter or setter.",
     PatternHasMethod: "Object pattern can't contain methods.",
+    PipeBodyIsTighter:
+      "Unexpected %0 after pipeline body; any %0 expression acting as Hack-style pipe body must be parenthesized due to its loose operator precedence.",
+    PipeTopicRequiresHackPipes:
+      'Topic reference is used, but the pipelineOperator plugin was not passed a "proposal": "hack" or "smart" option.',
+    PipeTopicUnbound:
+      "Topic reference is unbound; it must be inside a pipe body.",
+    PipeTopicUnconfiguredToken:
+      'Invalid topic token %0. In order to use %0 as a topic reference, the pipelineOperator plugin must be configured with { "proposal": "hack", "topicToken": "%0" }.',
+    PipeTopicUnused:
+      "Hack-style pipe body does not contain a topic reference; Hack-style pipes must use topic at least once.",
+
+    // Messages whose codes start with “Pipeline” or “PrimaryTopic”
+    // are retained for backwards compatibility
+    // with the deprecated smart-mix pipe operator proposal plugin.
+    // They are subject to removal in a future major version.
     PipelineBodyNoArrow:
       'Unexpected arrow "=>" after pipeline body; arrow function in pipeline body must be parenthesized.',
     PipelineBodySequenceExpression:
@@ -145,7 +160,8 @@ export const ErrorMessages = makeErrorTemplates(
     PrimaryTopicNotAllowed:
       "Topic reference was used in a lexical context without topic binding.",
     PrimaryTopicRequiresSmartPipeline:
-      "Primary Topic Reference found but pipelineOperator not passed 'smart' for 'proposal' option.",
+      'Topic reference is used, but the pipelineOperator plugin was not passed a "proposal": "hack" or "smart" option.',
+
     PrivateInExpectedIn:
       "Private names are only allowed in property accesses (`obj.#%0`) or in `in` expressions (`#%0 in obj`).",
     PrivateNameRedeclaration: "Duplicate private name #%0.",

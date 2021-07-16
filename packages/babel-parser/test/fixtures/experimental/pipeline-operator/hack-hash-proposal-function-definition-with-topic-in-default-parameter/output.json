@@ -1,0 +1,65 @@
+{
+  "type": "File",
+  "start":0,"end":39,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":39}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":39,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":39}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start":0,"end":39,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":39}},
+        "expression": {
+          "type": "BinaryExpression",
+          "start":0,"end":39,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":39}},
+          "left": {
+            "type": "Identifier",
+            "start":0,"end":5,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":5},"identifierName":"value"},
+            "name": "value"
+          },
+          "operator": "|>",
+          "right": {
+            "type": "FunctionExpression",
+            "start":9,"end":39,"loc":{"start":{"line":1,"column":9},"end":{"line":1,"column":39}},
+            "id": null,
+            "generator": false,
+            "async": false,
+            "params": [
+              {
+                "type": "AssignmentPattern",
+                "start":19,"end":24,"loc":{"start":{"line":1,"column":19},"end":{"line":1,"column":24}},
+                "left": {
+                  "type": "Identifier",
+                  "start":19,"end":20,"loc":{"start":{"line":1,"column":19},"end":{"line":1,"column":20},"identifierName":"x"},
+                  "name": "x"
+                },
+                "right": {
+                  "type": "TopicReference",
+                  "start":23,"end":24,"loc":{"start":{"line":1,"column":23},"end":{"line":1,"column":24}}
+                }
+              }
+            ],
+            "body": {
+              "type": "BlockStatement",
+              "start":26,"end":39,"loc":{"start":{"line":1,"column":26},"end":{"line":1,"column":39}},
+              "body": [
+                {
+                  "type": "ReturnStatement",
+                  "start":28,"end":37,"loc":{"start":{"line":1,"column":28},"end":{"line":1,"column":37}},
+                  "argument": {
+                    "type": "Identifier",
+                    "start":35,"end":36,"loc":{"start":{"line":1,"column":35},"end":{"line":1,"column":36},"identifierName":"x"},
+                    "name": "x"
+                  }
+                }
+              ],
+              "directives": []
+            }
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}

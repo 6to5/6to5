@@ -1,0 +1,4 @@
+{
+  "plugins": [["pipelineOperator", { "proposal": "hack", "topicToken": "#" }]],
+  "throws": "Invalid topic token %. In order to use % as a topic reference, the pipelineOperator plugin must be configured with { \"proposal\": \"hack\", \"topicToken\": \"%\" }. (1:9)"
+}

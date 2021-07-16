@@ -384,6 +384,7 @@ export interface NodePathValidators {
   isThisExpression(opts?: object): this is NodePath<t.ThisExpression>;
   isThisTypeAnnotation(opts?: object): this is NodePath<t.ThisTypeAnnotation>;
   isThrowStatement(opts?: object): this is NodePath<t.ThrowStatement>;
+  isTopicReference(opts?: object): this is NodePath<t.TopicReference>;
   isTryStatement(opts?: object): this is NodePath<t.TryStatement>;
   isTupleExpression(opts?: object): this is NodePath<t.TupleExpression>;
   isTupleTypeAnnotation(opts?: object): this is NodePath<t.TupleTypeAnnotation>;

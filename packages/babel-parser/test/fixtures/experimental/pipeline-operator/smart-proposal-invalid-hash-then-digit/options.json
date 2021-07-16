@@ -1,0 +1,12 @@
+{
+  "plugins": [
+    [
+      "pipelineOperator",
+      {
+        "proposal": "smart",
+        "topicToken": "#"
+      }
+    ]
+  ],
+  "throws": "Unexpected digit after hash token. (1:5)"
+}

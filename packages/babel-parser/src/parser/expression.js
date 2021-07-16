@@ -291,6 +291,28 @@ export default class ExpressionParser extends LValParser {
       const operator = this.state.value;
       node.operator = operator;
 
+      const leftIsHackPipeExpression =
+        left.type === "BinaryExpression" &&
+        left.operator === "|>" &&
+        this.getPluginOption("pipelineOperator", "proposal") === "hack";
+
+      if (leftIsHackPipeExpression) {
+        // If the pipelinePlugin is configured to use Hack pipes,
+        // and if an assignment expression’s LHS invalidly contains `|>`,
+        // then the user likely meant to parenthesize the assignment expression.
+        // Throw a human-friendly error
+        // instead of something like 'Invalid left-hand side'.
+        // For example, `x = x |> y = #` (assuming `#` is the topic reference)
+        // groups into `x = (x |> y) = #`,
+        // and `(x |> y)` is an invalid assignment LHS.
+        // This is because Hack-style `|>` has tighter precedence than `=>`.
+        // (Unparenthesized `yield` expressions are handled
+        // in `parseHackPipeBody`,
+        // and unparenthesized `=>` expressions are handled
+        // in `checkHackPipeBodyEarlyErrors`.)
+        throw this.raise(this.state.start, Errors.PipeBodyIsTighter, operator);
+      }
+
       if (this.match(tt.eq)) {
         node.left = this.toAssignable(left, /* isLHS */ true);
         refExpressionErrors.doubleProto = -1; // reset because double __proto__ is valid in assignment expression
@@ -385,7 +407,6 @@ export default class ExpressionParser extends LValParser {
           if (this.state.inFSharpPipelineDirectBody) {
             return left;
           }
-          this.state.inPipeline = true;
           this.checkPipelineAtInfixOperator(left, leftStartPos);
         }
         const node = this.startNodeAt(leftStartPos, leftStartLoc);
@@ -452,21 +473,30 @@ export default class ExpressionParser extends LValParser {
     switch (op) {
       case tt.pipeline:
         switch (this.getPluginOption("pipelineOperator", "proposal")) {
+          case "hack":
+            return this.withTopicBindingContext(() => {
+              const bodyExpr = this.parseHackPipeBody(op, prec);
+              this.checkHackPipeBodyEarlyErrors(startPos);
+              return bodyExpr;
+            });
+
           case "smart":
-            return this.withTopicPermittingContext(() => {
-              return this.parseSmartPipelineBody(
-                this.parseExprOpBaseRightExpr(op, prec),
+            return this.withTopicBindingContext(() => {
+              const childExpr = this.parseHackPipeBody(op, prec);
+              return this.parseSmartPipelineBodyInStyle(
+                childExpr,
                 startPos,
                 startLoc,
               );
             });
+
           case "fsharp":
             return this.withSoloAwaitPermittingContext(() => {
               return this.parseFSharpPipelineBody(prec);
             });
         }
-      // falls through
 
+      // Falls through.
       default:
         return this.parseExprOpBaseRightExpr(op, prec);
     }
@@ -485,6 +515,39 @@ export default class ExpressionParser extends LValParser {
       startLoc,
       op.rightAssociative ? prec - 1 : prec,
     );
+  }
+
+  // Helper function for `parseExprOpRightExpr` for the Hack-pipe operator
+  // (and the Hack-style smart-mix pipe operator).
+
+  parseHackPipeBody(op: TokenType, prec: number): N.Expression {
+    // If the following expression is invalidly a `yield` expression,
+    // then throw a human-friendly error.
+    // A `yield` expression in a generator context (i.e., a [Yield] production)
+    // starts a YieldExpression.
+    // Outside of a generator context, any `yield` as a pipe body
+    // is considered simply an identifier.
+    // This error is checked here, before actually parsing the body expression,
+    // because `yield`’s “not allowed as identifier in generator” error
+    // would otherwise have immediately
+    // occur before the pipe body is fully parsed.
+    // (Unparenthesized assignment expressions are handled
+    // in `parseMaybeAssign`,
+    // and unparenthesized `=>` expressions are handled
+    // in `checkHackPipeBodyEarlyErrors`.)
+    const bodyIsInGeneratorContext = this.prodParam.hasYield;
+    const bodyIsYieldExpression =
+      bodyIsInGeneratorContext && this.isContextual("yield");
+
+    if (bodyIsYieldExpression) {
+      throw this.raise(
+        this.state.start,
+        Errors.PipeBodyIsTighter,
+        this.state.value,
+      );
+    } else {
+      return this.parseExprOpBaseRightExpr(op, prec);
+    }
   }
 
   checkExponentialAfterUnary(node: N.AwaitExpression | N.UnaryExpression) {
@@ -1166,26 +1229,36 @@ export default class ExpressionParser extends LValParser {
         }
         return node;
       }
+
+      case tt.modulo:
       case tt.hash: {
-        if (this.state.inPipeline) {
+        const pipeProposal = this.getPluginOption(
+          "pipelineOperator",
+          "proposal",
+        );
+
+        if (pipeProposal) {
+          // A pipe-operator proposal is active,
+          // although its configuration might not match the current token’s type.
           node = this.startNode();
+          const start = this.state.start;
+          const tokenType = this.state.type;
 
-          if (
-            this.getPluginOption("pipelineOperator", "proposal") !== "smart"
-          ) {
-            this.raise(node.start, Errors.PrimaryTopicRequiresSmartPipeline);
-          }
-
+          // Consume the current token.
           this.next();
 
-          if (!this.primaryTopicReferenceIsAllowedInCurrentTopicContext()) {
-            this.raise(node.start, Errors.PrimaryTopicNotAllowed);
-          }
-
-          this.registerTopicReference();
-          return this.finishNode(node, "PipelinePrimaryTopicReference");
+          // If the pipe-operator plugin’s configuration matches the current token’s type,
+          // then this will return `node`, will have been finished as a topic reference.
+          // Otherwise, this will throw a `PipeTopicUnconfiguredToken` error.
+          return this.finishTopicReference(
+            node,
+            start,
+            pipeProposal,
+            tokenType,
+          );
         }
       }
+
       // fall through
       case tt.relational: {
         if (this.state.value === "<") {
@@ -1198,9 +1271,100 @@ export default class ExpressionParser extends LValParser {
           }
         }
       }
+
       // fall through
       default:
         throw this.unexpected();
+    }
+  }
+
+  // This helper method attempts to finish the given `node`
+  // into a topic-reference node for the given `pipeProposal`.
+  // See <https://github.com/js-choi/proposal-hack-pipes>.
+  //
+  // The method assumes that any topic token was consumed before it was called.
+  //
+  // If the `pipelineOperator` plugin is active,
+  // and if the given `tokenType` matches the plugin’s configuration,
+  // then this method will return the finished `node`.
+  //
+  // If the `pipelineOperator` plugin is active,
+  // but if the given `tokenType` does not match the plugin’s configuration,
+  // then this method will throw a `PipeTopicUnconfiguredToken` error.
+  finishTopicReference(
+    node: N.Node,
+    start: number,
+    pipeProposal: string,
+    tokenType: TokenType,
+  ): N.Expression {
+    if (this.testTopicReferenceConfiguration(pipeProposal, start, tokenType)) {
+      // The token matches the plugin’s configuration.
+      // The token is therefore a topic reference.
+
+      // Determine the node type for the topic reference
+      // that is appropriate for the active pipe-operator proposal.
+      let nodeType;
+      if (pipeProposal === "smart") {
+        nodeType = "PipelinePrimaryTopicReference";
+      } else {
+        // The proposal must otherwise be "hack",
+        // as enforced by testTopicReferenceConfiguration.
+        nodeType = "TopicReference";
+      }
+
+      if (!this.topicReferenceIsAllowedInCurrentContext()) {
+        // The topic reference is not allowed in the current context:
+        // it is outside of a pipe body.
+        // Raise recoverable errors.
+        if (pipeProposal === "smart") {
+          this.raise(start, Errors.PrimaryTopicNotAllowed);
+        } else {
+          // In this case, `pipeProposal === "hack"` is true.
+          this.raise(start, Errors.PipeTopicUnbound);
+        }
+      }
+
+      // Register the topic reference so that its pipe body knows
+      // that its topic was used at least once.
+      this.registerTopicReference();
+
+      return this.finishNode(node, nodeType);
+    } else {
+      // The token does not match the plugin’s configuration.
+      throw this.raise(
+        start,
+        Errors.PipeTopicUnconfiguredToken,
+        tokenType.label,
+      );
+    }
+  }
+
+  // This helper method tests whether the given token type
+  // matches the pipelineOperator parser plugin’s configuration.
+  // If the active pipe proposal is Hack style,
+  // and if the given token is the same as the plugin configuration’s `topicToken`,
+  // then this is a valid topic reference.
+  // If the active pipe proposal is smart mix,
+  // then the topic token must always be `#`.
+  // If the active pipe proposal is neither (e.g., "minimal" or "fsharp"),
+  // then an error is thrown.
+  testTopicReferenceConfiguration(
+    pipeProposal: string,
+    start: number,
+    tokenType: TokenType,
+  ): boolean {
+    switch (pipeProposal) {
+      case "hack": {
+        const pluginTopicToken = this.getPluginOption(
+          "pipelineOperator",
+          "topicToken",
+        );
+        return tokenType.label === pluginTopicToken;
+      }
+      case "smart":
+        return tokenType === tt.hash;
+      default:
+        throw this.raise(start, Errors.PipeTopicRequiresHackPipes);
     }
   }
 
@@ -2524,52 +2688,48 @@ export default class ExpressionParser extends LValParser {
     }
   }
 
-  parseSmartPipelineBody(
-    childExpression: N.Expression,
-    startPos: number,
-    startLoc: Position,
-  ): N.PipelineBody {
-    this.checkSmartPipelineBodyEarlyErrors(childExpression, startPos);
+  // This helper method is to be called immediately
+  // after a Hack-style pipe body is parsed.
+  // The `startPos` is the starting position of the pipe body.
 
-    return this.parseSmartPipelineBodyInStyle(
-      childExpression,
-      startPos,
-      startLoc,
-    );
-  }
-
-  checkSmartPipelineBodyEarlyErrors(
-    childExpression: N.Expression,
-    startPos: number,
-  ): void {
+  checkHackPipeBodyEarlyErrors(startPos: number): void {
+    // If the following token is invalidly `=>`,
+    // then throw a human-friendly error
+    // instead of something like 'Unexpected token, expected ";"'.
+    // For example, `x => x |> y => #` (assuming `#` is the topic reference)
+    // groups into `x => (x |> y) => #`,
+    // and `(x |> y) => #` is an invalid arrow function.
+    // This is because Hack-style `|>` has tighter precedence than `=>`.
+    // (Unparenthesized `yield` expressions are handled
+    // in `parseHackPipeBody`,
+    // and unparenthesized assignment expressions are handled
+    // in `parseMaybeAssign`.)
     if (this.match(tt.arrow)) {
-      // If the following token is invalidly `=>`, then throw a human-friendly error
-      // instead of something like 'Unexpected token, expected ";"'.
-      throw this.raise(this.state.start, Errors.PipelineBodyNoArrow);
-    } else if (childExpression.type === "SequenceExpression") {
-      this.raise(startPos, Errors.PipelineBodySequenceExpression);
+      throw this.raise(
+        this.state.start,
+        Errors.PipeBodyIsTighter,
+        tt.arrow.label,
+      );
+    } else if (!this.topicReferenceWasUsedInCurrentContext()) {
+      // A Hack pipe body must use the topic reference at least once.
+      this.raise(startPos, Errors.PipeTopicUnused);
     }
   }
 
   parseSmartPipelineBodyInStyle(
-    childExpression: N.Expression,
+    childExpr: N.Expression,
     startPos: number,
     startLoc: Position,
   ): N.PipelineBody {
     const bodyNode = this.startNodeAt(startPos, startLoc);
-    const isSimpleReference = this.isSimpleReference(childExpression);
-    if (isSimpleReference) {
-      bodyNode.callee = childExpression;
+    if (this.isSimpleReference(childExpr)) {
+      bodyNode.callee = childExpr;
+      return this.finishNode(bodyNode, "PipelineBareFunction");
     } else {
-      if (!this.topicReferenceWasUsedInCurrentTopicContext()) {
-        this.raise(startPos, Errors.PipelineTopicUnused);
-      }
-      bodyNode.expression = childExpression;
+      this.checkSmartPipeTopicBodyEarlyErrors(startPos);
+      bodyNode.expression = childExpr;
+      return this.finishNode(bodyNode, "PipelineTopicExpression");
     }
-    return this.finishNode(
-      bodyNode,
-      isSimpleReference ? "PipelineBareFunction" : "PipelineTopicExpression",
-    );
   }
 
   isSimpleReference(expression: N.Expression): boolean {
@@ -2585,13 +2745,34 @@ export default class ExpressionParser extends LValParser {
     }
   }
 
-  // Enable topic references from outer contexts within smart pipeline bodies.
-  // The function modifies the parser's topic-context state to enable or disable
-  // the use of topic references with the smartPipelines plugin. They then run a
-  // callback, then they reset the parser to the old topic-context state that it
-  // had before the function was called.
+  // This helper method is to be called immediately
+  // after a topic-style smart-mix pipe body is parsed.
+  // The `startPos` is the starting position of the pipe body.
 
-  withTopicPermittingContext<T>(callback: () => T): T {
+  checkSmartPipeTopicBodyEarlyErrors(startPos: number): void {
+    // If the following token is invalidly `=>`, then throw a human-friendly error
+    // instead of something like 'Unexpected token, expected ";"'.
+    // For example, `x => x |> y => #` (assuming `#` is the topic reference)
+    // groups into `x => (x |> y) => #`,
+    // and `(x |> y) => #` is an invalid arrow function.
+    // This is because smart-mix `|>` has tighter precedence than `=>`.
+    if (this.match(tt.arrow)) {
+      throw this.raise(this.state.start, Errors.PipelineBodyNoArrow);
+    }
+
+    // A topic-style smart-mix pipe body must use the topic reference at least once.
+    else if (!this.topicReferenceWasUsedInCurrentContext()) {
+      this.raise(startPos, Errors.PipelineTopicUnused);
+    }
+  }
+
+  // Enable topic references from outer contexts within Hack-style pipe bodies.
+  // The function modifies the parser's topic-context state to enable or disable
+  // the use of topic references.
+  // The function then calls a callback, then resets the parser
+  // to the old topic-context state that it had before the function was called.
+
+  withTopicBindingContext<T>(callback: () => T): T {
     const outerContextTopicState = this.state.topicContext;
     this.state.topicContext = {
       // Enable the use of the primary topic reference.
@@ -2607,26 +2788,37 @@ export default class ExpressionParser extends LValParser {
     }
   }
 
-  // Disable topic references from outer contexts within syntax constructs
+  // This helper method is used only with the deprecated smart-mix pipe proposal.
+  // Disables topic references from outer contexts within syntax constructs
   // such as the bodies of iteration statements.
   // The function modifies the parser's topic-context state to enable or disable
   // the use of topic references with the smartPipelines plugin. They then run a
   // callback, then they reset the parser to the old topic-context state that it
   // had before the function was called.
 
-  withTopicForbiddingContext<T>(callback: () => T): T {
-    const outerContextTopicState = this.state.topicContext;
-    this.state.topicContext = {
-      // Disable the use of the primary topic reference.
-      maxNumOfResolvableTopics: 0,
-      // Hide the use of any topic references from outer contexts.
-      maxTopicIndex: null,
-    };
+  withSmartMixTopicForbiddingContext<T>(callback: () => T): T {
+    const proposal = this.getPluginOption("pipelineOperator", "proposal");
+    if (proposal === "smart") {
+      // Reset the parser’s topic context only if the smart-mix pipe proposal is active.
+      const outerContextTopicState = this.state.topicContext;
+      this.state.topicContext = {
+        // Disable the use of the primary topic reference.
+        maxNumOfResolvableTopics: 0,
+        // Hide the use of any topic references from outer contexts.
+        maxTopicIndex: null,
+      };
 
-    try {
+      try {
+        return callback();
+      } finally {
+        this.state.topicContext = outerContextTopicState;
+      }
+    } else {
+      // If the pipe proposal is "minimal", "fsharp", or "hack",
+      // or if no pipe proposal is active,
+      // then the callback result is returned
+      // without touching any extra parser state.
       return callback();
-    } finally {
-      this.state.topicContext = outerContextTopicState;
     }
   }
 
@@ -2669,17 +2861,17 @@ export default class ExpressionParser extends LValParser {
     return callback();
   }
 
-  // Register the use of a primary topic reference (`#`) within the current
-  // topic context.
+  // Register the use of a topic reference within the current
+  // topic-binding context.
   registerTopicReference(): void {
     this.state.topicContext.maxTopicIndex = 0;
   }
 
-  primaryTopicReferenceIsAllowedInCurrentTopicContext(): boolean {
+  topicReferenceIsAllowedInCurrentContext(): boolean {
     return this.state.topicContext.maxNumOfResolvableTopics >= 1;
   }
 
-  topicReferenceWasUsedInCurrentTopicContext(): boolean {
+  topicReferenceWasUsedInCurrentContext(): boolean {
     return (
       this.state.topicContext.maxTopicIndex != null &&
       this.state.topicContext.maxTopicIndex >= 0

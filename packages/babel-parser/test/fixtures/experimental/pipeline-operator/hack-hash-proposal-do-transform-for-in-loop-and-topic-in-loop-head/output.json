@@ -1,0 +1,61 @@
+{
+  "type": "File",
+  "start":0,"end":31,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":31}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":31,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":31}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start":0,"end":31,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":31}},
+        "expression": {
+          "type": "BinaryExpression",
+          "start":0,"end":31,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":31}},
+          "left": {
+            "type": "Identifier",
+            "start":0,"end":5,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":5},"identifierName":"value"},
+            "name": "value"
+          },
+          "operator": "|>",
+          "right": {
+            "type": "DoExpression",
+            "start":9,"end":31,"loc":{"start":{"line":1,"column":9},"end":{"line":1,"column":31}},
+            "async": false,
+            "body": {
+              "type": "BlockStatement",
+              "start":12,"end":31,"loc":{"start":{"line":1,"column":12},"end":{"line":1,"column":31}},
+              "body": [
+                {
+                  "type": "ForInStatement",
+                  "start":14,"end":29,"loc":{"start":{"line":1,"column":14},"end":{"line":1,"column":29}},
+                  "left": {
+                    "type": "Identifier",
+                    "start":19,"end":20,"loc":{"start":{"line":1,"column":19},"end":{"line":1,"column":20},"identifierName":"e"},
+                    "name": "e"
+                  },
+                  "right": {
+                    "type": "TopicReference",
+                    "start":24,"end":25,"loc":{"start":{"line":1,"column":24},"end":{"line":1,"column":25}}
+                  },
+                  "body": {
+                    "type": "ExpressionStatement",
+                    "start":27,"end":29,"loc":{"start":{"line":1,"column":27},"end":{"line":1,"column":29}},
+                    "expression": {
+                      "type": "Identifier",
+                      "start":27,"end":28,"loc":{"start":{"line":1,"column":27},"end":{"line":1,"column":28},"identifierName":"e"},
+                      "name": "e"
+                    }
+                  }
+                }
+              ],
+              "directives": []
+            }
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}

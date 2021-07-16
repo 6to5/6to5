@@ -636,6 +636,9 @@ export interface NodePathAssetions {
   assertThrowStatement(
     opts?: object,
   ): asserts this is NodePath<t.ThrowStatement>;
+  assertTopicReference(
+    opts?: object,
+  ): asserts this is NodePath<t.TopicReference>;
   assertTryStatement(opts?: object): asserts this is NodePath<t.TryStatement>;
   assertTupleExpression(
     opts?: object,

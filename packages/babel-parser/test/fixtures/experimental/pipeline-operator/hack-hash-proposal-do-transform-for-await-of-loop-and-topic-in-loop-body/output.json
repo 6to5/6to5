@@ -1,0 +1,93 @@
+{
+  "type": "File",
+  "start":0,"end":77,"loc":{"start":{"line":1,"column":0},"end":{"line":3,"column":1}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":77,"loc":{"start":{"line":1,"column":0},"end":{"line":3,"column":1}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "FunctionDeclaration",
+        "start":0,"end":77,"loc":{"start":{"line":1,"column":0},"end":{"line":3,"column":1}},
+        "id": {
+          "type": "Identifier",
+          "start":15,"end":17,"loc":{"start":{"line":1,"column":15},"end":{"line":1,"column":17},"identifierName":"af"},
+          "name": "af"
+        },
+        "generator": false,
+        "async": true,
+        "params": [],
+        "body": {
+          "type": "BlockStatement",
+          "start":21,"end":77,"loc":{"start":{"line":1,"column":21},"end":{"line":3,"column":1}},
+          "body": [
+            {
+              "type": "ExpressionStatement",
+              "start":25,"end":75,"loc":{"start":{"line":2,"column":2},"end":{"line":2,"column":52}},
+              "expression": {
+                "type": "BinaryExpression",
+                "start":25,"end":75,"loc":{"start":{"line":2,"column":2},"end":{"line":2,"column":52}},
+                "left": {
+                  "type": "Identifier",
+                  "start":25,"end":30,"loc":{"start":{"line":2,"column":2},"end":{"line":2,"column":7},"identifierName":"value"},
+                  "name": "value"
+                },
+                "operator": "|>",
+                "right": {
+                  "type": "DoExpression",
+                  "start":34,"end":75,"loc":{"start":{"line":2,"column":11},"end":{"line":2,"column":52}},
+                  "async": false,
+                  "body": {
+                    "type": "BlockStatement",
+                    "start":37,"end":75,"loc":{"start":{"line":2,"column":14},"end":{"line":2,"column":52}},
+                    "body": [
+                      {
+                        "type": "ForOfStatement",
+                        "start":39,"end":73,"loc":{"start":{"line":2,"column":16},"end":{"line":2,"column":50}},
+                        "await": true,
+                        "left": {
+                          "type": "VariableDeclaration",
+                          "start":50,"end":57,"loc":{"start":{"line":2,"column":27},"end":{"line":2,"column":34}},
+                          "declarations": [
+                            {
+                              "type": "VariableDeclarator",
+                              "start":56,"end":57,"loc":{"start":{"line":2,"column":33},"end":{"line":2,"column":34}},
+                              "id": {
+                                "type": "Identifier",
+                                "start":56,"end":57,"loc":{"start":{"line":2,"column":33},"end":{"line":2,"column":34},"identifierName":"e"},
+                                "name": "e"
+                              },
+                              "init": null
+                            }
+                          ],
+                          "kind": "const"
+                        },
+                        "right": {
+                          "type": "Identifier",
+                          "start":61,"end":69,"loc":{"start":{"line":2,"column":38},"end":{"line":2,"column":46},"identifierName":"sequence"},
+                          "name": "sequence"
+                        },
+                        "body": {
+                          "type": "ExpressionStatement",
+                          "start":71,"end":73,"loc":{"start":{"line":2,"column":48},"end":{"line":2,"column":50}},
+                          "expression": {
+                            "type": "TopicReference",
+                            "start":71,"end":72,"loc":{"start":{"line":2,"column":48},"end":{"line":2,"column":49}}
+                          }
+                        }
+                      }
+                    ],
+                    "directives": []
+                  }
+                }
+              }
+            }
+          ],
+          "directives": []
+        }
+      }
+    ],
+    "directives": []
+  }
+}

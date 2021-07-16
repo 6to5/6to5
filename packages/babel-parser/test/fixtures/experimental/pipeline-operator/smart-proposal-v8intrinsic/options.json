@@ -1,0 +1,6 @@
+{
+  "plugins": [
+    ["pipelineOperator", { "proposal": "smart" }],
+    "v8intrinsic"
+  ]
+}

@@ -29,6 +29,11 @@ export type Format = {
   recordAndTupleSyntaxType: "bar" | "hash";
   jsescOption;
   jsonCompatibleStrings?;
+  /**
+   * For use with the Hack-style pipe operator.
+   * Changes what token is used for pipe bodies’ topic references.
+   */
+  topicToken?: "#";
 };
 
 class Printer {

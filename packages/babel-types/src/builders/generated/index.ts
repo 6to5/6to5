@@ -1024,19 +1024,6 @@ export function bindExpression(
 ): t.BindExpression {
   return builder("BindExpression", ...arguments);
 }
-export function pipelineTopicExpression(
-  expression: t.Expression,
-): t.PipelineTopicExpression {
-  return builder("PipelineTopicExpression", ...arguments);
-}
-export function pipelineBareFunction(
-  callee: t.Expression,
-): t.PipelineBareFunction {
-  return builder("PipelineBareFunction", ...arguments);
-}
-export function pipelinePrimaryTopicReference(): t.PipelinePrimaryTopicReference {
-  return builder("PipelinePrimaryTopicReference", ...arguments);
-}
 export function importAttribute(
   key: t.Identifier | t.StringLiteral,
   value: t.StringLiteral,
@@ -1075,6 +1062,22 @@ export function staticBlock(body: Array<t.Statement>): t.StaticBlock {
 }
 export function moduleExpression(body: t.Program): t.ModuleExpression {
   return builder("ModuleExpression", ...arguments);
+}
+export function topicReference(): t.TopicReference {
+  return builder("TopicReference", ...arguments);
+}
+export function pipelineTopicExpression(
+  expression: t.Expression,
+): t.PipelineTopicExpression {
+  return builder("PipelineTopicExpression", ...arguments);
+}
+export function pipelineBareFunction(
+  callee: t.Expression,
+): t.PipelineBareFunction {
+  return builder("PipelineBareFunction", ...arguments);
+}
+export function pipelinePrimaryTopicReference(): t.PipelinePrimaryTopicReference {
+  return builder("PipelinePrimaryTopicReference", ...arguments);
 }
 export function tsParameterProperty(
   parameter: t.Identifier | t.AssignmentPattern,

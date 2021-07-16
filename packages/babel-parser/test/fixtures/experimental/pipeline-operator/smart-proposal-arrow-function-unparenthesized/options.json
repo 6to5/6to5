@@ -1,0 +1,11 @@
+{
+  "plugins": [
+    [
+      "pipelineOperator",
+      {
+        "proposal": "smart"
+      }
+    ]
+  ],
+  "throws": "Unexpected token (1:8)"
+}

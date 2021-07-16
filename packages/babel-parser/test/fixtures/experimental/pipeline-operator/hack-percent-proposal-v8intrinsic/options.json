@@ -1,0 +1,7 @@
+{
+  "plugins": [
+    ["pipelineOperator", { "proposal": "hack", "topicToken": "%" }],
+    "v8intrinsic"
+  ],
+  "throws": "Cannot combine v8intrinsic plugin and Hack-style pipes."
+}

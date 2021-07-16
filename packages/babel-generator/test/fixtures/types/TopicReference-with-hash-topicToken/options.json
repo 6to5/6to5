@@ -1,0 +1,4 @@
+{
+  "plugins": [["pipelineOperator", { "proposal": "hack", "topicToken": "#" }]],
+  "topicToken": "#"
+}

@@ -1,0 +1,80 @@
+{
+  "type": "File",
+  "start":0,"end":38,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":38}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":38,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":38}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start":0,"end":38,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":38}},
+        "expression": {
+          "type": "BinaryExpression",
+          "start":0,"end":38,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":38}},
+          "left": {
+            "type": "Identifier",
+            "start":0,"end":5,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":5},"identifierName":"value"},
+            "name": "value"
+          },
+          "operator": "|>",
+          "right": {
+            "type": "DoExpression",
+            "start":9,"end":38,"loc":{"start":{"line":1,"column":9},"end":{"line":1,"column":38}},
+            "async": false,
+            "body": {
+              "type": "BlockStatement",
+              "start":12,"end":38,"loc":{"start":{"line":1,"column":12},"end":{"line":1,"column":38}},
+              "body": [
+                {
+                  "type": "WhileStatement",
+                  "start":14,"end":36,"loc":{"start":{"line":1,"column":14},"end":{"line":1,"column":36}},
+                  "test": {
+                    "type": "BinaryExpression",
+                    "start":21,"end":27,"loc":{"start":{"line":1,"column":21},"end":{"line":1,"column":27}},
+                    "left": {
+                      "type": "Identifier",
+                      "start":21,"end":22,"loc":{"start":{"line":1,"column":21},"end":{"line":1,"column":22},"identifierName":"x"},
+                      "name": "x"
+                    },
+                    "operator": "<",
+                    "right": {
+                      "type": "NumericLiteral",
+                      "start":25,"end":27,"loc":{"start":{"line":1,"column":25},"end":{"line":1,"column":27}},
+                      "extra": {
+                        "rawValue": 50,
+                        "raw": "50"
+                      },
+                      "value": 50
+                    }
+                  },
+                  "body": {
+                    "type": "ExpressionStatement",
+                    "start":29,"end":36,"loc":{"start":{"line":1,"column":29},"end":{"line":1,"column":36}},
+                    "expression": {
+                      "type": "AssignmentExpression",
+                      "start":29,"end":35,"loc":{"start":{"line":1,"column":29},"end":{"line":1,"column":35}},
+                      "operator": "+=",
+                      "left": {
+                        "type": "Identifier",
+                        "start":29,"end":30,"loc":{"start":{"line":1,"column":29},"end":{"line":1,"column":30},"identifierName":"x"},
+                        "name": "x"
+                      },
+                      "right": {
+                        "type": "TopicReference",
+                        "start":34,"end":35,"loc":{"start":{"line":1,"column":34},"end":{"line":1,"column":35}}
+                      }
+                    }
+                  }
+                }
+              ],
+              "directives": []
+            }
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}

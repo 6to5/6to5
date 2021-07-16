@@ -1,0 +1,45 @@
+{
+  "type": "File",
+  "start":0,"end":19,"loc":{"start":{"line":1,"column":0},"end":{"line":2,"column":15}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":19,"loc":{"start":{"line":1,"column":0},"end":{"line":2,"column":15}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start":0,"end":19,"loc":{"start":{"line":1,"column":0},"end":{"line":2,"column":15}},
+        "expression": {
+          "type": "BinaryExpression",
+          "start":0,"end":19,"loc":{"start":{"line":1,"column":0},"end":{"line":2,"column":15}},
+          "left": {
+            "type": "Identifier",
+            "start":0,"end":1,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":1},"identifierName":"a"},
+            "name": "a"
+          },
+          "operator": "%",
+          "right": {
+            "type": "FunctionExpression",
+            "start":4,"end":19,"loc":{"start":{"line":2,"column":0},"end":{"line":2,"column":15}},
+            "id": {
+              "type": "Identifier",
+              "start":13,"end":14,"loc":{"start":{"line":2,"column":9},"end":{"line":2,"column":10},"identifierName":"f"},
+              "name": "f"
+            },
+            "generator": false,
+            "async": false,
+            "params": [],
+            "body": {
+              "type": "BlockStatement",
+              "start":17,"end":19,"loc":{"start":{"line":2,"column":13},"end":{"line":2,"column":15}},
+              "body": [],
+              "directives": []
+            }
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}

@@ -527,11 +527,12 @@ export default class StatementParser extends ExpressionParser {
     this.next();
     this.state.labels.push(loopLabel);
 
+    // Parse the loop body's body.
     node.body =
       // For the smartPipelines plugin: Disable topic references from outer
       // contexts within the loop body. They are permitted in test expressions,
       // outside of the loop body.
-      this.withTopicForbiddingContext(() =>
+      this.withSmartMixTopicForbiddingContext(() =>
         // Parse the loop body's body.
         this.parseStatement("do"),
       );
@@ -759,15 +760,16 @@ export default class StatementParser extends ExpressionParser {
         this.scope.enter(SCOPE_OTHER);
       }
 
+      // Parse the catch clause's body.
       clause.body =
         // For the smartPipelines plugin: Disable topic references from outer
         // contexts within the catch clause's body.
-        this.withTopicForbiddingContext(() =>
+        this.withSmartMixTopicForbiddingContext(() =>
           // Parse the catch clause's body.
           this.parseBlock(false, false),
         );
-      this.scope.exit();
 
+      this.scope.exit();
       node.handler = this.finishNode(clause, "CatchClause");
     }
 
@@ -795,11 +797,12 @@ export default class StatementParser extends ExpressionParser {
     node.test = this.parseHeaderExpression();
     this.state.labels.push(loopLabel);
 
+    // Parse the loop body.
     node.body =
       // For the smartPipelines plugin:
       // Disable topic references from outer contexts within the loop body.
       // They are permitted in test expressions, outside of the loop body.
-      this.withTopicForbiddingContext(() =>
+      this.withSmartMixTopicForbiddingContext(() =>
         // Parse loop body.
         this.parseStatement("while"),
       );
@@ -816,12 +819,13 @@ export default class StatementParser extends ExpressionParser {
     this.next();
     node.object = this.parseHeaderExpression();
 
+    // Parse the statement body.
     node.body =
       // For the smartPipelines plugin:
       // Disable topic references from outer contexts within the with statement's body.
       // They are permitted in function default-parameter expressions, which are
       // part of the outer context, outside of the with statement's body.
-      this.withTopicForbiddingContext(() =>
+      this.withSmartMixTopicForbiddingContext(() =>
         // Parse the statement body.
         this.parseStatement("with"),
       );
@@ -1009,11 +1013,12 @@ export default class StatementParser extends ExpressionParser {
     node.update = this.match(tt.parenR) ? null : this.parseExpression();
     this.expect(tt.parenR);
 
+    // Parse the loop body.
     node.body =
       // For the smartPipelines plugin: Disable topic references from outer
       // contexts within the loop body. They are permitted in test expressions,
       // outside of the loop body.
-      this.withTopicForbiddingContext(() =>
+      this.withSmartMixTopicForbiddingContext(() =>
         // Parse the loop body.
         this.parseStatement("for"),
       );
@@ -1064,11 +1069,12 @@ export default class StatementParser extends ExpressionParser {
       : this.parseMaybeAssignAllowIn();
     this.expect(tt.parenR);
 
+    // Parse the loop body.
     node.body =
       // For the smartPipelines plugin:
       // Disable topic references from outer contexts within the loop body.
       // They are permitted in test expressions, outside of the loop body.
-      this.withTopicForbiddingContext(() =>
+      this.withSmartMixTopicForbiddingContext(() =>
         // Parse loop body.
         this.parseStatement("for"),
       );
@@ -1176,7 +1182,7 @@ export default class StatementParser extends ExpressionParser {
     // For the smartPipelines plugin: Disable topic references from outer
     // contexts within the function body. They are permitted in function
     // default-parameter expressions, outside of the function body.
-    this.withTopicForbiddingContext(() => {
+    this.withSmartMixTopicForbiddingContext(() => {
       // Parse the function body.
       this.parseFunctionBodyAndFinish(
         node,
@@ -1292,7 +1298,8 @@ export default class StatementParser extends ExpressionParser {
 
     // For the smartPipelines plugin: Disable topic references from outer
     // contexts within the class body.
-    this.withTopicForbiddingContext(() => {
+    this.withSmartMixTopicForbiddingContext(() => {
+      // Parse the contents within the braces.
       while (!this.match(tt.braceR)) {
         if (this.eat(tt.semi)) {
           if (decorators.length > 0) {

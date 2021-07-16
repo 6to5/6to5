@@ -1,0 +1,69 @@
+{
+  "type": "File",
+  "start":0,"end":45,"loc":{"start":{"line":1,"column":0},"end":{"line":3,"column":1}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":45,"loc":{"start":{"line":1,"column":0},"end":{"line":3,"column":1}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "FunctionDeclaration",
+        "start":0,"end":45,"loc":{"start":{"line":1,"column":0},"end":{"line":3,"column":1}},
+        "id": {
+          "type": "Identifier",
+          "start":11,"end":12,"loc":{"start":{"line":1,"column":11},"end":{"line":1,"column":12},"identifierName":"f"},
+          "name": "f"
+        },
+        "generator": true,
+        "async": false,
+        "params": [
+          {
+            "type": "Identifier",
+            "start":14,"end":15,"loc":{"start":{"line":1,"column":14},"end":{"line":1,"column":15},"identifierName":"x"},
+            "name": "x"
+          }
+        ],
+        "body": {
+          "type": "BlockStatement",
+          "start":17,"end":45,"loc":{"start":{"line":1,"column":17},"end":{"line":3,"column":1}},
+          "body": [
+            {
+              "type": "ReturnStatement",
+              "start":21,"end":43,"loc":{"start":{"line":2,"column":2},"end":{"line":2,"column":24}},
+              "argument": {
+                "type": "BinaryExpression",
+                "start":28,"end":42,"loc":{"start":{"line":2,"column":9},"end":{"line":2,"column":23}},
+                "left": {
+                  "type": "Identifier",
+                  "start":28,"end":29,"loc":{"start":{"line":2,"column":9},"end":{"line":2,"column":10},"identifierName":"x"},
+                  "name": "x"
+                },
+                "operator": "|>",
+                "right": {
+                  "type": "PipelineTopicExpression",
+                  "start":33,"end":42,"loc":{"start":{"line":2,"column":14},"end":{"line":2,"column":23}},
+                  "expression": {
+                    "type": "YieldExpression",
+                    "start":34,"end":41,"loc":{"start":{"line":2,"column":15},"end":{"line":2,"column":22}},
+                    "extra": {
+                      "parenthesized": true,
+                      "parenStart": 33
+                    },
+                    "delegate": false,
+                    "argument": {
+                      "type": "PipelinePrimaryTopicReference",
+                      "start":40,"end":41,"loc":{"start":{"line":2,"column":21},"end":{"line":2,"column":22}}
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "directives": []
+        }
+      }
+    ],
+    "directives": []
+  }
+}

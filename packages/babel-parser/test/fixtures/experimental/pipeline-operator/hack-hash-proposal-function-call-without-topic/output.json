@@ -1,0 +1,35 @@
+{
+  "type": "File",
+  "start":0,"end":10,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":10}},
+  "errors": [
+    "SyntaxError: Hack-style pipe body does not contain a topic reference; Hack-style pipes must use topic at least once. (1:9)"
+  ],
+  "program": {
+    "type": "Program",
+    "start":0,"end":10,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":10}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start":0,"end":10,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":10}},
+        "expression": {
+          "type": "BinaryExpression",
+          "start":0,"end":10,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":10}},
+          "left": {
+            "type": "Identifier",
+            "start":0,"end":5,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":5},"identifierName":"value"},
+            "name": "value"
+          },
+          "operator": "|>",
+          "right": {
+            "type": "Identifier",
+            "start":9,"end":10,"loc":{"start":{"line":1,"column":9},"end":{"line":1,"column":10},"identifierName":"f"},
+            "name": "f"
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}

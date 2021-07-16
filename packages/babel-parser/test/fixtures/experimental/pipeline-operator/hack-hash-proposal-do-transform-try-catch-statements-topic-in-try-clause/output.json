@@ -1,0 +1,126 @@
+{
+  "type": "File",
+  "start":0,"end":82,"loc":{"start":{"line":1,"column":0},"end":{"line":4,"column":1}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":82,"loc":{"start":{"line":1,"column":0},"end":{"line":4,"column":1}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start":0,"end":82,"loc":{"start":{"line":1,"column":0},"end":{"line":4,"column":1}},
+        "expression": {
+          "type": "BinaryExpression",
+          "start":0,"end":82,"loc":{"start":{"line":1,"column":0},"end":{"line":4,"column":1}},
+          "left": {
+            "type": "Identifier",
+            "start":0,"end":5,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":5},"identifierName":"value"},
+            "name": "value"
+          },
+          "operator": "|>",
+          "right": {
+            "type": "DoExpression",
+            "start":9,"end":82,"loc":{"start":{"line":1,"column":9},"end":{"line":4,"column":1}},
+            "async": false,
+            "body": {
+              "type": "BlockStatement",
+              "start":12,"end":82,"loc":{"start":{"line":1,"column":12},"end":{"line":4,"column":1}},
+              "body": [
+                {
+                  "type": "TryStatement",
+                  "start":16,"end":80,"loc":{"start":{"line":2,"column":2},"end":{"line":3,"column":41}},
+                  "block": {
+                    "type": "BlockStatement",
+                    "start":20,"end":38,"loc":{"start":{"line":2,"column":6},"end":{"line":2,"column":24}},
+                    "body": [
+                      {
+                        "type": "ExpressionStatement",
+                        "start":22,"end":36,"loc":{"start":{"line":2,"column":8},"end":{"line":2,"column":22}},
+                        "expression": {
+                          "type": "CallExpression",
+                          "start":22,"end":35,"loc":{"start":{"line":2,"column":8},"end":{"line":2,"column":21}},
+                          "callee": {
+                            "type": "MemberExpression",
+                            "start":22,"end":32,"loc":{"start":{"line":2,"column":8},"end":{"line":2,"column":18}},
+                            "object": {
+                              "type": "Identifier",
+                              "start":22,"end":26,"loc":{"start":{"line":2,"column":8},"end":{"line":2,"column":12},"identifierName":"JSON"},
+                              "name": "JSON"
+                            },
+                            "computed": false,
+                            "property": {
+                              "type": "Identifier",
+                              "start":27,"end":32,"loc":{"start":{"line":2,"column":13},"end":{"line":2,"column":18},"identifierName":"parse"},
+                              "name": "parse"
+                            }
+                          },
+                          "arguments": [
+                            {
+                              "type": "TopicReference",
+                              "start":33,"end":34,"loc":{"start":{"line":2,"column":19},"end":{"line":2,"column":20}}
+                            }
+                          ]
+                        }
+                      }
+                    ],
+                    "directives": []
+                  },
+                  "handler": {
+                    "type": "CatchClause",
+                    "start":41,"end":80,"loc":{"start":{"line":3,"column":2},"end":{"line":3,"column":41}},
+                    "param": {
+                      "type": "Identifier",
+                      "start":48,"end":53,"loc":{"start":{"line":3,"column":9},"end":{"line":3,"column":14},"identifierName":"error"},
+                      "name": "error"
+                    },
+                    "body": {
+                      "type": "BlockStatement",
+                      "start":55,"end":80,"loc":{"start":{"line":3,"column":16},"end":{"line":3,"column":41}},
+                      "body": [
+                        {
+                          "type": "ExpressionStatement",
+                          "start":57,"end":78,"loc":{"start":{"line":3,"column":18},"end":{"line":3,"column":39}},
+                          "expression": {
+                            "type": "CallExpression",
+                            "start":57,"end":77,"loc":{"start":{"line":3,"column":18},"end":{"line":3,"column":38}},
+                            "callee": {
+                              "type": "MemberExpression",
+                              "start":57,"end":70,"loc":{"start":{"line":3,"column":18},"end":{"line":3,"column":31}},
+                              "object": {
+                                "type": "Identifier",
+                                "start":57,"end":64,"loc":{"start":{"line":3,"column":18},"end":{"line":3,"column":25},"identifierName":"console"},
+                                "name": "console"
+                              },
+                              "computed": false,
+                              "property": {
+                                "type": "Identifier",
+                                "start":65,"end":70,"loc":{"start":{"line":3,"column":26},"end":{"line":3,"column":31},"identifierName":"error"},
+                                "name": "error"
+                              }
+                            },
+                            "arguments": [
+                              {
+                                "type": "Identifier",
+                                "start":71,"end":76,"loc":{"start":{"line":3,"column":32},"end":{"line":3,"column":37},"identifierName":"error"},
+                                "name": "error"
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "directives": []
+                    }
+                  },
+                  "finalizer": null
+                }
+              ],
+              "directives": []
+            }
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}

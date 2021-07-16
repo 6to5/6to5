@@ -1,0 +1,57 @@
+{
+  "type": "File",
+  "start":0,"end":27,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":27}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":27,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":27}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start":0,"end":27,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":27}},
+        "expression": {
+          "type": "BinaryExpression",
+          "start":0,"end":27,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":27}},
+          "left": {
+            "type": "Identifier",
+            "start":0,"end":5,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":5},"identifierName":"value"},
+            "name": "value"
+          },
+          "operator": "|>",
+          "right": {
+            "type": "DoExpression",
+            "start":9,"end":27,"loc":{"start":{"line":1,"column":9},"end":{"line":1,"column":27}},
+            "async": false,
+            "body": {
+              "type": "BlockStatement",
+              "start":12,"end":27,"loc":{"start":{"line":1,"column":12},"end":{"line":1,"column":27}},
+              "body": [
+                {
+                  "type": "IfStatement",
+                  "start":14,"end":25,"loc":{"start":{"line":1,"column":14},"end":{"line":1,"column":25}},
+                  "test": {
+                    "type": "Identifier",
+                    "start":18,"end":21,"loc":{"start":{"line":1,"column":18},"end":{"line":1,"column":21},"identifierName":"yes"},
+                    "name": "yes"
+                  },
+                  "consequent": {
+                    "type": "ExpressionStatement",
+                    "start":23,"end":25,"loc":{"start":{"line":1,"column":23},"end":{"line":1,"column":25}},
+                    "expression": {
+                      "type": "TopicReference",
+                      "start":23,"end":24,"loc":{"start":{"line":1,"column":23},"end":{"line":1,"column":24}}
+                    }
+                  },
+                  "alternate": null
+                }
+              ],
+              "directives": []
+            }
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}

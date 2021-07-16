@@ -155,7 +155,7 @@ export const types: { [name: string]: TokenType } = {
   bitShift: createBinop("<</>>/>>>", 8),
   plusMin: new TokenType("+/-", { beforeExpr, binop: 9, prefix, startsExpr }),
   // startsExpr: required by v8intrinsic plugin
-  modulo: new TokenType("%", { beforeExpr, binop: 10, startsExpr }),
+  modulo: new TokenType("%", { binop: 10, startsExpr }),
   // unset `beforeExpr` as it can be `function *`
   star: new TokenType("*", { binop: 10 }),
   slash: createBinop("/", 10),

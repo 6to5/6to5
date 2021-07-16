@@ -1,0 +1,7 @@
+{
+  "plugins": [
+    ["pipelineOperator", { "proposal": "hack", "topicToken": "#" }],
+    ["recordAndTuple", { "syntaxType": "hash" }]
+  ],
+  "throws": "Plugin conflict between `[\"pipelineOperator\", { proposal: \"hack\", topicToken: \"#\" }]` and `[\"recordAndtuple\", { syntaxType: \"hash\"}]`."
+}

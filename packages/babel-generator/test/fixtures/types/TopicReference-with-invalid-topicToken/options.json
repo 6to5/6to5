@@ -1,0 +1,5 @@
+{
+  "plugins": [["pipelineOperator", { "proposal": "hack", "topicToken": "#" }]],
+  "topicToken": "invalid",
+  "throws": "The \"topicToken\" generator option must be \"#\" (\"invalid\" received instead)."
+}

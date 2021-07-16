@@ -630,7 +630,13 @@ export type ParenthesizedExpression = NodeBase & {
   expression: Expression,
 };
 
-// Pipelines
+// Hack pipe operator
+
+export type TopicReference = NodeBase & {
+  type: "TopicReference",
+};
+
+// Smart-mix pipe operator
 
 export type PipelineBody = NodeBase & {
   type: "PipelineBody",
@@ -661,6 +667,10 @@ export type PipelineStyle =
   | "PipelineBareConstructor"
   | "PipelineBareAwaitedFunction"
   | "PipelineTopicExpression";
+
+export type PipelinePrimaryTopicReference = NodeBase & {
+  type: "PipelinePrimaryTopicReference",
+};
 
 // Template Literals
 

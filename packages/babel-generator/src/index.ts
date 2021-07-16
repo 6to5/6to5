@@ -62,6 +62,7 @@ function normalizeOptions(code, opts): Format {
       ...opts.jsescOption,
     },
     recordAndTupleSyntaxType: opts.recordAndTupleSyntaxType,
+    topicToken: opts.topicToken,
   };
 
   if (!process.env.BABEL_8_BREAKING) {
@@ -197,6 +198,12 @@ export interface GeneratorOptions {
      */
     wrap?: boolean;
   };
+
+  /**
+   * For use with the Hack-style pipe operator.
+   * Changes what token is used for pipe bodies’ topic references.
+   */
+  topicToken?: "#";
 }
 
 export interface GeneratorResult {

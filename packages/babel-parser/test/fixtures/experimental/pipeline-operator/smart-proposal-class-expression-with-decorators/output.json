@@ -1,0 +1,132 @@
+{
+  "type": "File",
+  "start":0,"end":130,"loc":{"start":{"line":1,"column":0},"end":{"line":9,"column":2}},
+  "errors": [
+    "SyntaxError: Topic reference was used in a lexical context without topic binding. (6:13)",
+    "SyntaxError: Pipeline is in topic style but does not use topic reference. (1:9)"
+  ],
+  "program": {
+    "type": "Program",
+    "start":0,"end":130,"loc":{"start":{"line":1,"column":0},"end":{"line":9,"column":2}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start":0,"end":130,"loc":{"start":{"line":1,"column":0},"end":{"line":9,"column":2}},
+        "expression": {
+          "type": "BinaryExpression",
+          "start":0,"end":129,"loc":{"start":{"line":1,"column":0},"end":{"line":9,"column":1}},
+          "left": {
+            "type": "Identifier",
+            "start":0,"end":5,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":5},"identifierName":"value"},
+            "name": "value"
+          },
+          "operator": "|>",
+          "right": {
+            "type": "PipelineTopicExpression",
+            "start":9,"end":129,"loc":{"start":{"line":1,"column":9},"end":{"line":9,"column":1}},
+            "expression": {
+              "type": "NewExpression",
+              "start":9,"end":129,"loc":{"start":{"line":1,"column":9},"end":{"line":9,"column":1}},
+              "callee": {
+                "type": "ClassExpression",
+                "start":17,"end":127,"loc":{"start":{"line":2,"column":2},"end":{"line":8,"column":3}},
+                "extra": {
+                  "parenthesized": true,
+                  "parenStart": 13
+                },
+                "decorators": [
+                  {
+                    "type": "Decorator",
+                    "start":17,"end":32,"loc":{"start":{"line":2,"column":2},"end":{"line":2,"column":17}},
+                    "expression": {
+                      "type": "Identifier",
+                      "start":18,"end":32,"loc":{"start":{"line":2,"column":3},"end":{"line":2,"column":17},"identifierName":"classDecorator"},
+                      "name": "classDecorator"
+                    }
+                  }
+                ],
+                "id": {
+                  "type": "Identifier",
+                  "start":41,"end":46,"loc":{"start":{"line":3,"column":8},"end":{"line":3,"column":13},"identifierName":"Thing"},
+                  "name": "Thing"
+                },
+                "superClass": null,
+                "body": {
+                  "type": "ClassBody",
+                  "start":47,"end":127,"loc":{"start":{"line":3,"column":14},"end":{"line":8,"column":3}},
+                  "body": [
+                    {
+                      "type": "ClassMethod",
+                      "start":53,"end":123,"loc":{"start":{"line":4,"column":4},"end":{"line":7,"column":5}},
+                      "decorators": [
+                        {
+                          "type": "Decorator",
+                          "start":53,"end":69,"loc":{"start":{"line":4,"column":4},"end":{"line":4,"column":20}},
+                          "expression": {
+                            "type": "Identifier",
+                            "start":54,"end":69,"loc":{"start":{"line":4,"column":5},"end":{"line":4,"column":20},"identifierName":"methodDecorator"},
+                            "name": "methodDecorator"
+                          }
+                        }
+                      ],
+                      "static": false,
+                      "key": {
+                        "type": "Identifier",
+                        "start":74,"end":80,"loc":{"start":{"line":5,"column":4},"end":{"line":5,"column":10},"identifierName":"method"},
+                        "name": "method"
+                      },
+                      "computed": false,
+                      "kind": "method",
+                      "id": null,
+                      "generator": false,
+                      "async": false,
+                      "params": [],
+                      "body": {
+                        "type": "BlockStatement",
+                        "start":84,"end":123,"loc":{"start":{"line":5,"column":14},"end":{"line":7,"column":5}},
+                        "body": [
+                          {
+                            "type": "ReturnStatement",
+                            "start":92,"end":117,"loc":{"start":{"line":6,"column":6},"end":{"line":6,"column":31}},
+                            "argument": {
+                              "type": "BinaryExpression",
+                              "start":99,"end":116,"loc":{"start":{"line":6,"column":13},"end":{"line":6,"column":30}},
+                              "left": {
+                                "type": "PipelinePrimaryTopicReference",
+                                "start":99,"end":100,"loc":{"start":{"line":6,"column":13},"end":{"line":6,"column":14}}
+                              },
+                              "operator": "+",
+                              "right": {
+                                "type": "MemberExpression",
+                                "start":103,"end":116,"loc":{"start":{"line":6,"column":17},"end":{"line":6,"column":30}},
+                                "object": {
+                                  "type": "ThisExpression",
+                                  "start":103,"end":107,"loc":{"start":{"line":6,"column":17},"end":{"line":6,"column":21}}
+                                },
+                                "computed": false,
+                                "property": {
+                                  "type": "Identifier",
+                                  "start":108,"end":116,"loc":{"start":{"line":6,"column":22},"end":{"line":6,"column":30},"identifierName":"property"},
+                                  "name": "property"
+                                }
+                              }
+                            }
+                          }
+                        ],
+                        "directives": []
+                      }
+                    }
+                  ]
+                }
+              },
+              "arguments": []
+            }
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}

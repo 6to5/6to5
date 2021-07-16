@@ -1,0 +1,139 @@
+{
+  "type": "File",
+  "start":0,"end":94,"loc":{"start":{"line":1,"column":0},"end":{"line":7,"column":1}},
+  "program": {
+    "type": "Program",
+    "start":0,"end":94,"loc":{"start":{"line":1,"column":0},"end":{"line":7,"column":1}},
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start":0,"end":94,"loc":{"start":{"line":1,"column":0},"end":{"line":7,"column":1}},
+        "expression": {
+          "type": "BinaryExpression",
+          "start":0,"end":94,"loc":{"start":{"line":1,"column":0},"end":{"line":7,"column":1}},
+          "left": {
+            "type": "Identifier",
+            "start":0,"end":5,"loc":{"start":{"line":1,"column":0},"end":{"line":1,"column":5},"identifierName":"value"},
+            "name": "value"
+          },
+          "operator": "|>",
+          "right": {
+            "type": "DoExpression",
+            "start":9,"end":94,"loc":{"start":{"line":1,"column":9},"end":{"line":7,"column":1}},
+            "async": false,
+            "body": {
+              "type": "BlockStatement",
+              "start":12,"end":94,"loc":{"start":{"line":1,"column":12},"end":{"line":7,"column":1}},
+              "body": [
+                {
+                  "type": "SwitchStatement",
+                  "start":16,"end":92,"loc":{"start":{"line":2,"column":2},"end":{"line":6,"column":3}},
+                  "discriminant": {
+                    "type": "Identifier",
+                    "start":24,"end":30,"loc":{"start":{"line":2,"column":10},"end":{"line":2,"column":16},"identifierName":"number"},
+                    "name": "number"
+                  },
+                  "cases": [
+                    {
+                      "type": "SwitchCase",
+                      "start":38,"end":48,"loc":{"start":{"line":3,"column":4},"end":{"line":3,"column":14}},
+                      "consequent": [
+                        {
+                          "type": "ExpressionStatement",
+                          "start":46,"end":48,"loc":{"start":{"line":3,"column":12},"end":{"line":3,"column":14}},
+                          "expression": {
+                            "type": "TopicReference",
+                            "start":46,"end":47,"loc":{"start":{"line":3,"column":12},"end":{"line":3,"column":13}}
+                          }
+                        }
+                      ],
+                      "test": {
+                        "type": "NumericLiteral",
+                        "start":43,"end":44,"loc":{"start":{"line":3,"column":9},"end":{"line":3,"column":10}},
+                        "extra": {
+                          "rawValue": 0,
+                          "raw": "0"
+                        },
+                        "value": 0
+                      }
+                    },
+                    {
+                      "type": "SwitchCase",
+                      "start":53,"end":67,"loc":{"start":{"line":4,"column":4},"end":{"line":4,"column":18}},
+                      "consequent": [
+                        {
+                          "type": "ExpressionStatement",
+                          "start":61,"end":67,"loc":{"start":{"line":4,"column":12},"end":{"line":4,"column":18}},
+                          "expression": {
+                            "type": "BinaryExpression",
+                            "start":61,"end":66,"loc":{"start":{"line":4,"column":12},"end":{"line":4,"column":17}},
+                            "left": {
+                              "type": "TopicReference",
+                              "start":61,"end":62,"loc":{"start":{"line":4,"column":12},"end":{"line":4,"column":13}}
+                            },
+                            "operator": "+",
+                            "right": {
+                              "type": "NumericLiteral",
+                              "start":65,"end":66,"loc":{"start":{"line":4,"column":16},"end":{"line":4,"column":17}},
+                              "extra": {
+                                "rawValue": 1,
+                                "raw": "1"
+                              },
+                              "value": 1
+                            }
+                          }
+                        }
+                      ],
+                      "test": {
+                        "type": "NumericLiteral",
+                        "start":58,"end":59,"loc":{"start":{"line":4,"column":9},"end":{"line":4,"column":10}},
+                        "extra": {
+                          "rawValue": 1,
+                          "raw": "1"
+                        },
+                        "value": 1
+                      }
+                    },
+                    {
+                      "type": "SwitchCase",
+                      "start":72,"end":88,"loc":{"start":{"line":5,"column":4},"end":{"line":5,"column":20}},
+                      "consequent": [
+                        {
+                          "type": "ExpressionStatement",
+                          "start":81,"end":88,"loc":{"start":{"line":5,"column":13},"end":{"line":5,"column":20}},
+                          "expression": {
+                            "type": "BinaryExpression",
+                            "start":81,"end":87,"loc":{"start":{"line":5,"column":13},"end":{"line":5,"column":19}},
+                            "left": {
+                              "type": "TopicReference",
+                              "start":81,"end":82,"loc":{"start":{"line":5,"column":13},"end":{"line":5,"column":14}}
+                            },
+                            "operator": "+",
+                            "right": {
+                              "type": "NumericLiteral",
+                              "start":85,"end":87,"loc":{"start":{"line":5,"column":17},"end":{"line":5,"column":19}},
+                              "extra": {
+                                "rawValue": 10,
+                                "raw": "10"
+                              },
+                              "value": 10
+                            }
+                          }
+                        }
+                      ],
+                      "test": null
+                    }
+                  ]
+                }
+              ],
+              "directives": []
+            }
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}

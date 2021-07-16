@@ -1,0 +1,6 @@
+{
+  "plugins": [
+    ["proposal-pipeline-operator", { "proposal": "hack", "topicToken": "%" }]
+  ],
+  "minNodeVersion": "14.0.0"
+}

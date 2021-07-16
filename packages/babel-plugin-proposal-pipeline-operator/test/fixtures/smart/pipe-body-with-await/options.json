@@ -1,0 +1,6 @@
+{
+  "minNodeVersion": "8.0.0",
+  "parserOpts": {
+     "allowReturnOutsideFunction": true
+   }
+}

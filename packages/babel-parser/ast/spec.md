@@ -960,54 +960,6 @@ interface BindExpression <: Expression {
 
 If `object` is `null`, then `callee` should be a `MemberExpression`.
 
-### Pipeline
-
-These nodes are used by the Smart Pipeline to determine the type of the expression in a Pipeline Operator Expression. The F# Pipeline uses simple `BinaryExpression`s.
-
-#### PipelineBody
-
-```js
-interface PipelineBody <: NodeBase {
-    type: "PipelineBody";
-}
-```
-
-#### PipelineBareFunctionBody
-
-```js
-interface PipelineBody <: NodeBase {
-    type: "PipelineBareFunctionBody";
-    callee: Expression;
-}
-```
-
-#### PipelineBareConstructorBody
-
-```js
-interface PipelineBareConstructorBody <: NodeBase {
-    type: "PipelineBareConstructorBody";
-    callee: Expression;
-}
-```
-
-#### PipelineBareAwaitedFunctionBody
-
-```js
-interface PipelineBareConstructorBody <: NodeBase {
-    type: "PipelineTopicBody";
-    expression: Expression;
-}
-```
-
-#### PipelineTopicBody
-
-```js
-interface PipelineBareConstructorBody <: NodeBase {
-    type: "PipelineBareAwaitedFunctionBody";
-    callee: Expression;
-}
-```
-
 ## ConditionalExpression
 
 ```js
@@ -1098,6 +1050,17 @@ interface ModuleExpression <: Expression {
 ```
 
 A inline module expression proposed in https://github.com/tc39/proposal-js-module-blocks.
+
+## TopicReference
+
+```js
+interface TopicReference <: Expression {
+  type: "TopicReference";
+}
+```
+
+A topic reference to be used inside the body of
+a [Hack-style pipe expression](https://github.com/js-choi/proposal-hack-pipes).
 
 # Template Literals
 
@@ -1431,3 +1394,53 @@ interface ExportAllDeclaration <: ModuleDeclaration {
 ```
 
 An export batch declaration, e.g., `export * from "mod";`.
+
+### Smart-mix pipelines
+
+These types are **deprecated**.
+They are used by the deprecated smart-mix pipe operator to determine
+the type of a pipe expression's the body expression.
+The Hack and F# pipe operators use simple `BinaryExpression`s.
+
+#### PipelineBody
+
+```js
+interface PipelineBody <: NodeBase {
+    type: "PipelineBody";
+}
+```
+
+#### PipelineBareFunctionBody
+
+```js
+interface PipelineBody <: NodeBase {
+    type: "PipelineBareFunctionBody";
+    callee: Expression;
+}
+```
+
+#### PipelineBareConstructorBody
+
+```js
+interface PipelineBareConstructorBody <: NodeBase {
+    type: "PipelineBareConstructorBody";
+    callee: Expression;
+}
+```
+
+#### PipelineBareAwaitedFunctionBody
+
+```js
+interface PipelineBareConstructorBody <: NodeBase {
+    type: "PipelineTopicBody";
+    expression: Expression;
+}
+```
+
+#### PipelineTopicBody
+
+```js
+interface PipelineBareConstructorBody <: NodeBase {
+    type: "PipelineBareAwaitedFunctionBody";
+    callee: Expression;
+}

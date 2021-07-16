@@ -60,7 +60,6 @@ export default class State {
 
   // Flags to track
   maybeInArrowParameters: boolean = false;
-  inPipeline: boolean = false;
   inType: boolean = false;
   noAnonFunctionType: boolean = false;
   inPropertyName: boolean = false;
@@ -68,13 +67,13 @@ export default class State {
   isAmbientContext: boolean = false;
   inAbstractClass: boolean = false;
 
-  // For the smartPipelines plugin:
+  // For the Hack-style pipelines plugin
   topicContext: TopicContextState = {
     maxNumOfResolvableTopics: 0,
     maxTopicIndex: null,
   };
 
-  // For the F# plugin
+  // For the F#-style pipelines plugin
   soloAwait: boolean = false;
   inFSharpPipelineDirectBody: boolean = false;
 
